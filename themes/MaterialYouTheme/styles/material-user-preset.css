@@ -23,26 +23,27 @@
 }
 
 .theme-dark {
-  --main-colour: 0, 0, 0 !important; /* The Blurple Replacement */
-  --main-colour2: #000000 !important; 
-  --main-colour3: 000 !important; 
-  --main-background: #000000 !important; /* Topbar */
-  --secondary-background: #000000 !important; /* Most Things */
+  --main-colour: 227, 154, 155 !important; /* RGB ONLY */
+  --main-colour2: #e39a9b !important; /* HEX ONLY */
+  --main-colour3: 359 !important; /* HSL ONLY */
+  --main-background: #240e0e !important; /* Topbar */
+  --secondary-background: #0c0404 !important; /* Most Things */
   --tertiary: #000000 !important; /* Not Used Mostly Set as main background */
-  --floating: #000000 !important; /* Dropdowns */
+  --floating: #160606 !important; /* Dropdowns */
 
-  --headers: #000000 !important; 
-  --headers-secondary: #000000 !important;
+  --headers: #f0b2b2 !important; 
+  --headers-secondary: #f2a9a9 !important;
   
-  --namesusernames: #000000 !important;
-  --text: #000000 !important;
+  --namesusernames: #f2d1d1 !important;
+  --text: #f2d1d1 !important;
   --text-positive1: var(--green-color) !important;
-  --muted: #000000 !important; /* I.E: Icons */
+  --muted: #f2d1d1 !important;
   --links: var(--alt-color2) !important;
-  --button-interactive: #000000 !important;
+  --button-interactive: #f2cbcb !important;
   --button-interactive-hover: var(--main-colour2) !important;
-  --button-interactive-active: #000000 !important;
-  --button-interactive-muted: #000000 !important;
+  --button-interactive-active: #f0b2b2 !important;
+  --button-interactive-muted: #f0b2b2 !important;
+
 }
 .theme-light {
   --main-colour: 255, 255, 255 !important; /* The Blurple Replacement */
