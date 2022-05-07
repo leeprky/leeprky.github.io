@@ -99,11 +99,11 @@
    	/*margin-top:18px !important;*/
    	margin-top:0px !important;
    	position:absolute;
-   	top:20px;
+   	top:35px; /*20px*/
    }
    
    div[id*="popout"] div[class*="headerTop"] > div[class*="headerText"] {
-   	padding-bottom:6px;
+   	padding-bottom:20px;
    }
    
    div[class*="topSection"] .lastMessageDate-ocEw13 {
@@ -114,4 +114,9 @@
    div[class*="topSection"] .joinedAtDate-IawR02 {
    	margin-top:0px !important;
    	position:relative !important;
+   }
+   
+   div[class*="headerTagNoNickname"] {
+   	height:24px;
+   	overflow:visible;
    }
