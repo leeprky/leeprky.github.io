@@ -92,3 +92,11 @@
     
     #app-mount > div.app-3xd6d0 > div > div.layers-OrUESM.layers-1YQhyW > div > div > div.base-2jDfDU:before{display:var(--outdated_windowsXI-082,block)!important;position:absolute;left:32%!important;width:fit-content;border-radius:0 0 12px 12px!important;top:48px!important}
     
+    /* bonkmaykr - Plugin fixes for LastMessageDate, JoinedAtDate and CreationDate*/
+    .lastMessageDate-ocEw13 {
+      margin-top:18px !important;
+   }
+
+   div[class*="topSection"] .lastMessageDate-ocEw13 {
+      margin-top:-45px !important;
+   }
