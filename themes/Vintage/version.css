@@ -1,7 +1,7 @@
  :root {
 	 --theme: "Vintage";
-	 --build-latest: "090";
-	 --version-latest: "v0.9.0";
+	 --build-latest: "091";
+	 --version-latest: "v0.9.1";
 	 --version-latest-long: "Version: " var(--version-latest) " (Latest) ";
 	 --version-long: "Version: " var(--version) " (Current) ";
 	 --theme-dl: "https://github.com/leeprky/Vintage";
