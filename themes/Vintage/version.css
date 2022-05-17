@@ -51,8 +51,8 @@
  :root {
 	 --version: "UNKOWN";
 	 --build: "UNKNOWN";
-	 --style-name: "UNKNOWN";
-	 --style-creator: "UNKOWN";
+	 --style-name: "UNKNOWN - ENABLE A SKIN";
+	 --style-creator: "UNKNOWN - ENABLE A SKIN";
 }
  .info-3pQQBb::after {
 	 content: "Latest " var(--version-latest-long) !important;
