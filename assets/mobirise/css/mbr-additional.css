@@ -2289,93 +2289,6 @@ a {
     padding: 1rem;
   }
 }
-.cid-uLaTdAnwus {
-  display: flex;
-  background-image: url("../../../assets/images/img-6882-original.jpg");
-}
-.cid-uLaTdAnwus .mbr-overlay {
-  background-color: #000000;
-  opacity: 0.2;
-}
-@media (min-width: 768px) {
-  .cid-uLaTdAnwus {
-    align-items: flex-end;
-  }
-  .cid-uLaTdAnwus .row {
-    justify-content: center;
-  }
-  .cid-uLaTdAnwus .content-wrap {
-    padding: 1rem 3rem;
-  }
-}
-@media (max-width: 991px) and (min-width: 768px) {
-  .cid-uLaTdAnwus .content-wrap {
-    min-width: 50%;
-  }
-}
-@media (max-width: 767px) {
-  .cid-uLaTdAnwus {
-    -webkit-align-items: center;
-    align-items: flex-end;
-  }
-  .cid-uLaTdAnwus .mbr-row {
-    -webkit-justify-content: center;
-    justify-content: center;
-  }
-  .cid-uLaTdAnwus .content-wrap {
-    width: 100%;
-  }
-}
-.cid-uLaTdAnwus .mbr-section-title,
-.cid-uLaTdAnwus .mbr-section-subtitle {
-  text-align: center;
-}
-.cid-uLaTdAnwus .mbr-text,
-.cid-uLaTdAnwus .mbr-section-btn {
-  text-align: center;
-  color: #ffffff;
-}
-.cid-uLaZ2F0r4d {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  background-color: #fff4e7;
-}
-.cid-uLaZ2F0r4d .social-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.cid-uLaZ2F0r4d .social-row .soc-item {
-  margin: 8px;
-}
-.cid-uLaZ2F0r4d .social-row .soc-item a:hover .mbr-iconfont,
-.cid-uLaZ2F0r4d .social-row .soc-item a:focus .mbr-iconfont {
-  background-color: #d0daed;
-}
-.cid-uLaZ2F0r4d .social-row .soc-item a .mbr-iconfont {
-  width: 72px;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  font-size: 32px;
-  background-color: #eaeaea;
-  color: #18408a;
-  transition: all 0.3s ease-in-out;
-}
-.cid-uLaZ2F0r4d .row-links {
-  width: 100%;
-  justify-content: center;
-}
-.cid-uLaZ2F0r4d .mbr-section-title {
-  color: #ffffff;
-}
-.cid-uLaZ2F0r4d .mbr-section-title,
-.cid-uLaZ2F0r4d .social-list {
-  color: #18408a;
-}
 .cid-uLbnaUvIro {
   padding-top: 9rem;
   padding-bottom: 6rem;
@@ -3045,4 +2958,91 @@ a {
   .cid-uLbDkgGtKY .navbar-collapse {
     padding: 1rem;
   }
+}
+.cid-uLaTdAnwus {
+  display: flex;
+  background-image: url("../../../assets/images/img-6882-original.jpg");
+}
+.cid-uLaTdAnwus .mbr-overlay {
+  background-color: #000000;
+  opacity: 0.2;
+}
+@media (min-width: 768px) {
+  .cid-uLaTdAnwus {
+    align-items: flex-end;
+  }
+  .cid-uLaTdAnwus .row {
+    justify-content: center;
+  }
+  .cid-uLaTdAnwus .content-wrap {
+    padding: 1rem 3rem;
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  .cid-uLaTdAnwus .content-wrap {
+    min-width: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .cid-uLaTdAnwus {
+    -webkit-align-items: center;
+    align-items: flex-end;
+  }
+  .cid-uLaTdAnwus .mbr-row {
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+  .cid-uLaTdAnwus .content-wrap {
+    width: 100%;
+  }
+}
+.cid-uLaTdAnwus .mbr-section-title,
+.cid-uLaTdAnwus .mbr-section-subtitle {
+  text-align: center;
+}
+.cid-uLaTdAnwus .mbr-text,
+.cid-uLaTdAnwus .mbr-section-btn {
+  text-align: center;
+  color: #ffffff;
+}
+.cid-uLaZ2F0r4d {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: #fff4e7;
+}
+.cid-uLaZ2F0r4d .social-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.cid-uLaZ2F0r4d .social-row .soc-item {
+  margin: 8px;
+}
+.cid-uLaZ2F0r4d .social-row .soc-item a:hover .mbr-iconfont,
+.cid-uLaZ2F0r4d .social-row .soc-item a:focus .mbr-iconfont {
+  background-color: #d0daed;
+}
+.cid-uLaZ2F0r4d .social-row .soc-item a .mbr-iconfont {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  font-size: 32px;
+  background-color: #eaeaea;
+  color: #18408a;
+  transition: all 0.3s ease-in-out;
+}
+.cid-uLaZ2F0r4d .row-links {
+  width: 100%;
+  justify-content: center;
+}
+.cid-uLaZ2F0r4d .mbr-section-title {
+  color: #ffffff;
+}
+.cid-uLaZ2F0r4d .mbr-section-title,
+.cid-uLaZ2F0r4d .social-list {
+  color: #18408a;
 }
