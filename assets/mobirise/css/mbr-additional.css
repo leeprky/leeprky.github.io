@@ -632,8 +632,8 @@ a:hover {
   color: #ffffff;
 }
 /* Scroll to top button*/
-#scrollToTop a {
-  border-radius: 100px;
+.scrollToTop_wraper {
+  display: none;
 }
 .form-control {
   font-family: 'Space Mono', monospace;
@@ -2369,8 +2369,8 @@ a {
   background-image: url("../../../assets/images/img-6882-original.webp");
 }
 .cid-uLaTdAnwus .mbr-overlay {
-  background-color: #232323;
-  opacity: 0.3;
+  background-color: #291c04;
+  opacity: 0.2;
 }
 @media (min-width: 768px) {
   .cid-uLaTdAnwus {
