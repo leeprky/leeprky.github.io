@@ -7,7 +7,7 @@
 
 > **Live Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)
 
-Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical Engineering** undergraduate student at **Lancashire University (UCLan)** based in **Preston, Lancashire, UK**.
+Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical Engineering (Foundation Year)** student at the **University of Lancashire (ULan)** based in **Preston, Lancashire, UK**.
 
 Designed in an authentic **engineering blueprint and technical drafting sketch style**, the site features technical crosshairs, dimension lines, drafting borders, hand-drawn field sketch notes, and a clean engineering contact block.
 
@@ -27,31 +27,30 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
   - **Automatic Browser Detection:** Dynamically responds to `prefers-color-scheme: light/dark` with manual toggle override (`Auto` / `Light` / `Dark`).
 
 - **Core Technical Focus Areas:**
-  - **Electrical Engineering:** Academic studies at UCLan covering circuit analysis, electromagnetic theory, power systems, digital electronics, and sensor instrumentation.
-  - **Automotive Diagnostics & Workshop Mechanics:** Hands-on workshop mechanics from Car Cosmetics covering multi-meter fault isolation, electrical harness testing, hydraulic bleeding, and component repairs.
-  - **Discord Client Theming & Open Source:** Deep reverse engineering of Discord's React and DOM structures (*WindowsXI*, *MaterialYou*, *Vintage*, *Lode*).
-  - **Computer Science & ICT:** Systems programming, hardware architectures, networking, software engineering, and digital troubleshooting.
-  - **Audio Systems & Former DJ Experience:** Signal routing, PA sound equipment, acoustic balance, and live sound performance.
+  - **Electrical Engineering:** Foundation Year studies at the University of Lancashire (ULan) covering circuit theory, digital electronics, power systems, engineering maths, and sensor instrumentation.
+  - **Automotive Diagnostics & Workshop Mechanics:** Hands-on workshop mechanics from Car Cosmetics covering electrical fault-finding, wiring & sensor testing, hydraulic bleeding, and mechanical repairs.
+  - **Discord Client Theming & Open Source:** Custom CSS/UI themes for Discord (*WindowsXI*, *MaterialYou*, *Vintage*, *Lode*).
+  - **Computer Science & ICT:** Hardware, networking, relational databases, and software troubleshooting.
+  - **Live Audio & Former DJ Stint:** Brief stint DJing live events, setting up decks, mixers, and PA audio gear.
 
 - **Project Gallery & Build Logs:**
-  - **The Sub-£15 Budget Car Build & Overhaul:** An extreme budget engineering experiment sourcing and reviving a vehicle under £15 initial spend with hands-on mechanical repairs and electrical troubleshooting.
-  - **Live Audio Engineering & Former DJ Archive:** Live set archive with mixer signal flow diagrams, frequency equalisation, and telemetry documentation.
-  - Expandable slots for future automotive overhauls, RF electronics, and PCB prototypes.
+  - **The Sub-£15 Budget Car Build & Overhaul:** A budget project sourcing and fixing up a car for under £15 initial spend with hands-on mechanical and electrical work.
+  - Expandable slots for future automotive builds and university electronics lab projects.
 
 - **Verified Career Logbook (04 // WORK EXPERIENCE):**
-  1. **Wetherspoons (The Velvet Coaster)** — Bar Team Leader *(Promoted Feb 2026)*
+  1. **Wetherspoons (The Twelve Tellers, Preston)** — Bar Team Leader *(Promoted Feb 2026)*
   2. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
   3. **Car Cosmetics** — Apprentice Automotive Technician — Diagnostics & Repair
   4. **Pleasure Beach Resort** — Ride Operator
   5. **McDonald's** — Crew Member
 
 - **Academic Qualifications (05 // EDUCATION):**
-  1. **Lancashire University (UCLan)** — BEng (Hons) Electrical Engineering Undergraduate *(2025 — Present)*
+  1. **University of Lancashire (ULan)** — Electrical Engineering (Foundation Year) *(2026 — Present)*
   2. **Blackpool Sixth Form College** — BTEC Level 3 National Diploma in IT (**D\* D\***), A-Level Computer Science *(Completed 08/2023)*
-  3. **St Mary's Catholic Academy** — GCSEs: Digital IT (**D\*2**), Photography (**Grade 9**), Sciences, English, Maths
+  3. **St Mary's Catholic Academy** — GCSEs: Digital ICT (**D\*2 Distinction\***), Photography (**Grade 9**), Triple Sciences, English, Maths
 
 - **Section 06 // Contact:**
-  - Simplified, legible blueprint contact card with direct email (`lspky@pm.me`), LinkedIn, GitHub, and a downloadable CV in PDF format.
+  - Simplified, legible blueprint contact card with direct email (`lspky@pm.me`), LinkedIn, GitHub, website source link, and a downloadable CV in PDF format.
 
 ---
 
