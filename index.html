@@ -28,6 +28,12 @@
       darkMode: 'class',
       theme: {
         extend: {
+          colors: {
+            sky: {
+              400: 'rgb(var(--sky-400) / <alpha-value>)',
+              500: 'rgb(var(--sky-500) / <alpha-value>)',
+            }
+          },
           fontFamily: {
             sans: ['"Space Grotesk"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
@@ -45,6 +51,28 @@
       document.getElementById('meta-theme-dark')?.setAttribute('content', c);
       document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
     })();
+    function lpMix(hex, to, amt) {
+      const n = parseInt(hex.slice(1), 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255];
+      return c.map(v => Math.round(v + (to - v) * amt)).join(' ');
+    }
+    function lpApplyAccent(a) {
+      const r = document.documentElement;
+      ['300', '400', '500', '600', '700'].forEach(s => r.style.removeProperty('--sky-' + s));
+      r.removeAttribute('data-accent');
+      if (!a || a === 'blue') return;
+      if (a.startsWith('custom:')) {
+        const h = a.slice(7);
+        r.style.setProperty('--sky-300', lpMix(h, 255, 0.5));
+        r.style.setProperty('--sky-400', lpMix(h, 255, 0.25));
+        r.style.setProperty('--sky-500', lpMix(h, 0, 0));
+        r.style.setProperty('--sky-600', lpMix(h, 0, 0.15));
+        r.style.setProperty('--sky-700', lpMix(h, 0, 0.3));
+        r.setAttribute('data-accent', 'custom');
+      } else {
+        r.setAttribute('data-accent', a);
+      }
+    }
+    try { lpApplyAccent(localStorage.getItem('accent')); } catch (e) {}
   </script>
   <style>
     :root {
@@ -79,6 +107,67 @@
       --header-bg: rgba(4, 12, 24, 0.96);
       --top-strip: #030914;
     }
+    /* ===== ACCENT TOKENS (blue defaults match the original blueprint exactly) ===== */
+    :root {
+      --sky-300: 125 211 252; --sky-400: 56 189 248; --sky-500: 14 165 233; --sky-600: 2 132 199; --sky-700: 3 105 161;
+      --accent-cyan: rgb(var(--sky-600));
+      --text-dim: rgb(var(--sky-700));
+      --border-color: rgb(var(--sky-600) / 0.38);
+      --border-hover: rgb(var(--sky-600) / 0.85);
+      --grid-major: rgb(var(--sky-600) / 0.17);
+      --grid-minor: rgb(var(--sky-600) / 0.065);
+    }
+    html.dark {
+      --accent-cyan: rgb(var(--sky-400));
+      --text-dim: rgb(var(--sky-400));
+      --border-color: rgb(var(--sky-400) / 0.35);
+      --border-hover: rgb(var(--sky-400) / 0.85);
+      --grid-major: rgb(var(--sky-400) / 0.17);
+      --grid-minor: rgb(var(--sky-400) / 0.065);
+    }
+    /* Material You palettes */
+    html[data-accent="violet"] { --sky-300: 196 181 253; --sky-400: 167 139 250; --sky-500: 139 92 246; --sky-600: 124 58 237; --sky-700: 109 40 217; }
+    html[data-accent="pink"]   { --sky-300: 249 168 212; --sky-400: 244 114 182; --sky-500: 236 72 153; --sky-600: 219 39 119; --sky-700: 190 24 93; }
+    html[data-accent="red"]    { --sky-300: 252 165 165; --sky-400: 248 113 113; --sky-500: 239 68 68; --sky-600: 220 38 38; --sky-700: 185 28 28; }
+    html[data-accent="orange"] { --sky-300: 253 186 116; --sky-400: 251 146 60; --sky-500: 249 115 22; --sky-600: 234 88 12; --sky-700: 194 65 12; }
+    html[data-accent="green"]  { --sky-300: 110 231 183; --sky-400: 52 211 153; --sky-500: 16 185 129; --sky-600: 5 150 105; --sky-700: 4 120 87; }
+    html[data-accent="teal"]   { --sky-300: 94 234 212; --sky-400: 45 212 191; --sky-500: 20 184 166; --sky-600: 13 148 136; --sky-700: 15 118 110; }
+    /* Material You tonal surfaces: backgrounds pick up a hint of the accent */
+    html[data-accent] {
+      --bg-color: color-mix(in srgb, rgb(var(--sky-500)) 14%, #f3f6f9);
+      --paper-color: color-mix(in srgb, rgb(var(--sky-500)) 4%, #ffffff);
+      --card-bg: color-mix(in srgb, var(--paper-color) 96%, transparent);
+      --top-strip: color-mix(in srgb, rgb(var(--sky-500)) 22%, #eef2f5);
+      --header-bg: color-mix(in srgb, var(--bg-color) 96%, transparent);
+      --text-main: color-mix(in srgb, rgb(var(--sky-700)) 30%, #0b0f14);
+      --text-muted: color-mix(in srgb, rgb(var(--sky-700)) 55%, #1f2937);
+    }
+    html.dark[data-accent] {
+      --bg-color: color-mix(in srgb, rgb(var(--sky-500)) 7%, #05070a);
+      --paper-color: color-mix(in srgb, rgb(var(--sky-500)) 11%, #080b10);
+      --card-bg: color-mix(in srgb, var(--paper-color) 93%, transparent);
+      --top-strip: color-mix(in srgb, rgb(var(--sky-500)) 5%, #030405);
+      --header-bg: color-mix(in srgb, var(--bg-color) 96%, transparent);
+      --text-main: #f8fafc;
+      --text-muted: color-mix(in srgb, rgb(var(--sky-300)) 70%, #ffffff);
+    }
+    /* Secret SPEC theme menu */
+    .spec-hold-bar { position: absolute; left: 0; bottom: -3px; height: 2px; width: 0; background: var(--accent-sketch); pointer-events: none; }
+    #spec-wrap.holding .spec-hold-bar { width: 100%; transition: width 2s linear; }
+    .accent-menu {
+      position: absolute; right: 0; top: calc(100% + 10px); width: 244px; padding: 0.8rem;
+      background: var(--paper-color); border: 1px solid var(--accent-cyan); border-radius: 16px;
+      box-shadow: 0 16px 36px -8px rgb(var(--sky-600) / 0.45); text-align: left; z-index: 80;
+      opacity: 0; visibility: hidden; transform: translateY(-4px) scale(0.98);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    }
+    #spec-wrap.menu-open .accent-menu { opacity: 1; visibility: visible; transform: none; }
+    .accent-swatch {
+      aspect-ratio: 1; border-radius: 9999px; background: rgb(var(--sw)); cursor: pointer;
+      border: 2px solid var(--paper-color); box-shadow: 0 0 0 1px var(--border-color); transition: transform 0.15s ease;
+    }
+    .accent-swatch:hover { transform: scale(1.08); }
+    .accent-swatch.active { box-shadow: 0 0 0 2px var(--text-main); }
     *, *::before, *::after { box-sizing: border-box; }
     html, body { width: 100%; max-width: 100%; overflow-x: clip; margin: 0; padding: 0; }
     @keyframes blueprintDrift {
@@ -147,7 +236,7 @@
       width: 215px;
       background: var(--paper-color);
       border: 1px solid var(--accent-cyan);
-      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 12px 28px -6px rgb(var(--sky-600) / 0.4);
       padding: 0.65rem;
       opacity: 0;
       visibility: hidden;
@@ -194,7 +283,7 @@
     }
     .blueprint-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 0 22px -5px rgba(56, 189, 248, 0.18);
+      box-shadow: 0 0 22px -5px rgb(var(--sky-400) / 0.18);
     }
     .blueprint-card::before, .blueprint-card::after {
       content: '+';
@@ -227,7 +316,7 @@
     }
     .chip {
       padding: 0.15rem 0.5rem;
-      border: 1px solid rgba(14, 165, 233, 0.3);
+      border: 1px solid rgb(var(--sky-500) / 0.3);
       background-color: var(--paper-color);
       color: var(--text-dim);
     }
@@ -235,7 +324,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
       padding: 0.25rem 0.65rem;
-      background: #0ea5e9;
+      background: rgb(var(--sky-500));
       color: #fff;
       font-weight: 700;
       flex-shrink: 0;
@@ -274,7 +363,31 @@
           <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
-        <span class="hidden md:inline t-sketch font-sketch text-xs">SPEC V6.4</span>
+        <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.5</span>
+          <span class="spec-hold-bar"></span>
+          <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] font-bold t-dim">SECRET // MATERIAL YOU</span>
+              <button type="button" onclick="closeAccentMenu()" class="t-muted hover:text-sky-400 text-xs" aria-label="Close">✕</button>
+            </div>
+            <p class="font-sans text-[11px] leading-snug t-muted">You found it. Pick an accent colour — saved on this device only.</p>
+            <div class="grid grid-cols-7 gap-1.5">
+              <button type="button" class="accent-swatch" data-accent-btn="blue" onclick="setAccent('blue')" style="--sw: 14 165 233" title="Blueprint Blue" aria-label="Blueprint Blue"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="violet" onclick="setAccent('violet')" style="--sw: 139 92 246" title="Violet" aria-label="Violet"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="pink" onclick="setAccent('pink')" style="--sw: 236 72 153" title="Pink" aria-label="Pink"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="red" onclick="setAccent('red')" style="--sw: 239 68 68" title="Red" aria-label="Red"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="orange" onclick="setAccent('orange')" style="--sw: 249 115 22" title="Orange" aria-label="Orange"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="green" onclick="setAccent('green')" style="--sw: 16 185 129" title="Green" aria-label="Green"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="teal" onclick="setAccent('teal')" style="--sw: 20 184 166" title="Teal" aria-label="Teal"></button>
+            </div>
+            <label class="flex items-center justify-between font-mono text-[11px] t-muted pt-1 border-t border-sky-500/20">
+              <span>CUSTOM COLOUR</span>
+              <input type="color" id="accent-custom" value="#0ea5e9" class="w-9 h-6 bg-transparent border border-sky-500/40 rounded cursor-pointer" />
+            </label>
+            <button type="button" onclick="setAccent('blue')" class="w-full py-1.5 font-mono text-[11px] font-bold border border-sky-500/40 rounded-lg hover:bg-sky-500 hover:text-white transition-colors t-cyan">Reset to Blueprint Blue</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1199,7 +1312,8 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     function syncBrowserChrome(isDark) {
-      const c = isDark ? '#030914' : '#cee0f2';
+      const strip = document.querySelector('.bg-strip');
+      const c = (strip && getComputedStyle(strip).backgroundColor) || (isDark ? '#030914' : '#cee0f2');
       document.getElementById('meta-theme-light')?.setAttribute('content', c);
       document.getElementById('meta-theme-dark')?.setAttribute('content', c);
       document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
@@ -1238,6 +1352,43 @@
         c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
       });
     }
+
+    // Secret Material You theme menu: hold hover on SPEC for 2 seconds
+    function markAccent() {
+      const cur = localStorage.getItem('accent') || 'blue';
+      document.querySelectorAll('[data-accent-btn]').forEach(b => b.classList.toggle('active', b.dataset.accentBtn === cur));
+      const ci = document.getElementById('accent-custom');
+      if (ci && cur.startsWith('custom:')) ci.value = cur.slice(7);
+    }
+    function setAccent(a) {
+      if (a === 'blue') localStorage.removeItem('accent'); else localStorage.setItem('accent', a);
+      lpApplyAccent(a);
+      markAccent();
+      syncBrowserChrome(document.documentElement.classList.contains('dark'));
+    }
+    function closeAccentMenu() {
+      document.getElementById('spec-wrap')?.classList.remove('menu-open', 'holding');
+    }
+    (function () {
+      const wrap = document.getElementById('spec-wrap'), label = document.getElementById('spec-label');
+      if (!wrap || !label) return;
+      let holdTimer = null, leaveTimer = null;
+      const start = () => {
+        if (wrap.classList.contains('menu-open')) return;
+        wrap.classList.add('holding');
+        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); wrap.classList.add('menu-open'); markAccent(); }, 2000);
+      };
+      const cancel = () => { clearTimeout(holdTimer); wrap.classList.remove('holding'); };
+      label.addEventListener('mouseenter', start);
+      label.addEventListener('mouseleave', cancel);
+      label.addEventListener('touchstart', start, { passive: true });
+      label.addEventListener('touchend', cancel);
+      wrap.addEventListener('mouseleave', () => { leaveTimer = setTimeout(closeAccentMenu, 400); });
+      wrap.addEventListener('mouseenter', () => clearTimeout(leaveTimer));
+      document.addEventListener('click', e => { if (!wrap.contains(e.target)) closeAccentMenu(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAccentMenu(); });
+      document.getElementById('accent-custom')?.addEventListener('input', e => setAccent('custom:' + e.target.value));
+    })();
 
     // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
     document.querySelectorAll('.nav-item-wrap').forEach(el => {
