@@ -1088,11 +1088,6 @@
         document.documentElement.classList.toggle('dark', e.matches);
         syncBrowserChrome(e.matches);
       }
-      document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
-    }
-    setThemeMode(localStorage.getItem('theme') || 'auto');
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
     function filterProjects(cat) {
