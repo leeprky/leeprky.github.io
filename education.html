@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" id="meta-color-scheme" />
+  <meta name="theme-color" content="#cee0f2" media="(prefers-color-scheme: light)" id="meta-theme-light" />
+  <meta name="theme-color" content="#030914" media="(prefers-color-scheme: dark)" id="meta-theme-dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" id="meta-apple-status" />
+  <meta name="apple-mobile-web-app-title" content="Lee Parkinson [EE]" />
+  <meta name="application-name" content="Lee Parkinson [EE]" />
+  <meta name="msapplication-navbutton-color" content="#030914" id="meta-ms-nav" />
+  <meta name="msapplication-TileColor" content="#030914" id="meta-ms-tile" />
+  <link rel="apple-touch-icon" href="assets/images/lp-logo.png?v=2" />
+  <link rel="mask-icon" href="assets/images/lp-logo.png?v=2" color="#0ea5e9" />
+  <title>Lee Parkinson | 05 // Education</title>
+  <meta name="description" content="Personal portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
+  <link rel="icon" type="image/png" href="assets/images/lp-logo.png?v=2" />
+  <link rel="shortcut icon" href="favicon.ico?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sketch: ['"Architects Daughter"', 'cursive'],
+          }
+        }
+      }
+    };
+    (function() {
+      const t = localStorage.getItem('theme');
+      const isDark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+      const c = isDark ? '#030914' : '#cee0f2';
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+    })();
+  </script>
+  <style>
+    :root {
+      --bg-color: #ddebf7;
+      --paper-color: #f7fbff;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --border-color: rgba(2, 132, 199, 0.38);
+      --border-hover: rgba(2, 132, 199, 0.85);
+      --grid-major: rgba(2, 132, 199, 0.17);
+      --grid-minor: rgba(2, 132, 199, 0.065);
+      --text-main: #08182e;
+      --text-muted: #1e3a5f;
+      --text-dim: #0369a1;
+      --accent-cyan: #0284c7;
+      --accent-sketch: #b45309;
+      --header-bg: rgba(221, 235, 247, 0.96);
+      --top-strip: #cee0f2;
+    }
+    html.dark {
+      --bg-color: #040c18;
+      --paper-color: #071428;
+      --card-bg: rgba(7, 20, 40, 0.93);
+      --border-color: rgba(56, 189, 248, 0.35);
+      --border-hover: rgba(56, 189, 248, 0.85);
+      --grid-major: rgba(56, 189, 248, 0.17);
+      --grid-minor: rgba(56, 189, 248, 0.065);
+      --text-main: #f8fafc;
+      --text-muted: #bae6fd;
+      --text-dim: #38bdf8;
+      --accent-cyan: #38bdf8;
+      --accent-sketch: #fde047;
+      --header-bg: rgba(4, 12, 24, 0.96);
+      --top-strip: #030914;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: clip; margin: 0; padding: 0; }
+    @keyframes blueprintDrift {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100px, -100px, 0); }
+    }
+    html {
+      background-color: var(--bg-color);
+      color-scheme: light;
+      scrollbar-color: var(--accent-cyan) var(--top-strip);
+    }
+    html.dark {
+      color-scheme: dark;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--top-strip); }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border: 1px solid var(--accent-cyan); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+    body {
+      position: relative;
+      isolation: isolate;
+      background-color: transparent;
+      color: var(--text-main);
+      transition: color 0.25s ease;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -100px;
+      z-index: -1;
+      pointer-events: none;
+      will-change: transform;
+      background-color: var(--bg-color);
+      background-image:
+        linear-gradient(var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(var(--grid-minor) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+      background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+      animation: blueprintDrift 7s linear infinite;
+      transition: background-color 0.25s ease;
+    }
+    .nav-item-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-hold-bar {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent-cyan);
+      pointer-events: none;
+    }
+    .nav-item-wrap.holding .nav-hold-bar {
+      width: 100%;
+      transition: width 2.5s linear;
+    }
+    .nav-hover-card {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 215px;
+      background: var(--paper-color);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.4);
+      padding: 0.65rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      z-index: 100;
+    }
+    .nav-item-wrap.align-right .nav-hover-card {
+      left: auto;
+      right: 0;
+      transform: translateY(6px);
+    }
+    .nav-item-wrap.popup-open .nav-hover-card {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-item-wrap.align-right.popup-open .nav-hover-card {
+      transform: translateY(0);
+    }
+    .t-main { color: var(--text-main); }
+    .t-muted { color: var(--text-muted); }
+    .t-dim { color: var(--text-dim); }
+    .t-cyan { color: var(--accent-cyan); }
+    .t-sketch { color: var(--accent-sketch); }
+    .bg-paper { background-color: var(--paper-color); }
+    .bg-card { background-color: var(--card-bg); }
+    .bg-strip { background-color: var(--top-strip); }
+    .bg-hdr { background-color: var(--header-bg); }
+    .drafting-container {
+      width: 100%;
+      max-width: 1380px;
+      margin-inline: auto;
+      padding-left: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-left));
+      padding-right: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-right));
+    }
+    .blueprint-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      max-width: 100%;
+    }
+    .blueprint-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 22px -5px rgba(56, 189, 248, 0.18);
+    }
+    .blueprint-card::before, .blueprint-card::after {
+      content: '+';
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .blueprint-card::before { top: -8px; left: -2px; }
+    .blueprint-card::after { bottom: -8px; right: -2px; }
+    .dim-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      overflow: hidden;
+      width: 100%;
+      min-width: 0;
+    }
+    .dim-line::before, .dim-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+      min-width: 12px;
+    }
+    .chip {
+      padding: 0.15rem 0.5rem;
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      background-color: var(--paper-color);
+      color: var(--text-dim);
+    }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      background: #0ea5e9;
+      color: #fff;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @media (orientation: landscape) and (max-height: 580px) {
+      .landscape-compact-header { height: 2.75rem !important; }
+      .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between text-sm sm:text-base">
+
+  <!-- TOP ENGINEERING TECHNICAL STRIP -->
+  <div class="bg-strip w-full border-b border-sky-400/30 text-[11px] sm:text-xs font-mono py-1.5 z-50">
+    <div class="drafting-container flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
+        <span class="flex items-center gap-1.5 font-bold t-dim">
+          <span class="inline-block w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--accent-cyan);"></span>
+          <span class="truncate">DWG: LP-ENG-2026-EE</span>
+        </span>
+        <span class="opacity-30 hidden sm:inline">|</span>
+        <span class="hidden sm:inline t-muted">DISCIPLINE: ELECTRICAL ENGINEERING</span>
+        <span class="opacity-30">|</span>
+        <span class="t-muted">PRESTON, UK</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="flex items-center border border-sky-400/40 font-mono text-[11px] rounded overflow-hidden">
+          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
+          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
+          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
+        </div>
+        <span class="hidden md:inline t-sketch font-sketch text-xs">SPEC V6.2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION HEADER (HOLD HOVER 2.5s FOR DEDICATED PAGE POPUP) -->
+  <header class="bg-hdr w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40">
+    <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0">
+        <img src="assets/images/lp-logo.png?v=2" alt="LP Blueprint Logo" class="w-9 h-9 border border-sky-500/60 object-cover shrink-0 bg-card" />
+        <div class="min-w-0">
+          <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1 truncate t-main">
+            <span class="truncate">LEE PARKINSON</span>
+            <span class="text-xs font-mono font-normal shrink-0 t-dim">[EE]</span>
+          </div>
+          <div class="text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate t-muted">Electrical Engineering</div>
+        </div>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-5 text-xs font-mono shrink-0 t-muted">
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#about" class="hover:text-sky-400">01. ABOUT</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 01 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Full Bio, Toolkit &amp; Schedule</div>
+            <a href="about.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#schematics" class="hover:text-sky-400">02. SCHEMATICS</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 02 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Deep Technical Specs &amp; DJ</div>
+            <a href="schematics.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#gallery" class="hover:text-sky-400">03. GALLERY</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 03 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Sub-£15 Car Plan &amp; Themes</div>
+            <a href="gallery.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#experience" class="hover:text-sky-400">04. EXPERIENCE</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 04 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Career Log &amp; Skills Matrix</div>
+            <a href="experience.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#education" class="hover:text-sky-400">05. EDUCATION</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 05 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">ULan Modules, BTEC &amp; GCSEs</div>
+            <a href="education.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="index.html#contact" class="hover:text-sky-400">06. CONTACT</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 06 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Availability &amp; Direct Channels</div>
+            <a href="contact.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="flex items-center gap-2 font-mono text-xs shrink-0">
+        <div class="nav-item-wrap align-right py-1">
+          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all t-dim bg-card">✉ lspky@pm.me</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">DISPATCH // EMAIL PAGE</div>
+            <div class="text-xs font-sans t-main">Quick Templates &amp; Composer</div>
+            <a href="email.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Email Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap align-right py-1">
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm">CV ↓</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</div>
+            <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
+            <a href="cv.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open CV Page →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
+      <div class="drafting-container py-2 flex items-center gap-4 sm:gap-5 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
+        <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
+        <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
+        <a href="experience.html" class="hover:text-sky-400">04. EXPERIENCE</a>
+        <a href="education.html" class="hover:text-sky-400">05. EDUCATION</a>
+        <a href="contact.html" class="hover:text-sky-400">06. CONTACT</a>
+        <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
+        <a href="cv.html" class="hover:text-sky-400">📄 CV</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="drafting-container landscape-compact-main py-6 sm:py-10 lg:py-12 space-y-8 sm:space-y-10 flex-1" id="top">
+    <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="space-y-1 min-w-0">
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <span class="px-2.5 py-0.5 bg-sky-500 text-white font-bold">SHEET 05 // EDUCATION</span>
+          <span class="t-dim">DEDICATED SPECIFICATION SHEET</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold t-main">Academic Qualifications & Modules</h1>
+        <p class="text-xs sm:text-sm font-mono t-muted">University of Lancashire (ULan) Foundation Year, Blackpool Sixth Form College, and GCSEs.</p>
+      </div>
+      <div class="flex flex-wrap gap-2 font-mono text-xs shrink-0">
+        <a href="index.html" class="px-4 py-2 border border-sky-500/50 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-paper">← Back to Full Blueprint</a>
+      </div>
+    </div>
+<section id="education" class="space-y-4 sm:space-y-6">
+      <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+        <span class="sec-tag">05 // EDUCATION</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Academic Qualifications</h2>
+      </div>
+
+      <div class="space-y-3.5 font-mono text-xs">
+        <!-- ULan -->
+        <div class="blueprint-card p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[DEGREE-01]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">University of Lancashire (ULan)</h4>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500 text-white font-bold">FOUNDATION YEAR</span>
+            </div>
+            <div class="text-sm font-bold t-cyan">Electrical Engineering (Foundation Year)</div>
+            <p class="text-sm leading-relaxed t-muted">Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.</p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+              <span class="chip">Circuit Theory</span><span class="chip">Digital Electronics</span><span class="chip">Power Systems</span><span class="chip">Sensor Instrumentation</span><span class="chip">Engineering Maths</span>
+            </div>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            2026 — Present <br /><span class="font-bold t-main">Preston, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"foundation year"</div>
+          </div>
+        </div>
+
+        <!-- Sixth Form -->
+        <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[LEVEL 3]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Blackpool Sixth Form College</h4>
+              <span class="chip text-[10px]">A-LEVELS &amp; BTEC</span>
+            </div>
+            <div class="text-sm font-semibold t-dim">BTEC National Extended Diploma &amp; GCE Advanced Level</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">BTEC NATIONAL DIPLOMA</span>
+                <span class="font-bold t-main">Information Technology:</span>
+                <span class="font-bold ml-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">D* D*</span>
+              </div>
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">GCE A-LEVEL</span>
+                <span class="font-bold t-main">Computer Science:</span>
+                <span class="font-bold ml-1 px-1.5 py-0.5 border border-sky-500/30 t-main">Grade E</span>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed t-muted">Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.</p>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Completed 08/2023 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"Double Distinction Star"</div>
+          </div>
+        </div>
+
+        <!-- St Mary's -->
+        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[LEVEL 2]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">St Mary's Catholic Academy</h4>
+              <span class="chip text-[10px]">GCSEs &amp; LEVEL 2</span>
+            </div>
+            <div class="text-sm font-semibold t-dim">General Certificate of Secondary Education (GCSEs)</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
+              <div class="p-2 border border-emerald-500/50 bg-emerald-500/10 min-w-0">
+                <span class="text-[10px] block text-emerald-400 font-bold truncate">DIGITAL ICT ★</span>
+                <span class="font-bold text-emerald-400 truncate block">D*2 (Distinction*)</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">PHOTOGRAPHY</span>
+                <span class="font-bold truncate block t-main">Grade 9</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">ENGLISH LANG / LIT</span>
+                <span class="font-bold truncate block t-main">Grade 6 / Grade 5</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">MATHEMATICS</span>
+                <span class="font-bold truncate block t-main">Grade 4</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-4 min-w-0 bg-paper">
+                <span class="text-[10px] block t-dim">SCIENCES (TRIPLE)</span>
+                <span class="font-bold t-main">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</span>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed t-muted">Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.</p>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Secondary Education <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"D*2 in Digital ICT"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE & STUDY BREAKDOWN -->
+    <section class="blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-4">
+      <div class="font-mono text-xs font-bold t-cyan">// CORE ACADEMIC FOCUS AREAS</div>
+      <h3 class="text-lg sm:text-xl font-bold t-main">Key Topics Across Uni &amp; College</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div class="p-4 border border-sky-500/25 bg-paper space-y-1.5">
+          <div class="font-mono text-xs font-bold t-cyan">ULAN FOUNDATION YEAR (2026–PRESENT)</div>
+          <div class="font-bold t-main">Electrical &amp; Engineering Core</div>
+          <p class="t-muted">DC/AC circuit laws, resistors/capacitors/inductors, engineering algebra &amp; calculus, mechanical physics, and lab instrumentation.</p>
+        </div>
+        <div class="p-4 border border-sky-500/25 bg-paper space-y-1.5">
+          <div class="font-mono text-xs font-bold text-emerald-400">SIXTH FORM (BTEC IT D*D* &amp; CS)</div>
+          <div class="font-bold t-main">Computing &amp; IT Infrastructure</div>
+          <p class="t-muted">Computer hardware systems, relational databases &amp; SQL, network administration, and software development fundamentals.</p>
+        </div>
+        <div class="p-4 border border-sky-500/25 bg-paper space-y-1.5">
+          <div class="font-mono text-xs font-bold text-emerald-400">GCSE STANDOUT (DIGITAL ICT ★ D*2)</div>
+          <div class="font-bold t-main">Digital ICT, Triple Science &amp; Photo</div>
+          <p class="t-muted">Distinction* (D*2) in Digital ICT alongside Triple Science (Physics, Chemistry, Biology), Maths, English, and Grade 9 Photography.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BLUEPRINT DRAWING FOOTER -->
+  <footer class="bg-strip t-muted w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
+    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>SHEET: LP-EE-2026 • DISCIPLINE: ELECTRICAL ENGINEERING • © <span id="year">2026</span> LEE PARKINSON</div>
+      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold t-cyan">Website Source (GitHub) ↗</a>
+        <a href="mailto:lspky@pm.me" class="hover:underline t-dim">lspky@pm.me</a>
+        <a href="index.html#top" class="hover:underline t-dim">TOP ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function syncBrowserChrome(isDark) {
+      const c = isDark ? '#030914' : '#cee0f2';
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+      document.getElementById('meta-apple-status')?.setAttribute('content', isDark ? 'black-translucent' : 'default');
+      document.getElementById('meta-ms-nav')?.setAttribute('content', c);
+      document.getElementById('meta-ms-tile')?.setAttribute('content', c);
+    }
+
+    function setThemeMode(mode) {
+      const html = document.documentElement;
+      const map = { auto: 'btn-theme-auto', light: 'btn-theme-light', dark: 'btn-theme-dark' };
+      Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('bg-sky-500', 'text-white', 'font-bold'));
+      const isDark = mode === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+      if (mode === 'auto') localStorage.removeItem('theme');
+      else localStorage.setItem('theme', mode);
+      html.classList.toggle('dark', isDark);
+      syncBrowserChrome(isDark);
+      document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
+    }
+    setThemeMode(localStorage.getItem('theme') || 'auto');
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.classList.toggle('dark', e.matches);
+        syncBrowserChrome(e.matches);
+      }
+    });
+
+
+    // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
+    document.querySelectorAll('.nav-item-wrap').forEach(el => {
+      let timer = null;
+      el.addEventListener('mouseenter', () => {
+        el.classList.add('holding');
+        timer = setTimeout(() => {
+          el.classList.add('popup-open');
+        }, 2500);
+      });
+      el.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        el.classList.remove('holding', 'popup-open');
+      });
+    });
+  </script>
+</body>
+</html>

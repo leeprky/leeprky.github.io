@@ -1,15 +1,40 @@
-# Lee Parkinson — Engineering Portfolio & Blueprint Specification
+# Lee Parkinson — Engineering Portfolio & Blueprint Specification (`dev` Branch)
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Deployment-0ea5e9?style=flat-square&logo=github)](https://leeprky.github.io/)
+[![Dev Preview](https://img.shields.io/badge/Dev%20Branch-Live%20Preview-f59e0b?style=flat-square&logo=github)](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)
+[![GitHub Pages (Main)](https://img.shields.io/badge/Main%20Branch-Production%20Site-0ea5e9?style=flat-square&logo=github)](https://leeprky.github.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Location](https://img.shields.io/badge/Location-Preston%2C%20UK-38bdf8?style=flat-square)](https://leeprky.github.io/)
-[![Status](https://img.shields.io/badge/Status-Active%20Student-22c55e?style=flat-square)](https://leeprky.github.io/)
 
-> **Live Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)
+> 🧪 **Live `dev` Branch Preview (Browser View):** **[https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)**  
+> 🚀 **Production (`main`) Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)  
+> 🌿 **GitHub `dev` Branch Source:** [https://github.com/leeprky/leeprky.github.io/tree/dev](https://github.com/leeprky/leeprky.github.io/tree/dev)
 
-Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical Engineering (Foundation Year)** student at the **University of Lancashire (ULan)** based in **Preston, Lancashire, UK**.
+Personal engineering portfolio and technical specification sheet for **Lee Parkinson** (21), an **Electrical Engineering (Foundation Year)** student at the **University of Lancashire (ULan)** based in **Preston, Lancashire, UK**.
 
-Designed in an authentic **engineering blueprint and technical drafting sketch style**, the site features technical crosshairs, dimension lines, drafting borders, hand-drawn field sketch notes, and a clean engineering contact block.
+---
+
+## 🧪 Exclusive Features in the `dev` Branch
+
+This `dev` branch stages experimental features prior to merging into `main`:
+
+1. **GPU-Accelerated Moving Blueprint Grid Background (`@keyframes blueprintDrift`):**
+   - Smooth 60/120fps hardware-accelerated panning using `transform: translate3d(...)` and `will-change: transform` on a fixed `body::before` layer, eliminating CPU background repaints across both Light and Dark themes.
+2. **2.5-Second Hover-Hold Topbar Popout Cards (`.nav-hover-card` & `.nav-hold-bar`):**
+   - Holding hover over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) for **2.5 seconds** fills a cyan progress indicator and reveals the dedicated page popup.
+3. **8 Enriched Dedicated Topic Specification Pages:**
+   - **[`index.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)** — Full single-page blueprint specification
+   - **[`about.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/about.html)** — Dedicated `01 // ABOUT ME` page + Practical Toolkit & Equipment + Day-to-Day Schedule in Preston
+   - **[`schematics.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/schematics.html)** — Dedicated `02 // SCHEMATICS` page + Circuit Testing, Workshop Service Protocol & Live Audio Signal Chain
+   - **[`gallery.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/gallery.html)** — Dedicated `03 // GALLERY` page + 4-Phase Sub-£15 Car Revival Plan & Discord CSS Architecture
+   - **[`experience.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`) + Transferable Engineering Skills Matrix
+   - **[`education.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/education.html)** — Dedicated `05 // EDUCATION` qualifications page + Core Academic & Lab Focus Breakdown
+   - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `06 // CONTACT` channels page + Availability & Location Details
+   - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification, At-a-Glance Executive Summary & Embedded PDF Viewer** page
+   - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)**, 1-Click Topic Presets, Copy-to-Clipboard & Quick Message Composer
+4. **Safari & Multi-Browser Title Bar / Status Bar / Scrollbar Theming:**
+   - Dynamic `<meta name="theme-color">` (`#061224` dark blueprint / `#e1edf8` light blueprint) synced in real time with `Auto` / `Light` / `Dark` toggles for **Safari (macOS & iOS/iPadOS)**, **Chrome**, **Edge**, **Brave**, **Vivaldi**, and **Samsung Internet**.
+   - **Apple Safari iOS/iPadOS & Pinned Tab Support:** `viewport-fit=cover` with `env(safe-area-inset-*)` edge-to-edge notch/landscape padding, `apple-mobile-web-app-status-bar-style`, and Safari pinned-tab `mask-icon` (`#0ea5e9`).
+   - **Native Browser UI & Scrollbar Theming:** Dynamic `<meta name="color-scheme">`, Microsoft Edge/Windows tile & navbutton meta tags (`msapplication-navbutton-color`), and themed blueprint scrollbars across WebKit, Chromium, and Firefox.
 
 ---
 
@@ -36,7 +61,7 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
 - **Project Gallery (`03 // GALLERY`):**
   - **`03.1 // ENGINEERING`:**
     - **The Sub-£15 Budget Car Project:** A budget project sourcing and fixing up a car for under £15 initial spend with hands-on mechanical and electrical work.
-    - **Electronics & Uni Lab Builds:** Slot for upcoming circuit and engineering projects at ULan.
+    - **Week 3: Electric Screwdriver Sketch (`15.10.26`):** Hand-drafted orthographic engineering sketch (Top, Side, and Front views) from Week 3 at ULan, complete with projection lines, revision table (`Ref 2 — Attempt 2`), and title block.
   - **`03.2 // DISCORD THEMES`:**
     - **WindowsXI Discord Theme**, **MaterialYou & Vintage**, and **Lode, Ovel & Fluidcord** open-source UI themes.
 
