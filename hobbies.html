@@ -153,7 +153,7 @@
     }
     /* Secret SPEC theme menu */
     .spec-hold-bar { position: absolute; left: 0; bottom: -3px; height: 2px; width: 0; background: var(--accent-sketch); pointer-events: none; }
-    #spec-wrap.holding .spec-hold-bar { width: 100%; transition: width 2s linear; }
+    #spec-wrap.holding .spec-hold-bar { width: 100%; transition: width 1s linear; }
     .accent-menu {
       position: absolute; right: 0; top: calc(100% + 10px); width: 244px; padding: 0.8rem;
       background: var(--paper-color); border: 1px solid var(--accent-cyan); border-radius: 16px;
@@ -226,7 +226,7 @@
     }
     .nav-item-wrap.holding .nav-hold-bar {
       width: 100%;
-      transition: width 2.5s linear;
+      transition: width 1s linear;
     }
     .nav-hover-card {
       position: absolute;
@@ -360,7 +360,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.5</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.6</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -388,7 +388,7 @@
     </div>
   </div>
 
-  <!-- NAVIGATION HEADER (HOLD HOVER 2.5s FOR DEDICATED PAGE POPUP) -->
+  <!-- NAVIGATION HEADER (HOLD HOVER 1s FOR DEDICATED PAGE POPUP) -->
   <header class="bg-hdr w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40">
     <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
       <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0">
@@ -677,7 +677,7 @@
     });
 
 
-    // Secret Material You theme menu: hold hover on SPEC for 2 seconds
+    // Secret Material You theme menu: hold hover on SPEC for 1 second
     function markAccent() {
       const cur = localStorage.getItem('accent') || 'blue';
       document.querySelectorAll('[data-accent-btn]').forEach(b => b.classList.toggle('active', b.dataset.accentBtn === cur));
@@ -700,7 +700,7 @@
       const start = () => {
         if (wrap.classList.contains('menu-open')) return;
         wrap.classList.add('holding');
-        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); wrap.classList.add('menu-open'); markAccent(); }, 2000);
+        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); wrap.classList.add('menu-open'); markAccent(); }, 1000);
       };
       const cancel = () => { clearTimeout(holdTimer); wrap.classList.remove('holding'); };
       label.addEventListener('mouseenter', start);
@@ -714,14 +714,14 @@
       document.getElementById('accent-custom')?.addEventListener('input', e => setAccent('custom:' + e.target.value));
     })();
 
-    // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
+    // 1-Second Hover Popup Timer for Topbar Elements (DEV)
     document.querySelectorAll('.nav-item-wrap').forEach(el => {
       let timer = null;
       el.addEventListener('mouseenter', () => {
         el.classList.add('holding');
         timer = setTimeout(() => {
           el.classList.add('popup-open');
-        }, 2500);
+        }, 1000);
       });
       el.addEventListener('mouseleave', () => {
         clearTimeout(timer);
