@@ -17,17 +17,18 @@ Personal engineering portfolio and technical specification sheet for **Lee Parki
 1. **GPU-Accelerated Moving Blueprint Grid Background (`@keyframes blueprintDrift`):**
    - Smooth 60/120fps hardware-accelerated panning using `transform: translate3d(...)` and `will-change: transform` on a fixed `body::before` layer, eliminating CPU background repaints across both Light and Dark themes.
 2. **2.5-Second Hover-Hold Topbar Popout Cards (`.nav-hover-card` & `.nav-hold-bar`):**
-   - Holding hover over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) for **2.5 seconds** fills a cyan progress indicator and reveals the dedicated page popup.
-3. **8 Enriched Dedicated Topic Specification Pages:**
-   - **[`index.html`](https://leeprky.github.io/)** — Full single-page blueprint specification
-   - **[`about.html`](https://leeprky.github.io/about.html)** — Dedicated `01 // ABOUT ME` page + Practical Toolkit & Equipment + Day-to-Day Schedule in Preston
-   - **[`schematics.html`](https://leeprky.github.io/schematics.html)** — Dedicated `02 // SCHEMATICS` page + Circuit Testing, Workshop Service Protocol & Live Audio Signal Chain
-   - **[`gallery.html`](https://leeprky.github.io/gallery.html)** — Dedicated `03 // GALLERY` page + Week 3 Electric Screwdriver Drawing Inspection, 4-Phase Sub-£15 Car Revival Plan & Discord CSS Architecture
-   - **[`experience.html`](https://leeprky.github.io/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`) + Transferable Engineering Skills Matrix
-   - **[`education.html`](https://leeprky.github.io/education.html)** — Dedicated `05 // EDUCATION` qualifications page + Core Academic & Lab Focus Breakdown
-   - **[`contact.html`](https://leeprky.github.io/contact.html)** — Dedicated `06 // CONTACT` channels page + Availability & Location Details
-   - **[`cv.html`](https://leeprky.github.io/cv.html)** — Dedicated **CV Specification, At-a-Glance Executive Summary & Embedded PDF Viewer** page
-   - **[`email.html`](https://leeprky.github.io/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)**, 1-Click Topic Presets, Copy-to-Clipboard & Quick Message Composer
+   - Holding hover over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. HOBBIES`, `07. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) for **2.5 seconds** fills a cyan progress indicator and reveals the dedicated page popup.
+3. **9 Enriched Dedicated Topic Specification Pages:**
+   - **[`index.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)** — Full single-page blueprint specification
+   - **[`about.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/about.html)** — Dedicated `01 // ABOUT ME` page + Practical Toolkit & Equipment + Day-to-Day Schedule in Preston
+   - **[`schematics.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/schematics.html)** — Dedicated `02 // SCHEMATICS` page + Circuit Testing, Workshop Service Protocol & Live Audio Signal Chain
+   - **[`gallery.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/gallery.html)** — Dedicated `03 // GALLERY` page + Week 3 Electric Screwdriver Drawing Inspection, 4-Phase Sub-£15 Car Revival Plan & Discord CSS Architecture
+   - **[`experience.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`) + Transferable Engineering Skills Matrix
+   - **[`education.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/education.html)** — Dedicated `05 // EDUCATION` qualifications page + Core Academic & Lab Focus Breakdown
+   - **[`hobbies.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/hobbies.html)** — Dedicated `06 // HOBBIES` page (Climbing Mountains, Gorge Scrambling & Camping in the Fells)
+   - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `07 // CONTACT` channels page + Availability & Location Details
+   - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification, At-a-Glance Executive Summary & Embedded PDF Viewer** page
+   - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)**, 1-Click Topic Presets, Copy-to-Clipboard & Quick Message Composer
 4. **Safari & Multi-Browser Title Bar / Status Bar / Scrollbar Theming:**
    - Dynamic `<meta name="theme-color">` (`#030914` dark blueprint / `#cee0f2` light blueprint) synced in real time with `Auto` / `Light` / `Dark` toggles for **Safari (macOS & iOS/iPadOS)**, **Chrome**, **Edge**, **Brave**, **Vivaldi**, and **Samsung Internet**.
    - **Apple Safari iOS/iPadOS & Pinned Tab Support:** `viewport-fit=cover` with `env(safe-area-inset-*)` edge-to-edge notch/landscape padding, `apple-mobile-web-app-status-bar-style`, and Safari pinned-tab `mask-icon` (`#0ea5e9`).
