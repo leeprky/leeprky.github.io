@@ -210,10 +210,6 @@
     @media (orientation: landscape) and (max-height: 580px) {
       .landscape-compact-header { height: 2.75rem !important; }
       .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
-      .landscape-hero-grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
-      .landscape-hero-photo-col { grid-column: span 4 / span 4 !important; }
-      .landscape-hero-photo-box { max-width: 175px !important; }
-      .landscape-hero-text-col { grid-column: span 8 / span 8 !important; }
     }
   </style>
 </head>
@@ -359,7 +355,7 @@
           <span class="t-dim">DEDICATED SPECIFICATION SHEET</span>
         </div>
         <h1 class="text-xl sm:text-2xl font-bold t-main">Project Gallery (03.1 Engineering & 03.2 Discord Themes)</h1>
-        <p class="text-xs sm:text-sm font-mono t-muted">Sub-£15 budget car 4-phase revival plan, uni lab builds, and Discord theme CSS architecture.</p>
+        <p class="text-xs sm:text-sm font-mono t-muted">Sub-£15 budget car 4-phase revival plan, Week 3 Electric Screwdriver sketch, and Discord themes.</p>
       </div>
       <div class="flex flex-wrap gap-2 font-mono text-xs shrink-0">
         <a href="index.html" class="px-4 py-2 border border-sky-500/50 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-paper">← Back to Full Blueprint</a>
@@ -414,15 +410,21 @@
           </div>
 
           <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-2">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono gap-2">
-                <span class="px-2 py-0.5 border border-sky-500/40 t-dim">PROJECT-SLOT 02</span>
-                <span class="font-sketch t-sketch text-xs">future build slot</span>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">ULAN-CAD-01 // WEEK 3</span>
+                <span class="font-sketch t-sketch text-xs">15.10.26 • Ref 2</span>
               </div>
-              <h4 class="text-lg font-bold t-main">Electronics &amp; Uni Lab Builds</h4>
-              <p class="text-sm leading-relaxed t-muted">Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.</p>
+              <a href="assets/images/week3-electric-screwdriver.jpg" target="_blank" class="block overflow-hidden border border-sky-500/40 bg-paper group relative aspect-[4/3]">
+                <img src="assets/images/week3-electric-screwdriver.jpg" alt="Week 3 Electric Screwdriver Orthographic Sketch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Click to Enlarge ↗</span>
+              </a>
+              <h4 class="text-lg font-bold t-main">Week 3: Electric Screwdriver Sketch</h4>
+              <p class="text-sm leading-relaxed t-muted">Hand-drafted orthographic engineering sketch (Top, Side, and Front views) completed during Week 3 at ULan, complete with projection alignment lines, revision table (Attempt 2), and title block.</p>
             </div>
-            <div class="font-mono text-xs pt-2 border-t border-sky-500/20 t-dim">STATUS: FUTURE SLOT</div>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Orthographic Views</span><span class="chip">ULan Week 3</span><span class="chip">Hand Drafted</span>
+            </div>
           </div>
         </div>
       </div>
@@ -477,6 +479,34 @@
             </div>
             <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
               <span class="chip">Glasscord</span><span class="chip">Custom Layouts</span><span class="chip">Open Source</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEEK 3 ELECTRIC SCREWDRIVER FULL ENGINEERING DRAWING INSPECTION -->
+    <section class="blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="font-mono text-xs font-bold t-cyan">// 03.1 ULAN LAB DRAWING: WEEK 3 ELECTRIC SCREWDRIVER (15.10.26)</div>
+        <a href="assets/images/week3-electric-screwdriver.jpg" target="_blank" class="px-3 py-1 bg-sky-500 text-white font-mono text-xs font-bold">Open Full Resolution Drawing ↗</a>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+        <div class="lg:col-span-7 border-2 border-sky-500/40 p-2 bg-paper">
+          <img src="assets/images/week3-electric-screwdriver.jpg" alt="Week 3 Electric Screwdriver Orthographic Drawing" class="w-full h-auto block" loading="lazy" />
+        </div>
+        <div class="lg:col-span-5 space-y-3 text-sm t-muted">
+          <h3 class="text-lg sm:text-xl font-bold t-main">Orthographic Projection &amp; Revision Sheet</h3>
+          <p>Hand-drawn technical sketch from Week 3 of my Electrical Engineering Foundation Year at ULan, showing aligned multi-angle views of a handheld electric screwdriver:</p>
+          <div class="space-y-2 font-mono text-xs">
+            <div class="p-2.5 border border-sky-500/25 bg-paper">
+              <span class="font-bold t-cyan">VIEWS DRAFTED:</span> Top View, Side View &amp; Front View with dotted projection guidelines
+            </div>
+            <div class="p-2.5 border border-sky-500/25 bg-paper">
+              <span class="font-bold t-cyan">REVISION TABLE:</span> Ref 2 — Attempt 2 (Approved)
+            </div>
+            <div class="p-2.5 border border-sky-500/25 bg-paper">
+              <span class="font-bold t-cyan">TITLE BLOCK:</span> Signed Lee P. • Issue Date: 15.10.26 • Not to Scale
             </div>
           </div>
         </div>
@@ -561,17 +591,6 @@
       if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
-    function filterProjects(cat) {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        const active = b.dataset.filter === cat;
-        b.classList.toggle('bg-sky-500', active);
-        b.classList.toggle('text-white', active);
-        b.classList.toggle('font-bold', active);
-      });
-      document.querySelectorAll('.project-card').forEach(c => {
-        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
-      });
-    }
 
     // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
     document.querySelectorAll('.nav-item-wrap').forEach(el => {

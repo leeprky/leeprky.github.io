@@ -210,10 +210,6 @@
     @media (orientation: landscape) and (max-height: 580px) {
       .landscape-compact-header { height: 2.75rem !important; }
       .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
-      .landscape-hero-grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
-      .landscape-hero-photo-col { grid-column: span 4 / span 4 !important; }
-      .landscape-hero-photo-box { max-width: 175px !important; }
-      .landscape-hero-text-col { grid-column: span 8 / span 8 !important; }
     }
   </style>
 </head>
@@ -469,17 +465,6 @@
       if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
-    function filterProjects(cat) {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        const active = b.dataset.filter === cat;
-        b.classList.toggle('bg-sky-500', active);
-        b.classList.toggle('text-white', active);
-        b.classList.toggle('font-bold', active);
-      });
-      document.querySelectorAll('.project-card').forEach(c => {
-        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
-      });
-    }
 
     // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
     document.querySelectorAll('.nav-item-wrap').forEach(el => {

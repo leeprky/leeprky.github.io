@@ -57,7 +57,7 @@ This `dev` branch stages experimental features prior to merging into `main`:
 - **Project Gallery (`03 // GALLERY`):**
   - **`03.1 // ENGINEERING`:**
     - **The Sub-£15 Budget Car Project:** A budget project sourcing and fixing up a car for under £15 initial spend with hands-on mechanical and electrical work.
-    - **Electronics & Uni Lab Builds:** Slot for upcoming circuit and engineering projects at ULan.
+    - **Week 3: Electric Screwdriver Sketch (`15.10.26`):** Hand-drafted orthographic engineering sketch (Top, Side, and Front views) from Week 3 at ULan, complete with projection lines, revision table (`Ref 2 — Attempt 2`), and title block.
   - **`03.2 // DISCORD THEMES`:**
     - **WindowsXI Discord Theme**, **MaterialYou & Vintage**, and **Lode, Ovel & Fluidcord** open-source UI themes.
 

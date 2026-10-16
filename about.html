@@ -569,17 +569,6 @@
       if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
-    function filterProjects(cat) {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        const active = b.dataset.filter === cat;
-        b.classList.toggle('bg-sky-500', active);
-        b.classList.toggle('text-white', active);
-        b.classList.toggle('font-bold', active);
-      });
-      document.querySelectorAll('.project-card').forEach(c => {
-        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
-      });
-    }
 
     // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
     document.querySelectorAll('.nav-item-wrap').forEach(el => {
