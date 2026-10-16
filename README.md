@@ -96,4 +96,8 @@ xdg-open http://localhost:8000
 
 ---
 
+## 🤖 AI Assistance & Attribution
+
+> **Aided with `AI-GENERATED-CONTENT`** — Built and refined with **Gemini 4 Argon (Medium)** w/ **Google Antigravity**.
+
 *© 2026 Lee Parkinson. Designed and drafted as an engineering specification.*
