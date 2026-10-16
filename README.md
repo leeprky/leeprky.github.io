@@ -7,9 +7,9 @@
 
 > **Live Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)
 
-Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical & Mechanical Engineering** undergraduate student at **Lancashire University (UCLan)** based in **Preston, Lancashire, UK**.
+Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical Engineering** undergraduate student at **Lancashire University (UCLan)** based in **Preston, Lancashire, UK**.
 
-Designed in an authentic **engineering blueprint and technical drafting sketch style**, the site features technical crosshairs, dimension lines, drafting borders, hand-drawn field sketch notes, and an ASME/ISO-compliant engineering title block.
+Designed in an authentic **engineering blueprint and technical drafting sketch style**, the site features technical crosshairs, dimension lines, drafting borders, hand-drawn field sketch notes, and a clean engineering contact block.
 
 ---
 
@@ -27,21 +27,26 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
   - **Automatic Browser Detection:** Dynamically responds to `prefers-color-scheme: light/dark` with manual toggle override (`Auto` / `Light` / `Dark`).
 
 - **Core Technical Focus Areas:**
-  - **Electrical & Mechanical Engineering:** Academic studies at UCLan covering circuit analysis, thermodynamics, electromechanical systems, and sensor instrumentation.
-  - **Automotive Diagnostics & Telemetry:** Hands-on workshop mechanics from Car Cosmetics using FORScan, OBD-II data interfaces, hydraulic bleeding, and engine component repairs.
+  - **Electrical Engineering:** Academic studies at UCLan covering circuit analysis, electromagnetic theory, power systems, digital electronics, and sensor instrumentation.
+  - **Automotive Diagnostics & Workshop Mechanics:** Hands-on workshop mechanics from Car Cosmetics covering multi-meter fault isolation, electrical harness testing, hydraulic bleeding, and component repairs.
+  - **Discord Client Theming & Open Source:** Deep reverse engineering of Discord's React and DOM structures (*WindowsXI*, *MaterialYou*, *Vintage*, *Lode*).
   - **Computer Science & ICT:** Systems programming, hardware architectures, networking, software engineering, and digital troubleshooting.
-  - **Audio Systems & Former DJ Experience:** Signal routing, PA sound equipment, acoustic balance, and high-energy music curation.
+  - **Audio Systems & Former DJ Experience:** Signal routing, PA sound equipment, acoustic balance, and live sound performance.
+
+- **Project Gallery & Build Logs:**
+  - **The Sub-£15 Budget Car Build & Overhaul:** An extreme budget engineering experiment sourcing and reviving a vehicle under £15 initial spend with hands-on mechanical repairs and electrical troubleshooting.
+  - Expandable slots for future automotive overhauls, RF electronics, and PCB prototypes.
 
 - **Verified Career Logbook (All Experience):**
-  1. **Lancashire University (UCLan)** — BEng / MEng Electrical & Mechanical Engineering
+  1. **Lancashire University (UCLan)** — BEng Electrical Engineering
   2. **Wetherspoons (The Velvet Coaster)** — Bar Team Leader *(Promoted Feb 2026)*
   3. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
   4. **Car Cosmetics** — Apprentice Automotive Technician
   5. **Pleasure Beach Resort** — Ride Operator
   6. **McDonald's** — Crew Member
 
-- **Official ASME / ISO Title Block:**
-  - Formal engineering title block footer with direct email (`lspky@pm.me`), LinkedIn, GitHub, and a downloadable CV in PDF format.
+- **Section 05 // Contact:**
+  - Simplified, legible blueprint contact card with direct email (`lspky@pm.me`), LinkedIn, GitHub, and a downloadable CV in PDF format.
 
 ---
 

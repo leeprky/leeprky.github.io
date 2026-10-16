@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Lee Parkinson | Electrical &amp; Mechanical Engineering Blueprint</title>
-  <meta name="description" content="Engineering blueprint &amp; technical specification of Lee Parkinson — Electrical &amp; Mechanical Engineering student at Lancashire University (UCLan), automotive diagnostics technician, Discord UI theming developer, Computer Science &amp; ICT background, and former DJ." />
+  <title>Lee Parkinson | Electrical Engineering Blueprint</title>
+  <meta name="description" content="Engineering blueprint &amp; technical portfolio of Lee Parkinson — Electrical Engineering student at Lancashire University (UCLan), automotive diagnostics &amp; workshop technician, Discord UI theming developer, Computer Science &amp; ICT background, and former DJ." />
   <link rel="icon" type="image/webp" href="assets/images/logo5.webp" />
 
   <!-- Fonts: Space Grotesk (Drafting display), JetBrains Mono (Technical code/specs), Architects Daughter (Handwritten sketch notes) -->
@@ -34,11 +34,11 @@
     :root {
       --bg-color: #f0f6fc;
       --paper-color: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.92);
-      --border-color: rgba(2, 132, 199, 0.35);
-      --border-hover: rgba(2, 132, 199, 0.75);
-      --grid-major: rgba(2, 132, 199, 0.15);
-      --grid-minor: rgba(2, 132, 199, 0.05);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(2, 132, 199, 0.3);
+      --border-hover: rgba(2, 132, 199, 0.7);
+      --grid-major: rgba(2, 132, 199, 0.12);
+      --grid-minor: rgba(2, 132, 199, 0.04);
       --text-main: #0c213d;
       --text-muted: #335377;
       --text-dim: #0284c7;
@@ -67,7 +67,6 @@
       --top-strip: #061224;
     }
 
-    /* Technical Blueprint Grid Pattern */
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
@@ -82,7 +81,6 @@
       overflow-x: hidden;
     }
 
-    /* Blueprint Card Component */
     .blueprint-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -119,7 +117,6 @@
       pointer-events: none;
     }
 
-    /* Technical Dimension Line */
     .dim-line {
       display: flex;
       align-items: center;
@@ -135,12 +132,6 @@
       height: 1px;
       background: var(--border-color);
       min-width: 12px;
-    }
-
-    /* Title Block Cell */
-    .title-block-cell {
-      border: 1px solid var(--border-color);
-      padding: 10px 12px;
     }
 
     .text-sketch {
@@ -163,15 +154,15 @@
 
 <body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen flex flex-col justify-between overflow-x-hidden">
 
-  <!-- TOP ENGINEERING TECHNICAL STRIP (MOBILE-OPTIMIZED) -->
+  <!-- TOP ENGINEERING TECHNICAL STRIP -->
   <div style="background-color: var(--top-strip);" class="border-b border-sky-400/30 text-[10px] sm:text-[11px] font-mono px-3 sm:px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 z-50">
     <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
       <span class="flex items-center gap-1.5 font-bold" style="color: var(--text-dim);">
         <span class="inline-block w-2 h-2 rounded-full animate-ping" style="background-color: var(--accent-cyan);"></span>
-        <span>DWG: LP-ENG-2026-REV5</span>
+        <span>DWG: LP-ENG-2026-EE</span>
       </span>
       <span class="opacity-30 hidden xs:inline">|</span>
-      <span class="hidden sm:inline" style="color: var(--text-muted);">UCLAN ELECTRICAL &amp; MECHANICAL</span>
+      <span class="hidden sm:inline" style="color: var(--text-muted);">DISCIPLINE: ELECTRICAL ENGINEERING</span>
       <span class="opacity-30 hidden sm:inline">|</span>
       <span style="color: var(--text-muted);">PRESTON, UK</span>
     </div>
@@ -189,7 +180,7 @@
           🌙 <span class="hidden xs:inline">DARK</span>
         </button>
       </div>
-      <span class="hidden md:inline text-sketch font-sketch text-xs">ISO 9001</span>
+      <span class="hidden md:inline text-sketch font-sketch text-xs">SPEC V6.0</span>
     </div>
   </div>
 
@@ -205,10 +196,10 @@
         <div>
           <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1" style="color: var(--text-main);">
             <span>LEE PARKINSON</span>
-            <span class="text-[10px] sm:text-xs font-mono font-normal" style="color: var(--text-dim);">[BEng]</span>
+            <span class="text-[10px] sm:text-xs font-mono font-normal" style="color: var(--text-dim);">[EE]</span>
           </div>
           <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest hidden xs:block" style="color: var(--text-muted);">
-            Electrical &amp; Mechanical Engineering
+            Electrical Engineering
           </div>
         </div>
       </a>
@@ -217,9 +208,9 @@
       <nav class="hidden lg:flex items-center gap-5 text-xs font-mono" style="color: var(--text-muted);">
         <a href="#about" class="hover:text-sky-400 hover:underline transition-colors">01. ABOUT</a>
         <a href="#schematics" class="hover:text-sky-400 hover:underline transition-colors">02. SCHEMATICS</a>
-        <a href="#discord-theming" class="hover:text-sky-400 hover:underline transition-colors">03. THEMING</a>
+        <a href="#gallery" class="hover:text-sky-400 hover:underline transition-colors">03. GALLERY</a>
         <a href="#logbook" class="hover:text-sky-400 hover:underline transition-colors">04. LOGBOOK</a>
-        <a href="#title-block" class="hover:text-sky-400 hover:underline transition-colors">05. TITLE_BLOCK</a>
+        <a href="#contact" class="hover:text-sky-400 hover:underline transition-colors">05. CONTACT</a>
       </nav>
 
       <!-- Quick Actions -->
@@ -243,7 +234,7 @@
       
       <!-- Top Dimension Line -->
       <div class="dim-line mb-5 sm:mb-8">
-        <span class="truncate">FIG 01.0 // OPERATOR SPECIFICATION: HI, I'M LEE</span>
+        <span class="truncate">FIG 01.0 // SPECIFICATION SHEET: HI, I'M LEE</span>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
@@ -259,11 +250,11 @@
             <div class="absolute -bottom-2.5 -right-2.5 font-mono text-sm" style="color: var(--crosshair);">+</div>
 
             <!-- Subject Image -->
-            <div class="overflow-hidden border border-sky-500/30 relative group aspect-square">
+            <div class="overflow-hidden border border-sky-500/30 relative group aspect-[3/4]">
               <img 
                 src="assets/images/lee-portrait.jpg" 
                 alt="Lee Parkinson" 
-                class="w-full h-full object-cover filter contrast-[1.06] group-hover:scale-105 transition-transform duration-500" 
+                class="w-full h-full object-cover filter contrast-[1.04] group-hover:scale-105 transition-transform duration-500" 
               />
               
               <!-- Blueprint Photo Stamp -->
@@ -276,7 +267,7 @@
             <div class="mt-2 text-center font-mono text-[10px] sm:text-[11px] flex items-center justify-between px-1" style="color: var(--text-muted);">
               <span>SCALE 1:1</span>
               <span class="text-sketch font-sketch text-xs">← operator photo</span>
-              <span>UCLAN ENG</span>
+              <span>UCLAN EE</span>
             </div>
           </div>
         </div>
@@ -286,7 +277,7 @@
           
           <div class="inline-flex items-center gap-2 px-2.5 py-1 border border-sky-500/30 font-mono text-[11px] sm:text-xs" style="background-color: var(--card-bg); color: var(--text-dim);">
             <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--accent-cyan);"></span>
-            <span class="truncate">ELECTRICAL &amp; MECHANICAL ENGINEERING • UCLAN</span>
+            <span class="truncate">ELECTRICAL ENGINEERING UNDERGRADUATE • UCLAN PRESTON</span>
           </div>
 
           <div class="space-y-2">
@@ -294,12 +285,12 @@
               Hi, I'm Lee<span style="color: var(--accent-cyan);">.</span>
             </h1>
             <p class="font-sketch text-sketch text-base sm:text-lg lg:text-xl transform -rotate-1">
-              "Connecting hands-on automotive diagnostics with electrical/mechanical engineering, CS &amp; ICT."
+              "Connecting hands-on automotive repair with electrical engineering, computer science &amp; ICT."
             </p>
           </div>
 
           <p class="text-xs sm:text-sm md:text-base leading-relaxed font-sans max-w-2xl" style="color: var(--text-muted);">
-            Based in <strong>Preston, Lancashire</strong>, I study <strong>Electrical &amp; Mechanical Engineering at Lancashire University (UCLan)</strong>. My journey started with hands-on mechanics and diagnostics on vehicles at Car Cosmetics (OBD-II, FORScan telemetry, hydraulic fluid systems, repairs), complemented by a long background in <strong>Computer Science &amp; ICT</strong>, open-source <strong>Discord client theming</strong>, and creative sound experience as a <strong>former DJ</strong>.
+            Based in <strong>Preston, Lancashire</strong>, I study <strong>Electrical Engineering at Lancashire University (UCLan)</strong>. My journey started on the workshop floor repairing and diagnosing vehicles at Car Cosmetics, combined with an extensive background in <strong>Computer Science &amp; ICT</strong>, open-source <strong>Discord client theming</strong>, and performance history as a <strong>former DJ</strong>.
           </p>
 
           <!-- Engineering Specs Grid -->
@@ -309,8 +300,8 @@
               <span class="font-bold truncate block" style="color: var(--text-main);">UCLan, Preston</span>
             </div>
             <div class="border border-sky-500/25 p-2 sm:p-2.5" style="background-color: var(--card-bg);">
-              <span class="block text-[10px]" style="color: var(--text-dim);">DEGREE</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">Electrical &amp; Mech</span>
+              <span class="block text-[10px]" style="color: var(--text-dim);">DISCIPLINE</span>
+              <span class="font-bold truncate block" style="color: var(--text-main);">Electrical Engineering</span>
             </div>
             <div class="border border-sky-500/25 p-2 sm:p-2.5 col-span-2 sm:col-span-1" style="background-color: var(--card-bg);">
               <span class="block text-[10px]" style="color: var(--text-dim);">BACKGROUND</span>
@@ -327,8 +318,8 @@
               <span>CV (PDF)</span>
               <span>↗</span>
             </a>
-            <a href="#schematics" class="px-4 py-2 sm:px-5 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
-              <span>Schematics ↓</span>
+            <a href="#gallery" class="px-4 py-2 sm:px-5 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
+              <span>Project Gallery ↓</span>
             </a>
           </div>
 
@@ -347,7 +338,7 @@
       
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
         <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">01 // ABOUT ME</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Dual Technical &amp; Engineering Foundation</h2>
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Practical Foundations &amp; Electrical Engineering</h2>
       </div>
 
       <div class="blueprint-card p-4 sm:p-6 md:p-8 border border-sky-500/35 space-y-6">
@@ -356,10 +347,10 @@
           
           <div class="lg:col-span-2 space-y-3.5 text-xs sm:text-sm md:text-base leading-relaxed font-sans" style="color: var(--text-muted);">
             <p>
-              My hands-on technical instinct began in the workshop at <strong>Car Cosmetics</strong>. Working under the hood on vehicles taught me the fundamentals of mechanical and electrical troubleshooting: interpreting live <strong>FORScan</strong> diagnostic data, scanning OBD-II fault codes, bleeding hydraulic brake systems to exact tolerances, and isolating physical mechanical failures.
+              My hands-on technical foundation began in the automotive workshop at <strong>Car Cosmetics</strong>. Working on vehicles taught me practical mechanical troubleshooting: inspecting vehicle wiring, diagnosing electrical and sensor faults, bleeding hydraulic brake systems to exact specifications, and overhauling mechanical components.
             </p>
             <p>
-              Now based in <strong>Preston</strong>, I study <strong>Electrical &amp; Mechanical Engineering at Lancashire University (UCLan)</strong>. This degree unites physical workshop experience with rigorous circuit analysis, electromagnetic physics, thermodynamics, instrumentation, and electromechanical systems design.
+              Now based in <strong>Preston</strong>, I study <strong>Electrical Engineering at Lancashire University (UCLan)</strong>. This degree unites practical workshop mechanics with formal circuit analysis, electromagnetic theory, power systems, sensor instrumentation, and digital electronics.
             </p>
             <p>
               In parallel, I have built an extensive background in <strong>Computer Science &amp; Information Communications Technology (ICT)</strong>—developing an in-depth understanding of system architectures, low-level computing, networking, and digital tooling. Additionally, my background as a <strong>former DJ</strong> developed my practical understanding of live sound engineering, signal routing, audio telemetry, and high-pressure crowd performance.
@@ -374,8 +365,8 @@
             </p>
             <div class="pt-2 border-t border-sky-500/20 font-mono text-[10px] sm:text-[11px] space-y-1" style="color: var(--text-dim);">
               <div>• Preston Engineering Labs</div>
-              <div>• UCLan BEng/MEng Program</div>
-              <div>• FORScan Certified Diagnostics</div>
+              <div>• UCLan Electrical Engineering</div>
+              <div>• Workshop Diagnostic Experience</div>
               <div>• Audio Engineering &amp; Former DJ</div>
             </div>
           </div>
@@ -388,22 +379,22 @@
           <div class="border border-sky-500/25 p-3.5 space-y-1.5" style="background-color: var(--card-bg);">
             <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
               <span>PILLAR 01</span>
-              <span>[MECH]</span>
+              <span>[ELECTRICAL]</span>
             </div>
-            <h4 class="font-bold text-sm" style="color: var(--text-main);">Automotive &amp; Mechanics</h4>
+            <h4 class="font-bold text-sm" style="color: var(--text-main);">Electrical Engineering</h4>
             <p class="text-xs font-sans leading-relaxed" style="color: var(--text-muted);">
-              Hands-on vehicle diagnostics, FORScan/OBD-II telemetry, hydraulic fluid systems, and mechanical rebuilds.
+              Circuit analysis, electromagnetic physics, power electronics, sensor instrumentation, and control systems at UCLan.
             </p>
           </div>
 
           <div class="border border-sky-500/25 p-3.5 space-y-1.5" style="background-color: var(--card-bg);">
             <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
               <span>PILLAR 02</span>
-              <span>[ELEC]</span>
+              <span>[WORKSHOP]</span>
             </div>
-            <h4 class="font-bold text-sm" style="color: var(--text-main);">Electrical &amp; Systems</h4>
+            <h4 class="font-bold text-sm" style="color: var(--text-main);">Automotive &amp; Mechanics</h4>
             <p class="text-xs font-sans leading-relaxed" style="color: var(--text-muted);">
-              Circuit analysis, sensor feedback loops, electromechanical actuators, and thermodynamics at UCLan.
+              Hands-on vehicle diagnostics, automotive electrical troubleshooting, fluid maintenance, and component repairs.
             </p>
           </div>
 
@@ -424,7 +415,7 @@
 
     </section>
 
-    <!-- SECTION 02: DRAFTED SCHEMATICS & PROJECTS (SEPARATED ENGINEERING & DISCORD THEMING) -->
+    <!-- SECTION 02: DRAFTED SCHEMATICS (SEPARATE ENGINEERING & DISCORD THEMING) -->
     <section id="schematics" class="space-y-10 sm:space-y-12">
       
       <!-- Section Header with Responsive Category Filter Bar -->
@@ -440,10 +431,10 @@
             </p>
           </div>
 
-          <!-- Filter Controls (Horizontally Scrollable on Mobile) -->
+          <!-- Filter Controls -->
           <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-[11px] overflow-x-auto max-w-full" style="background-color: var(--card-bg);" id="filter-bar">
             <button onclick="filterProjects('all')" class="filter-btn active px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0" data-filter="all">ALL</button>
-            <button onclick="filterProjects('engineering')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="engineering">ELEC/MECH</button>
+            <button onclick="filterProjects('engineering')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="engineering">ELECTRICAL</button>
             <button onclick="filterProjects('discord')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="discord">DISCORD THEMING</button>
             <button onclick="filterProjects('cs-ict')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="cs-ict">CS &amp; ICT</button>
           </div>
@@ -451,55 +442,55 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- PART A: ELECTRO-MECHANICAL & CS/ICT        -->
+      <!-- PART A: ELECTRICAL ENGINEERING & CS/ICT    -->
       <!-- ========================================== -->
       <div class="space-y-4" id="section-engineering">
         <div class="flex items-center gap-2 border-b border-sky-500/30 pb-2">
           <span class="text-xs font-mono font-bold px-2 py-0.5" style="background-color: var(--paper-color); color: var(--accent-cyan);">PART A</span>
           <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-            Electro-Mechanical Engineering, Diagnostics &amp; CS/ICT
+            Electrical Engineering, Diagnostics &amp; CS/ICT
           </h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
 
-          <!-- Card 1: Electrical & Mechanical Engineering Systems -->
+          <!-- Card 1: Electrical Engineering Systems -->
           <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="engineering">
             <div class="flex items-center justify-between text-xs font-mono">
               <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-01 // ACADEMIC SPEC</span>
               <span style="color: var(--text-muted);">UCLan • Preston</span>
             </div>
             <div class="space-y-1">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Electrical &amp; Mechanical Engineering</h4>
+              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Electrical Engineering</h4>
               <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Undergraduate engineering studies integrating mechanical analysis (mechanics, materials, thermodynamics, fluid dynamics) with electrical systems, sensor instrumentation, circuit design, and electromechanical actuators.
+                Undergraduate electrical engineering studies covering circuit theory, analogue and digital electronics, electromagnetics, sensor integration, instrumentation, and control system principles.
               </p>
             </div>
             <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
               <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Circuit Analysis</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Applied Mechanics</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Thermodynamics</span>
+              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Digital Electronics</span>
+              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Power Systems</span>
               <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Instrumentation</span>
             </div>
           </div>
 
-          <!-- Card 2: Automotive Diagnostics & Telemetry -->
+          <!-- Card 2: Automotive Diagnostics & Mechanics -->
           <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="engineering">
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-02 // WORKSHOP TELEMETRY</span>
+              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-02 // WORKSHOP MECHANICS</span>
               <span style="color: var(--text-muted);">Car Cosmetics</span>
             </div>
             <div class="space-y-1">
               <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Automotive Diagnostics &amp; Mechanics</h4>
               <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Hands-on diagnostic troubleshooting using FORScan and OBD-II interfaces. Isolated electronic sensor failures and CAN Bus communication issues, performed fluid flushes/hydraulic line bleeding to strict tolerances, and carried out mechanical repairs.
+                Hands-on automotive troubleshooting: isolating mechanical and electronic sensor faults, servicing vehicle assemblies, bleeding hydraulic brake lines to manufacturer tolerances, and fitting performance parts.
               </p>
             </div>
             <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">FORScan Diagnostics</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">OBD-II &amp; CAN Bus</span>
+              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Sensor Diagnostics</span>
+              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Automotive Electrical</span>
               <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Hydraulic Bleeding</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Component Rebuild</span>
+              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Mechanical Repair</span>
             </div>
           </div>
 
@@ -620,34 +611,131 @@
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- PART C: AUDIO SYSTEMS & FORMER DJ          -->
-      <!-- ========================================== -->
-      <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3" data-category="audio">
-        <div class="flex items-center justify-between text-xs font-mono">
-          <span class="px-2 py-0.5 border border-sky-500/50 font-bold text-sketch" style="background-color: var(--paper-color);">AUDIO // LIVE SOUND SPEC</span>
-          <span style="color: var(--text-muted);">Former DJ Experience</span>
+    </section>
+
+    <!-- SECTION 03: PROJECT GALLERY (FEATURING UPCOMING SUB-£15 CAR BUILD & FUTURE PROJECTS) -->
+    <section id="gallery" class="space-y-6">
+      
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2.5">
+          <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // GALLERY</span>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Project Gallery &amp; Build Logs</h2>
         </div>
-        <div class="space-y-1">
-          <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">Audio Systems &amp; Former DJ Background</h4>
-          <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-            Years of practical experience managing live sound systems, Pioneer CDJ decks, and multi-channel audio consoles as a former DJ. Grounded in hands-on acoustic balancing, frequency equalization (EQ), signal routing, gain staging, and live troubleshooting.
-          </p>
+        <span class="font-sketch text-sketch text-xs">active build logs &amp; upcoming builds</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Featured Project: Upcoming Budget Car Project Under £15 -->
+        <div class="blueprint-card p-5 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative">
+          
+          <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
+            <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // IN DEVELOPMENT</span>
+            <span class="text-sketch font-sketch text-xs">★ UPCOMING CAR BUILD</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+            
+            <!-- Blueprint Sketch Wireframe Graphic -->
+            <div class="sm:col-span-5 border border-sky-500/40 p-4 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative" style="background-color: var(--paper-color);">
+              <div class="font-mono text-4xl sm:text-5xl" style="color: var(--accent-cyan);">🚗</div>
+              <div class="font-mono text-[11px] font-bold mt-2" style="color: var(--text-main);">BUDGET CAR PROJECT</div>
+              <div class="text-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
+              <div class="absolute bottom-1 right-2 font-mono text-[9px]" style="color: var(--text-dim);">FIG. 03-A</div>
+            </div>
+
+            <!-- Project Details -->
+            <div class="sm:col-span-7 space-y-2.5">
+              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
+                The Sub-£15 Budget Car Build &amp; Overhaul
+              </h4>
+              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+                An extreme budget engineering experiment: sourcing, acquiring, and reviving a vehicle for under £15 total initial spend. Documenting hands-on mechanical repairs, electrical troubleshooting, fluid servicing, and component revival with minimal cost and zero compromises on safety.
+              </p>
+              
+              <div class="space-y-1 font-mono text-[11px] pt-1" style="color: var(--text-dim);">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span>Budget Target: &lt; £15 Initial Acquisition</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                  <span>Scope: Electrical diagnostics, mechanical servicing, roadworthiness</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Build Log: Photos &amp; technical telemetry to be published here</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dim-line pt-2">
+            <span>SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span>
+          </div>
         </div>
-        <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-          <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Audio Signal Flow</span>
-          <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Gain Staging &amp; EQ</span>
-          <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Live Console Ops</span>
+
+        <!-- Modular Slot for Future Project 2 -->
+        <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">CAD-SLOT 02</span>
+              <span class="font-sketch text-sketch text-xs">coming soon</span>
+            </div>
+            <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Electrical Circuitry &amp; Power Bench</h4>
+            <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+              Laboratory bench instrumentation project combining programmable power supplies, sensor telemetry, and microcontroller circuits built during electrical engineering studies at UCLan.
+            </p>
+          </div>
+          <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
+            STATUS: PLANNING PHASE
+          </div>
         </div>
+
+        <!-- Modular Slot for Future Project 3 -->
+        <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">CAD-SLOT 03</span>
+              <span class="font-sketch text-sketch text-xs">coming soon</span>
+            </div>
+            <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Custom Hardware Instrumentation</h4>
+            <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+              Experimental hardware builds, custom sensor telemetry logging, and digital interface prototyping for electrical and automotive applications.
+            </p>
+          </div>
+          <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
+            STATUS: QUEUED
+          </div>
+        </div>
+
+        <!-- Modular Slot for Future Project 4 -->
+        <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between md:col-span-2 lg:col-span-2">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">AUDIO-SLOT 04</span>
+              <span class="font-sketch text-sketch text-xs">former DJ archive</span>
+            </div>
+            <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Live Audio Engineering &amp; DJ Sound Archive</h4>
+            <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+              Historical archive of live set sound engineering, multi-track audio recordings, mixer signal flow diagrams, and frequency equalisation settings from past event performances.
+            </p>
+          </div>
+          <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
+            STATUS: ARCHIVAL DOCUMENTATION
+          </div>
+        </div>
+
       </div>
 
     </section>
 
-    <!-- SECTION 03: CAREER LOGBOOK (WETHERSPONS PROMOTION & ALL JOBS) -->
+    <!-- SECTION 04: CAREER LOGBOOK (WETHERSPOONS BAR TEAM LEADER & ALL JOBS) -->
     <section id="logbook" class="space-y-4 sm:space-y-6">
       
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // LOGBOOK</span>
+        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">04 // LOGBOOK</span>
         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Work Experience &amp; Education Ledger</h2>
       </div>
 
@@ -661,9 +749,9 @@
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Lancashire University (UCLan)</h4>
               <span class="px-2 py-0.5 text-[10px] border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">CURRENT DEGREE</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">BEng / MEng Electrical &amp; Mechanical Engineering</div>
+            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">BEng Electrical Engineering Undergraduate</div>
             <p class="text-xs leading-relaxed pt-1" style="color: var(--text-muted);">
-              Developing foundational and applied expertise in circuit analysis, thermodynamics, mechanical statics and dynamics, sensor instrumentation, and electromechanical systems.
+              Developing foundational and applied expertise in circuit analysis, digital electronics, power systems, electromagnetics, sensor instrumentation, and control system design.
             </p>
           </div>
           <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
@@ -684,9 +772,9 @@
               Bar Team Leader <span class="font-normal font-mono text-xs opacity-75">(Promoted from Bar Associate, Feb 2026)</span>
             </div>
             <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
-              <li><strong>Leadership:</strong> Promoted to Bar Team Leader in February 2026 to lead shift operations, direct floor staff, and uphold high service standards during peak periods of 200–600 patrons.</li>
-              <li><strong>Shift Operations:</strong> Oversee POS registers, cash reconciliations, cellar inventory management, and opening/closing checklists.</li>
-              <li><strong>Compliance &amp; Training:</strong> Enforce strict Challenge 25 legal regulations, safety protocols, and mentor newer team members in rapid, high-pressure beverage service.</li>
+              <li><strong>Shift Leadership:</strong> Promoted to Bar Team Leader in February 2026 to lead shift operations, direct floor staff, and maintain service standards during busy periods of 200–600 patrons.</li>
+              <li><strong>Operations Management:</strong> Oversee POS registers, cash reconciliations, cellar inventory control, and opening/closing compliance.</li>
+              <li><strong>Compliance &amp; Training:</strong> Enforce Challenge 25 regulations, strict safety protocols, and mentor newer team members.</li>
             </ul>
           </div>
           <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
@@ -726,9 +814,9 @@
             </div>
             <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
             <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
-              <li>Diagnosed mechanical malfunctions, electrical sensor issues, and ECU fault codes with FORScan and OBD-II interfaces.</li>
+              <li>Diagnosed mechanical malfunctions, vehicle electrical faults, and engine sensor issues.</li>
               <li>Conducted vehicle maintenance schedules including fluid replacement and hydraulic line bleeding to exact tolerances.</li>
-              <li>Overhauled vehicle mechanical components and installed specialized performance enhancement kits.</li>
+              <li>Overhauled vehicle mechanical components and installed specialized performance parts.</li>
             </ul>
           </div>
           <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
@@ -766,7 +854,7 @@
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">McDonald's</h4>
               <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">CREW</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">Crew Member</div>
+            <div class="text-sm font-semibold" style="color: var(--text-dim);">Crew Member</div>
             <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
               <li>Operated electronic POS terminals and commercial food preparation machinery under intense customer throughput.</li>
               <li>Demonstrated teamwork and resilience in high-volume, time-sensitive restaurant environments.</li>
@@ -782,78 +870,72 @@
 
     </section>
 
-    <!-- SECTION 04: ASME / ISO TITLE BLOCK & CONTACT SPECIFICATION -->
-    <section id="title-block" class="space-y-4 sm:space-y-6">
+    <!-- SECTION 05: CONTACT (SIMPLIFIED & HIGHLY READABLE) -->
+    <section id="contact" class="space-y-4 sm:space-y-6">
       
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">04 // TITLE BLOCK</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Technical Contact &amp; Sign-Off</h2>
+        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">05 // CONTACT</span>
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Get in Touch</h2>
       </div>
 
-      <!-- ASME / ISO Engineering Title Block Component -->
-      <div class="border-2 border-sky-500 shadow-2xl overflow-hidden font-mono text-xs" style="background-color: var(--card-bg);">
+      <!-- Simplified Clean Blueprint Contact Card -->
+      <div class="blueprint-card p-5 sm:p-8 border border-sky-500/40 space-y-6">
         
-        <!-- Header row of Title Block -->
-        <div class="border-b border-sky-500/40 p-3 flex flex-wrap items-center justify-between gap-2" style="background-color: var(--paper-color);">
-          <div class="font-bold text-xs sm:text-sm" style="color: var(--text-main);">
-            ENGINEERING SPECIFICATION // CONTACT MATRIX
-          </div>
-          <div class="text-[10px] sm:text-[11px]" style="color: var(--text-dim);">
-            CONFIDENTIAL • APPROVED FOR PROFESSIONAL PLACEMENT
-          </div>
-        </div>
-
-        <!-- Grid of title block cells (Responsive: 1 col on mobile, 2 on tablet, 4 on desktop) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          
-          <div class="title-block-cell space-y-1">
-            <span class="text-[10px] block" style="color: var(--text-muted);">DIRECT COMMUNICATION</span>
-            <a href="mailto:lspky@pm.me" class="font-bold block text-sm hover:underline truncate" style="color: var(--text-main);">
-              lspky@pm.me ✉
-            </a>
-            <span class="text-[10px] text-sketch font-sketch block">primary inbox</span>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sky-500/25 pb-5">
+          <div class="space-y-1">
+            <h3 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
+              Open to Engineering Placements &amp; Opportunities
+            </h3>
+            <p class="text-xs sm:text-sm font-sans" style="color: var(--text-muted);">
+              Feel free to reach out directly via email or connect on professional channels.
+            </p>
           </div>
 
-          <div class="title-block-cell space-y-1">
-            <span class="text-[10px] block" style="color: var(--text-muted);">CAMPUS LOCATION</span>
-            <span class="font-bold block text-sm" style="color: var(--text-main);">Preston, Lancashire</span>
-            <span class="text-[10px]" style="color: var(--text-dim);">United Kingdom</span>
-          </div>
-
-          <div class="title-block-cell space-y-1">
-            <span class="text-[10px] block" style="color: var(--text-muted);">PROFESSIONAL NETWORK</span>
-            <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="font-bold block text-sm hover:underline truncate" style="color: var(--text-main);">
-              LinkedIn: Lee Parkinson ↗
-            </a>
-            <span class="text-[10px]" style="color: var(--text-dim);">Placement inquiries</span>
-          </div>
-
-          <div class="title-block-cell space-y-1">
-            <span class="text-[10px] block" style="color: var(--text-muted);">CODE REPOSITORY</span>
-            <a href="https://github.com/leeprky" target="_blank" class="font-bold block text-sm hover:underline" style="color: var(--text-main);">
-              GitHub: @leeprky ↗
-            </a>
-            <span class="text-[10px]" style="color: var(--text-dim);">Open source code</span>
-          </div>
-
-        </div>
-
-        <!-- Title Block Footer Stamp -->
-        <div class="border-t border-sky-500/40 p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-3" style="background-color: var(--paper-color);">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 border border-sky-500 flex items-center justify-center font-bold shrink-0" style="color: var(--text-dim);">
-              LP
-            </div>
-            <div class="text-[10px] sm:text-[11px] leading-tight" style="color: var(--text-main);">
-              <span class="font-bold">DESIGNED &amp; DRAFTED BY LEE PARKINSON</span><br />
-              <span style="color: var(--text-muted);">Electrical &amp; Mechanical Engineering • UCLan Preston</span>
-            </div>
-          </div>
-
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="w-full sm:w-auto text-center px-4 py-2 sm:px-5 sm:py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold flex items-center justify-center gap-2 shadow-lg text-xs">
-            <span>DOWNLOAD VERIFIED CV (PDF)</span>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs font-mono inline-flex items-center justify-center gap-2 shadow-md shrink-0">
+            <span>Download Full CV (PDF)</span>
             <span>↓</span>
           </a>
+        </div>
+
+        <!-- Clean Grid: 4 Readable Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Direct Email -->
+          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+            <div class="font-mono text-[10px]" style="color: var(--text-dim);">DIRECT EMAIL ✉</div>
+            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
+              lspky@pm.me
+            </div>
+            <div class="font-sketch text-sketch text-xs">Primary inbox</div>
+          </a>
+
+          <!-- Location -->
+          <div class="p-4 border border-sky-500/30 space-y-1" style="background-color: var(--paper-color);">
+            <div class="font-mono text-[10px]" style="color: var(--text-dim);">CAMPUS &amp; BASE 📍</div>
+            <div class="font-bold text-sm sm:text-base" style="color: var(--text-main);">
+              Preston, Lancashire
+            </div>
+            <div class="text-xs" style="color: var(--text-muted);">United Kingdom</div>
+          </div>
+
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+            <div class="font-mono text-[10px]" style="color: var(--text-dim);">PROFESSIONAL ↗</div>
+            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
+              LinkedIn
+            </div>
+            <div class="text-xs" style="color: var(--text-muted);">Lee Parkinson</div>
+          </a>
+
+          <!-- GitHub -->
+          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+            <div class="font-mono text-[10px]" style="color: var(--text-dim);">CODE REPOSITORY ↗</div>
+            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
+              @leeprky
+            </div>
+            <div class="text-xs" style="color: var(--text-muted);">GitHub profile</div>
+          </a>
+
         </div>
 
       </div>
@@ -866,8 +948,8 @@
   <footer style="background-color: var(--top-strip);" class="border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono" style="color: var(--text-muted);">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
       <div>
-        <span>SHEET: LP-01/01</span> • 
-        <span>REV: 5.0</span> • 
+        <span>SHEET: LP-EE-2026</span> • 
+        <span>DISCIPLINE: ELECTRICAL ENGINEERING</span> • 
         <span>© <span id="year">2026</span> LEE PARKINSON</span>
       </div>
       <div class="flex items-center gap-4 sm:gap-6">
