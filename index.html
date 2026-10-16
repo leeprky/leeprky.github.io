@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lee Parkinson | Engineering & Development</title>
+  <meta name="description" content="Personal portfolio of Lee Parkinson — Engineering student at Lancashire University with background in automotive mechanics and programming." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-cyan-500 selection:text-black min-h-screen flex flex-col justify-between">
+
+  <!-- NAVBAR -->
+  <header class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#top" class="font-bold text-lg tracking-tight hover:text-cyan-400 transition-colors">
+        Lee Parkinson<span class="text-cyan-500">.</span>
+      </a>
+
+      <nav class="flex items-center gap-6 text-sm text-zinc-400">
+        <a href="#about" class="hover:text-white transition-colors">About</a>
+        <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+        <a href="#background" class="hover:text-white transition-colors">Background</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-5xl mx-auto px-6 py-16 space-y-24 flex-1" id="top">
+
+    <!-- HERO SECTION -->
+    <section class="space-y-6 pt-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Engineering Student @ Lancashire University
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-tight">
+        Engineering, mechanics, <br />
+        <span class="text-cyan-400">&amp; systems development.</span>
+      </h1>
+
+      <p class="text-zinc-400 text-lg max-w-2xl leading-relaxed">
+        I study Engineering at Lancashire University with a practical foundation in automotive diagnostics, mechanics, and software programming.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="#contact" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-sm transition-all">
+          Get in Touch
+        </a>
+        <a href="#projects" class="px-5 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-sm font-medium transition-all">
+          View Projects ↓
+        </a>
+        <a href="https://github.com/leeprky" target="_blank" class="px-5 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-sm font-mono transition-all">
+          GitHub ↗
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION: ABOUT (STARTER SKELETON) -->
+    <section id="about" class="space-y-6 border-t border-zinc-900 pt-16">
+      <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400">01 / About</h2>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white">Background &amp; Focus</h3>
+      <p class="text-zinc-400 leading-relaxed max-w-3xl">
+        Blending real-world mechanical problem-solving with digital systems. From engine diagnostics and workshop repairs to low-level programming and creative software.
+      </p>
+
+      <!-- Modular Highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 space-y-2">
+          <div class="text-cyan-400 font-mono text-sm">01. Engineering</div>
+          <h4 class="font-semibold text-white">Lancashire University</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed">Undergraduate engineering degree combining theory with practical application.</p>
+        </div>
+        <div class="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 space-y-2">
+          <div class="text-cyan-400 font-mono text-sm">02. Automotive</div>
+          <h4 class="font-semibold text-white">Diagnostics &amp; Mechanics</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed">Hands-on workshop experience, FORScan, OBD-II troubleshooting, and vehicle maintenance.</p>
+        </div>
+        <div class="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 space-y-2">
+          <div class="text-cyan-400 font-mono text-sm">03. Code &amp; Systems</div>
+          <h4 class="font-semibold text-white">Software Development</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed">Rust, C, Linux kernel tweaks, custom UI design, and open-source projects.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PROJECTS (STARTER SKELETON) -->
+    <section id="projects" class="space-y-6 border-t border-zinc-900 pt-16">
+      <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400">02 / Work</h2>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white">Featured Projects</h3>
+      <p class="text-zinc-400 max-w-2xl text-sm">A placeholder section for the engineering and programming projects we choose to feature.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <div class="p-6 rounded-xl bg-zinc-900/40 border border-zinc-800 space-y-3">
+          <span class="text-xs font-mono text-cyan-400">Software</span>
+          <h4 class="text-lg font-bold text-white">Clean-Room Rust Implementations</h4>
+          <p class="text-zinc-400 text-xs leading-relaxed">Projects exploring high-performance application architectures built with pure Rust.</p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-zinc-900/40 border border-zinc-800 space-y-3">
+          <span class="text-xs font-mono text-cyan-400">Automotive</span>
+          <h4 class="text-lg font-bold text-white">Mechanical &amp; Diagnostic Telemetry</h4>
+          <p class="text-zinc-400 text-xs leading-relaxed">CAN Bus, OBD-II data acquisition, and vehicle diagnostics analysis.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: BACKGROUND & EXPERIENCE -->
+    <section id="background" class="space-y-6 border-t border-zinc-900 pt-16">
+      <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400">03 / Experience</h2>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white">Education &amp; Experience</h3>
+      <div class="space-y-4">
+        <div class="p-5 rounded-xl bg-zinc-900/30 border border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <div class="font-semibold text-white">Lancashire University (UCLan)</div>
+            <div class="text-xs text-zinc-400">BEng / MEng Engineering Undergraduate</div>
+          </div>
+          <span class="text-xs font-mono text-zinc-500">Current</span>
+        </div>
+
+        <div class="p-5 rounded-xl bg-zinc-900/30 border border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <div class="font-semibold text-white">Car Cosmetics</div>
+            <div class="text-xs text-zinc-400">Apprentice Automotive Technician — Diagnostics &amp; Repairs</div>
+          </div>
+          <span class="text-xs font-mono text-zinc-500">2024</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CONTACT -->
+    <section id="contact" class="space-y-6 border-t border-zinc-900 pt-16">
+      <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400">04 / Contact</h2>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white">Get In Touch</h3>
+      <p class="text-zinc-400 text-sm max-w-xl">
+        Looking for engineering collaboration, technical discussions, or placement opportunities.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="mailto:leeparkinson04@gmail.com" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-sm transition-all font-mono">
+          leeparkinson04@gmail.com ✉
+        </a>
+        <a href="https://github.com/leeprky" target="_blank" class="px-4 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-sm font-mono transition-all">
+          GitHub: leeprky
+        </a>
+        <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="px-4 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-sm font-mono transition-all">
+          LinkedIn
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-zinc-900 py-8 text-xs font-mono text-zinc-500 text-center">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>Lee Parkinson • Engineering @ Lancashire University</div>
+      <div>
+        <a href="#top" class="hover:text-zinc-400 transition-colors">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
