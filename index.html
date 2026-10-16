@@ -510,7 +510,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.9</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V8.0</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -680,7 +680,7 @@
 
       <div class="landscape-hero-grid grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
         <!-- Portrait -->
-        <div class="landscape-hero-photo-col md:col-span-5 flex flex-col items-center min-w-0">
+        <div class="landscape-hero-photo-col md:col-span-5 lg:col-span-4 flex flex-col items-center min-w-0">
           <div class="landscape-hero-photo-box relative p-2.5 border-2 border-sky-500/60 shadow-xl max-w-[285px] sm:max-w-[310px] lg:max-w-sm w-full bg-paper">
             <div class="overflow-hidden border border-sky-500/30 relative group aspect-[3/4]">
               <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson" class="w-full h-full object-cover contrast-[1.04] group-hover:scale-105 transition-transform duration-500" />
@@ -695,7 +695,7 @@
         </div>
 
         <!-- Intro -->
-        <div class="landscape-hero-text-col md:col-span-7 space-y-4 sm:space-y-5 min-w-0">
+        <div class="landscape-hero-text-col md:col-span-7 lg:col-span-8 space-y-4 sm:space-y-5 min-w-0">
           <div class="inline-flex max-w-full items-center gap-2 px-3 py-1 border border-sky-500/30 font-mono text-xs bg-card t-dim">
             <span class="w-2 h-2 rounded-full animate-pulse shrink-0" style="background-color: var(--accent-cyan);"></span>
             <span class="truncate min-w-0">ELECTRICAL ENGINEERING (FOUNDATION YEAR) • ULAN PRESTON</span>
@@ -734,43 +734,54 @@
           </div>
 
           <!-- PROMINENT CV SPECIFICATION & DISPATCH CARD -->
-          <div class="blueprint-card blueprint-interactive p-3.5 sm:p-4 border-2 border-sky-400/80 bg-sky-500/10 rounded flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 shadow-md relative overflow-hidden group">
-            <div class="flex items-center gap-3 sm:gap-3.5 min-w-0 flex-1">
-              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-sky-500 text-white flex items-center justify-center shrink-0 shadow-md ring-1 ring-sky-300/40 group-hover:scale-105 transition-transform">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
+          <div class="blueprint-card blueprint-interactive p-3.5 sm:p-4 border-2 border-sky-400/80 bg-sky-500/10 rounded space-y-3 shadow-md relative overflow-hidden group">
+            <!-- Top Metadata Strip -->
+            <div class="flex items-center justify-between gap-2 font-mono text-[10px] border-b border-sky-500/25 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="font-bold px-2 py-0.5 bg-sky-500 text-white rounded-sm tracking-wide">CURRICULUM VITAE</span>
+                <span class="t-cyan font-bold">• UPDATED OCT 2026</span>
               </div>
-              <div class="space-y-1 min-w-0 flex-1">
-                <div class="flex items-center gap-2 flex-wrap font-mono text-[10px]">
-                  <span class="font-bold px-2 py-0.5 bg-sky-500 text-white rounded-sm tracking-wide">CURRICULUM VITAE</span>
-                  <span class="t-cyan font-bold">• UPDATED OCT 2026</span>
-                  <span class="t-dim hidden sm:inline">• INTERACTIVE SPEC &amp; PDF</span>
-                </div>
-                <div class="text-xs sm:text-sm font-bold t-main leading-snug">
-                  Available for Engineering Placements &amp; Roles
-                </div>
-              </div>
+              <span class="t-dim font-bold hidden sm:inline tracking-wider">ENGINEERING SPECIFICATION</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:items-center sm:gap-2.5 shrink-0 font-mono text-xs">
-              <a href="cv.html" class="h-10 px-3.5 sm:px-4 bg-sky-500 hover:bg-sky-400 border-2 border-sky-500 hover:border-sky-400 text-white font-bold rounded shadow transition-all flex items-center justify-center gap-1.5 active:scale-95 whitespace-nowrap text-center">
-                <span>View Full CV</span>
-                <span class="text-xs">➔</span>
-              </a>
-              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="h-10 px-3 sm:px-3.5 border-2 border-sky-500 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-card rounded flex items-center justify-center gap-1.5 active:scale-95 shadow-sm whitespace-nowrap text-center">
-                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                <span>PDF (252KB)</span>
-                <span class="text-xs">↓</span>
-              </a>
+            <!-- Main Interactive Content Row -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+              <div class="flex items-center gap-3 sm:gap-3.5 min-w-0">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-sky-500 text-white flex items-center justify-center shrink-0 shadow-md ring-1 ring-sky-300/40 group-hover:scale-105 transition-transform">
+                  <svg class="w-5 h-5 sm:w-5.5 sm:h-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs sm:text-sm font-bold t-main leading-snug">
+                    Available for Engineering Placements &amp; Roles
+                  </div>
+                  <div class="text-[11px] font-mono t-muted pt-0.5">
+                    Interactive Web Sheet &amp; Embedded PDF (252KB)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:items-center sm:gap-2.5 shrink-0 font-mono text-xs">
+                <a href="cv.html" class="h-9 sm:h-10 px-3.5 sm:px-4 bg-sky-500 hover:bg-sky-400 border-2 border-sky-500 hover:border-sky-400 text-white font-bold rounded shadow transition-all flex items-center justify-center gap-1.5 active:scale-95 whitespace-nowrap text-center">
+                  <span>View Full CV</span>
+                  <span class="text-xs">➔</span>
+                </a>
+                <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="h-9 sm:h-10 px-3 sm:px-3.5 border-2 border-sky-500 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-card rounded flex items-center justify-center gap-1.5 active:scale-95 shadow-sm whitespace-nowrap text-center">
+                  <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>PDF (252KB)</span>
+                  <span class="text-xs">↓</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
