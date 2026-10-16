@@ -1,15 +1,36 @@
-# Lee Parkinson — Engineering Portfolio & Blueprint Specification
+# Lee Parkinson — Engineering Portfolio & Blueprint Specification (`dev` Branch)
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Deployment-0ea5e9?style=flat-square&logo=github)](https://leeprky.github.io/)
+[![Dev Preview](https://img.shields.io/badge/Dev%20Branch-Live%20Preview-f59e0b?style=flat-square&logo=github)](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)
+[![GitHub Pages (Main)](https://img.shields.io/badge/Main%20Branch-Production%20Site-0ea5e9?style=flat-square&logo=github)](https://leeprky.github.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Location](https://img.shields.io/badge/Location-Preston%2C%20UK-38bdf8?style=flat-square)](https://leeprky.github.io/)
-[![Status](https://img.shields.io/badge/Status-Active%20Student-22c55e?style=flat-square)](https://leeprky.github.io/)
 
-> **Live Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)
+> 🧪 **Live `dev` Branch Preview (Browser View):** **[https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)**  
+> 🚀 **Production (`main`) Deployment:** [https://leeprky.github.io/](https://leeprky.github.io/)  
+> 🌿 **GitHub `dev` Branch Source:** [https://github.com/leeprky/leeprky.github.io/tree/dev](https://github.com/leeprky/leeprky.github.io/tree/dev)
 
-Personal engineering portfolio and technical specification sheet for **Lee Parkinson**, an **Electrical Engineering (Foundation Year)** student at the **University of Lancashire (ULan)** based in **Preston, Lancashire, UK**.
+Personal engineering portfolio and technical specification sheet for **Lee Parkinson** (21), an **Electrical Engineering (Foundation Year)** student at the **University of Lancashire (ULan)** based in **Preston, Lancashire, UK**.
 
-Designed in an authentic **engineering blueprint and technical drafting sketch style**, the site features technical crosshairs, dimension lines, drafting borders, hand-drawn field sketch notes, and a clean engineering contact block.
+---
+
+## 🧪 Exclusive Features in the `dev` Branch
+
+This `dev` branch stages experimental features prior to merging into `main`:
+
+1. **Animated Moving Blueprint Grid Background (`@keyframes blueprintDrift`):**
+   - Continuous, seamless panning of both the major (`100px`) and minor (`20px`) blueprint drafting grid coordinates in both Light and Dark themes.
+2. **Hover-Only Topbar Popout Cards (`.nav-hover-card`):**
+   - Hovering over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) reveals a technical popout card with a button to open that topic's dedicated specification page.
+3. **8 Dedicated Topic Specification Pages:**
+   - **[`index.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)** — Full single-page blueprint specification
+   - **[`about.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/about.html)** — Dedicated `01 // ABOUT ME` & Operator Specification page
+   - **[`schematics.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/schematics.html)** — Dedicated `02 // SCHEMATICS` page with category filter & DJ photos
+   - **[`gallery.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/gallery.html)** — Dedicated `03 // GALLERY` page (`03.1 // ENGINEERING` & `03.2 // DISCORD THEMES`)
+   - **[`experience.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`)
+   - **[`education.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/education.html)** — Dedicated `05 // EDUCATION` qualifications page
+   - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `06 // CONTACT` channels page
+   - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification & Embedded PDF Viewer** page
+   - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)** & quick message draft generator
 
 ---
 
