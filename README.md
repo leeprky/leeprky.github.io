@@ -35,17 +35,22 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
 
 - **Project Gallery & Build Logs:**
   - **The Sub-£15 Budget Car Build & Overhaul:** An extreme budget engineering experiment sourcing and reviving a vehicle under £15 initial spend with hands-on mechanical repairs and electrical troubleshooting.
+  - **Live Audio Engineering & Former DJ Archive:** Live set archive with mixer signal flow diagrams, frequency equalisation, and telemetry documentation.
   - Expandable slots for future automotive overhauls, RF electronics, and PCB prototypes.
 
-- **Verified Career Logbook (All Experience):**
-  1. **Lancashire University (UCLan)** — BEng Electrical Engineering
-  2. **Wetherspoons (The Velvet Coaster)** — Bar Team Leader *(Promoted Feb 2026)*
-  3. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
-  4. **Car Cosmetics** — Apprentice Automotive Technician
-  5. **Pleasure Beach Resort** — Ride Operator
-  6. **McDonald's** — Crew Member
+- **Verified Career Logbook (04 // WORK EXPERIENCE):**
+  1. **Wetherspoons (The Velvet Coaster)** — Bar Team Leader *(Promoted Feb 2026)*
+  2. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
+  3. **Car Cosmetics** — Apprentice Automotive Technician — Diagnostics & Repair
+  4. **Pleasure Beach Resort** — Ride Operator
+  5. **McDonald's** — Crew Member
 
-- **Section 05 // Contact:**
+- **Academic Qualifications (05 // EDUCATION):**
+  1. **Lancashire University (UCLan)** — BEng (Hons) Electrical Engineering Undergraduate *(2025 — Present)*
+  2. **Blackpool Sixth Form College** — BTEC Level 3 National Diploma in IT (**D\* D\***), A-Level Computer Science *(Completed 08/2023)*
+  3. **St Mary's Catholic Academy** — GCSEs: Digital IT (**D\*2**), Photography (**Grade 9**), Sciences, English, Maths
+
+- **Section 06 // Contact:**
   - Simplified, legible blueprint contact card with direct email (`lspky@pm.me`), LinkedIn, GitHub, and a downloadable CV in PDF format.
 
 ---
