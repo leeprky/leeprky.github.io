@@ -34,12 +34,11 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
 
 - **Verified Career Logbook (All Experience):**
   1. **Lancashire University (UCLan)** — BEng / MEng Electrical & Mechanical Engineering
-  2. **Wetherspoons (The Velvet Coaster)** — Bar Associate
+  2. **Wetherspoons (The Velvet Coaster)** — Bar Team Leader *(Promoted Feb 2026)*
   3. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
   4. **Car Cosmetics** — Apprentice Automotive Technician
-  5. **Dottie's Desserts** — Food Courier
-  6. **Pleasure Beach Resort** — Ride Operator
-  7. **McDonald's** — Crew Member
+  5. **Pleasure Beach Resort** — Ride Operator
+  6. **McDonald's** — Crew Member
 
 - **Official ASME / ISO Title Block:**
   - Formal engineering title block footer with direct email (`lspky@pm.me`), LinkedIn, GitHub, and a downloadable CV in PDF format.
