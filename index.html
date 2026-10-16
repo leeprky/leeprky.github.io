@@ -418,7 +418,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.2</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.3</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -642,17 +642,17 @@
     </section>
 
     <!-- BLUEPRINT SHEETS CONTROL TOOLBAR -->
-    <div class="blueprint-card p-3 sm:p-4 border border-sky-500/35 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+    <div class="blueprint-card p-2.5 sm:p-3.5 border border-sky-500/35 flex items-center justify-between gap-2 sm:gap-3 font-mono text-xs flex-wrap">
       <div class="flex items-center gap-2 min-w-0">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-        <span class="font-bold truncate t-main">DRAFTING SHEETS // 07 SECTIONS</span>
+        <span class="font-bold truncate t-main text-[11px] sm:text-xs">DRAFTING SHEETS // 07 SECTIONS</span>
         <span class="hidden md:inline t-muted">• TAP ANY HEADER TO FOLD / EXPAND</span>
       </div>
-      <div class="flex items-center gap-2 shrink-0 self-start sm:self-auto">
-        <button type="button" onclick="setAllSections(false)" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-xs font-bold t-cyan active:scale-95" title="Collapse all sheets">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button type="button" onclick="setAllSections(false)" class="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95" title="Collapse all sheets">
           [−] FOLD ALL
         </button>
-        <button type="button" onclick="setAllSections(true)" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-xs font-bold t-cyan active:scale-95" title="Expand all sheets">
+        <button type="button" onclick="setAllSections(true)" class="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95" title="Expand all sheets">
           [+] EXPAND ALL
         </button>
       </div>
@@ -660,16 +660,14 @@
 
     <!-- SECTION 01: ABOUT ME -->
     <section id="about" class="space-y-4 sm:space-y-6">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('about')" role="button" aria-expanded="true" aria-controls="section-content-about" id="toggle-about">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('about')" role="button" aria-expanded="true" aria-controls="section-content-about" id="toggle-about">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">01 // ABOUT ME</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">A Bit About Me</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">A Bit About Me</h2>
           </div>
-          
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -734,16 +732,15 @@
 
     <!-- SECTION 02: DRAFTED SCHEMATICS -->
     <section id="schematics" class="space-y-6 sm:space-y-8">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('schematics')" role="button" aria-expanded="true" aria-controls="section-content-schematics" id="toggle-schematics">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('schematics')" role="button" aria-expanded="true" aria-controls="section-content-schematics" id="toggle-schematics">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">02 // SCHEMATICS</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Technical Focus &amp; Schematics</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Technical Focus &amp; Schematics</h2>
           </div>
           <p class="text-xs sm:text-sm font-mono pt-1 t-muted">Electrical engineering, automotive mechanics, Computer Science &amp; ICT, and live audio.</p>
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -890,19 +887,18 @@
 
     <!-- SECTION 03: PROJECT GALLERY (03.1 ENGINEERING & 03.2 DISCORD THEMES) -->
     <section id="gallery" class="space-y-8 sm:space-y-10">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('gallery')" role="button" aria-expanded="true" aria-controls="section-content-gallery" id="toggle-gallery">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('gallery')" role="button" aria-expanded="true" aria-controls="section-content-gallery" id="toggle-gallery">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">03 // GALLERY</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Project Gallery &amp; Builds</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Project Gallery &amp; Builds</h2>
           </div>
-          
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+        <div class="flex items-center gap-2 shrink-0">
           <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
-          <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.1 Engineering</a>
-          <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.2 Discord</a>
-        </div>
+            <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.1 Engineering</a>
+            <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.2 Discord</a>
+          </div>
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1059,16 +1055,14 @@
 
     <!-- SECTION 04: WORK EXPERIENCE (JOBS 05 DOWN TO 01) -->
     <section id="experience" class="space-y-4 sm:space-y-6">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('experience')" role="button" aria-expanded="true" aria-controls="section-content-experience" id="toggle-experience">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('experience')" role="button" aria-expanded="true" aria-controls="section-content-experience" id="toggle-experience">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">04 // EXPERIENCE</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Work Experience &amp; Career Logbook</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Work Experience &amp; Career Logbook</h2>
           </div>
-          
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1222,16 +1216,14 @@
 
     <!-- SECTION 05: EDUCATION -->
     <section id="education" class="space-y-4 sm:space-y-6">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('education')" role="button" aria-expanded="true" aria-controls="section-content-education" id="toggle-education">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('education')" role="button" aria-expanded="true" aria-controls="section-content-education" id="toggle-education">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">05 // EDUCATION</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Academic Qualifications</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Academic Qualifications</h2>
           </div>
-          
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1339,16 +1331,15 @@
 
     <!-- SECTION 06: HOBBIES -->
     <section id="hobbies" class="space-y-4 sm:space-y-6">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('hobbies')" role="button" aria-expanded="true" aria-controls="section-content-hobbies" id="toggle-hobbies">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('hobbies')" role="button" aria-expanded="true" aria-controls="section-content-hobbies" id="toggle-hobbies">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">06 // HOBBIES</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Mountains, Camping &amp; Cars</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Mountains, Camping &amp; Cars</h2>
           </div>
           <p class="text-xs sm:text-sm font-mono pt-1 t-muted">what I do when I'm not at uni or work</p>
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1455,16 +1446,14 @@
 
     <!-- SECTION 07: CONTACT -->
     <section id="contact" class="space-y-4 sm:space-y-6">
-      <div class="section-toggle-header flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('contact')" role="button" aria-expanded="true" aria-controls="section-content-contact" id="toggle-contact">
-        <div class="min-w-0">
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('contact')" role="button" aria-expanded="true" aria-controls="section-content-contact" id="toggle-contact">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span class="sec-tag">07 // CONTACT</span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Get in Touch</h2>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Get in Touch</h2>
           </div>
-          
         </div>
-        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-          
+        <div class="flex items-center gap-2 shrink-0">
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
