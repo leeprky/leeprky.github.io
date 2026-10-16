@@ -16,7 +16,7 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
 ## 📐 Blueprint Aesthetic & Features
 
 - **Technical Drafting Blueprint Design:**
-  - Classic blueprint paper grid background with major ($100\text{px}$) and minor ($20\text{px}$) drafting coordinates.
+  - Classic blueprint paper grid background with major (100px) and minor (20px) drafting coordinates.
   - Architectural crosshair targets (`+`), corner registration brackets (`⌜ ⌟`), and dimension callout lines (`| <--- SPEC ---> |`).
   - Hand-sketched field annotations rendered with the architectural font *Architects Daughter*.
   - Technical monospace typography via *JetBrains Mono* and crisp drafting display via *Space Grotesk*.
