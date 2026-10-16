@@ -67,6 +67,18 @@
       --top-strip: #061224;
     }
 
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
@@ -78,7 +90,16 @@
       background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
       background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
       transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
+    }
+
+    /* Fluid responsive container that adapts cleanly across mobile, landscape, and any desktop window size */
+    .drafting-container {
+      width: 100%;
+      max-width: 1380px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(0.75rem, 3vw, 3rem);
+      padding-right: clamp(0.75rem, 3vw, 3rem);
     }
 
     .blueprint-card {
@@ -86,6 +107,7 @@
       border: 1px solid var(--border-color);
       position: relative;
       transition: all 0.25s ease;
+      max-width: 100%;
     }
     .blueprint-card:hover {
       border-color: var(--border-hover);
@@ -98,7 +120,7 @@
       content: '+';
       position: absolute;
       top: -8px;
-      left: -5px;
+      left: -2px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--crosshair);
@@ -109,7 +131,7 @@
       content: '+';
       position: absolute;
       bottom: -8px;
-      right: -5px;
+      right: -2px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--crosshair);
@@ -125,6 +147,8 @@
       font-size: 10px;
       color: var(--text-dim);
       overflow: hidden;
+      width: 100%;
+      min-width: 0;
     }
     .dim-line::before, .dim-line::after {
       content: "";
@@ -136,6 +160,39 @@
 
     .text-sketch {
       color: var(--accent-sketch);
+    }
+
+    /* Hide scrollbar for clean horizontal sub-nav on mobile/tablet */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Landscape Mode Optimization for Mobile Devices */
+    @media (orientation: landscape) and (max-height: 580px) {
+      .landscape-compact-header {
+        height: 2.75rem !important;
+      }
+      .landscape-compact-main {
+        padding-top: 1rem !important;
+        padding-bottom: 1.5rem !important;
+      }
+      .landscape-hero-grid {
+        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+        gap: 1.25rem !important;
+      }
+      .landscape-hero-photo-col {
+        grid-column: span 4 / span 4 !important;
+      }
+      .landscape-hero-photo-box {
+        max-width: 170px !important;
+      }
+      .landscape-hero-text-col {
+        grid-column: span 8 / span 8 !important;
+      }
     }
   </style>
 
@@ -152,60 +209,62 @@
   </script>
 </head>
 
-<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between">
 
   <!-- TOP ENGINEERING TECHNICAL STRIP -->
-  <div style="background-color: var(--top-strip);" class="border-b border-sky-400/30 text-[10px] sm:text-[11px] font-mono px-3 sm:px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 z-50">
-    <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-      <span class="flex items-center gap-1.5 font-bold" style="color: var(--text-dim);">
-        <span class="inline-block w-2 h-2 rounded-full animate-ping" style="background-color: var(--accent-cyan);"></span>
-        <span>DWG: LP-ENG-2026-EE</span>
-      </span>
-      <span class="opacity-30 hidden xs:inline">|</span>
-      <span class="hidden sm:inline" style="color: var(--text-muted);">DISCIPLINE: ELECTRICAL ENGINEERING</span>
-      <span class="opacity-30 hidden sm:inline">|</span>
-      <span style="color: var(--text-muted);">PRESTON, UK</span>
-    </div>
-    
-    <!-- Theme Mode Switcher -->
-    <div class="flex items-center gap-2">
-      <div class="flex items-center border border-sky-400/40 font-mono text-[10px] rounded overflow-hidden" id="theme-controls">
-        <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">
-          🖥️ <span class="hidden xs:inline">AUTO</span>
-        </button>
-        <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">
-          ☀️ <span class="hidden xs:inline">LIGHT</span>
-        </button>
-        <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">
-          🌙 <span class="hidden xs:inline">DARK</span>
-        </button>
+  <div style="background-color: var(--top-strip);" class="w-full border-b border-sky-400/30 text-[10px] sm:text-[11px] font-mono py-1.5 z-50">
+    <div class="drafting-container flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
+        <span class="flex items-center gap-1.5 font-bold" style="color: var(--text-dim);">
+          <span class="inline-block w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--accent-cyan);"></span>
+          <span class="truncate">DWG: LP-ENG-2026-EE</span>
+        </span>
+        <span class="opacity-30 hidden sm:inline">|</span>
+        <span class="hidden sm:inline" style="color: var(--text-muted);">DISCIPLINE: ELECTRICAL ENGINEERING</span>
+        <span class="opacity-30">|</span>
+        <span style="color: var(--text-muted);">PRESTON, UK</span>
       </div>
-      <span class="hidden md:inline text-sketch font-sketch text-xs">SPEC V6.0</span>
+      
+      <!-- Theme Mode Switcher -->
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="flex items-center border border-sky-400/40 font-mono text-[10px] rounded overflow-hidden" id="theme-controls">
+          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">
+            🖥️ <span class="hidden sm:inline">AUTO</span>
+          </button>
+          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">
+            ☀️ <span class="hidden sm:inline">LIGHT</span>
+          </button>
+          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">
+            🌙 <span class="hidden sm:inline">DARK</span>
+          </button>
+        </div>
+        <span class="hidden md:inline text-sketch font-sketch text-xs">SPEC V6.1</span>
+      </div>
     </div>
   </div>
 
   <!-- NAVIGATION HEADER -->
-  <header style="background-color: var(--header-bg);" class="border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40 transition-all">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
+  <header style="background-color: var(--header-bg);" class="w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40 transition-all">
+    <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Technical Stamp / Logo -->
-      <a href="#top" class="flex items-center gap-2 sm:gap-3 group shrink-0">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all" style="color: var(--accent-cyan); background-color: var(--card-bg);">
+      <a href="#top" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all shrink-0" style="color: var(--accent-cyan); background-color: var(--card-bg);">
           LP
         </div>
-        <div>
-          <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1" style="color: var(--text-main);">
-            <span>LEE PARKINSON</span>
-            <span class="text-[10px] sm:text-xs font-mono font-normal" style="color: var(--text-dim);">[EE]</span>
+        <div class="min-w-0">
+          <div class="font-bold text-xs sm:text-base tracking-tight flex items-center gap-1 truncate" style="color: var(--text-main);">
+            <span class="truncate">LEE PARKINSON</span>
+            <span class="text-[10px] sm:text-xs font-mono font-normal shrink-0" style="color: var(--text-dim);">[EE]</span>
           </div>
-          <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest hidden xs:block" style="color: var(--text-muted);">
+          <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate" style="color: var(--text-muted);">
             Electrical Engineering
           </div>
         </div>
       </a>
 
-      <!-- Technical Nav (Desktop) -->
-      <nav class="hidden lg:flex items-center gap-4 text-xs font-mono" style="color: var(--text-muted);">
+      <!-- Technical Nav (Desktop & Medium Windows) -->
+      <nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-xs font-mono shrink-0" style="color: var(--text-muted);">
         <a href="#about" class="hover:text-sky-400 hover:underline transition-colors">01. ABOUT</a>
         <a href="#schematics" class="hover:text-sky-400 hover:underline transition-colors">02. SCHEMATICS</a>
         <a href="#gallery" class="hover:text-sky-400 hover:underline transition-colors">03. GALLERY</a>
@@ -215,40 +274,52 @@
       </nav>
 
       <!-- Quick Actions -->
-      <div class="flex items-center gap-2 font-mono text-xs">
+      <div class="flex items-center gap-2 font-mono text-xs shrink-0">
         <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all text-xs" style="color: var(--text-dim); background-color: var(--card-bg);">
           <span>✉ lspky@pm.me</span>
         </a>
-        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm text-xs">
+        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2.5 sm:px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm text-xs">
           <span>CV</span>
           <span>↓</span>
         </a>
       </div>
     </div>
+
+    <!-- Mobile / Tablet / Narrow-Window Quick Nav Strip -->
+    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar" style="background-color: var(--header-bg);">
+      <div class="drafting-container py-1.5 flex items-center gap-3 sm:gap-5 text-[10px] sm:text-[11px] font-mono whitespace-nowrap" style="color: var(--text-muted);">
+        <a href="#about" class="hover:text-sky-400 transition-colors">01. ABOUT</a>
+        <a href="#schematics" class="hover:text-sky-400 transition-colors">02. SCHEMATICS</a>
+        <a href="#gallery" class="hover:text-sky-400 transition-colors">03. GALLERY</a>
+        <a href="#experience" class="hover:text-sky-400 transition-colors">04. EXPERIENCE</a>
+        <a href="#education" class="hover:text-sky-400 transition-colors">05. EDUCATION</a>
+        <a href="#contact" class="hover:text-sky-400 transition-colors">06. CONTACT</a>
+      </div>
+    </nav>
   </header>
 
   <!-- MAIN DRAFTING BOARD -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 sm:space-y-24 flex-1" id="top">
+  <main class="drafting-container landscape-compact-main py-6 sm:py-10 lg:py-12 space-y-12 sm:space-y-16 lg:space-y-20 flex-1" id="top">
 
     <!-- HERO SECTION: "Hi, I'm Lee" + Picture of Lee (FIRST THING YOU SEE) -->
-    <section class="blueprint-card p-4 sm:p-8 md:p-10 border border-sky-500/40">
+    <section class="blueprint-card p-4 sm:p-6 md:p-8 lg:p-10 border border-sky-500/40">
       
       <!-- Top Dimension Line -->
       <div class="dim-line mb-5 sm:mb-8">
-        <span class="truncate">FIG 01.0 // SPECIFICATION SHEET: HI, I'M LEE</span>
+        <span class="truncate min-w-0">FIG 01.0 // SPECIFICATION SHEET: HI, I'M LEE</span>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+      <div class="landscape-hero-grid grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
         
         <!-- Picture of Lee with Technical Drafting Framing -->
-        <div class="lg:col-span-5 flex flex-col items-center">
-          <div class="relative p-2 border-2 border-sky-500/60 shadow-xl max-w-[260px] sm:max-w-xs md:max-w-sm w-full" style="background-color: var(--paper-color);">
+        <div class="landscape-hero-photo-col md:col-span-5 lg:col-span-5 flex flex-col items-center min-w-0">
+          <div class="landscape-hero-photo-box relative p-2 border-2 border-sky-500/60 shadow-xl max-w-[240px] sm:max-w-[280px] lg:max-w-sm w-full" style="background-color: var(--paper-color);">
             
             <!-- Corner Crosses -->
-            <div class="absolute -top-2.5 -left-2.5 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -top-2.5 -right-2.5 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -bottom-2.5 -left-2.5 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -bottom-2.5 -right-2.5 font-mono text-sm" style="color: var(--crosshair);">+</div>
+            <div class="absolute -top-2.5 -left-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
+            <div class="absolute -top-2.5 -right-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
+            <div class="absolute -bottom-2.5 -left-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
+            <div class="absolute -bottom-2.5 -right-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
 
             <!-- Subject Image -->
             <div class="overflow-hidden border border-sky-500/30 relative group aspect-[3/4]">
@@ -265,63 +336,67 @@
             </div>
 
             <!-- Dimension Annotation -->
-            <div class="mt-2 text-center font-mono text-[10px] sm:text-[11px] flex items-center justify-between px-1" style="color: var(--text-muted);">
-              <span>SCALE 1:1</span>
-              <span class="text-sketch font-sketch text-xs">← operator photo</span>
+            <div class="mt-2 text-center font-mono text-[10px] sm:text-[11px] flex items-center justify-between px-1 gap-1" style="color: var(--text-muted);">
+              <span>AGE: 21</span>
+              <span class="text-sketch font-sketch text-xs truncate">← operator photo</span>
               <span>ULAN EE</span>
             </div>
           </div>
         </div>
 
         <!-- Hero Content: "Hi, I'm Lee" -->
-        <div class="lg:col-span-7 space-y-4 sm:space-y-5">
+        <div class="landscape-hero-text-col md:col-span-7 lg:col-span-7 space-y-4 sm:space-y-5 min-w-0">
           
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 border border-sky-500/30 font-mono text-[11px] sm:text-xs" style="background-color: var(--card-bg); color: var(--text-dim);">
-            <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--accent-cyan);"></span>
-            <span class="truncate">ELECTRICAL ENGINEERING (FOUNDATION YEAR) • ULAN PRESTON</span>
+          <div class="inline-flex max-w-full items-center gap-2 px-2.5 py-1 border border-sky-500/30 font-mono text-[10px] sm:text-xs" style="background-color: var(--card-bg); color: var(--text-dim);">
+            <span class="w-2 h-2 rounded-full animate-pulse shrink-0" style="background-color: var(--accent-cyan);"></span>
+            <span class="truncate min-w-0">ELECTRICAL ENGINEERING (FOUNDATION YEAR) • ULAN PRESTON</span>
           </div>
 
           <div class="space-y-2">
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans leading-tight" style="color: var(--text-main);">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans leading-tight" style="color: var(--text-main);">
               Hi, I'm Lee<span style="color: var(--accent-cyan);">.</span>
             </h1>
-            <p class="font-sketch text-sketch text-base sm:text-lg lg:text-xl transform -rotate-1">
+            <p class="font-sketch text-sketch text-sm sm:text-base lg:text-xl">
               "Studying Electrical Engineering at ULan. Working on cars, electronics, and software."
             </p>
           </div>
 
           <p class="text-xs sm:text-sm md:text-base leading-relaxed font-sans max-w-2xl" style="color: var(--text-muted);">
-            Based in <strong>Preston</strong>, I study <strong>Electrical Engineering at the University of Lancashire (ULan)</strong>. Growing up, I've always loved technology, mechanics, electrics, and computers — along with some time spent on <strong>Discord theming</strong> and a brief stint as a <strong>DJ</strong>.
+            I'm <strong>21</strong>, based in <strong>Preston</strong>, and studying <strong>Electrical Engineering at the University of Lancashire (ULan)</strong>. Growing up, I've always loved technology, mechanics, electrics, and computers — along with some time spent on <strong>Discord theming</strong> and a brief stint as a <strong>DJ</strong>.
           </p>
 
           <!-- Engineering Specs Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-[11px] sm:text-xs">
-            <div class="border border-sky-500/25 p-2 sm:p-2.5" style="background-color: var(--card-bg);">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-[11px] sm:text-xs">
+            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
+              <span class="block text-[10px]" style="color: var(--text-dim);">AGE</span>
+              <span class="font-bold truncate block" style="color: var(--text-main);">21 Years Old</span>
+            </div>
+            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
               <span class="block text-[10px]" style="color: var(--text-dim);">CAMPUS</span>
               <span class="font-bold truncate block" style="color: var(--text-main);">ULan, Preston</span>
             </div>
-            <div class="border border-sky-500/25 p-2 sm:p-2.5" style="background-color: var(--card-bg);">
+            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
               <span class="block text-[10px]" style="color: var(--text-dim);">DISCIPLINE</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">Electrical Engineering</span>
+              <span class="font-bold truncate block" style="color: var(--text-main);">Electrical Eng.</span>
             </div>
-            <div class="border border-sky-500/25 p-2 sm:p-2.5 col-span-2 sm:col-span-1" style="background-color: var(--card-bg);">
+            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
               <span class="block text-[10px]" style="color: var(--text-dim);">BACKGROUND</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">Hospitality &amp; Engineering</span>
+              <span class="font-bold truncate block" style="color: var(--text-main);">Hospitality &amp; Eng.</span>
             </div>
           </div>
 
           <!-- Quick Action Buttons -->
-          <div class="flex flex-wrap items-center gap-2.5 pt-2 font-mono text-xs">
-            <a href="#about" class="px-4 py-2 sm:px-5 sm:py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 pt-2 font-mono text-xs">
+            <a href="#about" class="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md">
               01 // About Me ↓
             </a>
-            <a href="#experience" class="px-3.5 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
+            <a href="#gallery" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
+              <span>03 // Gallery ↓</span>
+            </a>
+            <a href="#experience" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
               <span>Experience ↓</span>
             </a>
-            <a href="#education" class="px-3.5 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
-              <span>Education ↓</span>
-            </a>
-            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3.5 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-main); background-color: var(--card-bg);">
+            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-main); background-color: var(--card-bg);">
               <span>CV (PDF) ↗</span>
             </a>
           </div>
@@ -332,7 +407,7 @@
 
       <!-- Bottom Dimension Line -->
       <div class="dim-line mt-6 sm:mt-8">
-        <span class="truncate">TOLERANCES UNLESS SPECIFIED: ±0.05mm // ALL SYSTEMS FUNCTIONAL</span>
+        <span class="truncate min-w-0">TOLERANCES UNLESS SPECIFIED: ±0.05mm // ALL SYSTEMS FUNCTIONAL</span>
       </div>
     </section>
 
@@ -348,7 +423,7 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          <div class="lg:col-span-2 space-y-3.5 text-xs sm:text-sm md:text-base leading-relaxed font-sans" style="color: var(--text-muted);">
+          <div class="lg:col-span-2 space-y-3.5 text-xs sm:text-sm md:text-base leading-relaxed font-sans min-w-0" style="color: var(--text-muted);">
             <p>
               Growing up, I've always been into technology, mechanics, electrics, and computers. Whether it was taking things apart to see how they worked, building PCs, or fixing things up, I've always preferred learning by actually getting my hands dirty.
             </p>
@@ -356,20 +431,20 @@
               Before starting uni, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, where I got proper hands-on experience working on cars — doing mechanical repairs, servicing, bleeding brakes, and tracking down electrical faults.
             </p>
             <p>
-              I'm now living in <strong>Preston</strong> doing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong>, alongside working as a <strong>Bar Team Leader at The Twelve Tellers (Wetherspoons)</strong>. Outside of uni and work, I'm usually working on cars, tinkering with electronics, or messing around with computers and custom CSS themes.
+              I'm <strong>21</strong> and living in <strong>Preston</strong>, doing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong> alongside working as a <strong>Bar Team Leader at Wetherspoons</strong>. Outside of uni and work, I'm usually working on cars, tinkering with electronics, or messing around with computers and custom CSS themes.
             </p>
           </div>
 
           <!-- Hand-Drawn Blueprint Sketch Note Box -->
-          <div class="border-2 border-dashed border-sky-500/50 p-4 sm:p-5 space-y-3 relative" style="background-color: var(--paper-color);">
+          <div class="border-2 border-dashed border-sky-500/50 p-4 sm:p-5 space-y-3 relative min-w-0" style="background-color: var(--paper-color);">
             <div class="text-[10px] font-mono uppercase tracking-widest text-sketch font-bold">// FIELD NOTES</div>
             <p class="font-sketch text-sketch text-xs sm:text-sm leading-relaxed">
               "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
             </p>
             <div class="pt-2 border-t border-sky-500/20 font-mono text-[10px] sm:text-[11px] space-y-1" style="color: var(--text-dim);">
-              <div>• Based in Preston, Lancashire</div>
+              <div>• Age: 21 • Based in Preston, Lancashire</div>
               <div>• Electrical Engineering (Foundation) @ ULan</div>
-              <div>• Bar Team Leader @ The Twelve Tellers</div>
+              <div>• Bar Team Leader @ Wetherspoons</div>
               <div>• Cars, Electrics, Computers &amp; ICT</div>
             </div>
           </div>
@@ -379,7 +454,7 @@
         <!-- 3 Technical Pillars -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-3 border-t border-sky-500/20 font-mono text-xs">
           
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5" style="background-color: var(--card-bg);">
+          <div class="border border-sky-500/25 p-3.5 space-y-1.5 min-w-0" style="background-color: var(--card-bg);">
             <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
               <span>PILLAR 01</span>
               <span>[ELECTRICAL]</span>
@@ -390,7 +465,7 @@
             </p>
           </div>
 
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5" style="background-color: var(--card-bg);">
+          <div class="border border-sky-500/25 p-3.5 space-y-1.5 min-w-0" style="background-color: var(--card-bg);">
             <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
               <span>PILLAR 02</span>
               <span>[MECHANICS]</span>
@@ -401,7 +476,7 @@
             </p>
           </div>
 
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5 sm:col-span-2 lg:col-span-1" style="background-color: var(--card-bg);">
+          <div class="border border-sky-500/25 p-3.5 space-y-1.5 sm:col-span-2 lg:col-span-1 min-w-0" style="background-color: var(--card-bg);">
             <div class="text-xs font-bold flex items-center justify-between text-sketch">
               <span>PILLAR 03</span>
               <span>[TECH &amp; IT]</span>
@@ -418,249 +493,336 @@
 
     </section>
 
-    <!-- SECTION 02: DRAFTED SCHEMATICS (SEPARATE ENGINEERING & DISCORD THEMING) -->
-    <section id="schematics" class="space-y-10 sm:space-y-12">
+    <!-- SECTION 02: DRAFTED SCHEMATICS -->
+    <section id="schematics" class="space-y-6 sm:space-y-8">
       
       <!-- Section Header with Responsive Category Filter Bar -->
       <div class="space-y-3">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <div class="flex items-center gap-2.5">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2.5 flex-wrap">
               <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">02 // SCHEMATICS</span>
-              <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Technical Focus &amp; Project Schematics</h2>
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Technical Focus &amp; Schematics</h2>
             </div>
             <p class="text-xs sm:text-sm font-mono pt-1" style="color: var(--text-muted);">
-              Distinct engineering systems, Computer Science &amp; ICT, and Discord UI theming.
+              Electrical engineering, automotive mechanics, Computer Science &amp; ICT, and live audio.
             </p>
           </div>
 
           <!-- Filter Controls -->
-          <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-[11px] overflow-x-auto max-w-full" style="background-color: var(--card-bg);" id="filter-bar">
+          <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-[11px] overflow-x-auto no-scrollbar max-w-full" style="background-color: var(--card-bg);" id="filter-bar">
             <button onclick="filterProjects('all')" class="filter-btn active px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0" data-filter="all">ALL</button>
-            <button onclick="filterProjects('engineering')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="engineering">ELECTRICAL</button>
+            <button onclick="filterProjects('engineering')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="engineering">ENGINEERING &amp; CARS</button>
             <button onclick="filterProjects('cs-ict')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="cs-ict">CS &amp; ICT</button>
-            <button onclick="filterProjects('audio')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="audio">AUDIO &amp; DJ</button>
-            <button onclick="filterProjects('discord')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="discord">DISCORD THEMING</button>
+            <button onclick="filterProjects('audio')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="audio">DJ &amp; AUDIO</button>
           </div>
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- PART A: ELECTRICAL ENGINEERING & CS/ICT    -->
-      <!-- ========================================== -->
-      <!-- PART A: ELECTRICAL ENGINEERING & CS/ICT    -->
-      <!-- ========================================== -->
-      <div class="space-y-4" id="section-engineering">
-        <div class="flex items-center gap-2 border-b border-sky-500/30 pb-2">
-          <span class="text-xs font-mono font-bold px-2 py-0.5" style="background-color: var(--paper-color); color: var(--accent-cyan);">PART A</span>
-          <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-            Electrical Engineering, Mechanics, CS/ICT &amp; DJ
-          </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+
+        <!-- Card 1: Electrical Engineering Systems -->
+        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-01 // ACADEMIC SPEC</span>
+            <span class="shrink-0" style="color: var(--text-muted);">ULan • Preston</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Electrical Engineering (Foundation Year)</h4>
+            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+              Currently completing my Foundation Year in Electrical Engineering at the University of Lancashire (ULan) — covering core engineering mathematics, physics, circuit analysis, and practical lab work.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Circuit Fundamentals</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Electronics</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Engineering Maths</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Lab Practicals</span>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <!-- Card 2: Automotive Diagnostics & Mechanics -->
+        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-02 // WORKSHOP MECHANICS</span>
+            <span class="shrink-0" style="color: var(--text-muted);">Car Cosmetics</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Automotive Diagnostics &amp; Mechanics</h4>
+            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+              Hands-on workshop experience diagnosing mechanical and electrical faults on cars, carrying out servicing and fluid changes, bleeding hydraulic brake lines, and fitting aftermarket parts.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Fault Finding</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Vehicle Electrics</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Brake Bleeding</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Mechanical Repair</span>
+          </div>
+        </div>
 
-          <!-- Card 1: Electrical Engineering Systems -->
-          <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="engineering">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-01 // ACADEMIC SPEC</span>
-              <span style="color: var(--text-muted);">ULan • Preston</span>
-            </div>
-            <div class="space-y-1">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Electrical Engineering (Foundation Year)</h4>
-              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Currently completing my Foundation Year in Electrical Engineering at the University of Lancashire (ULan) — covering core engineering mathematics, physics, circuit analysis, and practical lab work.
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Circuit Fundamentals</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Electronics</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Engineering Maths</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Lab Practicals</span>
-            </div>
+        <!-- Card 3: Computer Science -->
+        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CS-01 // SOFTWARE &amp; SYSTEMS</span>
+            <span class="shrink-0" style="color: var(--text-muted);">Computing</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Computer Science</h4>
+            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+              Studied Computer Science at A-Level alongside years of tinkering with computers — covering how hardware architectures work, programming basics, operating systems, and customising software.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Architecture</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Operating Systems</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Code &amp; Scripting</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Information & Communications Technology (ICT) -->
+        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">ICT-02 // DIGITAL ICT &amp; HARDWARE</span>
+            <span class="shrink-0" style="color: var(--text-muted);">D*D* &amp; D*2</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Digital ICT &amp; Systems</h4>
+            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+              Achieved top marks in both BTEC IT (D*D*) and Digital ICT (D*2) — hands-on with PC building and hardware repair, networking setups, databases, and troubleshooting systems.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Building</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Networking</span>
+            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">IT Troubleshooting</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Former DJ & Live Audio (Featuring DJ Photos) -->
+        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 md:col-span-2 space-y-4 min-w-0" data-category="audio">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">AUDIO-01 // FORMER DJ</span>
+            <span class="font-sketch text-sketch text-xs shrink-0">brief DJ stint</span>
           </div>
 
-          <!-- Card 2: Automotive Diagnostics & Mechanics -->
-          <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="engineering">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-02 // WORKSHOP MECHANICS</span>
-              <span style="color: var(--text-muted);">Car Cosmetics</span>
-            </div>
-            <div class="space-y-1">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Automotive Diagnostics &amp; Mechanics</h4>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
+            
+            <!-- Left: Description and technical details -->
+            <div class="lg:col-span-6 space-y-3 min-w-0">
+              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
+                Former DJ &amp; Live Sound Setups
+              </h4>
               <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Hands-on workshop experience diagnosing mechanical and electrical faults on cars, carrying out servicing and fluid changes, bleeding hydraulic brake lines, and fitting aftermarket parts.
+                I had a brief stint DJing live sets at local venues. Even though my time DJing was short, it was great fun getting hands-on with Pioneer decks, mixers, live audio routing, and playing music for a crowd.
               </p>
-            </div>
-            <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Fault Finding</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Vehicle Electrics</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Brake Bleeding</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Mechanical Repair</span>
-            </div>
-          </div>
-
-          <!-- Card 3: Computer Science -->
-          <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="cs-ict">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">CS-01 // SOFTWARE &amp; SYSTEMS</span>
-              <span style="color: var(--text-muted);">Computing</span>
-            </div>
-            <div class="space-y-1">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Computer Science</h4>
               <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Studied Computer Science at A-Level alongside years of tinkering with computers — covering how hardware architectures work, programming basics, operating systems, and customising software.
+                It also sparked a lasting interest in sound systems, audio hardware, and how live setups are wired and balanced.
               </p>
-            </div>
-            <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Architecture</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Operating Systems</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Code &amp; Scripting</span>
-            </div>
-          </div>
 
-          <!-- Card 4: Information & Communications Technology (ICT) -->
-          <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5" data-category="cs-ict">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">ICT-02 // DIGITAL ICT &amp; HARDWARE</span>
-              <span style="color: var(--text-muted);">D*D* &amp; D*2</span>
-            </div>
-            <div class="space-y-1">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Digital ICT &amp; Systems</h4>
-              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                Achieved top marks in both BTEC IT (D*D*) and Digital ICT (D*2) — hands-on with PC building and hardware repair, networking setups, databases, and troubleshooting systems.
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Building</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Networking</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">IT Troubleshooting</span>
-            </div>
-          </div>
-
-          <!-- Card 5: Former DJ & Live Audio (Featuring DJ Photos) -->
-          <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 md:col-span-2 space-y-4" data-category="audio">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">AUDIO-01 // FORMER DJ</span>
-              <span class="font-sketch text-sketch text-xs">brief DJ stint</span>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-[10px] sm:text-[11px]">
+                <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
+                  <span class="block text-[9px]" style="color: var(--text-dim);">DECKS</span>
+                  <span class="font-bold truncate block" style="color: var(--text-main);">Pioneer DJ</span>
+                </div>
+                <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
+                  <span class="block text-[9px]" style="color: var(--text-dim);">AUDIO</span>
+                  <span class="font-bold truncate block" style="color: var(--text-main);">Live Mixing &amp; EQ</span>
+                </div>
+                <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-1 min-w-0" style="background-color: var(--paper-color);">
+                  <span class="block text-[9px]" style="color: var(--text-dim);">SETUP</span>
+                  <span class="font-bold truncate block" style="color: var(--text-main);">Booth &amp; PA Gear</span>
+                </div>
+              </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
+            <!-- Right: DJ Photos framed in Blueprint style -->
+            <div class="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4 items-stretch min-w-0">
               
-              <!-- Left: Description and technical details -->
-              <div class="lg:col-span-6 space-y-3">
-                <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-                  Former DJ &amp; Live Sound Setups
-                </h4>
-                <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                  I had a brief stint DJing live sets at local venues. Even though my time DJing was short, it was great fun getting hands-on with Pioneer decks, mixers, live audio routing, and playing music for a crowd.
-                </p>
-                <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                  It also sparked a lasting interest in sound systems, audio hardware, and how live setups are wired and balanced.
-                </p>
+              <!-- DJ Photo 1: IMG_4775.jpg -->
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0" style="background-color: var(--card-bg);">
+                <div class="absolute -top-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌜</div>
+                <div class="absolute -top-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌝</div>
+                <div class="absolute -bottom-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌞</div>
+                <div class="absolute -bottom-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌟</div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-[10px] sm:text-[11px]">
-                  <div class="p-2 border border-sky-500/25" style="background-color: var(--paper-color);">
-                    <span class="block text-[9px]" style="color: var(--text-dim);">DECKS</span>
-                    <span class="font-bold" style="color: var(--text-main);">Pioneer DJ</span>
-                  </div>
-                  <div class="p-2 border border-sky-500/25" style="background-color: var(--paper-color);">
-                    <span class="block text-[9px]" style="color: var(--text-dim);">AUDIO</span>
-                    <span class="font-bold" style="color: var(--text-main);">Live Mixing &amp; EQ</span>
-                  </div>
-                  <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-1" style="background-color: var(--paper-color);">
-                    <span class="block text-[9px]" style="color: var(--text-dim);">SETUP</span>
-                    <span class="font-bold" style="color: var(--text-main);">Booth &amp; PA Gear</span>
-                  </div>
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
+                  <img 
+                    src="assets/images/dj-block.jpg" 
+                    alt="Lee Parkinson live DJ booth performance" 
+                    class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px] gap-1" style="color: var(--text-dim);">
+                  <span>FIG 02.4A</span>
+                  <span class="font-sketch text-sketch text-xs truncate">"live booth"</span>
                 </div>
               </div>
 
-              <!-- Right: DJ Photos framed in Blueprint style -->
-              <div class="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4 items-stretch">
-                
-                <!-- DJ Photo 1: IMG_4775.jpg -->
-                <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between" style="background-color: var(--card-bg);">
-                  <div class="absolute -top-2 -left-2 text-sky-500 font-mono text-sm leading-none">⌜</div>
-                  <div class="absolute -top-2 -right-2 text-sky-500 font-mono text-sm leading-none">⌝</div>
-                  <div class="absolute -bottom-2 -left-2 text-sky-500 font-mono text-sm leading-none">⌞</div>
-                  <div class="absolute -bottom-2 -right-2 text-sky-500 font-mono text-sm leading-none">⌟</div>
+              <!-- DJ Photo 2: dj-lee.jpg -->
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0" style="background-color: var(--card-bg);">
+                <div class="absolute -top-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌜</div>
+                <div class="absolute -top-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌝</div>
+                <div class="absolute -bottom-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌞</div>
+                <div class="absolute -bottom-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌟</div>
 
-                  <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
-                    <img 
-                      src="assets/images/dj-block.jpg" 
-                      alt="Lee Parkinson live DJ booth performance" 
-                      class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px); background-size: 20px 20px;"></div>
-                  </div>
-
-                  <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px]" style="color: var(--text-dim);">
-                    <span>FIG 02.4A</span>
-                    <span class="font-sketch text-sketch text-xs">"live booth"</span>
-                  </div>
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
+                  <img 
+                    src="assets/images/dj-lee.jpg" 
+                    alt="Lee Parkinson live DJ performance set" 
+                    class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
+                    loading="lazy"
+                  />
                 </div>
 
-                <!-- DJ Photo 2: dj-lee.jpg -->
-                <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between" style="background-color: var(--card-bg);">
-                  <div class="absolute -top-2 -left-2 text-sky-500 font-mono text-sm leading-none">⌜</div>
-                  <div class="absolute -top-2 -right-2 text-sky-500 font-mono text-sm leading-none">⌝</div>
-                  <div class="absolute -bottom-2 -left-2 text-sky-500 font-mono text-sm leading-none">⌞</div>
-                  <div class="absolute -bottom-2 -right-2 text-sky-500 font-mono text-sm leading-none">⌟</div>
-
-                  <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
-                    <img 
-                      src="assets/images/dj-lee.jpg" 
-                      alt="Lee Parkinson live DJ performance set" 
-                      class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px); background-size: 20px 20px;"></div>
-                  </div>
-
-                  <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px]" style="color: var(--text-dim);">
-                    <span>FIG 02.4B</span>
-                    <span class="font-sketch text-sketch text-xs">"on the decks"</span>
-                  </div>
+                <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px] gap-1" style="color: var(--text-dim);">
+                  <span>FIG 02.4B</span>
+                  <span class="font-sketch text-sketch text-xs truncate">"on the decks"</span>
                 </div>
-
               </div>
 
             </div>
-          </div>
 
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECTION 03: PROJECT GALLERY (03.1 ENGINEERING & 03.2 DISCORD THEMES) -->
+    <section id="gallery" class="space-y-8 sm:space-y-10">
+      
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // GALLERY</span>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Project Gallery &amp; Builds</h2>
+        </div>
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.1 Engineering</a>
+          <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.2 Discord Themes</a>
         </div>
       </div>
 
       <!-- ========================================== -->
-      <!-- PART B: DISCORD CLIENT THEMING (SEPARATE)  -->
+      <!-- 03.1 // ENGINEERING PROJECTS               -->
       <!-- ========================================== -->
-      <div class="space-y-4 pt-4" id="discord-theming">
-        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2">
+      <div id="gallery-engineering" class="space-y-4">
+        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold px-2 py-0.5" style="background-color: var(--paper-color); color: var(--accent-cyan);">PART B</span>
+            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.1 // ENGINEERING</span>
             <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-              Discord Client Theming &amp; UI CSS Design
+              Engineering &amp; Automotive Projects
             </h3>
           </div>
-          <span class="font-sketch text-sketch text-xs hidden sm:inline">open-source theme collection</span>
+          <span class="font-sketch text-sketch text-xs">upcoming car &amp; lab builds</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+
+          <!-- Featured Project: Upcoming Budget Car Project Under £15 -->
+          <div class="blueprint-card p-4 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
+            
+            <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
+              <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // UPCOMING</span>
+              <span class="text-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+              
+              <!-- Blueprint Sketch Wireframe Graphic -->
+              <div class="sm:col-span-5 border border-sky-500/40 p-4 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0" style="background-color: var(--paper-color);">
+                <div class="font-mono text-4xl sm:text-5xl" style="color: var(--accent-cyan);">🚗</div>
+                <div class="font-mono text-[11px] font-bold mt-2" style="color: var(--text-main);">SUB-£15 CAR PROJECT</div>
+                <div class="text-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
+                <div class="absolute bottom-1 right-2 font-mono text-[9px]" style="color: var(--text-dim);">FIG. 03.1-A</div>
+              </div>
+
+              <!-- Project Details -->
+              <div class="sm:col-span-7 space-y-2.5 min-w-0">
+                <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
+                  The Sub-£15 Budget Car Project
+                </h4>
+                <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
+                  My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.
+                </p>
+                
+                <div class="space-y-1 font-mono text-[11px] pt-1" style="color: var(--text-dim);">
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
+                    <span>Budget Target: Under £15 initial spend</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
+                    <span>Work: Mechanical servicing, electrics &amp; repairs</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                    <span>Updates &amp; photos will be added here as the build starts</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="dim-line pt-2">
+              <span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span>
+            </div>
+          </div>
+
+          <!-- Modular Slot for Future Project 2 -->
+          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-mono gap-2">
+                <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">PROJECT-SLOT 02</span>
+                <span class="font-sketch text-sketch text-xs">future build slot</span>
+              </div>
+              <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Electronics &amp; Uni Lab Builds</h4>
+              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+                Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.
+              </p>
+            </div>
+            <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
+              STATUS: FUTURE SLOT
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- 03.2 // DISCORD THEMES                     -->
+      <!-- ========================================== -->
+      <div id="gallery-discord" class="space-y-4 pt-2">
+        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.2 // DISCORD THEMES</span>
+            <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
+              Discord Client Themes &amp; UI CSS
+            </h3>
+          </div>
+          <span class="font-sketch text-sketch text-xs">open-source theme collection</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
 
           <!-- Theme Card 1: WindowsXI -->
-          <div class="project-card blueprint-card p-5 border border-sky-500/40 space-y-3" data-category="discord">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-01</span>
-              <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline" style="color: var(--accent-cyan);">GitHub ↗</a>
+          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-01</span>
+                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">WindowsXI Discord Theme</h4>
+                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+                  A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.
+                </p>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">WindowsXI Discord Theme</h4>
-              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-1">
+            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">BetterDiscord</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Acrylic Glass</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Fluent CSS</span>
@@ -668,18 +830,20 @@
           </div>
 
           <!-- Theme Card 2: MaterialYou & Vintage -->
-          <div class="project-card blueprint-card p-5 border border-sky-500/40 space-y-3" data-category="discord">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-02</span>
-              <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline" style="color: var(--accent-cyan);">GitHub ↗</a>
+          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-02</span>
+                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">MaterialYou &amp; Vintage</h4>
+                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+                  Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.
+                </p>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">MaterialYou &amp; Vintage</h4>
-              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-1">
+            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Material You</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Vencord</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom CSS</span>
@@ -687,18 +851,20 @@
           </div>
 
           <!-- Theme Card 3: Lode, Ovel & Fluidcord -->
-          <div class="project-card blueprint-card p-5 border border-sky-500/40 space-y-3" data-category="discord">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-03</span>
-              <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline" style="color: var(--accent-cyan);">GitHub ↗</a>
+          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-03</span>
+                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">Lode, Ovel &amp; Fluidcord</h4>
+                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
+                  Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).
+                </p>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">Lode, Ovel &amp; Fluidcord</h4>
-              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-1">
+            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Glasscord</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom Layouts</span>
               <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Open Source</span>
@@ -710,91 +876,7 @@
 
     </section>
 
-    <!-- SECTION 03: PROJECT GALLERY (FEATURING UPCOMING SUB-£15 CAR BUILD & FUTURE PROJECTS) -->
-    <section id="gallery" class="space-y-6">
-      
-      <div class="flex items-center justify-between gap-3 flex-wrap">
-        <div class="flex items-center gap-2.5">
-          <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // GALLERY</span>
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Project Gallery &amp; Build Logs</h2>
-        </div>
-        <span class="font-sketch text-sketch text-xs">upcoming car &amp; engineering builds</span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-        <!-- Featured Project: Upcoming Budget Car Project Under £15 -->
-        <div class="blueprint-card p-5 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative">
-          
-          <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
-            <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // UPCOMING</span>
-            <span class="text-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-            
-            <!-- Blueprint Sketch Wireframe Graphic -->
-            <div class="sm:col-span-5 border border-sky-500/40 p-4 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative" style="background-color: var(--paper-color);">
-              <div class="font-mono text-4xl sm:text-5xl" style="color: var(--accent-cyan);">🚗</div>
-              <div class="font-mono text-[11px] font-bold mt-2" style="color: var(--text-main);">SUB-£15 CAR PROJECT</div>
-              <div class="text-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
-              <div class="absolute bottom-1 right-2 font-mono text-[9px]" style="color: var(--text-dim);">FIG. 03-A</div>
-            </div>
-
-            <!-- Project Details -->
-            <div class="sm:col-span-7 space-y-2.5">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-                The Sub-£15 Budget Car Project
-              </h4>
-              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.
-              </p>
-              
-              <div class="space-y-1 font-mono text-[11px] pt-1" style="color: var(--text-dim);">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  <span>Budget Target: Under £15 initial spend</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-                  <span>Work: Mechanical servicing, electrics &amp; repairs</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  <span>Updates &amp; photos will be added here as the build starts</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="dim-line pt-2">
-            <span>SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span>
-          </div>
-        </div>
-
-        <!-- Modular Slot for Future Project 2 -->
-        <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">PROJECT-SLOT 02</span>
-              <span class="font-sketch text-sketch text-xs">future build slot</span>
-            </div>
-            <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Electronics &amp; Uni Lab Builds</h4>
-            <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-              Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.
-            </p>
-          </div>
-          <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
-            STATUS: FUTURE SLOT
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- SECTION 04: WORK EXPERIENCE (ALL JOBS & HOSPITALITY LEADERSHIP) -->
+    <!-- SECTION 04: WORK EXPERIENCE (NUMBERED 05 DOWN TO 01 TO SHOW WHERE LEE CAME FROM) -->
     <section id="experience" class="space-y-4 sm:space-y-6">
       
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
@@ -804,12 +886,12 @@
 
       <div class="space-y-3.5 font-mono text-xs">
 
-        <!-- 1. Wetherspoons (The Twelve Tellers) - BAR TEAM LEADER (PROMOTED FEB 2026) -->
+        <!-- JOB 05: Wetherspoons - BAR TEAM LEADER (PROMOTED FEB 2026) -->
         <div class="blueprint-card p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans">
+          <div class="space-y-1 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 01]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Wetherspoons (The Twelve Tellers)</h4>
+              <span class="font-bold" style="color: var(--text-dim);">[JOB 05]</span>
+              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Wetherspoons</h4>
               <span class="px-2 py-0.5 text-[10px] bg-sky-500 text-white font-bold">PROMOTED FEB 2026</span>
             </div>
             <div class="text-xs sm:text-sm font-bold" style="color: var(--accent-cyan);">
@@ -821,18 +903,18 @@
               <li><strong>Training &amp; Standards:</strong> Train new starters, stay on top of Challenge 25 and licensing rules, and keep health and safety standards tight across the venue.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             03/2025 — Present <br />
             <span class="font-bold" style="color: var(--text-main);">Preston, Lancashire</span>
             <div class="font-sketch text-sketch text-xs mt-1">"Bar Team Leader"</div>
           </div>
         </div>
 
-        <!-- 2. Amazon Logistics (313 Logistics) -->
+        <!-- JOB 04: Amazon Logistics (313 Logistics) -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans">
+          <div class="space-y-1 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 02]</span>
+              <span class="font-bold" style="color: var(--text-dim);">[JOB 04]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Amazon Logistics (313 Logistics)</h4>
               <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">OPERATIONS</span>
             </div>
@@ -843,15 +925,15 @@
               <li>Handled my own self-employment records, mileage logs, and tax admin.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             11/2024 — 04/2025 <br />
             <span class="font-bold" style="color: var(--text-main);">Leyland, Lancashire</span>
           </div>
         </div>
 
-        <!-- 3. Car Cosmetics -->
+        <!-- JOB 03: Car Cosmetics -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans">
+          <div class="space-y-1 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold" style="color: var(--text-dim);">[JOB 03]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Car Cosmetics</h4>
@@ -864,18 +946,18 @@
               <li>Stripped down and replaced worn mechanical parts and fitted upgraded components.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             04/2024 — 10/2024 <br />
             <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
             <div class="font-sketch text-sketch text-xs mt-1">"workshop diagnostics"</div>
           </div>
         </div>
 
-        <!-- 4. Pleasure Beach Resort -->
+        <!-- JOB 02: Pleasure Beach Resort -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans">
+          <div class="space-y-1 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 04]</span>
+              <span class="font-bold" style="color: var(--text-dim);">[JOB 02]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Pleasure Beach Resort</h4>
               <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">SAFETY OPERATIONS</span>
             </div>
@@ -886,17 +968,17 @@
               <li>Helped train newer operators on safe ride operation and emergency procedures.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             03/2023 — 11/2024 <br />
             <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
           </div>
         </div>
 
-        <!-- 5. McDonald's -->
+        <!-- JOB 01: McDonald's (WHERE LEE STARTED) -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans">
+          <div class="space-y-1 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 05]</span>
+              <span class="font-bold" style="color: var(--text-dim);">[JOB 01]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">McDonald's</h4>
               <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">CREW</span>
             </div>
@@ -906,9 +988,10 @@
               <li>Built a solid habit of working fast as part of a team while keeping everything clean and accurate.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             03/2022 — 02/2023 <br />
             <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
+            <div class="font-sketch text-sketch text-xs mt-1">"where I started"</div>
           </div>
         </div>
 
@@ -916,19 +999,19 @@
 
     </section>
 
-    <!-- SECTION 05: EDUCATION (ALL QUALIFICATIONS & TRANSCRIPTS) -->
+    <!-- SECTION 05: EDUCATION -->
     <section id="education" class="space-y-4 sm:space-y-6">
       
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
         <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">05 // EDUCATION</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Academic Qualifications &amp; Transcripts</h2>
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Academic Qualifications</h2>
       </div>
 
       <div class="space-y-3.5 font-mono text-xs">
 
         <!-- 1. University of Lancashire (ULan) -->
         <div class="blueprint-card p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1.5 font-sans flex-1">
+          <div class="space-y-1.5 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold" style="color: var(--text-dim);">[DEGREE-01]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">University of Lancashire (ULan)</h4>
@@ -948,7 +1031,7 @@
               <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Engineering Maths</span>
             </div>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             2026 — Present <br />
             <span class="font-bold" style="color: var(--text-main);">Preston, Lancashire</span>
             <div class="font-sketch text-sketch text-xs mt-1">"foundation year"</div>
@@ -957,7 +1040,7 @@
 
         <!-- 2. Blackpool Sixth Form College -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-2 font-sans flex-1">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold" style="color: var(--text-dim);">[LEVEL 3]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Blackpool Sixth Form College</h4>
@@ -969,12 +1052,12 @@
 
             <!-- Grades Breakdown Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
-              <div class="p-2 border border-sky-500/25" style="background-color: var(--paper-color);">
+              <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
                 <span class="block text-[9px]" style="color: var(--text-dim);">BTEC NATIONAL DIPLOMA</span>
                 <span class="font-bold text-xs" style="color: var(--text-main);">Information Technology:</span>
                 <span class="font-bold ml-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">D* D*</span>
               </div>
-              <div class="p-2 border border-sky-500/25" style="background-color: var(--paper-color);">
+              <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
                 <span class="block text-[9px]" style="color: var(--text-dim);">GCE A-LEVEL</span>
                 <span class="font-bold text-xs" style="color: var(--text-main);">Computer Science:</span>
                 <span class="font-bold ml-1 px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-main);">Grade E</span>
@@ -985,7 +1068,7 @@
               Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.
             </p>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             Completed 08/2023 <br />
             <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
             <div class="font-sketch text-sketch text-xs mt-1">"Double Distinction Star"</div>
@@ -994,7 +1077,7 @@
 
         <!-- 3. St Mary's Catholic Academy -->
         <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-2 font-sans flex-1">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold" style="color: var(--text-dim);">[LEVEL 2]</span>
               <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">St Mary's Catholic Academy</h4>
@@ -1006,23 +1089,23 @@
 
             <!-- GCSE Breakdown Badges Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[10px]">
-              <div class="p-1.5 border border-emerald-500/50 bg-emerald-500/10">
-                <span class="text-[9px] block text-emerald-400 font-bold">DIGITAL ICT ★</span>
-                <span class="font-bold text-emerald-400">D*2 (Distinction*)</span>
+              <div class="p-1.5 border border-emerald-500/50 bg-emerald-500/10 min-w-0">
+                <span class="text-[9px] block text-emerald-400 font-bold truncate">DIGITAL ICT ★</span>
+                <span class="font-bold text-emerald-400 truncate block">D*2 (Distinction*)</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block" style="color: var(--text-dim);">PHOTOGRAPHY</span>
-                <span class="font-bold" style="color: var(--text-main);">Grade 9</span>
+              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
+                <span class="text-[9px] block truncate" style="color: var(--text-dim);">PHOTOGRAPHY</span>
+                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 9</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block" style="color: var(--text-dim);">ENGLISH LANG / LIT</span>
-                <span class="font-bold" style="color: var(--text-main);">Grade 6 / Grade 5</span>
+              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
+                <span class="text-[9px] block truncate" style="color: var(--text-dim);">ENGLISH LANG / LIT</span>
+                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 6 / Grade 5</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block" style="color: var(--text-dim);">MATHEMATICS</span>
-                <span class="font-bold" style="color: var(--text-main);">Grade 4</span>
+              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
+                <span class="text-[9px] block truncate" style="color: var(--text-dim);">MATHEMATICS</span>
+                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 4</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25 col-span-2 sm:col-span-4" style="background-color: var(--paper-color);">
+              <div class="p-1.5 border border-sky-500/25 col-span-2 sm:col-span-4 min-w-0" style="background-color: var(--paper-color);">
                 <span class="text-[9px] block" style="color: var(--text-dim);">SCIENCES (TRIPLE)</span>
                 <span class="font-bold" style="color: var(--text-main);">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</span>
               </div>
@@ -1032,7 +1115,7 @@
               Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.
             </p>
           </div>
-          <div class="text-left sm:text-right whitespace-nowrap text-[11px]" style="color: var(--text-muted);">
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
             Secondary Education <br />
             <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
             <div class="font-sketch text-sketch text-xs mt-1">"D*2 in Digital ICT"</div>
@@ -1052,10 +1135,10 @@
       </div>
 
       <!-- Simplified Clean Blueprint Contact Card -->
-      <div class="blueprint-card p-5 sm:p-8 border border-sky-500/40 space-y-6">
+      <div class="blueprint-card p-4 sm:p-8 border border-sky-500/40 space-y-6">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sky-500/25 pb-5">
-          <div class="space-y-1">
+          <div class="space-y-1 min-w-0">
             <h3 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
               Open to Engineering Placements &amp; Opportunities
             </h3>
@@ -1074,7 +1157,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
           <!-- Direct Email -->
-          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
             <div class="font-mono text-[10px]" style="color: var(--text-dim);">DIRECT EMAIL ✉</div>
             <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
               lspky@pm.me
@@ -1083,16 +1166,16 @@
           </a>
 
           <!-- Location -->
-          <div class="p-4 border border-sky-500/30 space-y-1" style="background-color: var(--paper-color);">
+          <div class="p-4 border border-sky-500/30 space-y-1 min-w-0" style="background-color: var(--paper-color);">
             <div class="font-mono text-[10px]" style="color: var(--text-dim);">CAMPUS &amp; BASE 📍</div>
-            <div class="font-bold text-sm sm:text-base" style="color: var(--text-main);">
+            <div class="font-bold text-sm sm:text-base truncate" style="color: var(--text-main);">
               Preston, Lancashire
             </div>
             <div class="text-xs" style="color: var(--text-muted);">United Kingdom</div>
           </div>
 
           <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
             <div class="font-mono text-[10px]" style="color: var(--text-dim);">PROFESSIONAL ↗</div>
             <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
               LinkedIn
@@ -1101,7 +1184,7 @@
           </a>
 
           <!-- GitHub -->
-          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block" style="background-color: var(--paper-color);">
+          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
             <div class="font-mono text-[10px]" style="color: var(--text-dim);">GITHUB PROFILE ↗</div>
             <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
               @leeprky
@@ -1114,7 +1197,7 @@
         <!-- Website Source Code Strip -->
         <div class="pt-4 border-t border-sky-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs" style="color: var(--text-muted);">
           <span>SPECIFICATION SOURCE REPOSITORY:</span>
-          <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="inline-flex items-center gap-1.5 font-bold hover:underline" style="color: var(--accent-cyan);">
+          <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="inline-flex items-center gap-1.5 font-bold hover:underline break-all" style="color: var(--accent-cyan);">
             <span>github.com/leeprky/leeprky.github.io</span>
             <span>↗</span>
           </a>
@@ -1127,8 +1210,8 @@
   </main>
 
   <!-- BLUEPRINT DRAWING FOOTER -->
-  <footer style="background-color: var(--top-strip);" class="border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono" style="color: var(--text-muted);">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
+  <footer style="background-color: var(--top-strip); color: var(--text-muted);" class="w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
+    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
       <div>
         <span>SHEET: LP-EE-2026</span> • 
         <span>DISCIPLINE: ELECTRICAL ENGINEERING</span> • 

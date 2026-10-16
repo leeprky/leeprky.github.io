@@ -33,18 +33,21 @@ Designed in an authentic **engineering blueprint and technical drafting sketch s
   - **Computer Science & ICT:** Hardware, networking, relational databases, and software troubleshooting.
   - **Live Audio & Former DJ Stint:** Brief stint DJing live events, setting up decks, mixers, and PA audio gear.
 
-- **Project Gallery & Build Logs:**
-  - **The Sub-£15 Budget Car Build & Overhaul:** A budget project sourcing and fixing up a car for under £15 initial spend with hands-on mechanical and electrical work.
-  - Expandable slots for future automotive builds and university electronics lab projects.
+- **Project Gallery (`03 // GALLERY`):**
+  - **`03.1 // ENGINEERING`:**
+    - **The Sub-£15 Budget Car Project:** A budget project sourcing and fixing up a car for under £15 initial spend with hands-on mechanical and electrical work.
+    - **Electronics & Uni Lab Builds:** Slot for upcoming circuit and engineering projects at ULan.
+  - **`03.2 // DISCORD THEMES`:**
+    - **WindowsXI Discord Theme**, **MaterialYou & Vintage**, and **Lode, Ovel & Fluidcord** open-source UI themes.
 
-- **Verified Career Logbook (04 // WORK EXPERIENCE):**
-  1. **Wetherspoons (The Twelve Tellers, Preston)** — Bar Team Leader *(Promoted Feb 2026)*
-  2. **Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
-  3. **Car Cosmetics** — Apprentice Automotive Technician — Diagnostics & Repair
-  4. **Pleasure Beach Resort** — Ride Operator
-  5. **McDonald's** — Crew Member
+- **Verified Career Logbook (`04 // EXPERIENCE`, numbered `05` down to `01`):**
+  - **[JOB 05] Wetherspoons (Preston)** — Bar Team Leader *(Promoted Feb 2026)*
+  - **[JOB 04] Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
+  - **[JOB 03] Car Cosmetics** — Apprentice Automotive Technician — Diagnostics & Repair
+  - **[JOB 02] Pleasure Beach Resort** — Ride Operator
+  - **[JOB 01] McDonald's** — Crew Member *(Where I started)*
 
-- **Academic Qualifications (05 // EDUCATION):**
+- **Academic Qualifications (`05 // EDUCATION`):**
   1. **University of Lancashire (ULan)** — Electrical Engineering (Foundation Year) *(2026 — Present)*
   2. **Blackpool Sixth Form College** — BTEC Level 3 National Diploma in IT (**D\* D\***), A-Level Computer Science *(Completed 08/2023)*
   3. **St Mary's Catholic Academy** — GCSEs: Digital ICT (**D\*2 Distinction\***), Photography (**Grade 9**), Triple Sciences, English, Maths
