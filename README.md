@@ -31,6 +31,10 @@ This `dev` branch stages experimental features prior to merging into `main`:
    - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `06 // CONTACT` channels page + Availability & Location Details
    - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification, At-a-Glance Executive Summary & Embedded PDF Viewer** page
    - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)**, 1-Click Topic Presets, Copy-to-Clipboard & Quick Message Composer
+4. **Safari & Multi-Browser Title Bar / Status Bar / Scrollbar Theming:**
+   - Dynamic `<meta name="theme-color">` (`#061224` dark blueprint / `#e1edf8` light blueprint) synced in real time with `Auto` / `Light` / `Dark` toggles for **Safari (macOS & iOS/iPadOS)**, **Chrome**, **Edge**, **Brave**, **Vivaldi**, and **Samsung Internet**.
+   - **Apple Safari iOS/iPadOS & Pinned Tab Support:** `viewport-fit=cover` with `env(safe-area-inset-*)` edge-to-edge notch/landscape padding, `apple-mobile-web-app-status-bar-style`, and Safari pinned-tab `mask-icon` (`#0ea5e9`).
+   - **Native Browser UI & Scrollbar Theming:** Dynamic `<meta name="color-scheme">`, Microsoft Edge/Windows tile & navbutton meta tags (`msapplication-navbutton-color`), and themed blueprint scrollbars across WebKit, Chromium, and Firefox.
 
 ---
 

@@ -2,7 +2,19 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" id="meta-color-scheme" />
+  <meta name="theme-color" content="#e1edf8" media="(prefers-color-scheme: light)" id="meta-theme-light" />
+  <meta name="theme-color" content="#061224" media="(prefers-color-scheme: dark)" id="meta-theme-dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" id="meta-apple-status" />
+  <meta name="apple-mobile-web-app-title" content="Lee Parkinson [EE]" />
+  <meta name="application-name" content="Lee Parkinson [EE]" />
+  <meta name="msapplication-navbutton-color" content="#061224" id="meta-ms-nav" />
+  <meta name="msapplication-TileColor" content="#061224" id="meta-ms-tile" />
+  <link rel="apple-touch-icon" href="assets/images/logo5.webp" />
+  <link rel="mask-icon" href="assets/images/logo5.webp" color="#0ea5e9" />
   <title>Lee Parkinson | 01 // About Me</title>
   <meta name="description" content="Personal portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
   <link rel="icon" type="image/webp" href="assets/images/logo5.webp" />
@@ -25,7 +37,12 @@
     };
     (function() {
       const t = localStorage.getItem('theme');
-      document.documentElement.classList.toggle('dark', t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches));
+      const isDark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+      const c = isDark ? '#061224' : '#e1edf8';
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
     })();
   </script>
   <style>
@@ -67,6 +84,18 @@
       0% { transform: translate3d(0, 0, 0); }
       100% { transform: translate3d(-100px, -100px, 0); }
     }
+    html {
+      background-color: var(--bg-color);
+      color-scheme: light;
+      scrollbar-color: var(--accent-cyan) var(--top-strip);
+    }
+    html.dark {
+      color-scheme: dark;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--top-strip); }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border: 1px solid var(--accent-cyan); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
@@ -148,7 +177,8 @@
       width: 100%;
       max-width: 1380px;
       margin-inline: auto;
-      padding-inline: clamp(0.65rem, 2.8vw, 3rem);
+      padding-left: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-left));
+      padding-right: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-right));
     }
     .blueprint-card {
       background: var(--card-bg);
@@ -551,22 +581,33 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    function syncBrowserChrome(isDark) {
+      const c = isDark ? '#061224' : '#e1edf8';
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+      document.getElementById('meta-apple-status')?.setAttribute('content', isDark ? 'black-translucent' : 'default');
+      document.getElementById('meta-ms-nav')?.setAttribute('content', c);
+      document.getElementById('meta-ms-tile')?.setAttribute('content', c);
+    }
+
     function setThemeMode(mode) {
       const html = document.documentElement;
       const map = { auto: 'btn-theme-auto', light: 'btn-theme-light', dark: 'btn-theme-dark' };
       Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('bg-sky-500', 'text-white', 'font-bold'));
-      if (mode === 'auto') {
-        localStorage.removeItem('theme');
-        html.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches);
-      } else {
-        localStorage.setItem('theme', mode);
-        html.classList.toggle('dark', mode === 'dark');
-      }
+      const isDark = mode === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+      if (mode === 'auto') localStorage.removeItem('theme');
+      else localStorage.setItem('theme', mode);
+      html.classList.toggle('dark', isDark);
+      syncBrowserChrome(isDark);
       document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
     }
     setThemeMode(localStorage.getItem('theme') || 'auto');
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.classList.toggle('dark', e.matches);
+        syncBrowserChrome(e.matches);
+      }
     });
 
 
