@@ -73,8 +73,11 @@
       }
     }
     try { lpApplyAccent(localStorage.getItem('accent')); } catch (e) {}
+    try { if (localStorage.getItem('lee_hero_typed') !== '1') document.documentElement.classList.add('hero-needs-typing'); } catch (e) {}
   </script>
   <style>
+    html.hero-needs-typing #hero-type-target { visibility: hidden; }
+    html.hero-needs-typing #hero-dot { opacity: 0; }
     :root {
       --bg-color: #ddebf7;
       --paper-color: #f7fbff;
@@ -364,7 +367,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.6</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.7</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -648,8 +651,8 @@
           </div>
 
           <div class="space-y-2">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight t-main">
-              Hi, I'm Lee<span class="t-cyan">.</span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight t-main select-none flex items-baseline" id="hero-heading" title="Click to replay code typing animation">
+              <span id="hero-type-target">Hi, I'm Lee</span><span id="hero-dot" class="t-cyan">.</span><span id="hero-cursor" class="font-mono t-cyan inline-block text-3xl sm:text-4xl lg:text-5xl ml-1 font-light animate-pulse" style="display:none;">_</span>
             </h1>
             <p class="font-sketch t-sketch text-base sm:text-lg lg:text-xl">
               "Studying Electrical Engineering at ULan. Working on cars, electronics, and software."
@@ -791,6 +794,56 @@
         el.classList.remove('holding', 'popup-open');
       });
     });
+
+    // First-Load Code Typing Animation for "Hi, I'm Lee." (cached in localStorage)
+    (function () {
+      const heading = document.getElementById('hero-heading');
+      const target = document.getElementById('hero-type-target');
+      const dot = document.getElementById('hero-dot');
+      const cursor = document.getElementById('hero-cursor');
+      if (!heading || !target || !dot || !cursor) return;
+
+      const fullText = "Hi, I'm Lee";
+      const isCached = localStorage.getItem('lee_hero_typed') === '1';
+
+      function runTyping(force) {
+        if (!force && isCached) return;
+        document.documentElement.classList.remove('hero-needs-typing');
+        target.textContent = '';
+        dot.style.opacity = '0';
+        cursor.style.display = 'inline-block';
+        cursor.style.opacity = '1';
+        let i = 0;
+        function typeStep() {
+          if (i < fullText.length) {
+            target.textContent += fullText[i];
+            i++;
+            const variance = 55 + Math.random() * 45;
+            setTimeout(typeStep, variance);
+          } else {
+            dot.style.opacity = '1';
+            dot.style.transition = 'opacity 0.25s ease';
+            try { localStorage.setItem('lee_hero_typed', '1'); } catch (e) {}
+            setTimeout(() => {
+              cursor.style.transition = 'opacity 0.4s ease';
+              cursor.style.opacity = '0';
+              setTimeout(() => {
+                cursor.style.display = 'none';
+                cursor.style.opacity = '1';
+              }, 400);
+            }, 1400);
+          }
+        }
+        setTimeout(typeStep, 250);
+      }
+
+      if (!isCached) {
+        runTyping(false);
+      }
+
+      heading.style.cursor = 'pointer';
+      heading.addEventListener('click', () => runTyping(true));
+    })();
   </script>
 </body>
 </html>
