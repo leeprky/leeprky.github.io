@@ -285,12 +285,14 @@
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       position: relative;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       max-width: 100%;
     }
     .blueprint-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 0 22px -5px rgb(var(--sky-400) / 0.18);
+      box-shadow: 0 6px 22px -5px rgb(var(--sky-400) / 0.22);
     }
     .blueprint-card::before, .blueprint-card::after {
       content: '+';
@@ -298,11 +300,39 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--accent-cyan);
-      opacity: 0.85;
+      opacity: 0.7;
       pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.25s ease,
+                  opacity 0.25s ease;
     }
     .blueprint-card::before { top: -8px; left: -2px; }
     .blueprint-card::after { bottom: -8px; right: -2px; }
+    .blueprint-card:hover::before {
+      opacity: 1;
+      transform: translate(-1.5px, -1.5px);
+      color: var(--accent-sketch);
+    }
+    .blueprint-card:hover::after {
+      opacity: 1;
+      transform: translate(1.5px, 1.5px);
+      color: var(--accent-sketch);
+    }
+
+    /* Tactile Elevation & Micro-Interactions on Component Cards */
+    .project-card,
+    .blueprint-interactive {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover,
+    .blueprint-interactive:hover {
+      transform: translateY(-2.5px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 12px 28px -6px rgb(var(--sky-500) / 0.24), 0 0 0 1px rgb(var(--sky-400) / 0.3);
+    }
+
     .dim-line {
       display: flex;
       align-items: center;
@@ -326,6 +356,13 @@
       border: 1px solid rgb(var(--sky-500) / 0.3);
       background-color: var(--paper-color);
       color: var(--text-dim);
+      transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      display: inline-block;
+    }
+    .chip:hover {
+      border-color: var(--accent-cyan);
+      background-color: rgb(var(--sky-500) / 0.12);
+      transform: translateY(-1px);
     }
     .sec-tag {
       font-family: 'JetBrains Mono', monospace;
@@ -335,6 +372,42 @@
       color: #fff;
       font-weight: 700;
       flex-shrink: 0;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    /* Re-Route Matrix Buttons */
+    .re-route-link {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .re-route-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 6px 16px -4px rgb(var(--sky-500) / 0.25);
+    }
+    .re-route-link:active {
+      transform: scale(0.96);
+    }
+
+    /* Nav Item Hover & Active Micro-States */
+    .nav-item-wrap > a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      display: inline-block;
+    }
+    .nav-item-wrap > a:active {
+      transform: scale(0.95);
+    }
+
+    /* Telemetry Beacon Pulse */
+    @keyframes telemetryPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgb(16 185 129 / 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgb(16 185 129 / 0);
+      }
+    }
+    .telemetry-beacon {
+      animation: telemetryPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -371,7 +444,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.7</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.8</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -596,7 +669,7 @@
             <div class="text-[10px] font-mono tracking-widest uppercase t-dim">TELEMETRY LOG // RUNTIME EXCEPTION</div>
             <h2 class="text-lg sm:text-xl font-bold t-main">Open Circuit at Target Address</h2>
             <p class="text-xs sm:text-sm font-mono t-muted">
-              The signal router scanned the repository coordinates but found no active schematic node matching this URI. Either the path was mistyped, or the revision was restructured under SPEC V7.7.
+              The signal router scanned the repository coordinates but found no active schematic node matching this URI. Either the path was mistyped, or the revision was restructured under SPEC V7.8.
             </p>
           </div>
 
@@ -606,7 +679,7 @@
               <span>DEBUG LOG :: ROUTER_PROBE</span>
               <span>STATE: FAULT</span>
             </div>
-            <div class="pt-1 text-emerald-400">$ sys_route --trace <span id="current-path" class="text-sky-300">/unknown</span></div>
+            <div class="pt-1 text-emerald-400">$ sys_route --trace <span id="current-path" class="text-sky-300">/unknown</span> <span class="dot-blinking text-emerald-400">_</span></div>
             <div>[0.001ms] Querying DNS &amp; GitHub Pages edge routing... <span class="text-emerald-400">RESOLVED</span></div>
             <div>[0.004ms] Probing master coordinate index... <span class="text-yellow-400">CHECKING</span></div>
             <div>[0.009ms] Error: Node unrouted. Impedance = <span class="text-red-400">&infin; &Omega; (Open Circuit)</span></div>
@@ -617,39 +690,39 @@
           <div class="space-y-2 pt-2">
             <div class="text-[10px] font-mono tracking-widest uppercase t-dim">RE-ROUTE CHANNELS // ACTIVE BLUEPRINT SHEETS</div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs">
-              <a href="index.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="index.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>00. HOME</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="about.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="about.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>01. ABOUT</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="schematics.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="schematics.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>02. SCHEMATICS</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="gallery.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="gallery.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>03. GALLERY</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="experience.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="experience.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>04. EXPERIENCE</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="education.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="education.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>05. EDUCATION</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="hobbies.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="hobbies.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>06. HOBBIES</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="contact.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="contact.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>07. CONTACT</span>
                 <span class="t-dim">&rarr;</span>
               </a>
-              <a href="cv.html" class="p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
+              <a href="cv.html" class="re-route-link p-2 border border-sky-500/30 hover:border-sky-400 hover:bg-sky-500/10 rounded transition-all text-left flex items-center justify-between">
                 <span>📄 CV SPEC</span>
                 <span class="t-dim">&rarr;</span>
               </a>

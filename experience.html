@@ -167,14 +167,25 @@
     .section-content-wrap {
       display: grid;
       grid-template-rows: 1fr;
-      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .section-content-wrap > .section-content-inner {
       overflow: hidden;
       min-height: 0;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .section-collapsed .section-content-wrap {
       grid-template-rows: 0fr;
+    }
+    .section-collapsed .section-content-wrap > .section-content-inner {
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+    .section-chevron svg {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .section-collapsed .section-chevron svg {
       transform: rotate(0deg);
@@ -183,9 +194,18 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
       min-height: 44px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .section-toggle-header:active {
-      transform: scale(0.995);
+      transform: scale(0.992);
+    }
+    .section-toggle-header:hover .sec-tag {
+      filter: brightness(1.12);
+      box-shadow: 0 0 14px rgb(var(--sky-500) / 0.45);
+    }
+    .section-toggle-header:hover .section-chevron {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px -2px rgb(var(--sky-500) / 0.35);
     }
     .section-collapsed .section-toggle-header {
       opacity: 0.9;
@@ -332,12 +352,14 @@
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       position: relative;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       max-width: 100%;
     }
     .blueprint-card:hover {
       border-color: var(--border-hover);
-      box-shadow: 0 0 22px -5px rgb(var(--sky-400) / 0.18);
+      box-shadow: 0 6px 22px -5px rgb(var(--sky-400) / 0.22);
     }
     .blueprint-card::before, .blueprint-card::after {
       content: '+';
@@ -345,11 +367,39 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--accent-cyan);
-      opacity: 0.85;
+      opacity: 0.7;
       pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.25s ease,
+                  opacity 0.25s ease;
     }
     .blueprint-card::before { top: -8px; left: -2px; }
     .blueprint-card::after { bottom: -8px; right: -2px; }
+    .blueprint-card:hover::before {
+      opacity: 1;
+      transform: translate(-1.5px, -1.5px);
+      color: var(--accent-sketch);
+    }
+    .blueprint-card:hover::after {
+      opacity: 1;
+      transform: translate(1.5px, 1.5px);
+      color: var(--accent-sketch);
+    }
+
+    /* Tactile Elevation & Micro-Interactions on Component Cards */
+    .project-card,
+    .blueprint-interactive {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover,
+    .blueprint-interactive:hover {
+      transform: translateY(-2.5px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 12px 28px -6px rgb(var(--sky-500) / 0.24), 0 0 0 1px rgb(var(--sky-400) / 0.3);
+    }
+
     .dim-line {
       display: flex;
       align-items: center;
@@ -373,6 +423,13 @@
       border: 1px solid rgb(var(--sky-500) / 0.3);
       background-color: var(--paper-color);
       color: var(--text-dim);
+      transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      display: inline-block;
+    }
+    .chip:hover {
+      border-color: var(--accent-cyan);
+      background-color: rgb(var(--sky-500) / 0.12);
+      transform: translateY(-1px);
     }
     .sec-tag {
       font-family: 'JetBrains Mono', monospace;
@@ -382,6 +439,41 @@
       color: #fff;
       font-weight: 700;
       flex-shrink: 0;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    /* Filter Buttons */
+    .filter-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .filter-btn:hover:not(.active) {
+      background-color: rgb(var(--sky-500) / 0.12);
+      color: var(--accent-cyan);
+    }
+    .filter-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Nav Item Hover & Active Micro-States */
+    .nav-item-wrap > a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      display: inline-block;
+    }
+    .nav-item-wrap > a:active {
+      transform: scale(0.95);
+    }
+
+    /* Telemetry Beacon Pulse */
+    @keyframes telemetryPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgb(16 185 129 / 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgb(16 185 129 / 0);
+      }
+    }
+    .telemetry-beacon {
+      animation: telemetryPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -414,7 +506,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.7</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.8</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -628,7 +720,7 @@
 
       <div class="space-y-3.5 font-mono text-xs">
         <!-- JOB 05 -->
-        <div class="blueprint-card p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <div class="blueprint-card blueprint-interactive p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-2 font-sans min-w-0 flex-1">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold t-dim">[JOB 05]</span>
@@ -681,7 +773,7 @@
         </div>
 
         <!-- JOB 04 -->
-        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold t-dim">[JOB 04]</span>
@@ -701,7 +793,7 @@
         </div>
 
         <!-- JOB 03 -->
-        <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold t-dim">[JOB 03]</span>
@@ -722,7 +814,7 @@
         </div>
 
         <!-- JOB 02 -->
-        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold t-dim">[JOB 02]</span>
@@ -742,7 +834,7 @@
         </div>
 
         <!-- JOB 01 -->
-        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
               <span class="font-bold t-dim">[JOB 01]</span>
