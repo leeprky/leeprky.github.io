@@ -4,15 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Lee Parkinson | 03 // Project Gallery</title>
-  <meta name="description" content="Personal portfolio of Lee Parkinson — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
+  <meta name="description" content="Personal portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
   <link rel="icon" type="image/webp" href="assets/images/logo5.webp" />
-
-  <!-- Fonts: Space Grotesk (Drafting display), JetBrains Mono (Technical code/specs), Architects Daughter (Handwritten sketch notes) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -26,176 +22,98 @@
           }
         }
       }
-    }
+    };
+    (function() {
+      const t = localStorage.getItem('theme');
+      document.documentElement.classList.toggle('dark', t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches));
+    })();
   </script>
-
   <style>
-    /* CSS Variables for Dynamic Blueprint Theme (Light & Dark) */
     :root {
       --bg-color: #f0f6fc;
       --paper-color: #ffffff;
       --card-bg: rgba(255, 255, 255, 0.95);
-      --border-color: rgba(2, 132, 199, 0.3);
-      --border-hover: rgba(2, 132, 199, 0.7);
-      --grid-major: rgba(2, 132, 199, 0.12);
-      --grid-minor: rgba(2, 132, 199, 0.04);
+      --border-color: rgba(2, 132, 199, 0.32);
+      --border-hover: rgba(2, 132, 199, 0.75);
+      --grid-major: rgba(2, 132, 199, 0.13);
+      --grid-minor: rgba(2, 132, 199, 0.045);
       --text-main: #0c213d;
-      --text-muted: #335377;
+      --text-muted: #2d4a6d;
       --text-dim: #0284c7;
       --accent-cyan: #0284c7;
       --accent-sketch: #b45309;
-      --crosshair: #0284c7;
       --header-bg: rgba(240, 246, 252, 0.95);
       --top-strip: #e1edf8;
     }
-
     html.dark {
       --bg-color: #07162c;
       --paper-color: #0b1f3d;
-      --card-bg: rgba(11, 31, 61, 0.88);
-      --border-color: rgba(56, 189, 248, 0.28);
-      --border-hover: rgba(56, 189, 248, 0.7);
-      --grid-major: rgba(56, 189, 248, 0.12);
-      --grid-minor: rgba(56, 189, 248, 0.04);
+      --card-bg: rgba(11, 31, 61, 0.9);
+      --border-color: rgba(56, 189, 248, 0.3);
+      --border-hover: rgba(56, 189, 248, 0.75);
+      --grid-major: rgba(56, 189, 248, 0.13);
+      --grid-minor: rgba(56, 189, 248, 0.045);
       --text-main: #f0f6fc;
       --text-muted: #bae6fd;
       --text-dim: #38bdf8;
       --accent-cyan: #38bdf8;
       --accent-sketch: #fde047;
-      --crosshair: #38bdf8;
       --header-bg: rgba(7, 22, 44, 0.95);
       --top-strip: #061224;
     }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: clip;
-      margin: 0;
-      padding: 0;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: clip; margin: 0; padding: 0; }
     @keyframes blueprintDrift {
-      0% {
-        background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      }
-      100% {
-        background-position: 100px 100px, 100px 100px, 100px 100px, 100px 100px;
-      }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100px, -100px, 0); }
     }
-
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      background-image: 
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -100px;
+      z-index: -1;
+      pointer-events: none;
+      will-change: transform;
+      background-image:
         linear-gradient(var(--grid-major) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
         linear-gradient(var(--grid-minor) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
       background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-      background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      animation: blueprintDrift 18s linear infinite;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      animation: blueprintDrift 7s linear infinite;
     }
-
-    /* Fluid responsive container that adapts cleanly across mobile, landscape, and any desktop window size */
-    .drafting-container {
-      width: 100%;
-      max-width: 1380px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: clamp(0.75rem, 3vw, 3rem);
-      padding-right: clamp(0.75rem, 3vw, 3rem);
-    }
-
-    .blueprint-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      position: relative;
-      transition: all 0.25s ease;
-      max-width: 100%;
-    }
-    .blueprint-card:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 0 25px -5px rgba(2, 132, 199, 0.15);
-    }
-    html.dark .blueprint-card:hover {
-      box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.2);
-    }
-    .blueprint-card::before {
-      content: '+';
-      position: absolute;
-      top: -8px;
-      left: -2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--crosshair);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-    .blueprint-card::after {
-      content: '+';
-      position: absolute;
-      bottom: -8px;
-      right: -2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--crosshair);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-
-    .dim-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-dim);
-      overflow: hidden;
-      width: 100%;
-      min-width: 0;
-    }
-    .dim-line::before, .dim-line::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--border-color);
-      min-width: 12px;
-    }
-
-    .text-sketch {
-      color: var(--accent-sketch);
-    }
-
-    /* Hide scrollbar for clean horizontal sub-nav on mobile/tablet */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Topbar Hover-Only Dedicated Page Popout Card (DEV BRANCH) */
     .nav-item-wrap {
       position: relative;
       display: inline-flex;
       align-items: center;
+    }
+    .nav-hold-bar {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent-cyan);
+      pointer-events: none;
+    }
+    .nav-item-wrap.holding .nav-hold-bar {
+      width: 100%;
+      transition: width 2.5s linear;
     }
     .nav-hover-card {
       position: absolute;
       top: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(6px);
-      width: 210px;
+      width: 215px;
       background: var(--paper-color);
       border: 1px solid var(--accent-cyan);
-      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.4);
       padding: 0.65rem;
       opacity: 0;
       visibility: hidden;
@@ -208,540 +126,467 @@
       right: 0;
       transform: translateY(6px);
     }
-    .nav-item-wrap:hover .nav-hover-card,
-    .nav-item-wrap:focus-within .nav-hover-card {
+    .nav-item-wrap.popup-open .nav-hover-card {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
       transform: translateX(-50%) translateY(0);
     }
-    .nav-item-wrap.align-right:hover .nav-hover-card,
-    .nav-item-wrap.align-right:focus-within .nav-hover-card {
+    .nav-item-wrap.align-right.popup-open .nav-hover-card {
       transform: translateY(0);
     }
-
-    /* Landscape Mode Optimization for Mobile Devices */
+    .t-main { color: var(--text-main); }
+    .t-muted { color: var(--text-muted); }
+    .t-dim { color: var(--text-dim); }
+    .t-cyan { color: var(--accent-cyan); }
+    .t-sketch { color: var(--accent-sketch); }
+    .bg-paper { background-color: var(--paper-color); }
+    .bg-card { background-color: var(--card-bg); }
+    .bg-strip { background-color: var(--top-strip); }
+    .bg-hdr { background-color: var(--header-bg); }
+    .drafting-container {
+      width: 100%;
+      max-width: 1380px;
+      margin-inline: auto;
+      padding-inline: clamp(0.65rem, 2.8vw, 3rem);
+    }
+    .blueprint-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      max-width: 100%;
+    }
+    .blueprint-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 22px -5px rgba(56, 189, 248, 0.18);
+    }
+    .blueprint-card::before, .blueprint-card::after {
+      content: '+';
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .blueprint-card::before { top: -8px; left: -2px; }
+    .blueprint-card::after { bottom: -8px; right: -2px; }
+    .dim-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      overflow: hidden;
+      width: 100%;
+      min-width: 0;
+    }
+    .dim-line::before, .dim-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+      min-width: 12px;
+    }
+    .chip {
+      padding: 0.15rem 0.5rem;
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      background-color: var(--paper-color);
+      color: var(--text-dim);
+    }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      background: #0ea5e9;
+      color: #fff;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     @media (orientation: landscape) and (max-height: 580px) {
-      .landscape-compact-header {
-        height: 2.75rem !important;
-      }
-      .landscape-compact-main {
-        padding-top: 1rem !important;
-        padding-bottom: 1.5rem !important;
-      }
-      .landscape-hero-grid {
-        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-        gap: 1.25rem !important;
-      }
-      .landscape-hero-photo-col {
-        grid-column: span 4 / span 4 !important;
-      }
-      .landscape-hero-photo-box {
-        max-width: 170px !important;
-      }
-      .landscape-hero-text-col {
-        grid-column: span 8 / span 8 !important;
-      }
+      .landscape-compact-header { height: 2.75rem !important; }
+      .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
+      .landscape-hero-grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
+      .landscape-hero-photo-col { grid-column: span 4 / span 4 !important; }
+      .landscape-hero-photo-box { max-width: 175px !important; }
+      .landscape-hero-text-col { grid-column: span 8 / span 8 !important; }
     }
   </style>
-
-  <script>
-    // Immediate Theme Initialization
-    (function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    })();
-  </script>
 </head>
 
-<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between">
+<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between text-sm sm:text-base">
 
   <!-- TOP ENGINEERING TECHNICAL STRIP -->
-  <div style="background-color: var(--top-strip);" class="w-full border-b border-sky-400/30 text-[10px] sm:text-[11px] font-mono py-1.5 z-50">
+  <div class="bg-strip w-full border-b border-sky-400/30 text-[11px] sm:text-xs font-mono py-1.5 z-50">
     <div class="drafting-container flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
-        <span class="flex items-center gap-1.5 font-bold" style="color: var(--text-dim);">
+        <span class="flex items-center gap-1.5 font-bold t-dim">
           <span class="inline-block w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--accent-cyan);"></span>
-          <span class="truncate">DWG: LP-ENG-2026-EE [DEV]</span>
+          <span class="truncate">DWG: LP-ENG-2026-EE</span>
         </span>
         <span class="opacity-30 hidden sm:inline">|</span>
-        <span class="hidden sm:inline" style="color: var(--text-muted);">DISCIPLINE: ELECTRICAL ENGINEERING</span>
+        <span class="hidden sm:inline t-muted">DISCIPLINE: ELECTRICAL ENGINEERING</span>
         <span class="opacity-30">|</span>
-        <span style="color: var(--text-muted);">PRESTON, UK</span>
+        <span class="t-muted">PRESTON, UK</span>
       </div>
-      
-      <!-- Theme Mode Switcher -->
       <div class="flex items-center gap-2 shrink-0">
-        <div class="flex items-center border border-sky-400/40 font-mono text-[10px] rounded overflow-hidden" id="theme-controls">
-          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">
-            🖥️ <span class="hidden sm:inline">AUTO</span>
-          </button>
-          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">
-            ☀️ <span class="hidden sm:inline">LIGHT</span>
-          </button>
-          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">
-            🌙 <span class="hidden sm:inline">DARK</span>
-          </button>
+        <div class="flex items-center border border-sky-400/40 font-mono text-[11px] rounded overflow-hidden">
+          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
+          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
+          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
-        <span class="hidden md:inline text-sketch font-sketch text-xs">DEV V6.2</span>
+        <span class="hidden md:inline t-sketch font-sketch text-xs">SPEC V6.2</span>
       </div>
     </div>
   </div>
 
-  <!-- NAVIGATION HEADER (HOVER OVER ANY ITEM FOR DEDICATED PAGE) -->
-  <header style="background-color: var(--header-bg);" class="w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40 transition-all">
+  <!-- NAVIGATION HEADER (HOLD HOVER 2.5s FOR DEDICATED PAGE POPUP) -->
+  <header class="bg-hdr w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40">
     <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
-      
-      <!-- Technical Stamp / Logo -->
-      <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all shrink-0" style="color: var(--accent-cyan); background-color: var(--card-bg);">
-          LP
-        </div>
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0">
+        <div class="w-9 h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-sm shrink-0 t-cyan bg-card">LP</div>
         <div class="min-w-0">
-          <div class="font-bold text-xs sm:text-base tracking-tight flex items-center gap-1 truncate" style="color: var(--text-main);">
+          <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1 truncate t-main">
             <span class="truncate">LEE PARKINSON</span>
-            <span class="text-[10px] sm:text-xs font-mono font-normal shrink-0" style="color: var(--text-dim);">[EE]</span>
+            <span class="text-xs font-mono font-normal shrink-0 t-dim">[EE]</span>
           </div>
-          <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate" style="color: var(--text-muted);">
-            Electrical Engineering
-          </div>
+          <div class="text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate t-muted">Electrical Engineering</div>
         </div>
       </a>
 
-      <!-- Technical Nav (Desktop & Medium Windows — Hover for Dedicated Pages) -->
-      <nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-xs font-mono shrink-0" style="color: var(--text-muted);">
-        
-        <!-- 01. ABOUT -->
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-5 text-xs font-mono shrink-0 t-muted">
         <div class="nav-item-wrap py-2">
-          <a href="index.html#about" class="hover:text-sky-400 hover:underline transition-colors">01. ABOUT</a>
+          <a href="index.html#about" class="hover:text-sky-400">01. ABOUT</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 01 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Full About Me &amp; Bio Specification</div>
-            <a href="about.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 01 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Full Bio, Toolkit &amp; Schedule</div>
+            <a href="about.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 02. SCHEMATICS -->
         <div class="nav-item-wrap py-2">
-          <a href="index.html#schematics" class="hover:text-sky-400 hover:underline transition-colors">02. SCHEMATICS</a>
+          <a href="index.html#schematics" class="hover:text-sky-400">02. SCHEMATICS</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 02 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Engineering, Cars, CS/ICT &amp; DJ</div>
-            <a href="schematics.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 02 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Deep Technical Specs &amp; DJ</div>
+            <a href="schematics.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 03. GALLERY -->
         <div class="nav-item-wrap py-2">
-          <a href="index.html#gallery" class="hover:text-sky-400 hover:underline transition-colors">03. GALLERY</a>
+          <a href="index.html#gallery" class="hover:text-sky-400">03. GALLERY</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 03 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">03.1 Engineering &amp; 03.2 Themes</div>
-            <a href="gallery.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 03 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Sub-£15 Car Plan &amp; Themes</div>
+            <a href="gallery.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 04. EXPERIENCE -->
         <div class="nav-item-wrap py-2">
-          <a href="index.html#experience" class="hover:text-sky-400 hover:underline transition-colors">04. EXPERIENCE</a>
+          <a href="index.html#experience" class="hover:text-sky-400">04. EXPERIENCE</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 04 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Work Experience (Jobs 05 to 01)</div>
-            <a href="experience.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 04 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Career Log &amp; Skills Matrix</div>
+            <a href="experience.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 05. EDUCATION -->
         <div class="nav-item-wrap py-2">
-          <a href="index.html#education" class="hover:text-sky-400 hover:underline transition-colors">05. EDUCATION</a>
+          <a href="index.html#education" class="hover:text-sky-400">05. EDUCATION</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 05 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">ULan, Sixth Form &amp; GCSEs</div>
-            <a href="education.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 05 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">ULan Modules, BTEC &amp; GCSEs</div>
+            <a href="education.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 06. CONTACT -->
         <div class="nav-item-wrap py-2">
-          <a href="index.html#contact" class="hover:text-sky-400 hover:underline transition-colors">06. CONTACT</a>
+          <a href="index.html#contact" class="hover:text-sky-400">06. CONTACT</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 06 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Direct Channels &amp; Links</div>
-            <a href="contact.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 06 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Availability &amp; Direct Channels</div>
+            <a href="contact.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
       </nav>
 
-      <!-- Quick Actions (Email & CV — Hover for Dedicated Pages) -->
       <div class="flex items-center gap-2 font-mono text-xs shrink-0">
-        
-        <!-- EMAIL -->
         <div class="nav-item-wrap align-right py-1">
-          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all text-xs" style="color: var(--text-dim); background-color: var(--card-bg);">
-            <span>✉ lspky@pm.me</span>
-          </a>
+          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all t-dim bg-card">✉ lspky@pm.me</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">DISPATCH // EMAIL SHEET</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Dedicated Email &amp; Message Sheet</div>
-            <a href="email.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Email Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">DISPATCH // EMAIL PAGE</div>
+            <div class="text-xs font-sans t-main">Quick Templates &amp; Composer</div>
+            <a href="email.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Email Page →</a>
           </div>
         </div>
-
-        <!-- CV -->
         <div class="nav-item-wrap align-right py-1">
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2.5 sm:px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm text-xs">
-            <span>CV</span>
-            <span>↓</span>
-          </a>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm">CV ↓</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">DOCUMENT // CV VIEWER</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Dedicated CV Viewer &amp; Summary</div>
-            <a href="cv.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open CV Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</div>
+            <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
+            <a href="cv.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open CV Page →</a>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- Mobile / Tablet / Narrow-Window Quick Nav Strip -->
-    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar" style="background-color: var(--header-bg);">
-      <div class="drafting-container py-1.5 flex items-center gap-3 sm:gap-5 text-[10px] sm:text-[11px] font-mono whitespace-nowrap" style="color: var(--text-muted);">
-        <a href="about.html" class="hover:text-sky-400 transition-colors">01. ABOUT</a>
-        <a href="schematics.html" class="hover:text-sky-400 transition-colors">02. SCHEMATICS</a>
-        <a href="gallery.html" class="hover:text-sky-400 transition-colors">03. GALLERY</a>
-        <a href="experience.html" class="hover:text-sky-400 transition-colors">04. EXPERIENCE</a>
-        <a href="education.html" class="hover:text-sky-400 transition-colors">05. EDUCATION</a>
-        <a href="contact.html" class="hover:text-sky-400 transition-colors">06. CONTACT</a>
-        <a href="email.html" class="hover:text-sky-400 transition-colors">✉ EMAIL</a>
-        <a href="cv.html" class="hover:text-sky-400 transition-colors">📄 CV</a>
+    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
+      <div class="drafting-container py-2 flex items-center gap-4 sm:gap-5 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
+        <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
+        <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
+        <a href="experience.html" class="hover:text-sky-400">04. EXPERIENCE</a>
+        <a href="education.html" class="hover:text-sky-400">05. EDUCATION</a>
+        <a href="contact.html" class="hover:text-sky-400">06. CONTACT</a>
+        <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
+        <a href="cv.html" class="hover:text-sky-400">📄 CV</a>
       </div>
     </nav>
   </header>
 
-  <!-- MAIN DRAFTING BOARD (DEDICATED PAGE) -->
   <main class="drafting-container landscape-compact-main py-6 sm:py-10 lg:py-12 space-y-8 sm:space-y-10 flex-1" id="top">
-
-    <!-- DEDICATED SHEET NAVIGATION BAR -->
-    <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div class="space-y-1 min-w-0">
         <div class="flex items-center gap-2 font-mono text-xs">
-          <span class="px-2 py-0.5 bg-sky-500 text-white font-bold">SHEET 03 // GALLERY</span>
-          <span style="color: var(--text-dim);">DEDICATED SPECIFICATION SHEET</span>
+          <span class="px-2.5 py-0.5 bg-sky-500 text-white font-bold">SHEET 03 // GALLERY</span>
+          <span class="t-dim">DEDICATED SPECIFICATION SHEET</span>
         </div>
-        <h1 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Project Gallery (03.1 Engineering & 03.2 Discord Themes)</h1>
-        <p class="text-xs font-mono" style="color: var(--text-muted);">Upcoming Sub-£15 budget car build, uni lab builds, and open-source Discord themes.</p>
+        <h1 class="text-xl sm:text-2xl font-bold t-main">Project Gallery (03.1 Engineering & 03.2 Discord Themes)</h1>
+        <p class="text-xs sm:text-sm font-mono t-muted">Sub-£15 budget car 4-phase revival plan, uni lab builds, and Discord theme CSS architecture.</p>
       </div>
-      <a href="index.html" class="px-4 py-2 border border-sky-500/50 hover:bg-sky-500 hover:text-white transition-all font-mono text-xs font-bold inline-flex items-center gap-2 shrink-0 self-start sm:self-center" style="color: var(--accent-cyan); background-color: var(--paper-color);">
-        <span>← Back to Full Blueprint</span>
-      </a>
+      <div class="flex flex-wrap gap-2 font-mono text-xs shrink-0">
+        <a href="index.html" class="px-4 py-2 border border-sky-500/50 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-paper">← Back to Full Blueprint</a>
+      </div>
     </div>
-
 <section id="gallery" class="space-y-8 sm:space-y-10">
-      
       <div class="flex items-center justify-between gap-3 flex-wrap">
         <div class="flex items-center gap-2.5 flex-wrap">
-          <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // GALLERY</span>
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Project Gallery &amp; Builds</h2>
+          <span class="sec-tag">03 // GALLERY</span>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Project Gallery &amp; Builds</h2>
         </div>
         <div class="flex items-center gap-2 font-mono text-xs">
-          <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.1 Engineering</a>
-          <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.2 Discord Themes</a>
+          <a href="#gallery-engineering" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.1 Engineering</a>
+          <a href="#gallery-discord" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.2 Discord Themes</a>
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- 03.1 // ENGINEERING PROJECTS               -->
-      <!-- ========================================== -->
+      <!-- 03.1 // ENGINEERING -->
       <div id="gallery-engineering" class="space-y-4">
         <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.1 // ENGINEERING</span>
-            <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-              Engineering &amp; Automotive Projects
-            </h3>
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.1 // ENGINEERING</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Engineering &amp; Automotive Projects</h3>
           </div>
-          <span class="font-sketch text-sketch text-xs">upcoming car &amp; lab builds</span>
+          <span class="font-sketch t-sketch text-xs">upcoming car &amp; lab builds</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-
-          <!-- Featured Project: Upcoming Budget Car Project Under £15 -->
-          <div class="blueprint-card p-4 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
-            
+          <div class="blueprint-card p-5 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
             <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
               <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // UPCOMING</span>
-              <span class="text-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
+              <span class="t-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-              
-              <!-- Blueprint Sketch Wireframe Graphic -->
-              <div class="sm:col-span-5 border border-sky-500/40 p-4 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0" style="background-color: var(--paper-color);">
-                <div class="font-mono text-4xl sm:text-5xl" style="color: var(--accent-cyan);">🚗</div>
-                <div class="font-mono text-[11px] font-bold mt-2" style="color: var(--text-main);">SUB-£15 CAR PROJECT</div>
-                <div class="text-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
-                <div class="absolute bottom-1 right-2 font-mono text-[9px]" style="color: var(--text-dim);">FIG. 03.1-A</div>
+              <div class="sm:col-span-5 border border-sky-500/40 p-5 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0 bg-paper">
+                <div class="font-mono text-4xl sm:text-5xl t-cyan">🚗</div>
+                <div class="font-mono text-xs font-bold mt-2 t-main">SUB-£15 CAR PROJECT</div>
+                <div class="t-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
+                <div class="absolute bottom-1 right-2 font-mono text-[10px] t-dim">FIG. 03.1-A</div>
               </div>
-
-              <!-- Project Details -->
               <div class="sm:col-span-7 space-y-2.5 min-w-0">
-                <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-                  The Sub-£15 Budget Car Project
-                </h4>
-                <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                  My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.
-                </p>
-                
-                <div class="space-y-1 font-mono text-[11px] pt-1" style="color: var(--text-dim);">
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
-                    <span>Budget Target: Under £15 initial spend</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
-                    <span>Work: Mechanical servicing, electrics &amp; repairs</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                    <span>Updates &amp; photos will be added here as the build starts</span>
-                  </div>
+                <h4 class="text-lg sm:text-xl font-bold t-main">The Sub-£15 Budget Car Project</h4>
+                <p class="text-sm leading-relaxed t-muted">My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.</p>
+                <div class="space-y-1.5 font-mono text-xs pt-1 t-dim">
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span><span>Budget Target: Under £15 initial spend</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>Work: Mechanical servicing, electrics &amp; repairs</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span><span>Updates &amp; photos will be added here as the build starts</span></div>
                 </div>
               </div>
-
             </div>
-
-            <div class="dim-line pt-2">
-              <span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span>
-            </div>
+            <div class="dim-line pt-2"><span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span></div>
           </div>
 
-          <!-- Modular Slot for Future Project 2 -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
             <div class="space-y-2">
               <div class="flex items-center justify-between text-xs font-mono gap-2">
-                <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">PROJECT-SLOT 02</span>
-                <span class="font-sketch text-sketch text-xs">future build slot</span>
+                <span class="px-2 py-0.5 border border-sky-500/40 t-dim">PROJECT-SLOT 02</span>
+                <span class="font-sketch t-sketch text-xs">future build slot</span>
               </div>
-              <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Electronics &amp; Uni Lab Builds</h4>
-              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.
-              </p>
+              <h4 class="text-lg font-bold t-main">Electronics &amp; Uni Lab Builds</h4>
+              <p class="text-sm leading-relaxed t-muted">Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.</p>
             </div>
-            <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
-              STATUS: FUTURE SLOT
-            </div>
+            <div class="font-mono text-xs pt-2 border-t border-sky-500/20 t-dim">STATUS: FUTURE SLOT</div>
           </div>
-
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- 03.2 // DISCORD THEMES                     -->
-      <!-- ========================================== -->
+      <!-- 03.2 // DISCORD THEMES -->
       <div id="gallery-discord" class="space-y-4 pt-2">
         <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.2 // DISCORD THEMES</span>
-            <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-              Discord Client Themes &amp; UI CSS
-            </h3>
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.2 // DISCORD THEMES</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Discord Client Themes &amp; UI CSS</h3>
           </div>
-          <span class="font-sketch text-sketch text-xs">open-source theme collection</span>
+          <span class="font-sketch t-sketch text-xs">open-source theme collection</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-
-          <!-- Theme Card 1: WindowsXI -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-01</span>
-                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-01</span>
+                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">WindowsXI Discord Theme</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">WindowsXI Discord Theme</h4>
+              <p class="text-sm leading-relaxed t-muted">A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">BetterDiscord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Acrylic Glass</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Fluent CSS</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">BetterDiscord</span><span class="chip">Acrylic Glass</span><span class="chip">Fluent CSS</span>
             </div>
           </div>
 
-          <!-- Theme Card 2: MaterialYou & Vintage -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-02</span>
-                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-02</span>
+                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">MaterialYou &amp; Vintage</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">MaterialYou &amp; Vintage</h4>
+              <p class="text-sm leading-relaxed t-muted">Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Material You</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Vencord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom CSS</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Material You</span><span class="chip">Vencord</span><span class="chip">Custom CSS</span>
             </div>
           </div>
 
-          <!-- Theme Card 3: Lode, Ovel & Fluidcord -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-03</span>
-                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-03</span>
+                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">Lode, Ovel &amp; Fluidcord</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">Lode, Ovel &amp; Fluidcord</h4>
+              <p class="text-sm leading-relaxed t-muted">Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Glasscord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom Layouts</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Open Source</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Glasscord</span><span class="chip">Custom Layouts</span><span class="chip">Open Source</span>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- DETAILED SUB-£15 CAR BUILD PHASES & CSS ARCHITECTURE -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-4">
+        <div class="font-mono text-xs font-bold t-cyan">// 03.1 BUILD PLAN: SUB-£15 CAR ROADMAP</div>
+        <h3 class="text-lg sm:text-xl font-bold t-main">4-Phase Revival Schedule</h3>
+        <div class="space-y-2.5 text-sm t-muted">
+          <div class="p-3 border border-sky-500/25 bg-paper">
+            <span class="font-mono text-xs font-bold text-amber-400">PHASE 01 // SOURCING &amp; INITIAL TRIAGE</span>
+            <p class="mt-1">Acquire the vehicle for under £15 initial outlay. Inspect chassis, check engine turnover by hand, and log all mechanical and electrical faults.</p>
+          </div>
+          <div class="p-3 border border-sky-500/25 bg-paper">
+            <span class="font-mono text-xs font-bold t-cyan">PHASE 02 // 12V ELECTRICAL &amp; IGNITION</span>
+            <p class="mt-1">Test battery health, starter motor feed, alternator charging output, earth straps, fuses, and sensor connectors.</p>
+          </div>
+          <div class="p-3 border border-sky-500/25 bg-paper">
+            <span class="font-mono text-xs font-bold t-cyan">PHASE 03 // FLUIDS, BRAKES &amp; SERVICING</span>
+            <p class="mt-1">Fresh oil &amp; filter, coolant flush, hydraulic brake line bleeding, and freeing up seized calipers or linkages.</p>
+          </div>
+          <div class="p-3 border border-sky-500/25 bg-paper">
+            <span class="font-mono text-xs font-bold text-emerald-400">PHASE 04 // SHAKEDOWN &amp; DOCUMENTATION</span>
+            <p class="mt-1">Full test run, cost breakdown sheet, and before/after photo log published right here in the gallery.</p>
+          </div>
         </div>
       </div>
 
+      <div class="blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-4">
+        <div class="font-mono text-xs font-bold t-cyan">// 03.2 DISCORD THEME ARCHITECTURE</div>
+        <h3 class="text-lg sm:text-xl font-bold t-main">How My Themes Are Built</h3>
+        <p class="text-sm t-muted">My open-source Discord themes (<strong>WindowsXI</strong>, <strong>MaterialYou</strong>, <strong>Vintage</strong>, and <strong>Lode</strong>) use modular CSS custom properties so users can tweak colours, blur levels, and spacing easily:</p>
+        <pre class="p-3.5 border border-sky-500/30 font-mono text-xs overflow-x-auto bg-paper t-dim"><code>:root {
+  --win11-acrylic-bg: rgba(16, 24, 39, 0.72);
+  --win11-blur-radius: 18px;
+  --win11-corner-radius: 8px;
+  --accent-primary: #38bdf8;
+}</code></pre>
+        <div class="flex flex-wrap gap-2 font-mono text-xs pt-1">
+          <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white t-cyan bg-paper">WindowsXI Repo ↗</a>
+          <a href="https://github.com/leeprky/Vintage" target="_blank" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white t-cyan bg-paper">Vintage Repo ↗</a>
+          <a href="https://github.com/leeprky/Lode" target="_blank" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white t-cyan bg-paper">Lode Repo ↗</a>
+        </div>
+      </div>
     </section>
+
   </main>
 
   <!-- BLUEPRINT DRAWING FOOTER -->
-  <footer style="background-color: var(--top-strip); color: var(--text-muted);" class="w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
-    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
-      <div>
-        <span>SHEET: LP-EE-2026</span> • 
-        <span>DISCIPLINE: ELECTRICAL ENGINEERING</span> • 
-        <span>© <span id="year">2026</span> LEE PARKINSON</span>
-      </div>
+  <footer class="bg-strip t-muted w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
+    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>SHEET: LP-EE-2026 • DISCIPLINE: ELECTRICAL ENGINEERING • © <span id="year">2026</span> LEE PARKINSON</div>
       <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">Website Source (GitHub) ↗</a>
-        <a href="mailto:lspky@pm.me" class="hover:underline" style="color: var(--text-dim);">lspky@pm.me</a>
-        <a href="index.html#top" class="hover:underline" style="color: var(--text-dim);">TOP ↑</a>
+        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold t-cyan">Website Source (GitHub) ↗</a>
+        <a href="mailto:lspky@pm.me" class="hover:underline t-dim">lspky@pm.me</a>
+        <a href="index.html#top" class="hover:underline t-dim">TOP ↑</a>
       </div>
     </div>
   </footer>
 
-  <!-- CLIENT-SIDE SCRIPT FOR THEME SWITCHING & CATEGORY FILTERING -->
   <script>
-    // Dynamic Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Theme Management: Auto / Light / Dark with Browser Sync
     function setThemeMode(mode) {
       const html = document.documentElement;
-      const btnAuto = document.getElementById('btn-theme-auto');
-      const btnLight = document.getElementById('btn-theme-light');
-      const btnDark = document.getElementById('btn-theme-dark');
-
-      // Reset button styles
-      [btnAuto, btnLight, btnDark].forEach(btn => {
-        if (btn) {
-          btn.classList.remove('bg-sky-500', 'text-white', 'font-bold');
-        }
-      });
-
+      const map = { auto: 'btn-theme-auto', light: 'btn-theme-light', dark: 'btn-theme-dark' };
+      Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('bg-sky-500', 'text-white', 'font-bold'));
       if (mode === 'auto') {
         localStorage.removeItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        html.classList.toggle('dark', systemPrefersDark);
-        if (btnAuto) btnAuto.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      } else if (mode === 'light') {
-        localStorage.setItem('theme', 'light');
-        html.classList.remove('dark');
-        if (btnLight) btnLight.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      } else if (mode === 'dark') {
-        localStorage.setItem('theme', 'dark');
-        html.classList.add('dark');
-        if (btnDark) btnDark.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      }
-    }
-
-    // Initialize Active Button State on Load
-    (function initThemeButtons() {
-      const savedTheme = localStorage.getItem('theme');
-      if (!savedTheme) {
-        setThemeMode('auto');
+        html.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches);
       } else {
-        setThemeMode(savedTheme);
+        localStorage.setItem('theme', mode);
+        html.classList.toggle('dark', mode === 'dark');
       }
-    })();
-
-    // Listen for System Preference Changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) {
-        document.documentElement.classList.toggle('dark', e.matches);
-      }
+      document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
+    }
+    setThemeMode(localStorage.getItem('theme') || 'auto');
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
-    // Blueprint Category Filtering
-    function filterProjects(category) {
-      const cards = document.querySelectorAll('.project-card');
-      const buttons = document.querySelectorAll('.filter-btn');
-
-      // Update button active state
-      buttons.forEach(btn => {
-        if (btn.dataset.filter === category) {
-          btn.classList.add('bg-sky-500', 'text-white', 'font-bold');
-          btn.style.color = '';
-        } else {
-          btn.classList.remove('bg-sky-500', 'text-white', 'font-bold');
-        }
+    function filterProjects(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        const active = b.dataset.filter === cat;
+        b.classList.toggle('bg-sky-500', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('font-bold', active);
       });
-
-      // Filter cards
-      cards.forEach(card => {
-        if (category === 'all' || card.dataset.category === category) {
-          card.classList.remove('hidden');
-          setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-          }, 10);
-        } else {
-          card.style.opacity = '0';
-          card.style.transform = 'scale(0.97)';
-          setTimeout(() => {
-            card.classList.add('hidden');
-          }, 150);
-        }
+      document.querySelectorAll('.project-card').forEach(c => {
+        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
       });
     }
-  </script>
 
+    // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
+    document.querySelectorAll('.nav-item-wrap').forEach(el => {
+      let timer = null;
+      el.addEventListener('mouseenter', () => {
+        el.classList.add('holding');
+        timer = setTimeout(() => {
+          el.classList.add('popup-open');
+        }, 2500);
+      });
+      el.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        el.classList.remove('holding', 'popup-open');
+      });
+    });
+  </script>
 </body>
 </html>

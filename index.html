@@ -4,15 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Lee Parkinson | Electrical Engineering Blueprint</title>
-  <meta name="description" content="Personal portfolio of Lee Parkinson — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
+  <meta name="description" content="Personal portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
   <link rel="icon" type="image/webp" href="assets/images/logo5.webp" />
-
-  <!-- Fonts: Space Grotesk (Drafting display), JetBrains Mono (Technical code/specs), Architects Daughter (Handwritten sketch notes) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -26,176 +22,98 @@
           }
         }
       }
-    }
+    };
+    (function() {
+      const t = localStorage.getItem('theme');
+      document.documentElement.classList.toggle('dark', t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches));
+    })();
   </script>
-
   <style>
-    /* CSS Variables for Dynamic Blueprint Theme (Light & Dark) */
     :root {
       --bg-color: #f0f6fc;
       --paper-color: #ffffff;
       --card-bg: rgba(255, 255, 255, 0.95);
-      --border-color: rgba(2, 132, 199, 0.3);
-      --border-hover: rgba(2, 132, 199, 0.7);
-      --grid-major: rgba(2, 132, 199, 0.12);
-      --grid-minor: rgba(2, 132, 199, 0.04);
+      --border-color: rgba(2, 132, 199, 0.32);
+      --border-hover: rgba(2, 132, 199, 0.75);
+      --grid-major: rgba(2, 132, 199, 0.13);
+      --grid-minor: rgba(2, 132, 199, 0.045);
       --text-main: #0c213d;
-      --text-muted: #335377;
+      --text-muted: #2d4a6d;
       --text-dim: #0284c7;
       --accent-cyan: #0284c7;
       --accent-sketch: #b45309;
-      --crosshair: #0284c7;
       --header-bg: rgba(240, 246, 252, 0.95);
       --top-strip: #e1edf8;
     }
-
     html.dark {
       --bg-color: #07162c;
       --paper-color: #0b1f3d;
-      --card-bg: rgba(11, 31, 61, 0.88);
-      --border-color: rgba(56, 189, 248, 0.28);
-      --border-hover: rgba(56, 189, 248, 0.7);
-      --grid-major: rgba(56, 189, 248, 0.12);
-      --grid-minor: rgba(56, 189, 248, 0.04);
+      --card-bg: rgba(11, 31, 61, 0.9);
+      --border-color: rgba(56, 189, 248, 0.3);
+      --border-hover: rgba(56, 189, 248, 0.75);
+      --grid-major: rgba(56, 189, 248, 0.13);
+      --grid-minor: rgba(56, 189, 248, 0.045);
       --text-main: #f0f6fc;
       --text-muted: #bae6fd;
       --text-dim: #38bdf8;
       --accent-cyan: #38bdf8;
       --accent-sketch: #fde047;
-      --crosshair: #38bdf8;
       --header-bg: rgba(7, 22, 44, 0.95);
       --top-strip: #061224;
     }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: clip;
-      margin: 0;
-      padding: 0;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: clip; margin: 0; padding: 0; }
     @keyframes blueprintDrift {
-      0% {
-        background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      }
-      100% {
-        background-position: 100px 100px, 100px 100px, 100px 100px, 100px 100px;
-      }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100px, -100px, 0); }
     }
-
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      background-image: 
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -100px;
+      z-index: -1;
+      pointer-events: none;
+      will-change: transform;
+      background-image:
         linear-gradient(var(--grid-major) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
         linear-gradient(var(--grid-minor) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
       background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-      background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px;
-      animation: blueprintDrift 18s linear infinite;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      animation: blueprintDrift 7s linear infinite;
     }
-
-    /* Fluid responsive container that adapts cleanly across mobile, landscape, and any desktop window size */
-    .drafting-container {
-      width: 100%;
-      max-width: 1380px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: clamp(0.75rem, 3vw, 3rem);
-      padding-right: clamp(0.75rem, 3vw, 3rem);
-    }
-
-    .blueprint-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      position: relative;
-      transition: all 0.25s ease;
-      max-width: 100%;
-    }
-    .blueprint-card:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 0 25px -5px rgba(2, 132, 199, 0.15);
-    }
-    html.dark .blueprint-card:hover {
-      box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.2);
-    }
-    .blueprint-card::before {
-      content: '+';
-      position: absolute;
-      top: -8px;
-      left: -2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--crosshair);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-    .blueprint-card::after {
-      content: '+';
-      position: absolute;
-      bottom: -8px;
-      right: -2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--crosshair);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-
-    .dim-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-dim);
-      overflow: hidden;
-      width: 100%;
-      min-width: 0;
-    }
-    .dim-line::before, .dim-line::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--border-color);
-      min-width: 12px;
-    }
-
-    .text-sketch {
-      color: var(--accent-sketch);
-    }
-
-    /* Hide scrollbar for clean horizontal sub-nav on mobile/tablet */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Topbar Hover-Only Dedicated Page Popout Card (DEV BRANCH) */
     .nav-item-wrap {
       position: relative;
       display: inline-flex;
       align-items: center;
+    }
+    .nav-hold-bar {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent-cyan);
+      pointer-events: none;
+    }
+    .nav-item-wrap.holding .nav-hold-bar {
+      width: 100%;
+      transition: width 2.5s linear;
     }
     .nav-hover-card {
       position: absolute;
       top: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(6px);
-      width: 210px;
+      width: 215px;
       background: var(--paper-color);
       border: 1px solid var(--accent-cyan);
-      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.4);
       padding: 0.65rem;
       opacity: 0;
       visibility: hidden;
@@ -208,233 +126,227 @@
       right: 0;
       transform: translateY(6px);
     }
-    .nav-item-wrap:hover .nav-hover-card,
-    .nav-item-wrap:focus-within .nav-hover-card {
+    .nav-item-wrap.popup-open .nav-hover-card {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
       transform: translateX(-50%) translateY(0);
     }
-    .nav-item-wrap.align-right:hover .nav-hover-card,
-    .nav-item-wrap.align-right:focus-within .nav-hover-card {
+    .nav-item-wrap.align-right.popup-open .nav-hover-card {
       transform: translateY(0);
     }
-
-    /* Landscape Mode Optimization for Mobile Devices */
+    .t-main { color: var(--text-main); }
+    .t-muted { color: var(--text-muted); }
+    .t-dim { color: var(--text-dim); }
+    .t-cyan { color: var(--accent-cyan); }
+    .t-sketch { color: var(--accent-sketch); }
+    .bg-paper { background-color: var(--paper-color); }
+    .bg-card { background-color: var(--card-bg); }
+    .bg-strip { background-color: var(--top-strip); }
+    .bg-hdr { background-color: var(--header-bg); }
+    .drafting-container {
+      width: 100%;
+      max-width: 1380px;
+      margin-inline: auto;
+      padding-inline: clamp(0.65rem, 2.8vw, 3rem);
+    }
+    .blueprint-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      position: relative;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      max-width: 100%;
+    }
+    .blueprint-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 22px -5px rgba(56, 189, 248, 0.18);
+    }
+    .blueprint-card::before, .blueprint-card::after {
+      content: '+';
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .blueprint-card::before { top: -8px; left: -2px; }
+    .blueprint-card::after { bottom: -8px; right: -2px; }
+    .dim-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      overflow: hidden;
+      width: 100%;
+      min-width: 0;
+    }
+    .dim-line::before, .dim-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+      min-width: 12px;
+    }
+    .chip {
+      padding: 0.15rem 0.5rem;
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      background-color: var(--paper-color);
+      color: var(--text-dim);
+    }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      background: #0ea5e9;
+      color: #fff;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     @media (orientation: landscape) and (max-height: 580px) {
-      .landscape-compact-header {
-        height: 2.75rem !important;
-      }
-      .landscape-compact-main {
-        padding-top: 1rem !important;
-        padding-bottom: 1.5rem !important;
-      }
-      .landscape-hero-grid {
-        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-        gap: 1.25rem !important;
-      }
-      .landscape-hero-photo-col {
-        grid-column: span 4 / span 4 !important;
-      }
-      .landscape-hero-photo-box {
-        max-width: 170px !important;
-      }
-      .landscape-hero-text-col {
-        grid-column: span 8 / span 8 !important;
-      }
+      .landscape-compact-header { height: 2.75rem !important; }
+      .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
+      .landscape-hero-grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
+      .landscape-hero-photo-col { grid-column: span 4 / span 4 !important; }
+      .landscape-hero-photo-box { max-width: 175px !important; }
+      .landscape-hero-text-col { grid-column: span 8 / span 8 !important; }
     }
   </style>
-
-  <script>
-    // Immediate Theme Initialization
-    (function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    })();
-  </script>
 </head>
 
-<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between">
+<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between text-sm sm:text-base">
 
   <!-- TOP ENGINEERING TECHNICAL STRIP -->
-  <div style="background-color: var(--top-strip);" class="w-full border-b border-sky-400/30 text-[10px] sm:text-[11px] font-mono py-1.5 z-50">
+  <div class="bg-strip w-full border-b border-sky-400/30 text-[11px] sm:text-xs font-mono py-1.5 z-50">
     <div class="drafting-container flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
-        <span class="flex items-center gap-1.5 font-bold" style="color: var(--text-dim);">
+        <span class="flex items-center gap-1.5 font-bold t-dim">
           <span class="inline-block w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--accent-cyan);"></span>
-          <span class="truncate">DWG: LP-ENG-2026-EE [DEV]</span>
+          <span class="truncate">DWG: LP-ENG-2026-EE</span>
         </span>
         <span class="opacity-30 hidden sm:inline">|</span>
-        <span class="hidden sm:inline" style="color: var(--text-muted);">DISCIPLINE: ELECTRICAL ENGINEERING</span>
+        <span class="hidden sm:inline t-muted">DISCIPLINE: ELECTRICAL ENGINEERING</span>
         <span class="opacity-30">|</span>
-        <span style="color: var(--text-muted);">PRESTON, UK</span>
+        <span class="t-muted">PRESTON, UK</span>
       </div>
-      
-      <!-- Theme Mode Switcher -->
       <div class="flex items-center gap-2 shrink-0">
-        <div class="flex items-center border border-sky-400/40 font-mono text-[10px] rounded overflow-hidden" id="theme-controls">
-          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">
-            🖥️ <span class="hidden sm:inline">AUTO</span>
-          </button>
-          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">
-            ☀️ <span class="hidden sm:inline">LIGHT</span>
-          </button>
-          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">
-            🌙 <span class="hidden sm:inline">DARK</span>
-          </button>
+        <div class="flex items-center border border-sky-400/40 font-mono text-[11px] rounded overflow-hidden">
+          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
+          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
+          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
-        <span class="hidden md:inline text-sketch font-sketch text-xs">DEV V6.2</span>
+        <span class="hidden md:inline t-sketch font-sketch text-xs">SPEC V6.2</span>
       </div>
     </div>
   </div>
 
-  <!-- NAVIGATION HEADER (HOVER OVER ANY ITEM FOR DEDICATED PAGE) -->
-  <header style="background-color: var(--header-bg);" class="w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40 transition-all">
+  <!-- NAVIGATION HEADER (HOLD HOVER 2.5s FOR DEDICATED PAGE POPUP) -->
+  <header class="bg-hdr w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40">
     <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
-      
-      <!-- Technical Stamp / Logo -->
-      <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all shrink-0" style="color: var(--accent-cyan); background-color: var(--card-bg);">
-          LP
-        </div>
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0">
+        <div class="w-9 h-9 border border-sky-500/60 flex items-center justify-center font-mono font-bold text-sm shrink-0 t-cyan bg-card">LP</div>
         <div class="min-w-0">
-          <div class="font-bold text-xs sm:text-base tracking-tight flex items-center gap-1 truncate" style="color: var(--text-main);">
+          <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1 truncate t-main">
             <span class="truncate">LEE PARKINSON</span>
-            <span class="text-[10px] sm:text-xs font-mono font-normal shrink-0" style="color: var(--text-dim);">[EE]</span>
+            <span class="text-xs font-mono font-normal shrink-0 t-dim">[EE]</span>
           </div>
-          <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate" style="color: var(--text-muted);">
-            Electrical Engineering
-          </div>
+          <div class="text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate t-muted">Electrical Engineering</div>
         </div>
       </a>
 
-      <!-- Technical Nav (Desktop & Medium Windows — Hover for Dedicated Pages) -->
-      <nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-xs font-mono shrink-0" style="color: var(--text-muted);">
-        
-        <!-- 01. ABOUT -->
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-5 text-xs font-mono shrink-0 t-muted">
         <div class="nav-item-wrap py-2">
-          <a href="#about" class="hover:text-sky-400 hover:underline transition-colors">01. ABOUT</a>
+          <a href="#about" class="hover:text-sky-400">01. ABOUT</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 01 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Full About Me &amp; Bio Specification</div>
-            <a href="about.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 01 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Full Bio, Toolkit &amp; Schedule</div>
+            <a href="about.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 02. SCHEMATICS -->
         <div class="nav-item-wrap py-2">
-          <a href="#schematics" class="hover:text-sky-400 hover:underline transition-colors">02. SCHEMATICS</a>
+          <a href="#schematics" class="hover:text-sky-400">02. SCHEMATICS</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 02 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Engineering, Cars, CS/ICT &amp; DJ</div>
-            <a href="schematics.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 02 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Deep Technical Specs &amp; DJ</div>
+            <a href="schematics.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 03. GALLERY -->
         <div class="nav-item-wrap py-2">
-          <a href="#gallery" class="hover:text-sky-400 hover:underline transition-colors">03. GALLERY</a>
+          <a href="#gallery" class="hover:text-sky-400">03. GALLERY</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 03 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">03.1 Engineering &amp; 03.2 Themes</div>
-            <a href="gallery.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 03 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Sub-£15 Car Plan &amp; Themes</div>
+            <a href="gallery.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 04. EXPERIENCE -->
         <div class="nav-item-wrap py-2">
-          <a href="#experience" class="hover:text-sky-400 hover:underline transition-colors">04. EXPERIENCE</a>
+          <a href="#experience" class="hover:text-sky-400">04. EXPERIENCE</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 04 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Work Experience (Jobs 05 to 01)</div>
-            <a href="experience.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 04 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Career Log &amp; Skills Matrix</div>
+            <a href="experience.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 05. EDUCATION -->
         <div class="nav-item-wrap py-2">
-          <a href="#education" class="hover:text-sky-400 hover:underline transition-colors">05. EDUCATION</a>
+          <a href="#education" class="hover:text-sky-400">05. EDUCATION</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 05 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">ULan, Sixth Form &amp; GCSEs</div>
-            <a href="education.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 05 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">ULan Modules, BTEC &amp; GCSEs</div>
+            <a href="education.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
-        <!-- 06. CONTACT -->
         <div class="nav-item-wrap py-2">
-          <a href="#contact" class="hover:text-sky-400 hover:underline transition-colors">06. CONTACT</a>
+          <a href="#contact" class="hover:text-sky-400">06. CONTACT</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">SHEET 06 // DEDICATED PAGE</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Direct Channels &amp; Links</div>
-            <a href="contact.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Dedicated Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">SHEET 06 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Availability &amp; Direct Channels</div>
+            <a href="contact.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
           </div>
         </div>
-
       </nav>
 
-      <!-- Quick Actions (Email & CV — Hover for Dedicated Pages) -->
       <div class="flex items-center gap-2 font-mono text-xs shrink-0">
-        
-        <!-- EMAIL -->
         <div class="nav-item-wrap align-right py-1">
-          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all text-xs" style="color: var(--text-dim); background-color: var(--card-bg);">
-            <span>✉ lspky@pm.me</span>
-          </a>
+          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all t-dim bg-card">✉ lspky@pm.me</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">DISPATCH // EMAIL SHEET</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Dedicated Email &amp; Message Sheet</div>
-            <a href="email.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open Email Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">DISPATCH // EMAIL PAGE</div>
+            <div class="text-xs font-sans t-main">Quick Templates &amp; Composer</div>
+            <a href="email.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Email Page →</a>
           </div>
         </div>
-
-        <!-- CV -->
         <div class="nav-item-wrap align-right py-1">
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2.5 sm:px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm text-xs">
-            <span>CV</span>
-            <span>↓</span>
-          </a>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm">CV ↓</a>
+          <span class="nav-hold-bar"></span>
           <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[9px] font-bold tracking-wider" style="color: var(--text-dim);">DOCUMENT // CV VIEWER</div>
-            <div class="text-[11px] font-sans leading-snug" style="color: var(--text-main);">Dedicated CV Viewer &amp; Summary</div>
-            <a href="cv.html" class="block w-full text-center py-1 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[10px] transition-colors">
-              Open CV Page →
-            </a>
+            <div class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</div>
+            <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
+            <a href="cv.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open CV Page →</a>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- Mobile / Tablet / Narrow-Window Quick Nav Strip -->
-    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar" style="background-color: var(--header-bg);">
-      <div class="drafting-container py-1.5 flex items-center gap-3 sm:gap-5 text-[10px] sm:text-[11px] font-mono whitespace-nowrap" style="color: var(--text-muted);">
-        <a href="about.html" class="hover:text-sky-400 transition-colors">01. ABOUT</a>
-        <a href="schematics.html" class="hover:text-sky-400 transition-colors">02. SCHEMATICS</a>
-        <a href="gallery.html" class="hover:text-sky-400 transition-colors">03. GALLERY</a>
-        <a href="experience.html" class="hover:text-sky-400 transition-colors">04. EXPERIENCE</a>
-        <a href="education.html" class="hover:text-sky-400 transition-colors">05. EDUCATION</a>
-        <a href="contact.html" class="hover:text-sky-400 transition-colors">06. CONTACT</a>
-        <a href="email.html" class="hover:text-sky-400 transition-colors">✉ EMAIL</a>
-        <a href="cv.html" class="hover:text-sky-400 transition-colors">📄 CV</a>
+    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
+      <div class="drafting-container py-2 flex items-center gap-4 sm:gap-5 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
+        <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
+        <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
+        <a href="experience.html" class="hover:text-sky-400">04. EXPERIENCE</a>
+        <a href="education.html" class="hover:text-sky-400">05. EDUCATION</a>
+        <a href="contact.html" class="hover:text-sky-400">06. CONTACT</a>
+        <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
+        <a href="cv.html" class="hover:text-sky-400">📄 CV</a>
       </div>
     </nav>
   </header>
@@ -442,129 +354,91 @@
   <!-- MAIN DRAFTING BOARD -->
   <main class="drafting-container landscape-compact-main py-6 sm:py-10 lg:py-12 space-y-12 sm:space-y-16 lg:space-y-20 flex-1" id="top">
 
-    <!-- HERO SECTION: "Hi, I'm Lee" + Picture of Lee (FIRST THING YOU SEE) -->
-    <section class="blueprint-card p-4 sm:p-6 md:p-8 lg:p-10 border border-sky-500/40">
-      
-      <!-- Top Dimension Line -->
-      <div class="dim-line mb-5 sm:mb-8">
+    <!-- HERO SECTION -->
+    <section class="blueprint-card p-5 sm:p-7 md:p-8 lg:p-10 border border-sky-500/40">
+      <div class="dim-line mb-5 sm:mb-7">
         <span class="truncate min-w-0">FIG 01.0 // SPECIFICATION SHEET: HI, I'M LEE</span>
       </div>
 
       <div class="landscape-hero-grid grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
-        
-        <!-- Picture of Lee with Technical Drafting Framing -->
-        <div class="landscape-hero-photo-col md:col-span-5 lg:col-span-5 flex flex-col items-center min-w-0">
-          <div class="landscape-hero-photo-box relative p-2 border-2 border-sky-500/60 shadow-xl max-w-[240px] sm:max-w-[280px] lg:max-w-sm w-full" style="background-color: var(--paper-color);">
-            
-            <!-- Corner Crosses -->
-            <div class="absolute -top-2.5 -left-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -top-2.5 -right-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -bottom-2.5 -left-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
-            <div class="absolute -bottom-2.5 -right-2 font-mono text-sm" style="color: var(--crosshair);">+</div>
-
-            <!-- Subject Image -->
+        <!-- Portrait -->
+        <div class="landscape-hero-photo-col md:col-span-5 flex flex-col items-center min-w-0">
+          <div class="landscape-hero-photo-box relative p-2.5 border-2 border-sky-500/60 shadow-xl max-w-[285px] sm:max-w-[310px] lg:max-w-sm w-full bg-paper">
             <div class="overflow-hidden border border-sky-500/30 relative group aspect-[3/4]">
-              <img 
-                src="assets/images/lee-portrait.jpg" 
-                alt="Lee Parkinson" 
-                class="w-full h-full object-cover filter contrast-[1.04] group-hover:scale-105 transition-transform duration-500" 
-              />
-              
-              <!-- Blueprint Photo Stamp -->
-              <div class="absolute bottom-2 left-2 border border-sky-400/50 px-2 py-0.5 font-mono text-[9px] sm:text-[10px]" style="background-color: var(--header-bg); color: var(--text-dim);">
-                OPERATOR: LEE PARKINSON
-              </div>
+              <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson" class="w-full h-full object-cover contrast-[1.04] group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute bottom-2 left-2 border border-sky-400/50 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] bg-hdr t-dim">OPERATOR: LEE PARKINSON</div>
             </div>
-
-            <!-- Dimension Annotation -->
-            <div class="mt-2 text-center font-mono text-[10px] sm:text-[11px] flex items-center justify-between px-1 gap-1" style="color: var(--text-muted);">
+            <div class="mt-2 font-mono text-xs flex items-center justify-between px-1 gap-1 t-muted">
               <span>AGE: 21</span>
-              <span class="text-sketch font-sketch text-xs truncate">← operator photo</span>
+              <span class="t-sketch font-sketch text-xs truncate">← operator photo</span>
               <span>ULAN EE</span>
             </div>
           </div>
         </div>
 
-        <!-- Hero Content: "Hi, I'm Lee" -->
-        <div class="landscape-hero-text-col md:col-span-7 lg:col-span-7 space-y-4 sm:space-y-5 min-w-0">
-          
-          <div class="inline-flex max-w-full items-center gap-2 px-2.5 py-1 border border-sky-500/30 font-mono text-[10px] sm:text-xs" style="background-color: var(--card-bg); color: var(--text-dim);">
+        <!-- Intro -->
+        <div class="landscape-hero-text-col md:col-span-7 space-y-4 sm:space-y-5 min-w-0">
+          <div class="inline-flex max-w-full items-center gap-2 px-3 py-1 border border-sky-500/30 font-mono text-xs bg-card t-dim">
             <span class="w-2 h-2 rounded-full animate-pulse shrink-0" style="background-color: var(--accent-cyan);"></span>
             <span class="truncate min-w-0">ELECTRICAL ENGINEERING (FOUNDATION YEAR) • ULAN PRESTON</span>
           </div>
 
           <div class="space-y-2">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight font-sans leading-tight" style="color: var(--text-main);">
-              Hi, I'm Lee<span style="color: var(--accent-cyan);">.</span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight t-main">
+              Hi, I'm Lee<span class="t-cyan">.</span>
             </h1>
-            <p class="font-sketch text-sketch text-sm sm:text-base lg:text-xl">
+            <p class="font-sketch t-sketch text-base sm:text-lg lg:text-xl">
               "Studying Electrical Engineering at ULan. Working on cars, electronics, and software."
             </p>
           </div>
 
-          <p class="text-xs sm:text-sm md:text-base leading-relaxed font-sans max-w-2xl" style="color: var(--text-muted);">
+          <p class="text-sm sm:text-base leading-relaxed max-w-2xl t-muted">
             I'm <strong>21</strong>, based in <strong>Preston</strong>, and studying <strong>Electrical Engineering at the University of Lancashire (ULan)</strong>. Growing up, I've always loved technology, mechanics, electrics, and computers — along with some time spent on <strong>Discord theming</strong> and a brief stint as a <strong>DJ</strong>.
           </p>
 
-          <!-- Engineering Specs Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-[11px] sm:text-xs">
-            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
-              <span class="block text-[10px]" style="color: var(--text-dim);">AGE</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">21 Years Old</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 font-mono text-xs">
+            <div class="border border-sky-500/25 p-2.5 min-w-0 bg-card">
+              <span class="block text-[10px] t-dim">AGE</span>
+              <span class="font-bold truncate block t-main">21 Years Old</span>
             </div>
-            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
-              <span class="block text-[10px]" style="color: var(--text-dim);">CAMPUS</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">ULan, Preston</span>
+            <div class="border border-sky-500/25 p-2.5 min-w-0 bg-card">
+              <span class="block text-[10px] t-dim">CAMPUS</span>
+              <span class="font-bold truncate block t-main">ULan, Preston</span>
             </div>
-            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
-              <span class="block text-[10px]" style="color: var(--text-dim);">DISCIPLINE</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">Electrical Eng.</span>
+            <div class="border border-sky-500/25 p-2.5 min-w-0 bg-card">
+              <span class="block text-[10px] t-dim">DISCIPLINE</span>
+              <span class="font-bold truncate block t-main">Electrical Eng.</span>
             </div>
-            <div class="border border-sky-500/25 p-2 sm:p-2.5 min-w-0" style="background-color: var(--card-bg);">
-              <span class="block text-[10px]" style="color: var(--text-dim);">BACKGROUND</span>
-              <span class="font-bold truncate block" style="color: var(--text-main);">Hospitality &amp; Eng.</span>
+            <div class="border border-sky-500/25 p-2.5 min-w-0 bg-card">
+              <span class="block text-[10px] t-dim">BACKGROUND</span>
+              <span class="font-bold truncate block t-main">Hospitality &amp; Eng.</span>
             </div>
           </div>
 
-          <!-- Quick Action Buttons -->
-          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 pt-2 font-mono text-xs">
-            <a href="#about" class="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md">
-              01 // About Me ↓
-            </a>
-            <a href="#gallery" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
-              <span>03 // Gallery ↓</span>
-            </a>
-            <a href="#experience" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-dim); background-color: var(--card-bg);">
-              <span>Experience ↓</span>
-            </a>
-            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-2 sm:px-4 sm:py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all flex items-center gap-1" style="color: var(--text-main); background-color: var(--card-bg);">
-              <span>CV (PDF) ↗</span>
-            </a>
+          <div class="flex flex-wrap items-center gap-2.5 pt-2 font-mono text-xs sm:text-sm">
+            <a href="#about" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md">01 // About Me ↓</a>
+            <a href="#gallery" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">03 // Gallery ↓</a>
+            <a href="#experience" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">Experience ↓</a>
+            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-main bg-card">CV (PDF) ↗</a>
           </div>
-
         </div>
-
       </div>
 
-      <!-- Bottom Dimension Line -->
       <div class="dim-line mt-6 sm:mt-8">
         <span class="truncate min-w-0">TOLERANCES UNLESS SPECIFIED: ±0.05mm // ALL SYSTEMS FUNCTIONAL</span>
       </div>
     </section>
 
-    <!-- SECTION 01: ABOUT ME (DIRECTLY BELOW HERO) -->
+    <!-- SECTION 01: ABOUT ME -->
     <section id="about" class="space-y-4 sm:space-y-6">
-      
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">01 // ABOUT ME</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">A Bit About Me</h2>
+        <span class="sec-tag">01 // ABOUT ME</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">A Bit About Me</h2>
       </div>
 
-      <div class="blueprint-card p-4 sm:p-6 md:p-8 border border-sky-500/35 space-y-6">
-        
+      <div class="blueprint-card p-5 sm:p-7 md:p-8 border border-sky-500/35 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <div class="lg:col-span-2 space-y-3.5 text-xs sm:text-sm md:text-base leading-relaxed font-sans min-w-0" style="color: var(--text-muted);">
+          <div class="lg:col-span-2 space-y-3.5 text-sm sm:text-base leading-relaxed min-w-0 t-muted">
             <p>
               Growing up, I've always been into technology, mechanics, electrics, and computers. Whether it was taking things apart to see how they worked, building PCs, or fixing things up, I've always preferred learning by actually getting my hands dirty.
             </p>
@@ -576,881 +450,619 @@
             </p>
           </div>
 
-          <!-- Hand-Drawn Blueprint Sketch Note Box -->
-          <div class="border-2 border-dashed border-sky-500/50 p-4 sm:p-5 space-y-3 relative min-w-0" style="background-color: var(--paper-color);">
-            <div class="text-[10px] font-mono uppercase tracking-widest text-sketch font-bold">// FIELD NOTES</div>
-            <p class="font-sketch text-sketch text-xs sm:text-sm leading-relaxed">
+          <div class="border-2 border-dashed border-sky-500/50 p-4 sm:p-5 space-y-3 relative min-w-0 bg-paper">
+            <div class="text-xs font-mono uppercase tracking-widest t-sketch font-bold">// FIELD NOTES</div>
+            <p class="font-sketch t-sketch text-sm leading-relaxed">
               "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
             </p>
-            <div class="pt-2 border-t border-sky-500/20 font-mono text-[10px] sm:text-[11px] space-y-1" style="color: var(--text-dim);">
+            <div class="pt-2 border-t border-sky-500/20 font-mono text-xs space-y-1.5 t-dim">
               <div>• Age: 21 • Based in Preston, Lancashire</div>
               <div>• Electrical Engineering (Foundation) @ ULan</div>
               <div>• Bar Team Leader @ Wetherspoons</div>
               <div>• Cars, Electrics, Computers &amp; ICT</div>
             </div>
           </div>
-
         </div>
 
-        <!-- 3 Technical Pillars -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-3 border-t border-sky-500/20 font-mono text-xs">
-          
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5 min-w-0" style="background-color: var(--card-bg);">
-            <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
-              <span>PILLAR 01</span>
-              <span>[ELECTRICAL]</span>
-            </div>
-            <h4 class="font-bold text-sm" style="color: var(--text-main);">Electrical Engineering</h4>
-            <p class="text-xs font-sans leading-relaxed" style="color: var(--text-muted);">
-              Studying my Foundation Year at ULan in Preston — building up the maths, physics, and circuit fundamentals behind electrical systems.
-            </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 pt-3 border-t border-sky-500/20 font-mono text-xs">
+          <div class="border border-sky-500/25 p-4 space-y-1.5 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-cyan"><span>PILLAR 01</span><span>[ELECTRICAL]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Electrical Engineering</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Studying my Foundation Year at ULan in Preston — building up the maths, physics, and circuit fundamentals behind electrical systems.</p>
           </div>
-
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5 min-w-0" style="background-color: var(--card-bg);">
-            <div class="text-xs font-bold flex items-center justify-between" style="color: var(--accent-cyan);">
-              <span>PILLAR 02</span>
-              <span>[MECHANICS]</span>
-            </div>
-            <h4 class="font-bold text-sm" style="color: var(--text-main);">Working on Cars</h4>
-            <p class="text-xs font-sans leading-relaxed" style="color: var(--text-muted);">
-              Practical workshop experience from Car Cosmetics — servicing, mechanical repairs, brake bleeding, and sorting out vehicle electrics.
-            </p>
+          <div class="border border-sky-500/25 p-4 space-y-1.5 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-cyan"><span>PILLAR 02</span><span>[MECHANICS]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Working on Cars</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Practical workshop experience from Car Cosmetics — servicing, mechanical repairs, brake bleeding, and sorting out vehicle electrics.</p>
           </div>
-
-          <div class="border border-sky-500/25 p-3.5 space-y-1.5 sm:col-span-2 lg:col-span-1 min-w-0" style="background-color: var(--card-bg);">
-            <div class="text-xs font-bold flex items-center justify-between text-sketch">
-              <span>PILLAR 03</span>
-              <span>[TECH &amp; IT]</span>
-            </div>
-            <h4 class="font-bold text-sm" style="color: var(--text-main);">Computers &amp; ICT</h4>
-            <p class="text-xs font-sans leading-relaxed" style="color: var(--text-muted);">
-              Strong background in Digital ICT and Computer Science — PC hardware, networking, systems troubleshooting, and custom UI theming.
-            </p>
+          <div class="border border-sky-500/25 p-4 space-y-1.5 sm:col-span-2 lg:col-span-1 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-sketch"><span>PILLAR 03</span><span>[TECH &amp; IT]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Computers &amp; ICT</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Strong background in Digital ICT and Computer Science — PC hardware, networking, systems troubleshooting, and custom UI theming.</p>
           </div>
-
         </div>
-
       </div>
-
     </section>
 
     <!-- SECTION 02: DRAFTED SCHEMATICS -->
     <section id="schematics" class="space-y-6 sm:space-y-8">
-      
-      <!-- Section Header with Responsive Category Filter Bar -->
-      <div class="space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div class="min-w-0">
-            <div class="flex items-center gap-2.5 flex-wrap">
-              <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">02 // SCHEMATICS</span>
-              <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Technical Focus &amp; Schematics</h2>
-            </div>
-            <p class="text-xs sm:text-sm font-mono pt-1" style="color: var(--text-muted);">
-              Electrical engineering, automotive mechanics, Computer Science &amp; ICT, and live audio.
-            </p>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <span class="sec-tag">02 // SCHEMATICS</span>
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Technical Focus &amp; Schematics</h2>
           </div>
+          <p class="text-xs sm:text-sm font-mono pt-1 t-muted">Electrical engineering, automotive mechanics, Computer Science &amp; ICT, and live audio.</p>
+        </div>
 
-          <!-- Filter Controls -->
-          <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-[11px] overflow-x-auto no-scrollbar max-w-full" style="background-color: var(--card-bg);" id="filter-bar">
-            <button onclick="filterProjects('all')" class="filter-btn active px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0" data-filter="all">ALL</button>
-            <button onclick="filterProjects('engineering')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="engineering">ENGINEERING &amp; CARS</button>
-            <button onclick="filterProjects('cs-ict')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="cs-ict">CS &amp; ICT</button>
-            <button onclick="filterProjects('audio')" class="filter-btn px-2.5 py-1 hover:text-sky-400 shrink-0" style="color: var(--text-muted);" data-filter="audio">DJ &amp; AUDIO</button>
-          </div>
+        <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-xs overflow-x-auto no-scrollbar max-w-full bg-card" id="filter-bar">
+          <button onclick="filterProjects('all')" class="filter-btn active px-3 py-1.5 bg-sky-500 text-white font-bold shrink-0" data-filter="all">ALL</button>
+          <button onclick="filterProjects('engineering')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="engineering">ENGINEERING &amp; CARS</button>
+          <button onclick="filterProjects('cs-ict')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="cs-ict">CS &amp; ICT</button>
+          <button onclick="filterProjects('audio')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="audio">DJ &amp; AUDIO</button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-
-        <!-- Card 1: Electrical Engineering Systems -->
-        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+        <!-- Card 1 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
           <div class="flex items-center justify-between text-xs font-mono gap-2">
-            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-01 // ACADEMIC SPEC</span>
-            <span class="shrink-0" style="color: var(--text-muted);">ULan • Preston</span>
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CAD-01 // ACADEMIC SPEC</span>
+            <span class="shrink-0 t-muted">ULan • Preston</span>
           </div>
-          <div class="space-y-1">
-            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Electrical Engineering (Foundation Year)</h4>
-            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-              Currently completing my Foundation Year in Electrical Engineering at the University of Lancashire (ULan) — covering core engineering mathematics, physics, circuit analysis, and practical lab work.
-            </p>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Electrical Engineering (Foundation Year)</h4>
+            <p class="text-sm leading-relaxed t-muted">Currently completing my Foundation Year in Electrical Engineering at the University of Lancashire (ULan) — covering core engineering mathematics, physics, circuit analysis, and practical lab work.</p>
           </div>
-          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Circuit Fundamentals</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Electronics</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Engineering Maths</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Lab Practicals</span>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">Circuit Fundamentals</span>
+            <span class="chip">Electronics</span>
+            <span class="chip">Engineering Maths</span>
+            <span class="chip">Lab Practicals</span>
           </div>
         </div>
 
-        <!-- Card 2: Automotive Diagnostics & Mechanics -->
-        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+        <!-- Card 2 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
           <div class="flex items-center justify-between text-xs font-mono gap-2">
-            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CAD-02 // WORKSHOP MECHANICS</span>
-            <span class="shrink-0" style="color: var(--text-muted);">Car Cosmetics</span>
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CAD-02 // WORKSHOP MECHANICS</span>
+            <span class="shrink-0 t-muted">Car Cosmetics</span>
           </div>
-          <div class="space-y-1">
-            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Automotive Diagnostics &amp; Mechanics</h4>
-            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-              Hands-on workshop experience diagnosing mechanical and electrical faults on cars, carrying out servicing and fluid changes, bleeding hydraulic brake lines, and fitting aftermarket parts.
-            </p>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Automotive Diagnostics &amp; Mechanics</h4>
+            <p class="text-sm leading-relaxed t-muted">Hands-on workshop experience diagnosing mechanical and electrical faults on cars, carrying out servicing and fluid changes, bleeding hydraulic brake lines, and fitting aftermarket parts.</p>
           </div>
-          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Fault Finding</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Vehicle Electrics</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Brake Bleeding</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Mechanical Repair</span>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">Fault Finding</span>
+            <span class="chip">Vehicle Electrics</span>
+            <span class="chip">Brake Bleeding</span>
+            <span class="chip">Mechanical Repair</span>
           </div>
         </div>
 
-        <!-- Card 3: Computer Science -->
-        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+        <!-- Card 3 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
           <div class="flex items-center justify-between text-xs font-mono gap-2">
-            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">CS-01 // SOFTWARE &amp; SYSTEMS</span>
-            <span class="shrink-0" style="color: var(--text-muted);">Computing</span>
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CS-01 // SOFTWARE &amp; SYSTEMS</span>
+            <span class="shrink-0 t-muted">Computing</span>
           </div>
-          <div class="space-y-1">
-            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Computer Science</h4>
-            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-              Studied Computer Science at A-Level alongside years of tinkering with computers — covering how hardware architectures work, programming basics, operating systems, and customising software.
-            </p>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Computer Science</h4>
+            <p class="text-sm leading-relaxed t-muted">Studied Computer Science at A-Level alongside years of tinkering with computers — covering how hardware architectures work, programming basics, operating systems, and customising software.</p>
           </div>
-          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Architecture</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Operating Systems</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Code &amp; Scripting</span>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">PC Architecture</span>
+            <span class="chip">Operating Systems</span>
+            <span class="chip">Code &amp; Scripting</span>
           </div>
         </div>
 
-        <!-- Card 4: Information & Communications Technology (ICT) -->
-        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+        <!-- Card 4 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
           <div class="flex items-center justify-between text-xs font-mono gap-2">
-            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">ICT-02 // DIGITAL ICT &amp; HARDWARE</span>
-            <span class="shrink-0" style="color: var(--text-muted);">D*D* &amp; D*2</span>
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">ICT-02 // DIGITAL ICT &amp; HARDWARE</span>
+            <span class="shrink-0 t-muted">D*D* &amp; D*2</span>
           </div>
-          <div class="space-y-1">
-            <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">Digital ICT &amp; Systems</h4>
-            <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-              Achieved top marks in both BTEC IT (D*D*) and Digital ICT (D*2) — hands-on with PC building and hardware repair, networking setups, databases, and troubleshooting systems.
-            </p>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Digital ICT &amp; Systems</h4>
+            <p class="text-sm leading-relaxed t-muted">Achieved top marks in both BTEC IT (D*D*) and Digital ICT (D*2) — hands-on with PC building and hardware repair, networking setups, databases, and troubleshooting systems.</p>
           </div>
-          <div class="flex flex-wrap gap-1.5 font-mono text-[10px] sm:text-[11px] pt-1">
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">PC Building</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Networking</span>
-            <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">IT Troubleshooting</span>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">PC Building</span>
+            <span class="chip">Networking</span>
+            <span class="chip">IT Troubleshooting</span>
           </div>
         </div>
 
-        <!-- Card 5: Former DJ & Live Audio (Featuring DJ Photos) -->
-        <div class="project-card blueprint-card p-4 sm:p-6 border border-sky-500/40 md:col-span-2 space-y-4 min-w-0" data-category="audio">
+        <!-- Card 5: Former DJ -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 md:col-span-2 space-y-4 min-w-0" data-category="audio">
           <div class="flex items-center justify-between text-xs font-mono gap-2">
-            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate" style="background-color: var(--paper-color); color: var(--text-dim);">AUDIO-01 // FORMER DJ</span>
-            <span class="font-sketch text-sketch text-xs shrink-0">brief DJ stint</span>
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">AUDIO-01 // FORMER DJ</span>
+            <span class="font-sketch t-sketch text-xs shrink-0">brief DJ stint</span>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
-            
-            <!-- Left: Description and technical details -->
             <div class="lg:col-span-6 space-y-3 min-w-0">
-              <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-                Former DJ &amp; Live Sound Setups
-              </h4>
-              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                I had a brief stint DJing live sets at local venues. Even though my time DJing was short, it was great fun getting hands-on with Pioneer decks, mixers, live audio routing, and playing music for a crowd.
-              </p>
-              <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                It also sparked a lasting interest in sound systems, audio hardware, and how live setups are wired and balanced.
-              </p>
-
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-[10px] sm:text-[11px]">
-                <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                  <span class="block text-[9px]" style="color: var(--text-dim);">DECKS</span>
-                  <span class="font-bold truncate block" style="color: var(--text-main);">Pioneer DJ</span>
+              <h4 class="text-lg sm:text-xl font-bold t-main">Former DJ &amp; Live Sound Setups</h4>
+              <p class="text-sm leading-relaxed t-muted">I had a brief stint DJing live sets at local venues. Even though my time DJing was short, it was great fun getting hands-on with Pioneer decks, mixers, live audio routing, and playing music for a crowd.</p>
+              <p class="text-sm leading-relaxed t-muted">It also sparked a lasting interest in sound systems, audio hardware, and how live setups are wired and balanced.</p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-xs">
+                <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">DECKS</span>
+                  <span class="font-bold truncate block t-main">Pioneer DJ</span>
                 </div>
-                <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                  <span class="block text-[9px]" style="color: var(--text-dim);">AUDIO</span>
-                  <span class="font-bold truncate block" style="color: var(--text-main);">Live Mixing &amp; EQ</span>
+                <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">AUDIO</span>
+                  <span class="font-bold truncate block t-main">Live Mixing &amp; EQ</span>
                 </div>
-                <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-1 min-w-0" style="background-color: var(--paper-color);">
-                  <span class="block text-[9px]" style="color: var(--text-dim);">SETUP</span>
-                  <span class="font-bold truncate block" style="color: var(--text-main);">Booth &amp; PA Gear</span>
+                <div class="p-2.5 border border-sky-500/25 col-span-2 sm:col-span-1 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">SETUP</span>
+                  <span class="font-bold truncate block t-main">Booth &amp; PA Gear</span>
                 </div>
               </div>
             </div>
 
-            <!-- Right: DJ Photos framed in Blueprint style -->
             <div class="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4 items-stretch min-w-0">
-              
-              <!-- DJ Photo 1: IMG_4775.jpg -->
-              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0" style="background-color: var(--card-bg);">
-                <div class="absolute -top-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌜</div>
-                <div class="absolute -top-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌝</div>
-                <div class="absolute -bottom-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌞</div>
-                <div class="absolute -bottom-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌟</div>
-
-                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
-                  <img 
-                    src="assets/images/dj-block.jpg" 
-                    alt="Lee Parkinson live DJ booth performance" 
-                    class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
-                    loading="lazy"
-                  />
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper">
+                  <img src="assets/images/dj-block.jpg" alt="Lee Parkinson live DJ booth" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
                 </div>
-
-                <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px] gap-1" style="color: var(--text-dim);">
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
                   <span>FIG 02.4A</span>
-                  <span class="font-sketch text-sketch text-xs truncate">"live booth"</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"live booth"</span>
                 </div>
               </div>
-
-              <!-- DJ Photo 2: dj-lee.jpg -->
-              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0" style="background-color: var(--card-bg);">
-                <div class="absolute -top-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌜</div>
-                <div class="absolute -top-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌝</div>
-                <div class="absolute -bottom-2 -left-1.5 text-sky-500 font-mono text-sm leading-none">⌞</div>
-                <div class="absolute -bottom-2 -right-1.5 text-sky-500 font-mono text-sm leading-none">⌟</div>
-
-                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4]" style="background-color: var(--paper-color);">
-                  <img 
-                    src="assets/images/dj-lee.jpg" 
-                    alt="Lee Parkinson live DJ performance set" 
-                    class="w-full h-full object-cover transition-all hover:scale-105 duration-300"
-                    loading="lazy"
-                  />
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper">
+                  <img src="assets/images/dj-lee.jpg" alt="Lee Parkinson live DJ set" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
                 </div>
-
-                <div class="pt-2 flex items-center justify-between font-mono text-[9px] sm:text-[10px] gap-1" style="color: var(--text-dim);">
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
                   <span>FIG 02.4B</span>
-                  <span class="font-sketch text-sketch text-xs truncate">"on the decks"</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"on the decks"</span>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
-
       </div>
-
     </section>
 
     <!-- SECTION 03: PROJECT GALLERY (03.1 ENGINEERING & 03.2 DISCORD THEMES) -->
     <section id="gallery" class="space-y-8 sm:space-y-10">
-      
       <div class="flex items-center justify-between gap-3 flex-wrap">
         <div class="flex items-center gap-2.5 flex-wrap">
-          <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">03 // GALLERY</span>
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Project Gallery &amp; Builds</h2>
+          <span class="sec-tag">03 // GALLERY</span>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Project Gallery &amp; Builds</h2>
         </div>
         <div class="flex items-center gap-2 font-mono text-xs">
-          <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.1 Engineering</a>
-          <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 transition-colors" style="color: var(--text-dim); background-color: var(--card-bg);">03.2 Discord Themes</a>
+          <a href="#gallery-engineering" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.1 Engineering</a>
+          <a href="#gallery-discord" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.2 Discord Themes</a>
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- 03.1 // ENGINEERING PROJECTS               -->
-      <!-- ========================================== -->
+      <!-- 03.1 // ENGINEERING -->
       <div id="gallery-engineering" class="space-y-4">
         <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.1 // ENGINEERING</span>
-            <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-              Engineering &amp; Automotive Projects
-            </h3>
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.1 // ENGINEERING</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Engineering &amp; Automotive Projects</h3>
           </div>
-          <span class="font-sketch text-sketch text-xs">upcoming car &amp; lab builds</span>
+          <span class="font-sketch t-sketch text-xs">upcoming car &amp; lab builds</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-
-          <!-- Featured Project: Upcoming Budget Car Project Under £15 -->
-          <div class="blueprint-card p-4 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
-            
+          <div class="blueprint-card p-5 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
             <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
               <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // UPCOMING</span>
-              <span class="text-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
+              <span class="t-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-              
-              <!-- Blueprint Sketch Wireframe Graphic -->
-              <div class="sm:col-span-5 border border-sky-500/40 p-4 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0" style="background-color: var(--paper-color);">
-                <div class="font-mono text-4xl sm:text-5xl" style="color: var(--accent-cyan);">🚗</div>
-                <div class="font-mono text-[11px] font-bold mt-2" style="color: var(--text-main);">SUB-£15 CAR PROJECT</div>
-                <div class="text-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
-                <div class="absolute bottom-1 right-2 font-mono text-[9px]" style="color: var(--text-dim);">FIG. 03.1-A</div>
+              <div class="sm:col-span-5 border border-sky-500/40 p-5 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0 bg-paper">
+                <div class="font-mono text-4xl sm:text-5xl t-cyan">🚗</div>
+                <div class="font-mono text-xs font-bold mt-2 t-main">SUB-£15 CAR PROJECT</div>
+                <div class="t-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
+                <div class="absolute bottom-1 right-2 font-mono text-[10px] t-dim">FIG. 03.1-A</div>
               </div>
-
-              <!-- Project Details -->
               <div class="sm:col-span-7 space-y-2.5 min-w-0">
-                <h4 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-                  The Sub-£15 Budget Car Project
-                </h4>
-                <p class="text-xs sm:text-sm leading-relaxed font-sans" style="color: var(--text-muted);">
-                  My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.
-                </p>
-                
-                <div class="space-y-1 font-mono text-[11px] pt-1" style="color: var(--text-dim);">
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
-                    <span>Budget Target: Under £15 initial spend</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
-                    <span>Work: Mechanical servicing, electrics &amp; repairs</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                    <span>Updates &amp; photos will be added here as the build starts</span>
-                  </div>
+                <h4 class="text-lg sm:text-xl font-bold t-main">The Sub-£15 Budget Car Project</h4>
+                <p class="text-sm leading-relaxed t-muted">My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.</p>
+                <div class="space-y-1.5 font-mono text-xs pt-1 t-dim">
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span><span>Budget Target: Under £15 initial spend</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>Work: Mechanical servicing, electrics &amp; repairs</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span><span>Updates &amp; photos will be added here as the build starts</span></div>
                 </div>
               </div>
-
             </div>
-
-            <div class="dim-line pt-2">
-              <span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span>
-            </div>
+            <div class="dim-line pt-2"><span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span></div>
           </div>
 
-          <!-- Modular Slot for Future Project 2 -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
             <div class="space-y-2">
               <div class="flex items-center justify-between text-xs font-mono gap-2">
-                <span class="px-2 py-0.5 border border-sky-500/40" style="color: var(--text-dim);">PROJECT-SLOT 02</span>
-                <span class="font-sketch text-sketch text-xs">future build slot</span>
+                <span class="px-2 py-0.5 border border-sky-500/40 t-dim">PROJECT-SLOT 02</span>
+                <span class="font-sketch t-sketch text-xs">future build slot</span>
               </div>
-              <h4 class="text-base font-bold font-sans" style="color: var(--text-main);">Electronics &amp; Uni Lab Builds</h4>
-              <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.
-              </p>
+              <h4 class="text-lg font-bold t-main">Electronics &amp; Uni Lab Builds</h4>
+              <p class="text-sm leading-relaxed t-muted">Reserved for upcoming circuit builds, electronics experiments, and practical engineering projects from my time at ULan.</p>
             </div>
-            <div class="font-mono text-[10px] pt-2 border-t border-sky-500/20" style="color: var(--text-dim);">
-              STATUS: FUTURE SLOT
-            </div>
+            <div class="font-mono text-xs pt-2 border-t border-sky-500/20 t-dim">STATUS: FUTURE SLOT</div>
           </div>
-
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- 03.2 // DISCORD THEMES                     -->
-      <!-- ========================================== -->
+      <!-- 03.2 // DISCORD THEMES -->
       <div id="gallery-discord" class="space-y-4 pt-2">
         <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold px-2 py-0.5 border border-sky-500/40" style="background-color: var(--paper-color); color: var(--accent-cyan);">03.2 // DISCORD THEMES</span>
-            <h3 class="text-base sm:text-lg font-bold font-sans tracking-tight" style="color: var(--text-main);">
-              Discord Client Themes &amp; UI CSS
-            </h3>
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.2 // DISCORD THEMES</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Discord Client Themes &amp; UI CSS</h3>
           </div>
-          <span class="font-sketch text-sketch text-xs">open-source theme collection</span>
+          <span class="font-sketch t-sketch text-xs">open-source theme collection</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-
-          <!-- Theme Card 1: WindowsXI -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-01</span>
-                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-01</span>
+                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">WindowsXI Discord Theme</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">WindowsXI Discord Theme</h4>
+              <p class="text-sm leading-relaxed t-muted">A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">BetterDiscord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Acrylic Glass</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Fluent CSS</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">BetterDiscord</span><span class="chip">Acrylic Glass</span><span class="chip">Fluent CSS</span>
             </div>
           </div>
 
-          <!-- Theme Card 2: MaterialYou & Vintage -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-02</span>
-                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-02</span>
+                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">MaterialYou &amp; Vintage</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">MaterialYou &amp; Vintage</h4>
+              <p class="text-sm leading-relaxed t-muted">Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Material You</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Vencord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom CSS</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Material You</span><span class="chip">Vencord</span><span class="chip">Custom CSS</span>
             </div>
           </div>
 
-          <!-- Theme Card 3: Lode, Ovel & Fluidcord -->
-          <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
-            <div class="space-y-3">
+          <div class="blueprint-card p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
               <div class="flex items-center justify-between text-xs font-mono">
-                <span class="px-2 py-0.5 border border-sky-500/50 font-bold" style="background-color: var(--paper-color); color: var(--text-dim);">THEME-03</span>
-                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">GitHub ↗</a>
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-03</span>
+                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
               </div>
-              <div class="space-y-1">
-                <h4 class="text-base sm:text-lg font-bold font-sans" style="color: var(--text-main);">Lode, Ovel &amp; Fluidcord</h4>
-                <p class="text-xs leading-relaxed font-sans" style="color: var(--text-muted);">
-                  Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).
-                </p>
-              </div>
+              <h4 class="text-lg font-bold t-main">Lode, Ovel &amp; Fluidcord</h4>
+              <p class="text-sm leading-relaxed t-muted">Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).</p>
             </div>
-            <div class="flex flex-wrap gap-1 font-mono text-[10px] pt-2 border-t border-sky-500/20">
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Glasscord</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Custom Layouts</span>
-              <span class="px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-dim);">Open Source</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Glasscord</span><span class="chip">Custom Layouts</span><span class="chip">Open Source</span>
             </div>
           </div>
-
         </div>
       </div>
-
     </section>
 
-    <!-- SECTION 04: WORK EXPERIENCE (NUMBERED 05 DOWN TO 01 TO SHOW WHERE LEE CAME FROM) -->
+    <!-- SECTION 04: WORK EXPERIENCE (JOBS 05 DOWN TO 01) -->
     <section id="experience" class="space-y-4 sm:space-y-6">
-      
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">04 // EXPERIENCE</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Work Experience &amp; Career Logbook</h2>
+        <span class="sec-tag">04 // EXPERIENCE</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Work Experience &amp; Career Logbook</h2>
       </div>
 
       <div class="space-y-3.5 font-mono text-xs">
-
-        <!-- JOB 05: Wetherspoons - BAR TEAM LEADER (PROMOTED FEB 2026) -->
-        <div class="blueprint-card p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans min-w-0">
+        <!-- JOB 05 -->
+        <div class="blueprint-card p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 05]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Wetherspoons</h4>
-              <span class="px-2 py-0.5 text-[10px] bg-sky-500 text-white font-bold">PROMOTED FEB 2026</span>
+              <span class="font-bold t-dim">[JOB 05]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Wetherspoons</h4>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500 text-white font-bold">PROMOTED FEB 2026</span>
             </div>
-            <div class="text-xs sm:text-sm font-bold" style="color: var(--accent-cyan);">
-              Bar Team Leader <span class="font-normal font-mono text-xs opacity-75">(Promoted from Bar Associate, Feb 2026)</span>
-            </div>
-            <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
+            <div class="text-sm font-bold t-cyan">Bar Team Leader <span class="font-normal font-mono text-xs opacity-75">(Promoted from Bar Associate, Feb 2026)</span></div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
               <li><strong>Shift Leadership:</strong> Promoted to Bar Team Leader in February 2026 to run shifts, coordinate floor and bar staff, and keep service moving smoothly during peak periods serving 1,000s of patrons.</li>
               <li><strong>Operations Management:</strong> Handle till reconciliations, cash management, cellar stock and line maintenance, and opening/closing checks.</li>
               <li><strong>Training &amp; Standards:</strong> Train new starters, stay on top of Challenge 25 and licensing rules, and keep health and safety standards tight across the venue.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            03/2025 — Present <br />
-            <span class="font-bold" style="color: var(--text-main);">Preston, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"Bar Team Leader"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            03/2025 — Present <br /><span class="font-bold t-main">Preston, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"Bar Team Leader"</div>
           </div>
         </div>
 
-        <!-- JOB 04: Amazon Logistics (313 Logistics) -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans min-w-0">
+        <!-- JOB 04 -->
+        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 04]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Amazon Logistics (313 Logistics)</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">OPERATIONS</span>
+              <span class="font-bold t-dim">[JOB 04]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Amazon Logistics (313 Logistics)</h4>
+              <span class="chip text-[10px]">OPERATIONS</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">Multi-Drop Delivery Driver</div>
-            <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
+            <div class="text-sm font-semibold t-dim">Multi-Drop Delivery Driver</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
               <li>Managed daily van loading and safe delivery of up to 315 parcels across 180+ stops on tight schedules.</li>
               <li>Worked out efficient routes on the road and kept delivery accuracy and customer handovers consistent.</li>
               <li>Handled my own self-employment records, mileage logs, and tax admin.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            11/2024 — 04/2025 <br />
-            <span class="font-bold" style="color: var(--text-main);">Leyland, Lancashire</span>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            11/2024 — 04/2025 <br /><span class="font-bold t-main">Leyland, Lancashire</span>
           </div>
         </div>
 
-        <!-- JOB 03: Car Cosmetics -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans min-w-0">
+        <!-- JOB 03 -->
+        <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 03]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Car Cosmetics</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/40" style="background-color: var(--paper-color); color: var(--text-dim);">MECHANICAL</span>
+              <span class="font-bold t-dim">[JOB 03]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Car Cosmetics</h4>
+              <span class="chip text-[10px]">MECHANICAL</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
-            <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
+            <div class="text-sm font-semibold t-dim">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
               <li>Tracked down mechanical faults, wiring issues, and sensor problems on vehicles in the workshop.</li>
               <li>Carried out routine servicing, fluid changes, brake work, and hydraulic bleeding.</li>
               <li>Stripped down and replaced worn mechanical parts and fitted upgraded components.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            04/2024 — 10/2024 <br />
-            <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"workshop diagnostics"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            04/2024 — 10/2024 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"workshop diagnostics"</div>
           </div>
         </div>
 
-        <!-- JOB 02: Pleasure Beach Resort -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans min-w-0">
+        <!-- JOB 02 -->
+        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 02]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Pleasure Beach Resort</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">SAFETY OPERATIONS</span>
+              <span class="font-bold t-dim">[JOB 02]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Pleasure Beach Resort</h4>
+              <span class="chip text-[10px]">SAFETY OPERATIONS</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">Ride Operator</div>
-            <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
+            <div class="text-sm font-semibold t-dim">Ride Operator</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
               <li>Operated major rides following strict health, safety, and mechanical check procedures.</li>
               <li>Ran daily pre-opening checks on restraints, sensors, and control systems before letting the public on.</li>
               <li>Helped train newer operators on safe ride operation and emergency procedures.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            03/2023 — 11/2024 <br />
-            <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            03/2023 — 11/2024 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
           </div>
         </div>
 
-        <!-- JOB 01: McDonald's (WHERE LEE STARTED) -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div class="space-y-1 font-sans min-w-0">
+        <!-- JOB 01 -->
+        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[JOB 01]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">McDonald's</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">CREW</span>
+              <span class="font-bold t-dim">[JOB 01]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">McDonald's</h4>
+              <span class="chip text-[10px]">CREW</span>
             </div>
-            <div class="text-sm font-semibold" style="color: var(--text-dim);">Crew Member</div>
-            <ul class="text-xs list-disc list-inside space-y-1 pt-1 leading-relaxed" style="color: var(--text-muted);">
+            <div class="text-sm font-semibold t-dim">Crew Member</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
               <li>Worked across kitchen and front counter systems during busy rushes.</li>
               <li>Built a solid habit of working fast as part of a team while keeping everything clean and accurate.</li>
             </ul>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            03/2022 — 02/2023 <br />
-            <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"where I started"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            03/2022 — 02/2023 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"where I started"</div>
           </div>
         </div>
-
       </div>
-
     </section>
 
     <!-- SECTION 05: EDUCATION -->
     <section id="education" class="space-y-4 sm:space-y-6">
-      
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">05 // EDUCATION</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Academic Qualifications</h2>
+        <span class="sec-tag">05 // EDUCATION</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Academic Qualifications</h2>
       </div>
 
       <div class="space-y-3.5 font-mono text-xs">
-
-        <!-- 1. University of Lancashire (ULan) -->
-        <div class="blueprint-card p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <!-- ULan -->
+        <div class="blueprint-card p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-1.5 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[DEGREE-01]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">University of Lancashire (ULan)</h4>
-              <span class="px-2 py-0.5 text-[10px] bg-sky-500 text-white font-bold">FOUNDATION YEAR</span>
+              <span class="font-bold t-dim">[DEGREE-01]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">University of Lancashire (ULan)</h4>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500 text-white font-bold">FOUNDATION YEAR</span>
             </div>
-            <div class="text-xs sm:text-sm font-bold" style="color: var(--accent-cyan);">
-              Electrical Engineering (Foundation Year)
-            </div>
-            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-              Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.
-            </p>
-            <div class="flex flex-wrap gap-1.5 font-mono text-[10px] pt-1">
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Circuit Theory</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Digital Electronics</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Power Systems</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Sensor Instrumentation</span>
-              <span class="px-2 py-0.5 border border-sky-500/30" style="background-color: var(--paper-color); color: var(--text-dim);">Engineering Maths</span>
+            <div class="text-sm font-bold t-cyan">Electrical Engineering (Foundation Year)</div>
+            <p class="text-sm leading-relaxed t-muted">Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.</p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+              <span class="chip">Circuit Theory</span><span class="chip">Digital Electronics</span><span class="chip">Power Systems</span><span class="chip">Sensor Instrumentation</span><span class="chip">Engineering Maths</span>
             </div>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            2026 — Present <br />
-            <span class="font-bold" style="color: var(--text-main);">Preston, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"foundation year"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            2026 — Present <br /><span class="font-bold t-main">Preston, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"foundation year"</div>
           </div>
         </div>
 
-        <!-- 2. Blackpool Sixth Form College -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <!-- Sixth Form -->
+        <div class="blueprint-card p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-2 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[LEVEL 3]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">Blackpool Sixth Form College</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/40" style="background-color: var(--paper-color); color: var(--text-dim);">A-LEVELS &amp; BTEC</span>
+              <span class="font-bold t-dim">[LEVEL 3]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Blackpool Sixth Form College</h4>
+              <span class="chip text-[10px]">A-LEVELS &amp; BTEC</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">
-              BTEC National Extended Diploma &amp; GCE Advanced Level
-            </div>
-
-            <!-- Grades Breakdown Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
-              <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                <span class="block text-[9px]" style="color: var(--text-dim);">BTEC NATIONAL DIPLOMA</span>
-                <span class="font-bold text-xs" style="color: var(--text-main);">Information Technology:</span>
+            <div class="text-sm font-semibold t-dim">BTEC National Extended Diploma &amp; GCE Advanced Level</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">BTEC NATIONAL DIPLOMA</span>
+                <span class="font-bold t-main">Information Technology:</span>
                 <span class="font-bold ml-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">D* D*</span>
               </div>
-              <div class="p-2 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                <span class="block text-[9px]" style="color: var(--text-dim);">GCE A-LEVEL</span>
-                <span class="font-bold text-xs" style="color: var(--text-main);">Computer Science:</span>
-                <span class="font-bold ml-1 px-1.5 py-0.5 border border-sky-500/30" style="color: var(--text-main);">Grade E</span>
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">GCE A-LEVEL</span>
+                <span class="font-bold t-main">Computer Science:</span>
+                <span class="font-bold ml-1 px-1.5 py-0.5 border border-sky-500/30 t-main">Grade E</span>
               </div>
             </div>
-
-            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-              Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.
-            </p>
+            <p class="text-sm leading-relaxed t-muted">Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.</p>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            Completed 08/2023 <br />
-            <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"Double Distinction Star"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Completed 08/2023 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"Double Distinction Star"</div>
           </div>
         </div>
 
-        <!-- 3. St Mary's Catholic Academy -->
-        <div class="blueprint-card p-4 sm:p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+        <!-- St Mary's -->
+        <div class="blueprint-card p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div class="space-y-2 font-sans flex-1 min-w-0">
             <div class="flex items-center gap-2 font-mono flex-wrap">
-              <span class="font-bold" style="color: var(--text-dim);">[LEVEL 2]</span>
-              <h4 class="font-bold text-sm sm:text-base" style="color: var(--text-main);">St Mary's Catholic Academy</h4>
-              <span class="px-2 py-0.5 text-[10px] border border-sky-500/20" style="background-color: var(--paper-color); color: var(--text-muted);">GCSEs &amp; LEVEL 2</span>
+              <span class="font-bold t-dim">[LEVEL 2]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">St Mary's Catholic Academy</h4>
+              <span class="chip text-[10px]">GCSEs &amp; LEVEL 2</span>
             </div>
-            <div class="text-xs sm:text-sm font-semibold" style="color: var(--text-dim);">
-              General Certificate of Secondary Education (GCSEs)
-            </div>
-
-            <!-- GCSE Breakdown Badges Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[10px]">
-              <div class="p-1.5 border border-emerald-500/50 bg-emerald-500/10 min-w-0">
-                <span class="text-[9px] block text-emerald-400 font-bold truncate">DIGITAL ICT ★</span>
+            <div class="text-sm font-semibold t-dim">General Certificate of Secondary Education (GCSEs)</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
+              <div class="p-2 border border-emerald-500/50 bg-emerald-500/10 min-w-0">
+                <span class="text-[10px] block text-emerald-400 font-bold truncate">DIGITAL ICT ★</span>
                 <span class="font-bold text-emerald-400 truncate block">D*2 (Distinction*)</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block truncate" style="color: var(--text-dim);">PHOTOGRAPHY</span>
-                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 9</span>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">PHOTOGRAPHY</span>
+                <span class="font-bold truncate block t-main">Grade 9</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block truncate" style="color: var(--text-dim);">ENGLISH LANG / LIT</span>
-                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 6 / Grade 5</span>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">ENGLISH LANG / LIT</span>
+                <span class="font-bold truncate block t-main">Grade 6 / Grade 5</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25 min-w-0" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block truncate" style="color: var(--text-dim);">MATHEMATICS</span>
-                <span class="font-bold truncate block" style="color: var(--text-main);">Grade 4</span>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">MATHEMATICS</span>
+                <span class="font-bold truncate block t-main">Grade 4</span>
               </div>
-              <div class="p-1.5 border border-sky-500/25 col-span-2 sm:col-span-4 min-w-0" style="background-color: var(--paper-color);">
-                <span class="text-[9px] block" style="color: var(--text-dim);">SCIENCES (TRIPLE)</span>
-                <span class="font-bold" style="color: var(--text-main);">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</span>
+              <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-4 min-w-0 bg-paper">
+                <span class="text-[10px] block t-dim">SCIENCES (TRIPLE)</span>
+                <span class="font-bold t-main">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</span>
               </div>
             </div>
-
-            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-              Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.
-            </p>
+            <p class="text-sm leading-relaxed t-muted">Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.</p>
           </div>
-          <div class="text-left sm:text-right sm:whitespace-nowrap text-[11px] shrink-0" style="color: var(--text-muted);">
-            Secondary Education <br />
-            <span class="font-bold" style="color: var(--text-main);">Blackpool, Lancashire</span>
-            <div class="font-sketch text-sketch text-xs mt-1">"D*2 in Digital ICT"</div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Secondary Education <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"D*2 in Digital ICT"</div>
           </div>
         </div>
-
       </div>
-
     </section>
 
-    <!-- SECTION 06: CONTACT (SIMPLIFIED & HIGHLY READABLE) -->
+    <!-- SECTION 06: CONTACT -->
     <section id="contact" class="space-y-4 sm:space-y-6">
-      
       <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-        <span class="font-mono text-xs px-2.5 py-1 bg-sky-500 text-white font-bold shrink-0">06 // CONTACT</span>
-        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style="color: var(--text-main);">Get in Touch</h2>
+        <span class="sec-tag">06 // CONTACT</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight t-main">Get in Touch</h2>
       </div>
 
-      <!-- Simplified Clean Blueprint Contact Card -->
-      <div class="blueprint-card p-4 sm:p-8 border border-sky-500/40 space-y-6">
-        
+      <div class="blueprint-card p-5 sm:p-8 border border-sky-500/40 space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sky-500/25 pb-5">
           <div class="space-y-1 min-w-0">
-            <h3 class="text-lg sm:text-xl font-bold font-sans" style="color: var(--text-main);">
-              Open to Engineering Placements &amp; Opportunities
-            </h3>
-            <p class="text-xs sm:text-sm font-sans" style="color: var(--text-muted);">
-              Feel free to reach out directly via email or connect on professional channels.
-            </p>
+            <h3 class="text-lg sm:text-xl font-bold t-main">Open to Engineering Placements &amp; Opportunities</h3>
+            <p class="text-sm t-muted">Feel free to reach out directly via email or connect on professional channels.</p>
           </div>
-
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs font-mono inline-flex items-center justify-center gap-2 shadow-md shrink-0">
-            <span>Download Full CV (PDF)</span>
-            <span>↓</span>
-          </a>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs font-mono inline-flex items-center justify-center gap-2 shadow-md shrink-0">Download Full CV (PDF) ↓</a>
         </div>
 
-        <!-- Clean Grid: 4 Readable Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <!-- Direct Email -->
-          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
-            <div class="font-mono text-[10px]" style="color: var(--text-dim);">DIRECT EMAIL ✉</div>
-            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
-              lspky@pm.me
-            </div>
-            <div class="font-sketch text-sketch text-xs">Primary inbox</div>
+          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">DIRECT EMAIL ✉</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">lspky@pm.me</div>
+            <div class="font-sketch t-sketch text-xs">Primary inbox</div>
           </a>
-
-          <!-- Location -->
-          <div class="p-4 border border-sky-500/30 space-y-1 min-w-0" style="background-color: var(--paper-color);">
-            <div class="font-mono text-[10px]" style="color: var(--text-dim);">CAMPUS &amp; BASE 📍</div>
-            <div class="font-bold text-sm sm:text-base truncate" style="color: var(--text-main);">
-              Preston, Lancashire
-            </div>
-            <div class="text-xs" style="color: var(--text-muted);">United Kingdom</div>
+          <div class="p-4 border border-sky-500/30 space-y-1 min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">CAMPUS &amp; BASE 📍</div>
+            <div class="font-bold text-base truncate t-main">Preston, Lancashire</div>
+            <div class="text-xs t-muted">United Kingdom</div>
           </div>
-
-          <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
-            <div class="font-mono text-[10px]" style="color: var(--text-dim);">PROFESSIONAL ↗</div>
-            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
-              LinkedIn
-            </div>
-            <div class="text-xs" style="color: var(--text-muted);">Lee Parkinson</div>
+          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">PROFESSIONAL ↗</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">LinkedIn</div>
+            <div class="text-xs t-muted">Lee Parkinson</div>
           </a>
-
-          <!-- GitHub -->
-          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0" style="background-color: var(--paper-color);">
-            <div class="font-mono text-[10px]" style="color: var(--text-dim);">GITHUB PROFILE ↗</div>
-            <div class="font-bold text-sm sm:text-base group-hover:underline truncate" style="color: var(--text-main);">
-              @leeprky
-            </div>
-            <div class="text-xs" style="color: var(--text-muted);">Open-source projects</div>
+          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">GITHUB PROFILE ↗</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">@leeprky</div>
+            <div class="text-xs t-muted">Open-source projects</div>
           </a>
-
         </div>
 
-        <!-- Website Source Code Strip -->
-        <div class="pt-4 border-t border-sky-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs" style="color: var(--text-muted);">
+        <div class="pt-4 border-t border-sky-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs t-muted">
           <span>SPECIFICATION SOURCE REPOSITORY:</span>
-          <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="inline-flex items-center gap-1.5 font-bold hover:underline break-all" style="color: var(--accent-cyan);">
-            <span>github.com/leeprky/leeprky.github.io</span>
-            <span>↗</span>
-          </a>
+          <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="inline-flex items-center gap-1.5 font-bold hover:underline break-all t-cyan">github.com/leeprky/leeprky.github.io ↗</a>
         </div>
-
       </div>
-
     </section>
 
   </main>
 
   <!-- BLUEPRINT DRAWING FOOTER -->
-  <footer style="background-color: var(--top-strip); color: var(--text-muted);" class="w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
-    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
-      <div>
-        <span>SHEET: LP-EE-2026</span> • 
-        <span>DISCIPLINE: ELECTRICAL ENGINEERING</span> • 
-        <span>© <span id="year">2026</span> LEE PARKINSON</span>
-      </div>
+  <footer class="bg-strip t-muted w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
+    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>SHEET: LP-EE-2026 • DISCIPLINE: ELECTRICAL ENGINEERING • © <span id="year">2026</span> LEE PARKINSON</div>
       <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold" style="color: var(--accent-cyan);">Website Source (GitHub) ↗</a>
-        <a href="mailto:lspky@pm.me" class="hover:underline" style="color: var(--text-dim);">lspky@pm.me</a>
-        <a href="#top" class="hover:underline" style="color: var(--text-dim);">TOP ↑</a>
+        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold t-cyan">Website Source (GitHub) ↗</a>
+        <a href="mailto:lspky@pm.me" class="hover:underline t-dim">lspky@pm.me</a>
+        <a href="#top" class="hover:underline t-dim">TOP ↑</a>
       </div>
     </div>
   </footer>
 
-  <!-- CLIENT-SIDE SCRIPT FOR THEME SWITCHING & CATEGORY FILTERING -->
   <script>
-    // Dynamic Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Theme Management: Auto / Light / Dark with Browser Sync
     function setThemeMode(mode) {
       const html = document.documentElement;
-      const btnAuto = document.getElementById('btn-theme-auto');
-      const btnLight = document.getElementById('btn-theme-light');
-      const btnDark = document.getElementById('btn-theme-dark');
-
-      // Reset button styles
-      [btnAuto, btnLight, btnDark].forEach(btn => {
-        if (btn) {
-          btn.classList.remove('bg-sky-500', 'text-white', 'font-bold');
-        }
-      });
-
+      const map = { auto: 'btn-theme-auto', light: 'btn-theme-light', dark: 'btn-theme-dark' };
+      Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('bg-sky-500', 'text-white', 'font-bold'));
       if (mode === 'auto') {
         localStorage.removeItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        html.classList.toggle('dark', systemPrefersDark);
-        if (btnAuto) btnAuto.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      } else if (mode === 'light') {
-        localStorage.setItem('theme', 'light');
-        html.classList.remove('dark');
-        if (btnLight) btnLight.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      } else if (mode === 'dark') {
-        localStorage.setItem('theme', 'dark');
-        html.classList.add('dark');
-        if (btnDark) btnDark.classList.add('bg-sky-500', 'text-white', 'font-bold');
-      }
-    }
-
-    // Initialize Active Button State on Load
-    (function initThemeButtons() {
-      const savedTheme = localStorage.getItem('theme');
-      if (!savedTheme) {
-        setThemeMode('auto');
+        html.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches);
       } else {
-        setThemeMode(savedTheme);
+        localStorage.setItem('theme', mode);
+        html.classList.toggle('dark', mode === 'dark');
       }
-    })();
-
-    // Listen for System Preference Changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) {
-        document.documentElement.classList.toggle('dark', e.matches);
-      }
+      document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
+    }
+    setThemeMode(localStorage.getItem('theme') || 'auto');
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) document.documentElement.classList.toggle('dark', e.matches);
     });
 
-    // Blueprint Category Filtering
-    function filterProjects(category) {
-      const cards = document.querySelectorAll('.project-card');
-      const buttons = document.querySelectorAll('.filter-btn');
-
-      // Update button active state
-      buttons.forEach(btn => {
-        if (btn.dataset.filter === category) {
-          btn.classList.add('bg-sky-500', 'text-white', 'font-bold');
-          btn.style.color = '';
-        } else {
-          btn.classList.remove('bg-sky-500', 'text-white', 'font-bold');
-        }
+    function filterProjects(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        const active = b.dataset.filter === cat;
+        b.classList.toggle('bg-sky-500', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('font-bold', active);
       });
-
-      // Filter cards
-      cards.forEach(card => {
-        if (category === 'all' || card.dataset.category === category) {
-          card.classList.remove('hidden');
-          setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-          }, 10);
-        } else {
-          card.style.opacity = '0';
-          card.style.transform = 'scale(0.97)';
-          setTimeout(() => {
-            card.classList.add('hidden');
-          }, 150);
-        }
+      document.querySelectorAll('.project-card').forEach(c => {
+        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
       });
     }
-  </script>
 
+    // 2.5-Second Hover Popup Timer for Topbar Elements (DEV)
+    document.querySelectorAll('.nav-item-wrap').forEach(el => {
+      let timer = null;
+      el.addEventListener('mouseenter', () => {
+        el.classList.add('holding');
+        timer = setTimeout(() => {
+          el.classList.add('popup-open');
+        }, 2500);
+      });
+      el.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        el.classList.remove('holding', 'popup-open');
+      });
+    });
+  </script>
 </body>
 </html>

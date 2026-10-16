@@ -17,20 +17,20 @@ Personal engineering portfolio and technical specification sheet for **Lee Parki
 
 This `dev` branch stages experimental features prior to merging into `main`:
 
-1. **Animated Moving Blueprint Grid Background (`@keyframes blueprintDrift`):**
-   - Continuous, seamless panning of both the major (`100px`) and minor (`20px`) blueprint drafting grid coordinates in both Light and Dark themes.
-2. **Hover-Only Topbar Popout Cards (`.nav-hover-card`):**
-   - Hovering over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) reveals a technical popout card with a button to open that topic's dedicated specification page.
-3. **8 Dedicated Topic Specification Pages:**
+1. **GPU-Accelerated Moving Blueprint Grid Background (`@keyframes blueprintDrift`):**
+   - Smooth 60/120fps hardware-accelerated panning using `transform: translate3d(...)` and `will-change: transform` on a fixed `body::before` layer, eliminating CPU background repaints across both Light and Dark themes.
+2. **2.5-Second Hover-Hold Topbar Popout Cards (`.nav-hover-card` & `.nav-hold-bar`):**
+   - Holding hover over any top navigation item (`01. ABOUT`, `02. SCHEMATICS`, `03. GALLERY`, `04. EXPERIENCE`, `05. EDUCATION`, `06. CONTACT`, `✉ lspky@pm.me`, or `CV ↓`) for **2.5 seconds** fills a cyan progress indicator and reveals the dedicated page popup.
+3. **8 Enriched Dedicated Topic Specification Pages:**
    - **[`index.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/index.html)** — Full single-page blueprint specification
-   - **[`about.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/about.html)** — Dedicated `01 // ABOUT ME` & Operator Specification page
-   - **[`schematics.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/schematics.html)** — Dedicated `02 // SCHEMATICS` page with category filter & DJ photos
-   - **[`gallery.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/gallery.html)** — Dedicated `03 // GALLERY` page (`03.1 // ENGINEERING` & `03.2 // DISCORD THEMES`)
-   - **[`experience.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`)
-   - **[`education.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/education.html)** — Dedicated `05 // EDUCATION` qualifications page
-   - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `06 // CONTACT` channels page
-   - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification & Embedded PDF Viewer** page
-   - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)** & quick message draft generator
+   - **[`about.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/about.html)** — Dedicated `01 // ABOUT ME` page + Practical Toolkit & Equipment + Day-to-Day Schedule in Preston
+   - **[`schematics.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/schematics.html)** — Dedicated `02 // SCHEMATICS` page + Circuit Testing, Workshop Service Protocol & Live Audio Signal Chain
+   - **[`gallery.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/gallery.html)** — Dedicated `03 // GALLERY` page + 4-Phase Sub-£15 Car Revival Plan & Discord CSS Architecture
+   - **[`experience.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/experience.html)** — Dedicated `04 // EXPERIENCE` career logbook (`[JOB 05]` down to `[JOB 01]`) + Transferable Engineering Skills Matrix
+   - **[`education.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/education.html)** — Dedicated `05 // EDUCATION` qualifications page + Core Academic & Lab Focus Breakdown
+   - **[`contact.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/contact.html)** — Dedicated `06 // CONTACT` channels page + Availability & Location Details
+   - **[`cv.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/cv.html)** — Dedicated **CV Specification, At-a-Glance Executive Summary & Embedded PDF Viewer** page
+   - **[`email.html`](https://raw.githack.com/leeprky/leeprky.github.io/dev/email.html)** — Dedicated **Direct Email Dispatch (`lspky@pm.me`)**, 1-Click Topic Presets, Copy-to-Clipboard & Quick Message Composer
 
 ---
 
