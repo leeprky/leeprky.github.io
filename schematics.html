@@ -73,11 +73,19 @@
       }
     }
     try { lpApplyAccent(localStorage.getItem('accent')); } catch (e) {}
-    try { if (localStorage.getItem('lee_hero_typed') !== '1') document.documentElement.classList.add('hero-needs-typing'); } catch (e) {}
+    try { document.documentElement.classList.add('hero-needs-typing'); } catch (e) {}
   </script>
   <style>
     html.hero-needs-typing #hero-type-target { visibility: hidden; }
     html.hero-needs-typing #hero-dot { opacity: 0; }
+    @keyframes dotBlink {
+      0%, 49.9% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .dot-blinking {
+      animation: dotBlink 0.85s infinite;
+      display: inline-block;
+    }
     :root {
       --bg-color: #ddebf7;
       --paper-color: #f7fbff;
@@ -402,7 +410,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V6.9</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.0</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -862,7 +870,7 @@
       });
     });
 
-    // First-Load Code Typing Animation for "Hi, I'm Lee." (cached in localStorage)
+    // Code Typing Animation for "Hi, I'm Lee." (restarts on refresh, dot blinks once loaded)
     (function () {
       const heading = document.getElementById('hero-heading');
       const target = document.getElementById('hero-type-target');
@@ -871,12 +879,12 @@
       if (!heading || !target || !dot || !cursor) return;
 
       const fullText = "Hi, I'm Lee";
-      const isCached = localStorage.getItem('lee_hero_typed') === '1';
+      try { localStorage.removeItem('lee_hero_typed'); } catch (e) {}
 
-      function runTyping(force) {
-        if (!force && isCached) return;
+      function runTyping() {
         document.documentElement.classList.remove('hero-needs-typing');
         target.textContent = '';
+        dot.classList.remove('dot-blinking');
         dot.style.opacity = '0';
         cursor.style.display = 'inline-block';
         cursor.style.opacity = '1';
@@ -885,31 +893,21 @@
           if (i < fullText.length) {
             target.textContent += fullText[i];
             i++;
-            const variance = 55 + Math.random() * 45;
+            const variance = 50 + Math.random() * 45;
             setTimeout(typeStep, variance);
           } else {
+            cursor.style.display = 'none';
             dot.style.opacity = '1';
-            dot.style.transition = 'opacity 0.25s ease';
-            try { localStorage.setItem('lee_hero_typed', '1'); } catch (e) {}
-            setTimeout(() => {
-              cursor.style.transition = 'opacity 0.4s ease';
-              cursor.style.opacity = '0';
-              setTimeout(() => {
-                cursor.style.display = 'none';
-                cursor.style.opacity = '1';
-              }, 400);
-            }, 1400);
+            dot.classList.add('dot-blinking');
           }
         }
         setTimeout(typeStep, 250);
       }
 
-      if (!isCached) {
-        runTyping(false);
-      }
+      runTyping();
 
       heading.style.cursor = 'pointer';
-      heading.addEventListener('click', () => runTyping(true));
+      heading.addEventListener('click', runTyping);
     })();
 
     // ===== COLLAPSIBLE BLUEPRINT SECTIONS LOGIC =====
