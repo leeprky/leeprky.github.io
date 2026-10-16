@@ -193,6 +193,10 @@
     .section-collapsed .section-toggle-header:hover {
       opacity: 1;
     }
+    .section-collapsed.blueprint-section,
+    .section-collapsed .section-content-wrap {
+      margin-top: 0 !important;
+    }
 
     /* Mobile UX & Touch Enhancements */
     @media (max-width: 640px) {
@@ -414,7 +418,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.1</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.2</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -560,7 +564,7 @@
   </header>
 
   <!-- MAIN DRAFTING BOARD -->
-  <main class="drafting-container landscape-compact-main py-6 sm:py-10 lg:py-12 space-y-12 sm:space-y-16 lg:space-y-20 flex-1" id="top">
+  <main class="drafting-container landscape-compact-main py-5 sm:py-8 lg:py-10 space-y-5 sm:space-y-7 lg:space-y-8 flex-1" id="top">
 
     <!-- HERO SECTION -->
     <section class="blueprint-card p-5 sm:p-7 md:p-8 lg:p-10 border border-sky-500/40">
