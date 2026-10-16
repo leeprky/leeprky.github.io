@@ -414,7 +414,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.3</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.4</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -533,19 +533,35 @@
           </div>
         </div>
         <div class="nav-item-wrap align-right py-1">
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm">CV ↓</a>
+          <a href="cv.html" class="px-3.5 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1.5 shadow-md ring-1 ring-sky-300/40 active:scale-95">
+            <span>📄</span>
+            <span>CV SPEC</span>
+            <span class="text-[10px] bg-white/20 px-1 py-0.2 rounded font-mono">PDF ↓</span>
+          </a>
           <span class="nav-hold-bar"></span>
-          <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</div>
+          <div class="nav-hover-card space-y-2.5 text-left">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 bg-sky-500 text-white rounded">OCT 2026</span>
+            </div>
             <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
-            <a href="cv.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open CV Page →</a>
+            <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
+              <a href="cv.html" class="text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded">Web Sheet →</a>
+              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="text-center py-1.5 px-2 border border-sky-400/50 hover:bg-sky-500/20 t-cyan font-bold rounded bg-card">PDF ↗</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
-      <div class="drafting-container py-2 flex items-center gap-4 sm:gap-5 text-xs font-mono whitespace-nowrap t-muted">
+      <div class="drafting-container py-2 flex items-center gap-3 sm:gap-4 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="cv.html" class="px-2.5 py-1 bg-sky-500 text-white font-bold rounded flex items-center gap-1 shrink-0 shadow-sm">
+          <span>📄</span> <span>CV SPEC</span>
+        </a>
+        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan font-bold rounded flex items-center gap-1 shrink-0 bg-card">
+          <span>PDF ↓</span>
+        </a>
         <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
         <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
         <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
@@ -554,7 +570,6 @@
         <a href="hobbies.html" class="hover:text-sky-400">06. HOBBIES</a>
         <a href="contact.html" class="hover:text-sky-400">07. CONTACT</a>
         <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
-        <a href="cv.html" class="hover:text-sky-400">📄 CV</a>
       </div>
     </nav>
   </header>

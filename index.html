@@ -418,7 +418,7 @@
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
         <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.3</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V7.4</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -537,19 +537,35 @@
           </div>
         </div>
         <div class="nav-item-wrap align-right py-1">
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1 shadow-sm">CV ↓</a>
+          <a href="cv.html" class="px-3.5 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1.5 shadow-md ring-1 ring-sky-300/40 active:scale-95">
+            <span>📄</span>
+            <span>CV SPEC</span>
+            <span class="text-[10px] bg-white/20 px-1 py-0.2 rounded font-mono">PDF ↓</span>
+          </a>
           <span class="nav-hold-bar"></span>
-          <div class="nav-hover-card space-y-2 text-left">
-            <div class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</div>
+          <div class="nav-hover-card space-y-2.5 text-left">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 bg-sky-500 text-white rounded">OCT 2026</span>
+            </div>
             <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
-            <a href="cv.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open CV Page →</a>
+            <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
+              <a href="cv.html" class="text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded">Web Sheet →</a>
+              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="text-center py-1.5 px-2 border border-sky-400/50 hover:bg-sky-500/20 t-cyan font-bold rounded bg-card">PDF ↗</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
-      <div class="drafting-container py-2 flex items-center gap-4 sm:gap-5 text-xs font-mono whitespace-nowrap t-muted">
+      <div class="drafting-container py-2 flex items-center gap-3 sm:gap-4 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="cv.html" class="px-2.5 py-1 bg-sky-500 text-white font-bold rounded flex items-center gap-1 shrink-0 shadow-sm">
+          <span>📄</span> <span>CV SPEC</span>
+        </a>
+        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan font-bold rounded flex items-center gap-1 shrink-0 bg-card">
+          <span>PDF ↓</span>
+        </a>
         <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
         <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
         <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
@@ -558,7 +574,6 @@
         <a href="hobbies.html" class="hover:text-sky-400">06. HOBBIES</a>
         <a href="contact.html" class="hover:text-sky-400">07. CONTACT</a>
         <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
-        <a href="cv.html" class="hover:text-sky-400">📄 CV</a>
       </div>
     </nav>
   </header>
@@ -627,11 +642,42 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2.5 pt-2 font-mono text-xs sm:text-sm">
-            <a href="#about" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md">01 // About Me ↓</a>
+          <!-- PROMINENT CV SPECIFICATION & DISPATCH CARD (OFF THE RIP) -->
+          <div class="blueprint-card p-3.5 sm:p-4 border-2 border-sky-400/80 bg-sky-500/10 rounded-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md relative overflow-hidden group">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded bg-sky-500 text-white flex items-center justify-center shrink-0 shadow font-bold text-lg group-hover:scale-105 transition-transform">
+                📄
+              </div>
+              <div class="space-y-0.5 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap font-mono text-[10px]">
+                  <span class="font-bold px-2 py-0.5 bg-sky-500 text-white rounded">CURRICULUM VITAE</span>
+                  <span class="t-cyan font-bold">• UPDATED OCT 2026</span>
+                  <span class="t-dim hidden md:inline">• PDF &amp; INTERACTIVE SPEC</span>
+                </div>
+                <p class="text-xs sm:text-sm font-bold t-main truncate">Available for Summer Placements &amp; Engineering Roles</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 font-mono text-xs">
+              <a href="cv.html" class="px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded shadow transition-all flex items-center gap-1.5 active:scale-95">
+                <span>View Full CV</span> ➔
+              </a>
+              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3 py-2 border-2 border-sky-500 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-card rounded flex items-center gap-1 active:scale-95 shadow-sm">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>PDF (252KB)</span> ↓
+              </a>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 pt-1 font-mono text-xs sm:text-sm">
+            <a href="cv.html" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all shadow-md flex items-center gap-1.5 ring-1 ring-sky-300/40">
+              <span>📄 CV Spec Sheet ➔</span>
+            </a>
+            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3.5 py-2.5 border-2 border-sky-500/70 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-card flex items-center gap-1.5 shadow-sm">
+              <span>Download PDF ↓</span>
+            </a>
+            <a href="#about" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">01 // About Me ↓</a>
+            <a href="#experience" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">04 // Experience ↓</a>
             <a href="#gallery" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">03 // Gallery ↓</a>
-            <a href="#experience" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-dim bg-card">Experience ↓</a>
-            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-3.5 py-2.5 border border-sky-500/40 hover:bg-sky-500/10 transition-all t-main bg-card">CV (PDF) ↗</a>
           </div>
         </div>
       </div>
@@ -649,6 +695,9 @@
         <span class="hidden md:inline t-muted">• TAP ANY HEADER TO FOLD / EXPAND</span>
       </div>
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <a href="cv.html" class="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-sky-500/15 border border-sky-500/60 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95 flex items-center gap-1" title="Open full CV page">
+          <span>📄</span> <span>FULL CV</span>
+        </a>
         <button type="button" onclick="setAllSections(false)" class="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95" title="Collapse all sheets">
           [−] FOLD ALL
         </button>
@@ -1063,6 +1112,9 @@
           </div>
         </div>
         <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
+            <a href="cv.html" class="px-2.5 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan bg-card font-bold transition-all">📄 Full CV Page →</a>
+          </div>
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1074,6 +1126,21 @@
 
       <div id="section-content-experience" class="section-content-wrap">
         <div class="section-content-inner space-y-4 pt-1">
+
+      <!-- PROMINENT CV LINK BANNER IN EXPERIENCE SECTION -->
+      <div class="p-3 sm:p-3.5 bg-sky-500/10 border-2 border-sky-500/40 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs font-mono">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-base shrink-0">📄</span>
+          <div class="min-w-0">
+            <span class="font-bold t-main block sm:inline">FULL CURRICULUM VITAE SPECIFICATION</span>
+            <span class="t-muted text-[11px] block sm:inline sm:ml-2">• Includes printable PDF format &amp; complete employer references</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="cv.html" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded transition-colors text-[11px]">View CV Sheet ➔</a>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2.5 py-1.5 border border-sky-500/50 hover:bg-sky-500/20 t-cyan font-bold rounded transition-colors text-[11px] bg-card">PDF ↓</a>
+        </div>
+      </div>
 
       <div class="space-y-3.5 font-mono text-xs">
         <!-- JOB 05 -->
@@ -1454,6 +1521,9 @@
           </div>
         </div>
         <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
+            <a href="cv.html" class="px-2.5 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan bg-card font-bold transition-all">📄 Full CV Page →</a>
+          </div>
           <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
           <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
             <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1472,7 +1542,10 @@
             <h3 class="text-lg sm:text-xl font-bold t-main">Open to Engineering Placements &amp; Opportunities</h3>
             <p class="text-sm t-muted">Feel free to reach out directly via email or connect on professional channels.</p>
           </div>
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs font-mono inline-flex items-center justify-center gap-2 shadow-md shrink-0">Download Full CV (PDF) ↓</a>
+          <div class="flex items-center gap-2 font-mono text-xs shrink-0 flex-wrap">
+            <a href="cv.html" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold inline-flex items-center gap-1.5 shadow-md active:scale-95"><span>📄 Open CV Sheet</span> ➔</a>
+            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-4 py-2.5 border-2 border-sky-500 hover:bg-sky-500 hover:text-white t-cyan font-bold inline-flex items-center gap-1.5 bg-card shadow-sm active:scale-95"><span>PDF (252KB)</span> ↓</a>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
