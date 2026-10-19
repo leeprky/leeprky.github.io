@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wheel of Doom — Tavern Edition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=IM+Fell+English:ital@0;1&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --parchment-light: #e8d2a6;
+      --parchment-mid: #d6b881;
+      --parchment-dark: #b38f52;
+      --ink: #23170b;
+      --ink-faded: #4d361e;
+      --wood-dark: #2c1606;
+      --wood-mid: #592f11;
+      --wood-light: #8a4f22;
+      --red-quad: #d62828;
+      --blue-quad: #1d63b8;
+      --green-quad: #2b9348;
+      --yellow-quad: #f7b801;
+      --gold: #d4af37;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: #140d07;
+      background-image: 
+        radial-gradient(circle at 50% 45%, rgba(255, 190, 90, 0.14) 0%, rgba(15, 9, 4, 0.95) 90%),
+        repeating-linear-gradient(45deg, #160e07 0px, #160e07 10px, #120b05 10px, #120b05 20px);
+      font-family: 'IM Fell English', serif;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Main Parchment Board */
+    .parchment-board {
+      position: relative;
+      width: 100%;
+      max-width: 1280px;
+      background: 
+        radial-gradient(circle at 80% 75%, rgba(139, 90, 43, 0.25) 0%, transparent 18%),
+        radial-gradient(circle at 18% 22%, rgba(120, 72, 25, 0.22) 0%, transparent 14%),
+        radial-gradient(circle at 50% 50%, var(--parchment-light) 0%, var(--parchment-mid) 68%, var(--parchment-dark) 100%);
+      border-radius: 14px;
+      padding: 26px;
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.85),
+        inset 0 0 50px rgba(62, 34, 8, 0.65),
+        inset 0 0 12px rgba(35, 18, 4, 0.9);
+      border: 4px solid #3c220c;
+    }
+
+    /* Ornate Celtic Inner Frame */
+    .celtic-frame {
+      border: 3px double var(--ink);
+      outline: 2px solid var(--ink-faded);
+      outline-offset: -9px;
+      border-radius: 8px;
+      padding: 24px 20px 20px;
+      position: relative;
+    }
+
+    /* Header Banner Ribbon */
+    .header-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ribbon-banner {
+      background: linear-gradient(180deg, #e5cb99 0%, #c6a062 100%);
+      border: 3px solid var(--ink);
+      padding: 8px 46px;
+      border-radius: 6px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(90, 52, 16, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transform: rotate(-0.5deg);
+    }
+
+    .ribbon-banner h1 {
+      font-family: 'Pirata One', cursive;
+      font-size: clamp(2.2rem, 4vw, 3.3rem);
+      letter-spacing: 3px;
+      color: var(--ink);
+      text-shadow: 2px 2px 0px rgba(255, 240, 200, 0.5);
+      font-weight: normal;
+    }
+
+    /* Scoreboard & Crew Controls */
+    .crew-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0 18px;
+      width: 100%;
+    }
+
+    .team-card {
+      background: rgba(236, 214, 172, 0.85);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 8px 16px;
+      min-width: 165px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: all 0.25s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    .team-card.active-turn {
+      background: #fff3d1;
+      border-color: var(--red-quad);
+      box-shadow: 0 0 14px rgba(214, 40, 40, 0.55);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .team-card.active-turn::before {
+      content: "⚔️ ATTACKING";
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #fff;
+      background: var(--red-quad);
+      padding: 1px 8px;
+      border-radius: 10px;
+      margin-bottom: 3px;
+    }
+
+    .team-name {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+    }
+
+    .team-score {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--wood-dark);
+    }
+
+    .frozen-badge {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      background: #1d63b8;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Main 3-Column Tavern Grid */
+    .tavern-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 980px) {
+      .tavern-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+      .rules-column {
+        width: 100%;
+        max-width: 520px;
+      }
+    }
+
+    /* Left & Right Rule Columns */
+    .rules-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .rule-card {
+      background: rgba(58, 34, 12, 0.08);
+      border: 2px solid rgba(35, 23, 11, 0.5);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .rule-card.highlight {
+      background: rgba(255, 244, 212, 0.92);
+      border-color: var(--ink);
+      transform: scale(1.04);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+
+    .rule-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.45rem;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    .color-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      flex-shrink: 0;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.4);
+    }
+
+    .dot-red { background: var(--red-quad); }
+    .dot-yellow { background: var(--yellow-quad); }
+    .dot-blue { background: var(--blue-quad); }
+    .dot-green { background: var(--green-quad); }
+
+    .rule-desc {
+      font-size: 1.08rem;
+      line-height: 1.38;
+      color: var(--ink);
+    }
+
+    /* Center Wheel Container */
+    .wheel-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Top Brass Pointer / Flipper */
+    .wheel-pointer {
+      width: 44px;
+      height: 54px;
+      position: absolute;
+      top: -18px;
+      z-index: 20;
+      filter: drop-shadow(0 5px 6px rgba(0,0,0,0.65));
+      transform-origin: 50% 10px;
+      transition: transform 0.06s ease-out;
+    }
+
+    .wheel-wrapper {
+      width: min(82vw, 430px);
+      height: min(82vw, 430px);
+      position: relative;
+      border-radius: 50%;
+      box-shadow: 
+        0 14px 35px rgba(0, 0, 0, 0.65),
+        0 0 0 8px #331907,
+        0 0 0 11px var(--gold);
+      cursor: grab;
+    }
+
+    .wheel-wrapper:active {
+      cursor: grabbing;
+    }
+
+    #doomWheelSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      will-change: transform;
+    }
+
+    /* Center Wax Seal Spin Button */
+    .center-spin-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e63946, #8d0801 85%);
+      border: 4px solid var(--gold);
+      box-shadow: 
+        0 6px 15px rgba(0,0,0,0.7),
+        inset 0 2px 6px rgba(255,200,200,0.45);
+      color: #fff8e7;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .center-spin-btn:hover {
+      transform: translate(-50%, -50%) scale(1.06);
+      box-shadow: 0 8px 20px rgba(214, 40, 40, 0.75);
+    }
+
+    .center-spin-btn:active {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    .power-bar-wrap {
+      margin-top: 16px;
+      width: 240px;
+      height: 14px;
+      background: #2b180a;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+    }
+
+    .power-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f7b801, #e63946);
+      transition: width 0.05s linear;
+    }
+
+    .spin-hint {
+      font-size: 0.92rem;
+      margin-top: 6px;
+      color: var(--ink-faded);
+      font-style: italic;
+    }
+
+    /* Bottom Scoring Plaque */
+    .scoring-plaque {
+      margin: 22px auto 0;
+      max-width: 660px;
+      background: linear-gradient(180deg, rgba(224, 195, 142, 0.9), rgba(196, 159, 98, 0.9));
+      border: 3px double var(--ink);
+      border-radius: 8px;
+      padding: 12px 24px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    .scoring-plaque p {
+      font-size: 1.08rem;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    /* Interactive Outcome Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 7, 3, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-scroll {
+      background: radial-gradient(circle, var(--parchment-light) 0%, var(--parchment-mid) 90%);
+      border: 4px solid var(--ink);
+      border-radius: 12px;
+      max-width: 520px;
+      width: 100%;
+      padding: 26px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+      animation: popIn 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 2.3rem;
+      margin-bottom: 8px;
+    }
+
+    .modal-body {
+      font-size: 1.15rem;
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+
+    .target-select {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 12px 0 18px;
+    }
+
+    .btn-pirate {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: 2px solid var(--ink);
+      background: linear-gradient(180deg, #f3d692 0%, #c89b4b 100%);
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    }
+
+    .btn-pirate:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #ffe3a3 0%, #d8ab58 100%);
+    }
+
+    .btn-pirate.selected {
+      background: var(--red-quad);
+      color: #fff;
+    }
+
+    .btn-pirate.success {
+      background: var(--green-quad);
+      color: #fff;
+    }
+
+    /* Chug Timer Display */
+    .chug-timer-box {
+      background: #1e1107;
+      color: #f7b801;
+      font-family: 'Pirata One', cursive;
+      font-size: 3.4rem;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: 3px solid var(--gold);
+      display: inline-block;
+      margin: 10px 0;
+      letter-spacing: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="parchment-board">
+    <div class="celtic-frame">
+      
+      <!-- Top Ribbon Header -->
+      <header class="header-area">
+        <div class="ribbon-banner">
+          <svg width="38" height="38" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
+            <circle cx="32" cy="32" r="6" fill="#23170b"/>
+            <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <h1>WHEEL OF DOOM</h1>
+          <svg width="38" height="38" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
+            <circle cx="32" cy="32" r="6" fill="#23170b"/>
+            <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- Scoreboard & Turn Tracker -->
+        <div class="crew-bar" id="crewBar"></div>
+      </header>
+
+      <!-- Main 3-Column Tavern Layout -->
+      <section class="tavern-grid">
+        
+        <!-- Left Rules Column -->
+        <div class="rules-column">
+          <div class="rule-card" id="rule-RED">
+            <div class="rule-header">
+              <span class="color-dot dot-red"></span>
+              <span>RED — Drink Swapper:</span>
+            </div>
+            <p class="rule-desc">
+              Swap your current drink with another team’s drink!
+            </p>
+          </div>
+
+          <div class="rule-card" id="rule-YELLOW">
+            <div class="rule-header">
+              <span class="color-dot dot-yellow"></span>
+              <span>YELLOW — Drinker’s Freeze:</span>
+            </div>
+            <p class="rule-desc">
+              Stops all drinking penalties for that targeted team until their next turn!
+            </p>
+          </div>
+
+          <div class="rule-card" id="rule-YELLOW-2">
+            <div class="rule-header">
+              <span class="color-dot dot-yellow"></span>
+              <span>YELLOW — Immunity Shield:</span>
+            </div>
+            <p class="rule-desc">
+              While frozen, a targeted crew cannot lose points or be forced to drink until their next turn begins!
+            </p>
+          </div>
+        </div>
+
+        <!-- Center Spinning Wheel -->
+        <div class="wheel-stage">
+          <!-- Brass Top Pointer -->
+          <svg class="wheel-pointer" id="wheelPointer" viewBox="0 0 50 64">
+            <polygon points="25,60 6,14 25,24 44,14" fill="#d4af37" stroke="#23170b" stroke-width="3"/>
+            <circle cx="25" cy="14" r="8" fill="#8d0801" stroke="#23170b" stroke-width="2.5"/>
+          </svg>
+
+          <div class="wheel-wrapper" id="wheelWrapper">
+            <svg id="doomWheelSvg" viewBox="0 0 500 500">
+              <!-- Outer Wooden Rim -->
+              <circle cx="250" cy="250" r="244" fill="#592f11" stroke="#23170b" stroke-width="6"/>
+              <circle cx="250" cy="250" r="222" fill="#3c1e08" stroke="#23170b" stroke-width="4"/>
+
+              <!-- 4 Color Quadrants:
+                   Top (-45 to 45): RED
+                   Right (45 to 135): BLUE
+                   Bottom (135 to 225): GREEN
+                   Left (225 to 315): YELLOW -->
+              <g id="quadrants">
+                <!-- RED (Top) -->
+                <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4"/>
+                <!-- BLUE (Right) -->
+                <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4"/>
+                <!-- GREEN (Bottom) -->
+                <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4"/>
+                <!-- YELLOW (Left) -->
+                <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4"/>
+              </g>
+
+              <!-- Quadrant Illustrations -->
+              <!-- Top Red: Bottle & Mug Swap -->
+              <g transform="translate(250, 95)" stroke="#23170b" stroke-width="2.5" fill="none">
+                <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
+                <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
+                <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
+                <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#23170b"/>
+              </g>
+
+              <!-- Right Blue: Potion & Shot Glass -->
+              <g transform="translate(402, 250)" stroke="#23170b" stroke-width="2.5">
+                <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
+                <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
+                <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
+              </g>
+
+              <!-- Bottom Green: Chug Tankard -->
+              <g transform="translate(250, 402)" stroke="#23170b" stroke-width="2.5">
+                <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
+                <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
+                <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
+              </g>
+
+              <!-- Left Yellow: Frozen Ice Mug -->
+              <g transform="translate(96, 250)" stroke="#23170b" stroke-width="2.5">
+                <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
+                <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
+              </g>
+
+              <!-- 4 Cardinal UNO Cards on Outer Wood Rim -->
+              <g stroke="#23170b" stroke-width="1.5">
+                <rect x="240" y="10" width="20" height="28" rx="3" fill="#d62828"/>
+                <ellipse cx="250" cy="24" rx="6" ry="9" fill="#f7b801"/>
+                <rect x="462" y="236" width="28" height="20" rx="3" fill="#d62828"/>
+                <ellipse cx="476" cy="246" rx="9" ry="6" fill="#f7b801"/>
+                <rect x="240" y="462" width="20" height="28" rx="3" fill="#d62828"/>
+                <ellipse cx="250" cy="476" rx="6" ry="9" fill="#f7b801"/>
+                <rect x="10" y="236" width="28" height="20" rx="3" fill="#d62828"/>
+                <ellipse cx="24" cy="246" rx="9" ry="6" fill="#f7b801"/>
+              </g>
+
+              <!-- Inner Roulette Ring -->
+              <circle cx="250" cy="250" r="134" fill="#23170b"/>
+              <circle cx="250" cy="250" r="128" fill="none" stroke="#d62828" stroke-width="14" stroke-dasharray="16 16"/>
+              <circle cx="250" cy="250" r="118" fill="#6b3e19" stroke="#23170b" stroke-width="5"/>
+
+              <!-- Inner Ship's Wheel Hub & Spokes -->
+              <g stroke="#23170b" stroke-width="3.5" fill="#c6934b">
+                <line x1="250" y1="150" x2="250" y2="350" stroke="#23170b" stroke-width="8"/>
+                <line x1="150" y1="250" x2="350" y2="250" stroke="#23170b" stroke-width="8"/>
+                <line x1="179" y1="179" x2="321" y2="321" stroke="#23170b" stroke-width="8"/>
+                <line x1="321" y1="179" x2="179" y2="321" stroke="#23170b" stroke-width="8"/>
+                <circle cx="250" cy="250" r="64" fill="none" stroke="#c6934b" stroke-width="12"/>
+                <circle cx="250" cy="250" r="64" fill="none" stroke="#23170b" stroke-width="3"/>
+              </g>
+            </svg>
+
+            <!-- Hold-to-Charge Spin Button -->
+            <button class="center-spin-btn" id="spinBtn" title="Hold to charge power or click to spin!">
+              <span>SPIN</span>
+            </button>
+          </div>
+
+          <div class="power-bar-wrap">
+            <div class="power-bar-fill" id="powerBar"></div>
+          </div>
+          <p class="spin-hint">Hold <strong>SPIN</strong> to charge power, or click for a quick spin!</p>
+        </div>
+
+        <!-- Right Rules Column -->
+        <div class="rules-column">
+          <div class="rule-card" id="rule-BLUE">
+            <div class="rule-header">
+              <span class="color-dot dot-blue"></span>
+              <span>BLUE — Shot Roulette:</span>
+            </div>
+            <p class="rule-desc">
+              Nominate 1 rival player to take a mystery sip/shot!
+            </p>
+          </div>
+
+          <div class="rule-card" id="rule-BLUE-2">
+            <div class="rule-header">
+              <span class="color-dot dot-blue"></span>
+              <span>BLUE — Mystery Chalice:</span>
+            </div>
+            <p class="rule-desc">
+              Roll the tavern’s 6-vial roulette to decide which mystery concoction your nominated rival must drink!
+            </p>
+          </div>
+
+          <div class="rule-card" id="rule-GREEN">
+            <div class="rule-header">
+              <span class="color-dot dot-green"></span>
+              <span>GREEN — Chug Challenge:</span>
+            </div>
+            <p class="rule-desc">
+              5-second head-to-head chug race vs the attacker!
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Bottom Scoring Plaque -->
+      <footer class="scoring-plaque">
+        <p>
+          Scoring: Attacker gets +6 pts for a win / successful attack (victim gets -6 pts).<br>
+          (Note: Drinker’s Freeze carries no point gain/loss).
+        </p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Outcome & Mini-Game Modal -->
+  <div class="modal-backdrop" id="outcomeModal">
+    <div class="modal-scroll">
+      <h2 class="modal-title" id="modalTitle">QUADRANT</h2>
+      <p class="modal-body" id="modalDesc"></p>
+
+      <!-- Dynamic Interactive Area (Target Team / Timer / Vial Roulette) -->
+      <div id="modalInteractive"></div>
+
+      <div style="margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;" id="modalActions"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- Teams & Turn State ---
+    const teams = [
+      { id: 0, name: "Crimson Corsairs", score: 12, frozen: false },
+      { id: 1, name: "Blackbeard's Crew", score: 12, frozen: false },
+      { id: 2, name: "Sea Serpents", score: 12, frozen: false },
+      { id: 3, name: "Golden Galleon", score: 12, frozen: false }
+    ];
+    let currentTurn = 0;
+    let selectedVictim = 1;
+
+    // --- Web Audio Synthesizer (Peg Clicks & Horn) ---
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playPegTick(freq = 520) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.045);
+      gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    function playFanfare(type = "win") {
+      if (!audioCtx) return;
+      const notes = type === "horn" ? [220, 165] : [330, 440, 554, 660];
+      notes.forEach((n, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(n, audioCtx.currentTime + i * 0.09);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.09);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.09 + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + i * 0.09);
+        osc.stop(audioCtx.currentTime + i * 0.09 + 0.26);
+      });
+    }
+
+    // --- Render Crew Scoreboard ---
+    const crewBar = document.getElementById("crewBar");
+    function renderCrews() {
+      crewBar.innerHTML = "";
+      teams.forEach((team, idx) => {
+        const card = document.createElement("div");
+        card.className = `team-card ${idx === currentTurn ? "active-turn" : ""}`;
+        card.onclick = () => {
+          currentTurn = idx;
+          // Starting a turn thaws Drinker's Freeze
+          if (teams[currentTurn].frozen) teams[currentTurn].frozen = false;
+          renderCrews();
+        };
+        card.innerHTML = `
+          <div class="team-name">${team.name}</div>
+          <div class="team-score">${team.score} pts</div>
+          ${team.frozen ? `<div class="frozen-badge">❄️ FROZEN SHIELD</div>` : ""}
+        `;
+        crewBar.appendChild(card);
+      });
+    }
+    renderCrews();
+
+    // --- Wheel Physics & Hold-to-Charge ---
+    const wheelSvg = document.getElementById("doomWheelSvg");
+    const pointer = document.getElementById("wheelPointer");
+    const spinBtn = document.getElementById("spinBtn");
+    const powerBar = document.getElementById("powerBar");
+
+    let currentAngle = 0;
+    let angularVelocity = 0;
+    let isSpinning = false;
+    let chargePower = 0;
+    let chargeInterval = null;
+    let lastPegSector = 0;
+
+    spinBtn.addEventListener("pointerdown", () => {
+      if (isSpinning) return;
+      ensureAudio();
+      chargePower = 15;
+      powerBar.style.width = chargePower + "%";
+      chargeInterval = setInterval(() => {
+        chargePower = Math.min(100, chargePower + 4);
+        powerBar.style.width = chargePower + "%";
+      }, 30);
+    });
+
+    window.addEventListener("pointerup", () => {
+      if (!chargeInterval) return;
+      clearInterval(chargeInterval);
+      chargeInterval = null;
+      launchSpin(chargePower);
+      setTimeout(() => { powerBar.style.width = "0%"; }, 400);
+    });
+
+    function launchSpin(power) {
+      if (isSpinning) return;
+      isSpinning = true;
+      // Clear previous rule card highlights
+      document.querySelectorAll(".rule-card").forEach(c => c.classList.remove("highlight"));
+
+      // Thaw current team's freeze at start of their attack spin
+      if (teams[currentTurn].frozen) {
+        teams[currentTurn].frozen = false;
+        renderCrews();
+      }
+
+      const baseVel = 14 + (power / 100) * 26 + Math.random() * 8;
+      angularVelocity = baseVel;
+      requestAnimationFrame(stepWheel);
+    }
+
+    function stepWheel() {
+      currentAngle = (currentAngle + angularVelocity) % 360;
+      wheelSvg.style.transform = `rotate(${currentAngle}deg)`;
+
+      // Trigger peg click every 15 degrees
+      const pegSector = Math.floor(currentAngle / 15);
+      if (pegSector !== lastPegSector) {
+        lastPegSector = pegSector;
+        playPegTick(380 + Math.min(angularVelocity * 12, 400));
+        pointer.style.transform = "rotate(-22deg)";
+        setTimeout(() => { pointer.style.transform = "rotate(0deg)"; }, 50);
+      }
+
+      angularVelocity *= 0.986; // Friction decay
+
+      if (angularVelocity > 0.08) {
+        requestAnimationFrame(stepWheel);
+      } else {
+        angularVelocity = 0;
+        isSpinning = false;
+        resolveSpinOutcome();
+      }
+    }
+
+    // Determine which quadrant landed at the top pointer (0 deg)
+    function resolveSpinOutcome() {
+      // Because the wheel rotates clockwise by `currentAngle`,
+      // the angle under the top pointer (0 deg) in wheel coordinates is:
+      const pointerAngle = (360 - (currentAngle % 360) + 360) % 360;
+
+      let quad = "";
+      if (pointerAngle >= 315 || pointerAngle < 45) {
+        quad = "RED";
+      } else if (pointerAngle >= 45 && pointerAngle < 135) {
+        quad = "BLUE";
+      } else if (pointerAngle >= 135 && pointerAngle < 225) {
+        quad = "GREEN";
+      } else {
+        quad = "YELLOW";
+      }
+
+      const ruleCard = document.getElementById(`rule-${quad}`);
+      if (ruleCard) ruleCard.classList.add("highlight");
+
+      playFanfare("win");
+      openOutcomeModal(quad);
+    }
+
+    // --- Outcome Modal & Quadrant Mini-Games ---
+    const modal = document.getElementById("outcomeModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalInteractive = document.getElementById("modalInteractive");
+    const modalActions = document.getElementById("modalActions");
+    let chugInterval = null;
+
+    function openOutcomeModal(quad) {
+      // Pick default rival victim
+      selectedVictim = (currentTurn + 1) % teams.length;
+      modalInteractive.innerHTML = "";
+      modalActions.innerHTML = "";
+
+      const attacker = teams[currentTurn];
+
+      if (quad === "RED") {
+        modalTitle.textContent = "🔴 RED — DRINK SWAPPER!";
+        modalTitle.style.color = "var(--red-quad)";
+        modalDesc.textContent = `${attacker.name}, swap your current drink with a rival team's drink! Select the victim crew:`;
+        renderVictimSelector(false);
+        renderAttackResolutionButtons();
+      } else if (quad === "BLUE") {
+        modalTitle.textContent = "🔵 BLUE — SHOT ROULETTE!";
+        modalTitle.style.color = "var(--blue-quad)";
+        modalDesc.textContent = `${attacker.name}, nominate 1 rival player to take a mystery sip or shot!`;
+        renderVictimSelector(false);
+
+        const mysteryBox = document.createElement("div");
+        mysteryBox.style.marginTop = "10px";
+        const mysteryBtn = document.createElement("button");
+        mysteryBtn.className = "btn-pirate";
+        mysteryBtn.textContent = "🧪 Roll Mystery Vial";
+        const vialResult = document.createElement("p");
+        vialResult.style.fontWeight = "bold";
+        vialResult.style.marginTop = "8px";
+
+        const vials = [
+          "Vial #1: Double Spiced Rum Sip!",
+          "Vial #2: Sour Lime & Salt Shot!",
+          "Vial #3: Tavern Keeper's Mystery Pour!",
+          "Vial #4: 3 Big Gulps of Current Drink!",
+          "Vial #5: Safe Water Draught (Lucky!)",
+          "Vial #6: Kraken's Fire Shot!"
+        ];
+        mysteryBtn.onclick = () => {
+          playPegTick(640);
+          const pick = vials[Math.floor(Math.random() * vials.length)];
+          vialResult.textContent = pick;
+        };
+        mysteryBox.appendChild(mysteryBtn);
+        mysteryBox.appendChild(vialResult);
+        modalInteractive.appendChild(mysteryBox);
+
+        renderAttackResolutionButtons();
+      } else if (quad === "GREEN") {
+        modalTitle.textContent = "🟢 GREEN — CHUG CHALLENGE!";
+        modalTitle.style.color = "var(--green-quad)";
+        modalDesc.textContent = `5-second head-to-head chug race vs ${attacker.name}! Select your opponent and start the clock:`;
+        renderVictimSelector(false);
+
+        const timerDisplay = document.createElement("div");
+        timerDisplay.className = "chug-timer-box";
+        timerDisplay.textContent = "05.00s";
+
+        const startTimerBtn = document.createElement("button");
+        startTimerBtn.className = "btn-pirate";
+        startTimerBtn.style.display = "block";
+        startTimerBtn.style.margin = "8px auto";
+        startTimerBtn.textContent = "⏱️ START 5s CHUG TIMER";
+
+        startTimerBtn.onclick = () => {
+          if (chugInterval) clearInterval(chugInterval);
+          let remaining = 500; // centiseconds
+          startTimerBtn.disabled = true;
+          chugInterval = setInterval(() => {
+            remaining--;
+            if (remaining % 20 === 0) playPegTick(480);
+            const secs = Math.floor(remaining / 100);
+            const cs = String(remaining % 100).padStart(2, "0");
+            timerDisplay.textContent = `0${secs}.${cs}s`;
+            if (remaining <= 0) {
+              clearInterval(chugInterval);
+              timerDisplay.textContent = "00.00s — STOP!";
+              playFanfare("horn");
+              startTimerBtn.disabled = false;
+              startTimerBtn.textContent = "🔄 RESTART 5s TIMER";
+            }
+          }, 10);
+        };
+
+        modalInteractive.appendChild(timerDisplay);
+        modalInteractive.appendChild(startTimerBtn);
+        renderAttackResolutionButtons();
+      } else if (quad === "YELLOW") {
+        modalTitle.textContent = "🟡 YELLOW — DRINKER’S FREEZE!";
+        modalTitle.style.color = "#b88600";
+        modalDesc.textContent = "Stops all drinking penalties for the targeted team until their next turn! (Carries no point gain/loss). Choose which crew to freeze:";
+        renderVictimSelector(true);
+
+        const freezeBtn = document.createElement("button");
+        freezeBtn.className = "btn-pirate success";
+        freezeBtn.textContent = "❄️ Apply Freeze Shield (0 pts)";
+        freezeBtn.onclick = () => {
+          teams[selectedVictim].frozen = true;
+          AdvanceTurnAndClose();
+        };
+        modalActions.appendChild(freezeBtn);
+      }
+
+      modal.classList.add("open");
+    }
+
+    function renderVictimSelector(allowSelf) {
+      const wrap = document.createElement("div");
+      wrap.className = "target-select";
+
+      teams.forEach((team, idx) => {
+        if (!allowSelf && idx === currentTurn) return;
+        const btn = document.createElement("button");
+        btn.className = `btn-pirate ${idx === selectedVictim ? "selected" : ""}`;
+        btn.textContent = `${team.name} ${team.frozen ? "❄️" : ""}`;
+        btn.onclick = () => {
+          selectedVictim = idx;
+          wrap.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+        };
+        wrap.appendChild(btn);
+      });
+      modalInteractive.appendChild(wrap);
+    }
+
+    function renderAttackResolutionButtons() {
+      const winBtn = document.createElement("button");
+      winBtn.className = "btn-pirate success";
+      winBtn.textContent = "⚔️ Attack Succeeded (+6 / -6 pts)";
+      winBtn.onclick = () => {
+        if (teams[selectedVictim].frozen) {
+          alert(`${teams[selectedVictim].name} is protected by Drinker's Freeze! No points or drinks lost.`);
+        } else {
+          teams[currentTurn].score += 6;
+          teams[selectedVictim].score -= 6;
+        }
+        AdvanceTurnAndClose();
+      };
+
+      const failBtn = document.createElement("button");
+      failBtn.className = "btn-pirate";
+      failBtn.textContent = "🛡️ Attack Repelled (0 pts)";
+      failBtn.onclick = () => AdvanceTurnAndClose();
+
+      modalActions.appendChild(winBtn);
+      modalActions.appendChild(failBtn);
+    }
+
+    function AdvanceTurnAndClose() {
+      if (chugInterval) clearInterval(chugInterval);
+      modal.classList.remove("open");
+      currentTurn = (currentTurn + 1) % teams.length;
+      if (teams[currentTurn].frozen) {
+        teams[currentTurn].frozen = false;
+      }
+      renderCrews();
+    }
+  </script>
+</body>
+</html>
