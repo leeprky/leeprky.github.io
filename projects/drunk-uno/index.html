@@ -779,30 +779,45 @@
       display: block;
     }
 
-    /* Interactive Map SVG Pin Overlay */
+    /* Interactive Map SVG Pin Overlay with Flashing Uno Cards */
     .map-pins-svg {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      cursor: crosshair;
+      pointer-events: none;
     }
-    .map-pin {
+    .map-uno-card {
       cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+      transform-origin: 0 0;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s;
     }
-    .map-pin:hover {
-      transform: scale(1.28);
-      filter: drop-shadow(0 0 8px #f7b801);
+    .map-uno-card:hover {
+      transform: scale(1.35) !important;
+      filter: drop-shadow(0 0 16px #ffea85);
     }
-    .map-pin.active-stop circle.outer {
+    .card-halo {
+      fill: none;
       stroke: #ffd447;
-      stroke-width: 4;
-      animation: pulsePin 1.5s infinite;
+      stroke-width: 3;
+      stroke-dasharray: 6 3;
+      animation: cardFlash 1.5s infinite linear;
+      transform-origin: 0 0;
     }
-    @keyframes pulsePin {
-      0%, 100% { r: 18; }
-      50% { r: 22; }
+    @keyframes cardFlash {
+      0% { opacity: 0.35; transform: scale(1); stroke: #dfb74c; }
+      50% { opacity: 1; transform: scale(1.15); stroke: #ffea85; filter: drop-shadow(0 0 10px #ffea85); }
+      100% { opacity: 0.35; transform: scale(1); stroke: #dfb74c; }
+    }
+    .map-uno-card.active-stop .card-halo {
+      stroke: #ff3333;
+      stroke-width: 4;
+      animation: cardFlashActive 0.85s infinite ease-in-out;
+    }
+    @keyframes cardFlashActive {
+      0%, 100% { opacity: 0.7; transform: scale(1.05); filter: drop-shadow(0 0 6px #ff3333); }
+      50% { opacity: 1; transform: scale(1.32); filter: drop-shadow(0 0 18px #ff3333); stroke: #ff9999; }
     }
 
     .stops-grid {
@@ -1496,57 +1511,77 @@
               <div class="map-canvas-wrap" id="mapCanvasWrap">
                 <img src="assets/map.png" alt="Preston Route Map" id="mapMainImage" />
 
-                <!-- SVG Overlay Pins (10 Pub Stops) -->
+                <!-- SVG Overlay Pins: Flashing UNO Cards for all 10 Pubs -->
                 <svg class="map-pins-svg" viewBox="0 0 1024 572" preserveAspectRatio="none">
                   <!-- Stop 1: Adelphi -->
-                  <g class="map-pin" data-pin="0" transform="translate(370, 140)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">1</text>
+                  <g class="map-uno-card" data-pin="0" transform="translate(480, 160)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">1</text>
                   </g>
                   <!-- Stop 2: Ships & Giggles -->
-                  <g class="map-pin" data-pin="1" transform="translate(130, 150)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">2</text>
+                  <g class="map-uno-card" data-pin="1" transform="translate(160, 160)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#1d63b8" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">2</text>
                   </g>
                   <!-- Stop 3: Molly O'Malleys -->
-                  <g class="map-pin" data-pin="2" transform="translate(160, 240)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">3</text>
+                  <g class="map-uno-card" data-pin="2" transform="translate(240, 265)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#2b9348" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">3</text>
                   </g>
                   <!-- Stop 4: The Twelve Tellers -->
-                  <g class="map-pin" data-pin="3" transform="translate(440, 200)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">4</text>
+                  <g class="map-uno-card" data-pin="3" transform="translate(900, 310)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#f7b801" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">4</text>
                   </g>
                   <!-- Stop 5: Kuckoo -->
-                  <g class="map-pin" data-pin="4" transform="translate(680, 200)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">5</text>
+                  <g class="map-uno-card" data-pin="4" transform="translate(720, 200)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">5</text>
                   </g>
                   <!-- Stop 6: The Station -->
-                  <g class="map-pin" data-pin="5" transform="translate(140, 390)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">6</text>
+                  <g class="map-uno-card" data-pin="5" transform="translate(120, 400)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#1d63b8" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">6</text>
                   </g>
                   <!-- Stop 7: Hogarths -->
-                  <g class="map-pin" data-pin="6" transform="translate(390, 390)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">7</text>
+                  <g class="map-uno-card" data-pin="6" transform="translate(840, 400)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#2b9348" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">7</text>
                   </g>
                   <!-- Stop 8: Wings & Beer Co -->
-                  <g class="map-pin" data-pin="7" transform="translate(480, 480)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">8</text>
+                  <g class="map-uno-card" data-pin="7" transform="translate(600, 490)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#f7b801" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">8</text>
                   </g>
                   <!-- Stop 9: Grey Friar / Friargate -->
-                  <g class="map-pin" data-pin="8" transform="translate(260, 310)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">9</text>
+                  <g class="map-uno-card" data-pin="8" transform="translate(300, 330)">
+                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
+                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
+                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
+                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">9</text>
                   </g>
                   <!-- Stop 10: Champions Finish -->
-                  <g class="map-pin" data-pin="9" transform="translate(710, 460)">
-                    <circle class="outer" cx="0" cy="0" r="16" fill="#f7b801" stroke="#23170b" stroke-width="2.5"/>
-                    <text x="0" y="5" fill="#23170b" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="11" text-anchor="middle">10</text>
+                  <g class="map-uno-card" data-pin="9" transform="translate(760, 480)">
+                    <rect class="card-halo" x="-20" y="-28" width="40" height="56" rx="8"/>
+                    <rect x="-18" y="-26" width="36" height="52" rx="6" fill="#dfb74c" stroke="#150903" stroke-width="3"/>
+                    <ellipse cx="0" cy="0" rx="11" ry="16" fill="#150903" transform="rotate(-25)"/>
+                    <text x="0" y="6" fill="#ffea85" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">10</text>
                   </g>
                 </svg>
               </div>
@@ -1665,6 +1700,54 @@
 
       <div class="modal-actions" id="modalOutcomeActions"></div>
       <button type="button" class="modal-btn secondary" style="margin-top: 6px;" id="closeOutcomeModalBtn">Close / Dismiss</button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL: PUB INFO & VENUE DETAILS (OPENED BY CLICKING FLASHING UNO CARDS)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="pubInfoModal">
+    <div class="modal-scroll" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span class="impact-pill special" id="pubCardBadge">STOP #1 • RED CARD</span>
+        <button type="button" class="btn-stop-check" id="closePubInfoModalBtn">✕ Close</button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 12px;">
+        <div id="pubModalUnoCard" style="display: inline-block; margin-bottom: 8px;"></div>
+        <h2 class="modal-title" id="pubModalTitle">The Adelphi</h2>
+        <p style="font-size: 0.88rem; font-style: italic; color: var(--ink-faded);" id="pubModalVibe">
+          Historic student hub right outside UCLan — the official starting line of the crawl!
+        </p>
+      </div>
+
+      <!-- Current Rule 0 Box -->
+      <div style="background: rgba(60, 30, 10, 0.08); border-left: 4px solid var(--wood-mid); border-radius: 4px; padding: 10px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <strong style="font-family: 'Pirata One', cursive; font-size: 1.15rem; color: #7a1d1d;">📜 ACTIVE RULE 0 (HOUSE LAW):</strong>
+          <button type="button" class="btn-stop-check" style="font-size: 0.75rem; padding: 2px 6px;" id="pubModalEditRuleBtn">✏️ Edit Rule</button>
+        </div>
+        <div id="pubModalRuleText" style="font-size: 0.95rem; font-style: italic; color: var(--ink);">
+          "No pointing with fingers — 1 sip penalty"
+        </div>
+      </div>
+
+      <!-- Pub Challenge Box -->
+      <div style="background: rgba(223, 183, 76, 0.18); border: 1px dashed var(--gold); border-radius: 6px; padding: 8px 10px; margin-bottom: 14px; font-size: 0.86rem;">
+        <strong>🍺 DRINKING CHALLENGE:</strong>
+        <span id="pubModalChallenge">First pint down in under 15 minutes or take 2 penalty sips!</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="pubModalCheckInBtn" style="background: #2b9348;">
+          📍 Check In Here (Set Current Pub)
+        </button>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-btn secondary" id="pubModalDirectionsBtn" style="text-decoration: none;">
+          🗺️ Google Maps Walking Directions ↗
+        </a>
+      </div>
     </div>
   </div>
 
@@ -1816,16 +1899,116 @@
       ];
 
       const DEFAULT_STOPS = [
-        { num: 1, name: "The Adelphi", rule: "No pointing with fingers — 1 sip penalty", mapsUrl: "https://maps.google.com/?q=The+Adelphi+Preston", visited: true },
-        { num: 2, name: "Ships & Giggles", rule: "Say 'Cheers Captain' before each sip", mapsUrl: "https://maps.google.com/?q=Ships+and+Giggles+Preston", visited: false },
-        { num: 3, name: "Molly O'Malleys", rule: "Must speak in an accent or drink 2 sips", mapsUrl: "https://maps.google.com/?q=Molly+OMalleys+Preston", visited: false },
-        { num: 4, name: "The Twelve Tellers", rule: "No using first names; use team colors", mapsUrl: "https://maps.google.com/?q=The+Twelve+Tellers+Preston", visited: false },
-        { num: 5, name: "Kuckoo", rule: "High five the bartender or take a sip", mapsUrl: "https://maps.google.com/?q=Kuckoo+Preston", visited: false },
-        { num: 6, name: "The Station", rule: "Left hand drinking only", mapsUrl: "https://maps.google.com/?q=The+Station+Pub+Preston", visited: false },
-        { num: 7, name: "Hogarths", rule: "Pinky out while sipping", mapsUrl: "https://maps.google.com/?q=Hogarths+Preston", visited: false },
-        { num: 8, name: "Wings & Beer Co", rule: "Thumb master active (last thumb drinks)", mapsUrl: "https://maps.google.com/?q=Wings+and+Beer+Co+Preston", visited: false },
-        { num: 9, name: "Grey Friar / Friargate", rule: "No saying 'Drink' or 'Sip'", mapsUrl: "https://maps.google.com/?q=The+Grey+Friar+Preston", visited: false },
-        { num: 10, name: "Champions Lounge", rule: "Winner assigns 10 sips to losing teams!", mapsUrl: "https://maps.google.com/?q=Popworld+Preston", visited: false }
+        {
+          num: 1,
+          name: "The Adelphi",
+          color: "#d62828",
+          colorName: "RED CARD",
+          rule: "No pointing with fingers — 1 sip penalty",
+          vibe: "Preston's historic student institution outside UCLan campus. The official starting line of the crawl!",
+          challenge: "First pint down in under 15 minutes or take 2 penalty sips!",
+          mapsUrl: "https://maps.google.com/?q=The+Adelphi+Preston",
+          visited: true
+        },
+        {
+          num: 2,
+          name: "Ships & Giggles",
+          color: "#1d63b8",
+          colorName: "BLUE CARD",
+          rule: "Say 'Cheers Captain' before each sip",
+          vibe: "Famous student party pub on Fylde Rd with pirate gaming decor, retro games, and cheap pints.",
+          challenge: "Say 'Ahoy Captain!' to the bartender when ordering or drink 1 sip!",
+          mapsUrl: "https://maps.google.com/?q=Ships+and+Giggles+Preston",
+          visited: false
+        },
+        {
+          num: 3,
+          name: "Molly O'Malleys",
+          color: "#2b9348",
+          colorName: "GREEN CARD",
+          rule: "Must speak in an accent or drink 2 sips",
+          vibe: "Lively Irish tavern on Church St with live folk music, cold Guinness, and energetic crowds.",
+          challenge: "Must order your drink in an Irish accent or take 2 sips!",
+          mapsUrl: "https://maps.google.com/?q=Molly+OMalleys+Preston",
+          visited: false
+        },
+        {
+          num: 4,
+          name: "The Twelve Tellers",
+          color: "#f7b801",
+          colorName: "YELLOW CARD",
+          rule: "No using first names; use team colors only",
+          vibe: "Preston's grand former bank Wetherspoons on Church St with towering ornate ceilings & cheap pitchers.",
+          challenge: "No using anyone's real first name; refer to players by their team color!",
+          mapsUrl: "https://maps.google.com/?q=The+Twelve+Tellers+Preston",
+          visited: false
+        },
+        {
+          num: 5,
+          name: "Kuckoo",
+          color: "#d62828",
+          colorName: "RED CARD",
+          rule: "High five the bartender or take a sip",
+          vibe: "Preston's indie rock 'n' roll cocktail den on Fox St with bartenders dancing on the bar tops.",
+          challenge: "High-five the bartender or down a flaming rock shot!",
+          mapsUrl: "https://maps.google.com/?q=Kuckoo+Preston",
+          visited: false
+        },
+        {
+          num: 6,
+          name: "The Station",
+          color: "#1d63b8",
+          colorName: "BLUE CARD",
+          rule: "Left hand drinking only",
+          vibe: "Historic Victorian railway tavern situated on Butler St right outside Preston Station.",
+          challenge: "Strictly left-hand drinking only while on railway station territory!",
+          mapsUrl: "https://maps.google.com/?q=The+Station+Pub+Preston",
+          visited: false
+        },
+        {
+          num: 7,
+          name: "Hogarths",
+          color: "#2b9348",
+          colorName: "GREEN CARD",
+          rule: "Pinky out while sipping",
+          vibe: "Victorian gin palace on Church St featuring over 120 varieties of gin and live screens.",
+          challenge: "Pinky finger must be held high in the air while taking any sip or gulp!",
+          mapsUrl: "https://maps.google.com/?q=Hogarths+Preston",
+          visited: false
+        },
+        {
+          num: 8,
+          name: "Wings & Beer Co",
+          color: "#f7b801",
+          colorName: "YELLOW CARD",
+          rule: "Thumb master active (last thumb drinks)",
+          vibe: "Craft beer and sports den on Cannon St famous for buffalo wings and craft IPA taps.",
+          challenge: "Thumb Master active: whenever the captain places a thumb on the table, last player to copy takes 2 sips!",
+          mapsUrl: "https://maps.google.com/?q=Wings+and+Beer+Co+Preston",
+          visited: false
+        },
+        {
+          num: 9,
+          name: "The Grey Friar",
+          color: "#d62828",
+          colorName: "RED CARD",
+          rule: "No saying 'Drink' or 'Sip'",
+          vibe: "Classic traditional Friargate student pub with an outdoor terrace and lively party atmosphere.",
+          challenge: "The words 'Drink' and 'Sip' are strictly forbidden — say 'Hydrate' instead!",
+          mapsUrl: "https://maps.google.com/?q=The+Grey+Friar+Preston",
+          visited: false
+        },
+        {
+          num: 10,
+          name: "Champions Lounge (Popworld)",
+          color: "#dfb74c",
+          colorName: "GOLD WILD CARD",
+          rule: "Winner assigns 10 sips to losing teams!",
+          vibe: "The ultimate pub crawl finish line on Church St! Cheesy 90s/00s party hits, light-up dancefloors & victory shots!",
+          challenge: "The winning Uno team is crowned champions and assigns 10 sips across all losing crews!",
+          mapsUrl: "https://maps.google.com/?q=Popworld+Preston",
+          visited: false
+        }
       ];
 
       const BINGO_CARDS = [
@@ -2399,14 +2582,19 @@
         document.getElementById("tickerPubName").textContent = `Stop ${currentStop.num}: ${currentStop.name}`;
         document.getElementById("tickerPubRule").textContent = `Rule 0: "${currentStop.rule}"`;
 
-        // Update active SVG pin on map
-        document.querySelectorAll(".map-pin").forEach(pin => {
+        // Update active SVG Uno Card on map
+        document.querySelectorAll(".map-uno-card").forEach(pin => {
           const pinIdx = parseInt(pin.dataset.pin, 10);
           if (pinIdx === state.currentStopIdx) {
             pin.classList.add("active-stop");
           } else {
             pin.classList.remove("active-stop");
           }
+
+          pin.onclick = (e) => {
+            e.stopPropagation();
+            openPubInfoModal(pinIdx);
+          };
         });
 
         state.stops.forEach((stop, idx) => {
@@ -2424,11 +2612,11 @@
               <strong>Rule 0:</strong> "${stop.rule}"
             </div>
             <div class="stop-actions">
-              <button type="button" class="btn-stop-check" style="${isCurr ? 'background: #2b9348; color: #fff;' : ''}" data-set-stop="${idx}">
-                ${isCurr ? "✓ Checked In" : "Check In"}
+              <button type="button" class="btn-stop-check" style="${isCurr ? 'background: #2b9348; color: #fff;' : ''}" data-pub-info="${idx}">
+                🍺 Pub Info & Rules
               </button>
-              <button type="button" class="btn-stop-check" data-edit-rule="${idx}">
-                ✏️ Rule 0
+              <button type="button" class="btn-stop-check" data-set-stop="${idx}">
+                ${isCurr ? "✓ Checked In" : "Check In"}
               </button>
               <a href="${stop.mapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-stop-check" style="color: #1d63b8;">
                 🗺️ Directions ↗
@@ -2438,14 +2626,10 @@
           grid.appendChild(card);
         });
 
-        // Pin click events
-        document.querySelectorAll(".map-pin").forEach(pin => {
-          pin.onclick = () => {
-            const idx = parseInt(pin.dataset.pin, 10);
-            state.currentStopIdx = idx;
-            addLog(`📍 Crawl checked in at Stop ${state.stops[idx].num}: ${state.stops[idx].name}`);
-            saveGameState(true);
-            renderStops();
+        grid.querySelectorAll("[data-pub-info]").forEach(b => {
+          b.onclick = () => {
+            const idx = parseInt(b.dataset.pubInfo, 10);
+            openPubInfoModal(idx);
           };
         });
 
@@ -2453,9 +2637,11 @@
           b.onclick = () => {
             const idx = parseInt(b.dataset.setStop, 10);
             state.currentStopIdx = idx;
+            state.stops[idx].visited = true;
             addLog(`📍 Crawl checked in at Stop ${state.stops[idx].num}: ${state.stops[idx].name}`);
             saveGameState(true);
             renderStops();
+            showToast(`📍 Checked In: ${state.stops[idx].name}`);
           };
         });
 
@@ -2467,6 +2653,54 @@
           };
         });
       }
+
+      function openPubInfoModal(idx) {
+        const stop = state.stops[idx];
+        if (!stop) return;
+        playTick(560);
+
+        document.getElementById("pubCardBadge").textContent = `STOP #${stop.num} • ${stop.colorName || 'UNO CARD'}`;
+        document.getElementById("pubModalTitle").textContent = `${stop.num}. ${stop.name}`;
+        document.getElementById("pubModalVibe").textContent = stop.vibe || "Official Preston Uno Crawl Stop.";
+        document.getElementById("pubModalRuleText").textContent = `"${stop.rule}"`;
+        document.getElementById("pubModalChallenge").textContent = stop.challenge || "Take a drink with your crew!";
+        document.getElementById("pubModalDirectionsBtn").href = stop.mapsUrl;
+
+        // Visual mini Uno card inside modal
+        const cardContainer = document.getElementById("pubModalUnoCard");
+        const isWild = stop.num === 10;
+        cardContainer.innerHTML = `
+          <div class="uno-card-art ${isWild ? 'card-wild' : ''}" style="${isWild ? '' : 'background: ' + stop.color}; width: 64px; height: 92px; margin: 0 auto; box-shadow: 0 8px 20px rgba(0,0,0,0.45);">
+            <span>${stop.num}</span>
+          </div>
+        `;
+
+        const checkInBtn = document.getElementById("pubModalCheckInBtn");
+        checkInBtn.onclick = () => {
+          state.currentStopIdx = idx;
+          state.stops[idx].visited = true;
+          addLog(`📍 Crawl checked in at Stop ${stop.num}: ${stop.name}! Rule 0: "${stop.rule}"`);
+          saveGameState(true);
+          renderStops();
+          document.getElementById("pubInfoModal").classList.remove("open");
+          showToast(`📍 Checked In: ${stop.name}`);
+          playFanfare("win");
+        };
+
+        const editRuleBtn = document.getElementById("pubModalEditRuleBtn");
+        editRuleBtn.onclick = () => {
+          editingStopIdx = idx;
+          document.getElementById("ruleInput").value = stop.rule;
+          document.getElementById("pubInfoModal").classList.remove("open");
+          document.getElementById("ruleModal").classList.add("open");
+        };
+
+        document.getElementById("pubInfoModal").classList.add("open");
+      }
+
+      document.getElementById("closePubInfoModalBtn").onclick = () => {
+        document.getElementById("pubInfoModal").classList.remove("open");
+      };
 
       document.getElementById("saveRuleBtn").onclick = () => {
         const val = document.getElementById("ruleInput").value.trim();
