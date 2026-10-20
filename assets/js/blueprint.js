@@ -61,6 +61,7 @@
         document.documentElement.removeAttribute('data-accent');
         document.documentElement.style.removeProperty('--accent');
         document.documentElement.style.removeProperty('--accent-rgb');
+        document.documentElement.style.removeProperty('--accent-ink');
         localStorage.removeItem('lp_accent');
       } else if (accent.startsWith('custom:')) {
         const hex = accent.slice(7);
@@ -70,10 +71,13 @@
         const g = parseInt(hex.slice(3, 5), 16) || 189;
         const b = parseInt(hex.slice(5, 7), 16) || 248;
         document.documentElement.style.setProperty('--accent-rgb', `${r} ${g} ${b}`);
+        const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        document.documentElement.style.setProperty('--accent-ink', lum > 0.6 ? '#030a16' : '#ffffff');
         localStorage.setItem('lp_accent', accent);
       } else {
         document.documentElement.style.removeProperty('--accent');
         document.documentElement.style.removeProperty('--accent-rgb');
+        document.documentElement.style.removeProperty('--accent-ink');
         document.documentElement.setAttribute('data-accent', accent);
         localStorage.setItem('lp_accent', accent);
       }
@@ -1589,6 +1593,7 @@
     };
 
     const drawFrame = (s, accent) => {
+      if (!s.selection) return;
       const glyph = glyphs[frame.index];
       if (!glyph || frame.alpha < 0.01) return;
       const a = frame.alpha;
@@ -2163,17 +2168,17 @@
       align: 'left',
       color: 'currentColor',
       accentColor: 'var(--accent)',
-      reveal: 'letter',
+      reveal: 'none',
       dashLength: 4,
       dashGap: 2,
-      specks: 15,
+      specks: 0,
       selection: false,
       labels: false,
       draggable: false,
       bounce: 0,
       clickKick: false,
       intro: 'none',
-      sweep: true,
+      sweep: false,
       speed: 1,
       guides: false
     });

@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 11.9
+ * LP-EE-2026 // Blueprint Design System — REV 12.0
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -54,10 +54,10 @@
   --ink: #f0f6ff;
   --ink-2: #c6daf2;
   --muted: #799ec7;
-  --line: rgba(56, 189, 248, 0.22);
-  --line-strong: rgba(56, 189, 248, 0.55);
-  --grid-major: rgba(56, 189, 248, 0.13);
-  --grid-minor: rgba(56, 189, 248, 0.05);
+  --line: rgb(var(--accent-rgb) / 0.22);
+  --line-strong: rgb(var(--accent-rgb) / 0.55);
+  --grid-major: rgb(var(--accent-rgb) / 0.13);
+  --grid-minor: rgb(var(--accent-rgb) / 0.05);
   --accent: #38bdf8;
   --accent-rgb: 56 189 248;
   --accent-ink: #030a16;
@@ -66,50 +66,6 @@
   --ok: #34d399;
   --shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.85);
   --header-bg: rgba(3, 8, 20, 0.92);
-}
-
-/* Dynamic Accent Colors */
-[data-accent="violet"] {
-  --accent: #a855f7;
-  --accent-rgb: 168 85 247;
-  --line: rgba(168, 85, 247, 0.25);
-  --line-strong: rgba(168, 85, 247, 0.6);
-  --grid-major: rgba(168, 85, 247, 0.14);
-}
-[data-accent="pink"] {
-  --accent: #ec4899;
-  --accent-rgb: 236 72 153;
-  --line: rgba(236, 72 153, 0.25);
-  --line-strong: rgba(236, 72 153, 0.6);
-  --grid-major: rgba(236, 72 153, 0.14);
-}
-[data-accent="red"] {
-  --accent: #ef4444;
-  --accent-rgb: 239 68 68;
-  --line: rgba(239, 68, 68, 0.25);
-  --line-strong: rgba(239, 68, 68, 0.6);
-  --grid-major: rgba(239, 68, 68, 0.14);
-}
-[data-accent="orange"] {
-  --accent: #f97316;
-  --accent-rgb: 249 115 22;
-  --line: rgba(249, 115, 22, 0.25);
-  --line-strong: rgba(249, 115, 22, 0.6);
-  --grid-major: rgba(249, 115, 22, 0.14);
-}
-[data-accent="green"] {
-  --accent: #10b981;
-  --accent-rgb: 16 185 129;
-  --line: rgba(16 185 129, 0.25);
-  --line-strong: rgba(16 185 129, 0.6);
-  --grid-major: rgba(16 185 129, 0.14);
-}
-[data-accent="teal"] {
-  --accent: #14b8a6;
-  --accent-rgb: 20 184 166;
-  --line: rgba(20 184 166, 0.25);
-  --line-strong: rgba(20 184 166, 0.6);
-  --grid-major: rgba(20 184 166, 0.14);
 }
 
 /* Whiteprint (light drafting film) */
@@ -122,18 +78,50 @@
   --ink: #0a2140;
   --ink-2: #1f3d63;
   --muted: #4a6488;
-  --line: rgba(10, 52, 104, 0.2);
-  --line-strong: rgba(10, 52, 104, 0.48);
-  --grid-major: rgba(10, 80, 160, 0.1);
-  --grid-minor: rgba(10, 80, 160, 0.04);
   --accent: #0a62c9;
   --accent-rgb: 10 98 201;
   --accent-ink: #ffffff;
+  --line: rgb(var(--accent-rgb) / 0.2);
+  --line-strong: rgb(var(--accent-rgb) / 0.48);
+  --grid-major: rgb(var(--accent-rgb) / 0.1);
+  --grid-minor: rgb(var(--accent-rgb) / 0.04);
   --mark: #b85c00;
   --mark-rgb: 184 92 0;
   --ok: #0c8a52;
   --shadow: 0 18px 40px -22px rgba(10, 33, 64, 0.35);
   --header-bg: rgba(238, 243, 249, 0.86);
+}
+
+/* Dynamic Accent Colors */
+[data-accent="violet"] {
+  --accent: #a855f7;
+  --accent-rgb: 168 85 247;
+  --accent-ink: #ffffff;
+}
+[data-accent="pink"] {
+  --accent: #ec4899;
+  --accent-rgb: 236 72 153;
+  --accent-ink: #ffffff;
+}
+[data-accent="red"] {
+  --accent: #ef4444;
+  --accent-rgb: 239 68 68;
+  --accent-ink: #ffffff;
+}
+[data-accent="orange"] {
+  --accent: #f97316;
+  --accent-rgb: 249 115 22;
+  --accent-ink: #ffffff;
+}
+[data-accent="green"] {
+  --accent: #10b981;
+  --accent-rgb: 16 185 129;
+  --accent-ink: #030a16;
+}
+[data-accent="teal"] {
+  --accent: #14b8a6;
+  --accent-rgb: 20 184 166;
+  --accent-ink: #030a16;
 }
 
 /* =========================================================================
@@ -270,7 +258,7 @@ strong { color: var(--ink); font-weight: 600; }
   position: sticky; top: var(--ruler-h); z-index: 60;
   background: color-mix(in srgb, var(--paper) 66%, transparent);
   backdrop-filter: blur(20px) saturate(190%); -webkit-backdrop-filter: blur(20px) saturate(190%);
-  border-bottom: 1px solid rgba(var(--accent-rgb) / 0.28);
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.28);
   box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
   transition: top 0.2s ease;
 }
@@ -694,7 +682,7 @@ strong { color: var(--ink); font-weight: 600; }
 }
 @media (hover: hover) and (pointer: fine) {
   .panel.spotlight:hover {
-    border-color: rgba(var(--accent-rgb) / 0.42);
+    border-color: rgb(var(--accent-rgb) / 0.42);
     box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 12px 28px -6px rgba(0, 0, 0, 0.45), 0 0 16px -4px rgb(var(--accent-rgb) / 0.16);
   }
 }
