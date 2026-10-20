@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.7" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.8" />
 </head>
 
 <body id="top">
@@ -58,6 +58,13 @@
     <span class="zy r" style="top: 80%;">D</span>
   </div>
 
+  <!-- React Bits · Global Crosshair Datum Layer -->
+  <div class="crosshair" aria-hidden="true">
+    <div class="ch-x"></div>
+    <div class="ch-y"></div>
+    <div class="ch-read">DATUM [0.0, 0.0mm]</div>
+  </div>
+
   <!-- TOP HEADER -->
   <header class="site-header">
     <div class="container">
@@ -85,7 +92,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V9.7 ▾</span>
+            <span>SPEC V9.8 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -176,13 +183,6 @@
         </svg>
       </div>
 
-      <!-- React Bits · Crosshair Datum Layer -->
-      <div class="crosshair" aria-hidden="true">
-        <div class="ch-x"></div>
-        <div class="ch-y"></div>
-        <div class="ch-read">DATUM [0.0, 0.0mm]</div>
-      </div>
-
       <div class="container">
         <div class="hero-grid">
           <!-- Text Column -->
@@ -192,8 +192,12 @@
               <span class="mono">ULAN EE // PRESTON, LANCASHIRE UK</span>
             </div>
 
-            <h1 class="display hero-name">
-              Lee Parkinson<span class="accent">.</span>
+            <!-- React Bits · TechText Dynamic Interactive Wordmark -->
+            <h1 class="display hero-name" aria-label="Lee Parkinson">
+              <div class="tech-text" id="hero-tech-text" style="width: 100%; height: clamp(70px, 9.5vw, 115px); position: relative;">
+                <canvas class="tech-text-canvas"></canvas>
+                <span class="sr-only">Lee Parkinson</span>
+              </div>
             </h1>
 
             <div class="hero-role">
@@ -1411,6 +1415,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=9.7"></script>
+  <script src="assets/js/blueprint.js?v=9.8"></script>
 </body>
 </html>
