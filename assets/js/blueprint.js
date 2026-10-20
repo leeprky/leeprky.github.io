@@ -935,269 +935,231 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 13. METALLIC SWIRL (React Bits Pro: A swirl of liquid metal)
-  // ---------------------------------------------------------------------------
-  // 13. REACT BITS PRO — SATIN RIDGES WEBGL SHADER
-  // Flowing satin folds catching soft highlights
+  // 13. REACT BITS PRO — GLYPH TIDE (ASCII Tide Simulation)
+  // An ASCII tide that floods and drains the shore
   // ---------------------------------------------------------------------------
   let chromaEngine = null;
 
-  function initSatinRidges() {
-    const canvas = document.getElementById('satin-ridges-canvas') ||
+  function initGlyphTide() {
+    const canvas = document.getElementById('glyph-tide-canvas') ||
+                   document.getElementById('satin-ridges-canvas') ||
                    document.getElementById('metallic-swirl-canvas') ||
                    document.getElementById('chroma-waves-canvas') ||
-                   document.getElementById('chroma-current-canvas');
+                   document.querySelector('.chroma-canvas');
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl) {
-      initSatinRidgesFallback(canvas);
-      return;
-    }
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const vsSource = `
-      attribute vec2 a_position;
-      void main() {
-        gl_Position = vec4(a_position, 0.0, 1.0);
-      }
-    `;
-
-    const fsSource = `
-      precision highp float;
-      uniform vec2 u_resolution;
-      uniform float u_time;
-      uniform float u_speed;
-      uniform vec2 u_mouse;
-      uniform vec3 u_accent;
-      uniform vec3 u_bg;
-      uniform float u_isLight;
-
-      // Single fold frequency calculation
-      float satinFold(vec2 p, float t) {
-        // Flowing diagonal fold coordinates
-        vec2 dir = vec2(0.85, 0.52);
-        vec2 perp = vec2(-0.52, 0.85);
-
-        float u = dot(p, dir);
-        float v = dot(p, perp);
-
-        // Multi-frequency undulating fabric folds
-        float f1 = sin(u * 2.8 - t * 0.42 + sin(v * 1.4 + t * 0.22) * 0.75);
-        float f2 = sin(u * 5.2 + v * 2.1 - t * 0.58 + f1 * 1.15);
-        float f3 = cos(v * 3.2 - u * 1.6 + t * 0.32 + f2 * 0.45);
-
-        return f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
-      }
-
-      // Heightfield of draped satin fabric with soft ridges
-      float satinField(vec2 p, float t) {
-        // Gentle draping curve
-        p.y += sin(p.x * 1.1 + t * 0.12) * 0.16;
-        p.x += cos(p.y * 0.85 - t * 0.10) * 0.12;
-
-        float h1 = satinFold(p, t);
-        float h2 = satinFold(p * 1.35 + vec2(1.6, -2.0), t * 0.8);
-        return h1 * 0.72 + h2 * 0.28;
-      }
-
-      void main() {
-        vec2 fragCoord = gl_FragCoord.xy;
-        vec2 p = (fragCoord - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-
-        // Pure autonomous satin flow — no parallax, no mouse tracking
-        float t = u_time * u_speed;
-
-        // Evaluate surface height & finite differences for surface normals
-        float eps = 0.006;
-        float h = satinField(p, t);
-        float hx = satinField(p + vec2(eps, 0.0), t);
-        float hy = satinField(p + vec2(0.0, eps), t);
-
-        vec3 normal = normalize(vec3((h - hx) / eps * 1.6, (h - hy) / eps * 1.6, 1.0));
-
-        // Satin tangent running along the fold direction
-        vec3 foldDir = normalize(vec3(0.85, 0.52, 0.0));
-        vec3 tangent = normalize(cross(normal, foldDir));
-
-        // Soft studio lighting catching ridge crests
-        vec3 lightDir = normalize(vec3(cos(t * 0.28) * 0.65, sin(t * 0.28) * 0.65, 0.9));
-        vec3 viewDir = vec3(0.0, 0.0, 1.0);
-        vec3 halfDir = normalize(lightDir + viewDir);
-
-        // Diffuse & Anisotropic satin sheen highlights
-        float diff = max(0.0, dot(normal, lightDir));
-        float dotTH = dot(tangent, halfDir);
-        float sinTH = sqrt(max(0.0, 1.0 - dotTH * dotTH));
-        float satinSheen = pow(sinTH, 14.0); // Anisotropic silk sheen
-
-        float spec = pow(max(0.0, dot(normal, halfDir)), 32.0);
-        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.8);
-
-        // Soft ridge crest illumination
-        float ridgeHighlight = pow(clamp(h * 0.5 + 0.5, 0.0, 1.0), 2.5);
-
-        // Compose satin fold highlights tinted by accent
-        vec3 satinTint = mix(vec3(0.82, 0.88, 0.94), u_accent, 0.55);
-        vec3 foldHighlight = satinTint * (diff * 0.35 + satinSheen * 0.55 + ridgeHighlight * 0.35)
-                           + vec3(1.0) * (spec * 0.4)
-                           + u_accent * (fresnel * 0.45);
-
-        vec3 finalColor;
-        if (u_isLight > 0.5) {
-          // Light mode: pristine blueprint / whiteprint with soft silver & accent satin folds
-          float dim = 0.16;
-          vec3 foldColor = mix(vec3(0.84, 0.90, 0.96), u_accent, 0.35);
-          vec3 satinLit = mix(u_bg, foldColor, (diff * 0.4 + satinSheen * 0.45 + fresnel * 0.25));
-          finalColor = mix(u_bg, satinLit, dim);
-        } else {
-          // Dark mode: deep obsidian background catching flowing luminous satin folds
-          float dim = 0.22;
-          finalColor = u_bg + foldHighlight * dim;
-        }
-
-        gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `;
-
-    function createShader(gl, type, source) {
-      const shader = gl.createShader(type);
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.warn('Shader compile failed', gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
-      }
-      return shader;
-    }
-
-    const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
-    const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
-    if (!vs || !fs) {
-      initSatinRidgesFallback(canvas);
-      return;
-    }
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.warn('Program link failed', gl.getProgramInfoLog(program));
-      initSatinRidgesFallback(canvas);
-      return;
-    }
-
-    const posBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-        -1,  1,
-         1, -1,
-         1,  1
-      ]),
-      gl.STATIC_DRAW
-    );
-
-    const aPos = gl.getAttribLocation(program, 'a_position');
-    const uRes = gl.getUniformLocation(program, 'u_resolution');
-    const uTime = gl.getUniformLocation(program, 'u_time');
-    const uSpeed = gl.getUniformLocation(program, 'u_speed');
-    const uMouse = gl.getUniformLocation(program, 'u_mouse');
-    const uAccent = gl.getUniformLocation(program, 'u_accent');
-    const uBg = gl.getUniformLocation(program, 'u_bg');
-    const uIsLight = gl.getUniformLocation(program, 'u_isLight');
-
-    function parseColor(str, fallback) {
-      if (!str) return fallback;
-      str = str.trim();
-      if (str.startsWith('#')) {
-        let hex = str.slice(1);
-        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
-        const num = parseInt(hex, 16);
-        return [(num >> 16 & 255) / 255, (num >> 8 & 255) / 255, (num & 255) / 255];
-      }
-      const parts = str.split(/[\s,]+/).map(Number).filter(n => !isNaN(n));
-      if (parts.length >= 3) {
-        return [parts[0] / 255, parts[1] / 255, parts[2] / 255];
-      }
-      return fallback;
-    }
-
-    let accentRGB = [0.22, 0.74, 0.97]; // #38bdf8
-    let bgRGB = [0.012, 0.031, 0.078]; // #030814
-    let isLightVal = 0.0;
-
-    function updateColors() {
-      const styles = getComputedStyle(document.documentElement);
-      const isWhiteprint = document.documentElement.getAttribute('data-theme') === 'whiteprint';
-
-      const accentStr = styles.getPropertyValue('--accent-rgb');
-      accentRGB = parseColor(accentStr, isWhiteprint ? [0.04, 0.38, 0.79] : [0.22, 0.74, 0.97]);
-
-      if (isWhiteprint) {
-        bgRGB = [0.933, 0.953, 0.976]; // #eef3f9
-        isLightVal = 1.0;
-      } else {
-        bgRGB = [0.012, 0.031, 0.078]; // #030814
-        isLightVal = 0.0;
-      }
-    }
-
-    updateColors();
-
+    let animId = null;
+    let isVisible = true;
+    let startTime = performance.now();
     let width = 0;
     let height = 0;
     let dpr = 1;
+
+    // Grid sizing for crisp monospace glyph tidal field
+    const cellWidth = 14;
+    const cellHeight = 20;
+    let cols = 0;
+    let rows = 0;
+
+    // Theme color cache
+    let isWhiteprint = false;
+    let accentR = 56, accentG = 189, accentB = 248;
+    let dryColor = '';
+    let wetColor = '';
+    let surfColor = '';
+    let surfGlowColor = '';
+    let swashColor = '';
+    let floodColor = '';
+
+    // Motion sensitivity
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const speed = prefersReducedMotion ? 0.25 : 0.85;
+
+    // Glyph ramps matching React Bits Glyph Tide depth gradations
+    const dryGlyphs = [' ', ' ', ' ', '·', ' '];
+    const wetGlyphs = ['·', ':', '-', '`', '°', '·'];
+    const surfGlyphs = ['*', '~', '≈', '%', '=', '§', '#', '+'];
+    const swashGlyphs = ['~', '=', '≈', '+', '-', 'x'];
+    const floodGlyphs = ['#', '%', '▓', '▒', '█', '$', '&'];
+
+    function updateColors() {
+      const root = document.documentElement;
+      isWhiteprint = root.getAttribute('data-theme') === 'whiteprint';
+      const styles = getComputedStyle(root);
+
+      const rgbStr = (styles.getPropertyValue('--accent-rgb') || '56 189 248').trim();
+      const parts = rgbStr.includes(',') ? rgbStr.split(',') : rgbStr.split(/\s+/);
+      accentR = parseInt(parts[0], 10) || 56;
+      accentG = parseInt(parts[1], 10) || 189;
+      accentB = parseInt(parts[2], 10) || 248;
+
+      if (isWhiteprint) {
+        dryColor = 'rgba(10, 33, 64, 0.08)';
+        wetColor = 'rgba(10, 33, 64, 0.22)';
+        surfColor = 'rgba(10, 33, 64, 0.95)';
+        surfGlowColor = 'rgba(10, 33, 64, 0.25)';
+        swashColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.65)`;
+        floodColor = 'rgba(10, 33, 64, 0.40)';
+      } else {
+        dryColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.10)`;
+        wetColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.26)`;
+        surfColor = '#f0f6ff';
+        surfGlowColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.65)`;
+        swashColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.60)`;
+        floodColor = `rgba(${accentR}, ${accentG}, ${accentB}, 0.35)`;
+      }
+    }
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+
+      cols = Math.ceil(width / cellWidth);
+      rows = Math.ceil(height / cellHeight);
     }
 
+    updateColors();
     resize();
     window.addEventListener('resize', resize, { passive: true });
-
-    let startTime = performance.now();
-    let isVisible = true;
-    let animId = null;
 
     document.addEventListener('visibilitychange', () => {
       isVisible = !document.hidden;
       if (isVisible && !animId) {
+        startTime = performance.now();
         animId = requestAnimationFrame(render);
       }
     });
 
-    const speed = 0.40;
-
     function render(now) {
-      if (isVisible) {
-        const elapsed = (now - startTime) / 1000;
-        gl.useProgram(program);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-        gl.enableVertexAttribArray(aPos);
-        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-        gl.uniform2f(uRes, canvas.width, canvas.height);
-        gl.uniform1f(uTime, elapsed);
-        gl.uniform1f(uSpeed, speed);
-        gl.uniform2f(uMouse, 0.5, 0.5);
-        gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
-        gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
-        gl.uniform1f(uIsLight, isLightVal);
-
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      if (!isVisible) {
+        animId = null;
+        return;
       }
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, width, height);
+
+      // Monospace blueprint typography
+      ctx.font = '600 13px "JetBrains Mono", ui-monospace, SFMono-Regular, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const t = (now - startTime) * 0.001 * speed;
+
+      // Base flood and drain oscillation: ~14s natural cycle
+      // Autonomous tidal surge advances towards top-left, drains back towards bottom-right
+      const baseTide = 0.50 + Math.sin(t * 0.42) * 0.28 + Math.cos(t * 0.21) * 0.07;
+
+      // Batch drawing per glyph tier to maximize canvas throughput
+      const batch0 = [];
+      const batch1 = [];
+      const batch2 = [];
+      const batch3 = [];
+      const batch4 = [];
+
+      for (let r = 0; r < rows; r++) {
+        const y = r * cellHeight + (cellHeight * 0.5);
+        const ny = y / height;
+
+        for (let c = 0; c < cols; c++) {
+          const x = c * cellWidth + (cellWidth * 0.5);
+          const nx = x / width;
+
+          // Shoreline distance along diagonal (0 at top-left shore, 1.0 at bottom-right sea)
+          const shoreDist = ny * 0.70 + nx * 0.30;
+
+          // Traveling wave harmonics
+          const w1 = Math.sin(shoreDist * 14.0 - t * 1.6) * 0.085;
+          const w2 = Math.cos(shoreDist * 22.0 - t * 2.3 + nx * 4.0) * 0.045;
+          const w3 = Math.sin((nx * 12.0 - ny * 8.0) - t * 1.1) * 0.035;
+          const ripple = Math.sin((nx * 32.0 + ny * 24.0) + t * 2.8) * 0.02;
+
+          const waterLevel = baseTide + w1 + w2 + w3 + ripple;
+          const depth = waterLevel - shoreDist;
+
+          if (depth < -0.07) {
+            // Upper dry sand: sparse blueprint grid dots
+            if ((r + c) % 3 === 0) {
+              const char = dryGlyphs[(r * 7 + c * 11) % dryGlyphs.length];
+              if (char !== ' ') {
+                batch0.push(char, x, y);
+              }
+            }
+          } else if (depth < 0.0) {
+            // Receding tide / damp sand wash
+            const idx = Math.floor(Math.abs(Math.sin(c * 0.5 + r * 0.7 + t * 0.8)) * wetGlyphs.length) % wetGlyphs.length;
+            batch1.push(wetGlyphs[idx], x, y);
+          } else if (depth < 0.065) {
+            // Active surf / breaking tide crest
+            const idx = Math.floor(Math.abs(Math.sin(c * 1.3 + r * 0.9 - t * 3.0)) * surfGlyphs.length) % surfGlyphs.length;
+            batch2.push(surfGlyphs[idx], x, y);
+          } else if (depth < 0.22) {
+            // Flowing swash / water body
+            const idx = Math.floor(Math.abs(Math.sin(c * 0.8 - r * 0.6 + t * 2.1)) * swashGlyphs.length) % swashGlyphs.length;
+            batch3.push(swashGlyphs[idx], x, y);
+          } else {
+            // Deep tidal water
+            const idx = Math.floor(Math.abs(Math.cos(c * 0.6 + r * 0.4 - t * 1.2)) * floodGlyphs.length) % floodGlyphs.length;
+            batch4.push(floodGlyphs[idx], x, y);
+          }
+        }
+      }
+
+      // Draw batch 0 (dry sand)
+      if (batch0.length) {
+        ctx.fillStyle = dryColor;
+        for (let i = 0; i < batch0.length; i += 3) {
+          ctx.fillText(batch0[i], batch0[i + 1], batch0[i + 2]);
+        }
+      }
+
+      // Draw batch 1 (wet sand / receding wash)
+      if (batch1.length) {
+        ctx.fillStyle = wetColor;
+        for (let i = 0; i < batch1.length; i += 3) {
+          ctx.fillText(batch1[i], batch1[i + 1], batch1[i + 2]);
+        }
+      }
+
+      // Draw batch 4 (deep flood)
+      if (batch4.length) {
+        ctx.fillStyle = floodColor;
+        for (let i = 0; i < batch4.length; i += 3) {
+          ctx.fillText(batch4[i], batch4[i + 1], batch4[i + 2]);
+        }
+      }
+
+      // Draw batch 3 (flowing swash)
+      if (batch3.length) {
+        ctx.fillStyle = swashColor;
+        for (let i = 0; i < batch3.length; i += 3) {
+          ctx.fillText(batch3[i], batch3[i + 1], batch3[i + 2]);
+        }
+      }
+
+      // Draw batch 2 (active surf crest with soft glow)
+      if (batch2.length) {
+        ctx.fillStyle = surfColor;
+        if (!isWhiteprint) {
+          ctx.shadowColor = surfGlowColor;
+          ctx.shadowBlur = 6;
+        }
+        for (let i = 0; i < batch2.length; i += 3) {
+          ctx.fillText(batch2[i], batch2[i + 1], batch2[i + 2]);
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.restore();
       animId = requestAnimationFrame(render);
     }
 
@@ -1209,67 +1171,6 @@
     };
 
     animId = requestAnimationFrame(render);
-  }
-
-  function initSatinRidgesFallback(canvas) {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    let animId;
-    let startTime = performance.now();
-    let isVisible = true;
-
-    document.addEventListener('visibilitychange', () => {
-      isVisible = !document.hidden;
-      if (isVisible && !animId) {
-        animId = requestAnimationFrame(draw);
-      }
-    });
-
-    function draw(now) {
-      if (isVisible) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const isWhite = document.documentElement.getAttribute('data-theme') === 'whiteprint';
-        ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        const t = (now - startTime) * 0.0004;
-        const styles = getComputedStyle(document.documentElement);
-        const accent = styles.getPropertyValue('--accent') || '#38bdf8';
-
-        ctx.save();
-        ctx.globalAlpha = 0.16;
-        ctx.strokeStyle = accent.trim();
-        ctx.lineWidth = 48;
-        ctx.filter = 'blur(28px)';
-
-        // Autonomous flowing satin ribbons — no mouse parallax
-        const lines = 7;
-        for (let i = 0; i < lines; i++) {
-          const baseY = (canvas.height / lines) * i;
-          ctx.beginPath();
-          for (let x = 0; x <= canvas.width; x += 30) {
-            const y = baseY + Math.sin(x * 0.003 + t + i * 0.8) * 60 + Math.cos(x * 0.006 - t * 0.6) * 35;
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-      animId = requestAnimationFrame(draw);
-    }
-
-    animId = requestAnimationFrame(draw);
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }, { passive: true });
-
-    chromaEngine = {
-      updateColors: () => {},
-      render: () => {}
-    };
   }
 
   // ---------------------------------------------------------------------------
@@ -2211,7 +2112,7 @@
   // ---------------------------------------------------------------------------
   function boot() {
     ThemeController.init();
-    initSatinRidges();
+    initGlyphTide();
     initLenis();
     initGSAP();
     initFoldableSheets();
