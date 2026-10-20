@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 10.8
+ * LP-EE-2026 // Blueprint Design System — REV 10.9
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -226,8 +226,13 @@ html { scrollbar-color: var(--line-strong) var(--bg-deep); }
 }
 .section {
   position: relative;
+  min-height: calc(100vh - var(--header-h) - var(--ruler-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding-top: clamp(1.25rem, 2.4vw, 1.85rem);
   padding-bottom: clamp(1.25rem, 2.4vw, 1.85rem);
+  box-sizing: border-box;
 }
 .section + .section { border-top: 1px dashed var(--line); }
 .stack > * + * { margin-top: var(--stack, 0.85rem); }
@@ -724,7 +729,17 @@ strong { color: var(--ink); font-weight: 600; }
 /* =========================================================================
    09. HERO
    ========================================================================= */
-.hero { position: relative; padding-top: clamp(2rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 5vw, 3.5rem); overflow: clip; }
+.hero {
+  position: relative;
+  min-height: calc(100vh - var(--header-h) - var(--ruler-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(1.5rem, 3.5vw, 2.5rem);
+  padding-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
+  overflow: clip;
+  box-sizing: border-box;
+}
 .hero-grid { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
 @media (min-width: 960px) { .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr); } }
 .hero-copy { position: relative; z-index: 5; }
@@ -1534,4 +1549,71 @@ html.motion [data-hero] { visibility: hidden; }
 .kv { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.25rem; font-size: 0.92rem; }
 .kv dt { font: 500 0.66rem var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 0.2rem; }
 .kv dd { color: var(--ink-2); }
+
+/* =========================================================================
+   22. REACT BITS PRO — BLUR HIGHLIGHT
+   A paragraph that blurs in and highlights key phrases
+   ========================================================================= */
+.blur-highlight-text {
+  filter: blur(5px);
+  opacity: 0.35;
+  transform: translateY(6px);
+  transition: filter 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: filter, opacity, transform;
+}
+.blur-highlight-text.is-in-view {
+  filter: blur(0px);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.blur-highlight {
+  position: relative;
+  display: inline;
+  color: var(--ink);
+  font-weight: 600;
+  padding: 0.12em 0.4em;
+  margin-inline: 0.06em;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid rgb(var(--accent-rgb) / 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 14px -3px rgb(var(--accent-rgb) / 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.35s ease;
+  white-space: normal;
+  text-decoration: none;
+}
+.blur-highlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.is-in-view .blur-highlight::before {
+  transform: translateX(100%);
+}
+.blur-highlight:hover {
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+  border-color: var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 18px rgb(var(--accent-rgb) / 0.5);
+  color: #fff;
+}
+.blur-highlight.mark-amber {
+  background: color-mix(in srgb, var(--mark) 16%, transparent);
+  border-color: rgb(var(--mark-rgb) / 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 14px -3px rgb(var(--mark-rgb) / 0.3);
+}
+.blur-highlight.mark-amber:hover {
+  background: color-mix(in srgb, var(--mark) 28%, transparent);
+  border-color: var(--mark);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 18px rgb(var(--mark-rgb) / 0.55);
+}
 
