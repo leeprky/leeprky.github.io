@@ -299,16 +299,49 @@
       padding: 6px 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 10px;
       font-size: 0.92rem;
       font-weight: 600;
+      flex-wrap: wrap;
+    }
+    .pub-ticker-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       flex-wrap: wrap;
     }
     .pub-ticker b {
       color: #8b1e1e;
       font-family: 'Cinzel Decorative', Georgia, serif;
     }
+    .turn-ticker-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #23170b;
+      color: #dfb74c;
+      border: 1.5px solid var(--gold);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .btn-quick-turn-pass {
+      background: var(--gold);
+      color: #23170b;
+      border: none;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .btn-quick-turn-pass:hover { transform: scale(1.05); }
 
     /* Sticky Horizontal Crew Bar */
     .crew-bar {
@@ -802,6 +835,69 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
+    /* Active Turn Status Banner on Scores tab */
+    .turn-status-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: linear-gradient(135deg, #2a1506 0%, #150903 100%);
+      border: 2px solid var(--gold);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin: 14px 0;
+      color: #dfb74c;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+    .turn-status-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .turn-status-label {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      color: #dfb74c;
+      letter-spacing: 0.04em;
+    }
+    .turn-status-team {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(223, 183, 76, 0.15);
+      border: 1px solid rgba(223, 183, 76, 0.4);
+      padding: 4px 12px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .turn-status-captain {
+      font-size: 0.85rem;
+      color: #e0d0b0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .btn-advance-turn-scores {
+      background: linear-gradient(180deg, #dfb74c 0%, #b8860b 100%);
+      color: #1a0b02;
+      border: 1.5px solid #23170b;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn-advance-turn-scores:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+    .btn-advance-turn-scores:active {
+      transform: translateY(1px);
+    }
+
     /* -------------------------------------------------------------------------
        SCORING STEPPER CARD & CONSOLE
        ------------------------------------------------------------------------- */
@@ -1213,34 +1309,36 @@
     .map-uno-card {
       cursor: pointer;
       pointer-events: auto;
-      transform-origin: 0 0;
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s;
+      transition: filter 0.2s ease;
     }
-    .map-uno-card:hover {
-      transform: scale(1.35) !important;
-      filter: drop-shadow(0 0 16px #ffea85);
+    .map-uno-card:hover .card-body {
+      filter: drop-shadow(0 0 12px #ffea85) brightness(1.2);
+    }
+    .map-uno-card:hover .card-halo {
+      stroke: #ffe066;
+      stroke-width: 4;
+      opacity: 1;
     }
     .card-halo {
       fill: none;
       stroke: #ffd447;
-      stroke-width: 3;
-      stroke-dasharray: 6 3;
-      animation: cardFlash 1.5s infinite linear;
-      transform-origin: 0 0;
+      stroke-width: 2.5;
+      stroke-dasharray: 5 3;
+      animation: cardPulse 1.8s infinite ease-in-out;
     }
-    @keyframes cardFlash {
-      0% { opacity: 0.35; transform: scale(1); stroke: #dfb74c; }
-      50% { opacity: 1; transform: scale(1.15); stroke: #ffea85; filter: drop-shadow(0 0 10px #ffea85); }
-      100% { opacity: 0.35; transform: scale(1); stroke: #dfb74c; }
+    @keyframes cardPulse {
+      0%, 100% { opacity: 0.45; stroke: #dfb74c; stroke-width: 2.5; }
+      50% { opacity: 1; stroke: #ffea85; stroke-width: 4; }
     }
     .map-uno-card.active-stop .card-halo {
-      stroke: #ff3333;
-      stroke-width: 4;
-      animation: cardFlashActive 0.85s infinite ease-in-out;
+      stroke: #ff2222;
+      stroke-width: 4.5;
+      stroke-dasharray: 6 2;
+      animation: cardPulseActive 0.85s infinite ease-in-out;
     }
-    @keyframes cardFlashActive {
-      0%, 100% { opacity: 0.7; transform: scale(1.05); filter: drop-shadow(0 0 6px #ff3333); }
-      50% { opacity: 1; transform: scale(1.32); filter: drop-shadow(0 0 18px #ff3333); stroke: #ff9999; }
+    @keyframes cardPulseActive {
+      0%, 100% { opacity: 0.7; stroke: #ff2222; filter: drop-shadow(0 0 6px #ff2222); }
+      50% { opacity: 1; stroke: #ff9999; filter: drop-shadow(0 0 16px #ff4444); }
     }
 
     .stops-grid {
@@ -1501,6 +1599,107 @@
       padding: 2px 4px;
       border-radius: 4px;
     }
+    .bingo-card-tile.is-bonus {
+      background: #f2fbf4;
+      border-color: #2b9348;
+    }
+    .bingo-card-tile.is-bonus .bingo-tile-pts {
+      color: #1e612f;
+      background: rgba(43, 147, 72, 0.16);
+      border: 1px solid rgba(43, 147, 72, 0.3);
+    }
+    .bingo-card-tile.is-bonus.claimed::after {
+      color: #1e612f;
+      border-color: #2b9348;
+      content: "AWARDED ★";
+    }
+
+    /* =========================================================================
+       10. ADMIN CONSOLE STYLING (LOCKED BEHIND PASSCODE 22140711)
+       ========================================================================= */
+    .admin-panel-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .admin-header-card {
+      background: linear-gradient(145deg, #2b1212 0%, #160707 100%);
+      border: 3px double var(--gold);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      color: var(--gold-bright);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .admin-card {
+      background: rgba(255, 248, 230, 0.95);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .admin-card-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .admin-card-head h3 {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.45rem;
+      color: #7a1d1d;
+      margin: 0;
+    }
+    .admin-badge {
+      background: #7a1d1d;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .admin-pub-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 650px) {
+      .admin-pub-grid { grid-template-columns: 1fr; }
+    }
+    .btn-admin-pub-select {
+      background: #fff;
+      border: 2px solid var(--wood-mid);
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s ease;
+      font-family: 'IM Fell English', serif;
+      font-size: 0.96rem;
+    }
+    .btn-admin-pub-select:hover {
+      background: #fffdf5;
+      border-color: var(--gold);
+    }
+    .btn-admin-pub-select.selected {
+      border-color: #23170b;
+      box-shadow: 0 0 0 3px var(--gold);
+      background: #fffbeb;
+      font-weight: 700;
+    }
+    .admin-turn-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 600px) {
+      .admin-turn-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
     /* =========================================================================
        10. BOTTOM BATTLE LOG
@@ -1676,8 +1875,11 @@
             <button type="button" class="tab-btn" data-tab="rules">
               <span>📜 RULES</span>
             </button>
-            <button type="button" class="tab-btn secret-tab" id="openBingoTabBtn">
-              <span>🔒 BINGO</span>
+            <button type="button" class="tab-btn" data-tab="bingo">
+              <span>🎯 BINGO</span>
+            </button>
+            <button type="button" class="tab-btn secret-tab" id="openAdminTabBtn">
+              <span>🔒 ADMIN</span>
             </button>
           </div>
 
@@ -1714,12 +1916,19 @@
             Preston Route // 10 Stops · Live Scoreboard across all phones · Tap your crew pill to select
           </div>
 
-          <!-- Active Pub Ticker -->
+          <!-- Active Pub Ticker & Live Turn Banner -->
           <div class="pub-ticker" id="pubTicker">
-            <span>📍 CURRENT PUB:</span>
-            <b id="tickerPubName">Stop 1: The Adelphi</b>
-            <span>•</span>
-            <span id="tickerPubRule">Rule 0: "No pointing with your fingers — 1 sip penalty"</span>
+            <div class="pub-ticker-info">
+              <span>📍 CURRENT PUB:</span>
+              <b id="tickerPubName">Stop 1: The Station</b>
+              <span>•</span>
+              <span id="tickerPubRule">Rule 0: "Left hand drinking only — 1 sip penalty"</span>
+            </div>
+            <div class="turn-ticker-box" id="turnTickerBox">
+              <span>🎲 TURN:</span>
+              <span id="tickerTurnTeam">🔴 Team Red</span>
+              <button type="button" class="btn-quick-turn-pass" id="quickPassTurnBtn" title="Pass turn to next team">Next ➔</button>
+            </div>
           </div>
 
           <!-- Sticky Horizontal Crew Score Bar -->
@@ -1890,6 +2099,23 @@
               <div class="podium-cards-grid" id="podiumCardsGrid"></div>
             </div>
 
+            <!-- DYNAMIC LIVE TURN BANNER -->
+            <div class="turn-status-banner" id="turnStatusBanner">
+              <div class="turn-status-left">
+                <span class="turn-status-label">🎲 CURRENT TURN:</span>
+                <div class="turn-status-team" id="scoresTurnTeam">
+                  <span class="crew-dot red"></span>
+                  <strong>Team Red</strong>
+                  <span class="turn-status-captain">(Captain: None)</span>
+                </div>
+              </div>
+              <div class="turn-status-right">
+                <button type="button" class="btn-advance-turn-scores" id="passTurnFromScoresBtn">
+                  Pass Turn ➔
+                </button>
+              </div>
+            </div>
+
             <div class="scoring-stepper-card">
               <!-- STEP 1: CHOOSE YOUR TEAM -->
               <div class="step-title">
@@ -1955,75 +2181,114 @@
 
                 <!-- SVG Overlay Pins: Flashing UNO Cards for all 10 Pubs -->
                 <svg class="map-pins-svg" viewBox="0 0 1024 572" preserveAspectRatio="none">
-                  <!-- Stop 1: Adelphi -->
-                  <g class="map-uno-card" data-pin="0" transform="translate(480, 160)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">1</text>
+                  <!-- Stop 1: The Station (Card 1 - Red) -->
+                  <g class="map-uno-card" data-pin="0" transform="translate(256, 458)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">1</text>
+                    </g>
                   </g>
-                  <!-- Stop 2: Ships & Giggles -->
-                  <g class="map-uno-card" data-pin="1" transform="translate(160, 160)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#1d63b8" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">2</text>
+
+                  <!-- Stop 2: All Hopes No Promises (Card 2 - Blue) -->
+                  <g class="map-uno-card" data-pin="1" transform="translate(433, 446)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">2</text>
+                    </g>
                   </g>
-                  <!-- Stop 3: Molly O'Malleys -->
-                  <g class="map-uno-card" data-pin="2" transform="translate(240, 265)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#2b9348" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">3</text>
+
+                  <!-- Stop 3: Wings & Beer Co (Card 3 - Yellow) -->
+                  <g class="map-uno-card" data-pin="2" transform="translate(652, 411)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">3</text>
+                    </g>
                   </g>
-                  <!-- Stop 4: The Twelve Tellers -->
-                  <g class="map-uno-card" data-pin="3" transform="translate(900, 310)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#f7b801" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">4</text>
+
+                  <!-- Stop 4: Hogarths (Card 4 - Green) -->
+                  <g class="map-uno-card" data-pin="3" transform="translate(860, 386)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">4</text>
+                    </g>
                   </g>
-                  <!-- Stop 5: Kuckoo -->
-                  <g class="map-uno-card" data-pin="4" transform="translate(720, 200)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">5</text>
+
+                  <!-- Stop 5: The Twelve Tellers (Card 5 - Red) -->
+                  <g class="map-uno-card" data-pin="4" transform="translate(918, 287)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">5</text>
+                    </g>
                   </g>
-                  <!-- Stop 6: The Station -->
-                  <g class="map-uno-card" data-pin="5" transform="translate(120, 400)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#1d63b8" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">6</text>
+
+                  <!-- Stop 6: Kuckoo (Card 6 - Blue) -->
+                  <g class="map-uno-card" data-pin="5" transform="translate(641, 316)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">6</text>
+                    </g>
                   </g>
-                  <!-- Stop 7: Hogarths -->
-                  <g class="map-uno-card" data-pin="6" transform="translate(840, 400)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#2b9348" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">7</text>
+
+                  <!-- Stop 7: Molly O'Malleys (Card 7 - Yellow) -->
+                  <g class="map-uno-card" data-pin="6" transform="translate(403, 276)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">7</text>
+                    </g>
                   </g>
-                  <!-- Stop 8: Wings & Beer Co -->
-                  <g class="map-uno-card" data-pin="7" transform="translate(600, 490)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#f7b801" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">8</text>
+
+                  <!-- Stop 8: The Adelphi (Card 8 - Green) -->
+                  <g class="map-uno-card" data-pin="7" transform="translate(576, 177)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">8</text>
+                    </g>
                   </g>
-                  <!-- Stop 9: Grey Friar / Friargate -->
-                  <g class="map-uno-card" data-pin="8" transform="translate(300, 330)">
-                    <rect class="card-halo" x="-18" y="-26" width="36" height="52" rx="7"/>
-                    <rect x="-16" y="-24" width="32" height="48" rx="5" fill="#d62828" stroke="#150903" stroke-width="2.5"/>
-                    <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-                    <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">9</text>
+
+                  <!-- Stop 9: The Ferret (Card 9 - Red) -->
+                  <g class="map-uno-card" data-pin="8" transform="translate(471, 72)">
+                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
+                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
+                    <g class="card-body">
+                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">9</text>
+                    </g>
                   </g>
-                  <!-- Stop 10: Champions Finish -->
-                  <g class="map-uno-card" data-pin="9" transform="translate(760, 480)">
-                    <rect class="card-halo" x="-20" y="-28" width="40" height="56" rx="8"/>
-                    <rect x="-18" y="-26" width="36" height="52" rx="6" fill="#dfb74c" stroke="#150903" stroke-width="3"/>
-                    <ellipse cx="0" cy="0" rx="11" ry="16" fill="#150903" transform="rotate(-25)"/>
-                    <text x="0" y="6" fill="#ffea85" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="13" text-anchor="middle">10</text>
+
+                  <!-- Stop 10: Ships & Giggles / Popworld (Card 10 - Gold Wild) -->
+                  <g class="map-uno-card" data-pin="9" transform="translate(346, 142)">
+                    <rect x="-20" y="-28" width="40" height="56" fill="transparent"/>
+                    <rect class="card-halo" x="-18" y="-25" width="36" height="50" rx="7"/>
+                    <g class="card-body">
+                      <rect x="-15" y="-21" width="30" height="42" rx="5" fill="#dfb74c" stroke="#150903" stroke-width="2.5"/>
+                      <ellipse cx="0" cy="0" rx="8.5" ry="13" fill="#150903" transform="rotate(-25)"/>
+                      <text x="0" y="5" fill="#ffea85" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="13" text-anchor="middle" dominant-baseline="central">10</text>
+                    </g>
                   </g>
                 </svg>
               </div>
@@ -2088,21 +2353,92 @@
 
 
         <!-- ===================================================================
-             TAB 5: SECRET BINGO BOARD (LOCKED BEHIND 22140711)
+             TAB 5: LIVE PUB CRAWL BINGO (OPEN TO EVERYONE)
              =================================================================== -->
         <section id="tab-bingo" class="tab-panel">
           <div class="bingo-panel">
 
             <div class="bingo-header-card">
-              <h2>🔒 SECRET PUB CRAWL BINGO</h2>
-              <p style="font-style: italic; font-size: 0.92rem; color: #ffebaa; margin-top: 2px;">
-                Confidential Referee Deck • Tap any bingo tile when witnessed to target a team & deduct points!
+              <h2>🎯 PRESTON PUB CRAWL BINGO</h2>
+              <p style="font-style: italic; font-size: 0.95rem; color: #ffebaa; margin-top: 4px;">
+                Open to all Crawlers! Spot penalties (-pts) or achieve bonus feats (+pts) to shift the scoreboard in real-time!
               </p>
             </div>
 
-            <!-- Bingo 16 Cards Grid -->
+            <!-- Bingo Cards Grid -->
             <div class="bingo-grid" id="bingoGrid"></div>
 
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             TAB 6: ADMIN CONSOLE (LOCKED BEHIND PASSCODE 22140711)
+             =================================================================== -->
+        <section id="tab-admin" class="tab-panel">
+          <div class="admin-panel-wrap">
+            <div class="admin-header-card">
+              <span class="impact-pill danger">🔒 RESTRICTED MASTER CONSOLE</span>
+              <h2 style="font-family: 'Pirata One', cursive; font-size: 2.2rem; margin: 6px 0; color: #ffd166;">
+                ⚔️ CRAWL MASTER ADMIN
+              </h2>
+              <p style="font-size: 0.95rem; color: #f4e2be; margin: 0;">
+                Change current pub location, switch team turns, and broadcast live updates to all connected phones!
+              </p>
+            </div>
+
+            <!-- CONTROLLER 1: ACTIVE PUB LOCATION -->
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <span class="admin-badge">📍 STEP 1</span>
+                <h3>SET CURRENT PUB LOCATION (SYNCS ACROSS ALL PHONES):</h3>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--ink-faded); margin-bottom: 10px;">
+                Tap any stop to select it as the crawl's active pub, then hit Broadcast to push the change to everyone's phone:
+              </p>
+              <div class="admin-pub-grid" id="adminPubGrid"></div>
+              <div style="margin-top: 14px;">
+                <button type="button" class="modal-btn" id="adminBroadcastPubBtn" style="background: #2b9348; font-size: 1.2rem; padding: 12px 20px; width: 100%;">
+                  📍 BROADCAST ACTIVE PUB TO ALL PHONES
+                </button>
+              </div>
+            </div>
+
+            <!-- CONTROLLER 2: CURRENT TEAM TURN -->
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <span class="admin-badge">🎲 STEP 2</span>
+                <h3>MANAGE CURRENT TEAM'S TURN:</h3>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--ink-faded); margin-bottom: 10px;">
+                Designate which team has the active turn to attack or play cards:
+              </p>
+              <div class="admin-turn-grid" id="adminTurnGrid"></div>
+              <div style="margin-top: 14px;">
+                <button type="button" class="modal-btn" id="adminAdvanceTurnBtn" style="background: #1d63b8; font-size: 1.15rem; padding: 10px 18px; width: 100%;">
+                  ➡️ ADVANCE TURN TO NEXT TEAM
+                </button>
+              </div>
+            </div>
+
+            <!-- CONTROLLER 3: QUICK EMERGENCY RESET -->
+            <div class="admin-card" style="border-color: #8d0801;">
+              <div class="admin-card-head">
+                <span class="admin-badge" style="background: #8d0801;">⚠️ RESET</span>
+                <h3>SESSION & SCORES RESET:</h3>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--ink-faded); margin-bottom: 10px;">
+                Broadcast emergency score reset or fresh crawl state:
+              </p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="modal-btn" id="adminResetScoresBtn" style="background: #d97706; font-size: 1rem; padding: 10px 16px;">
+                  🔄 Reset All Scores to 12 pts
+                </button>
+                <button type="button" class="modal-btn" id="adminLockConsoleBtn" style="background: #374151; font-size: 1rem; padding: 10px 16px;">
+                  🔒 Lock Admin Console
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -2220,15 +2556,15 @@
 
 
   <!-- =========================================================================
-       MODAL 3: SECRET BINGO PASSCODE UNLOCK (PASSWORD: 22140711)
+       MODAL 3: ADMIN CONSOLE PASSCODE UNLOCK (PASSWORD: 22140711)
        ========================================================================= -->
   <div class="modal-backdrop" id="passcodeModal">
-    <div class="modal-scroll" style="max-width: 360px;">
-      <h2 class="modal-title" style="color: #9e1b1b;">🔒 RESTRICTED ACCESS</h2>
-      <p class="modal-body">Enter the secret 8-digit passcode to unlock the confidential Bingo deck:</p>
+    <div class="modal-scroll" style="max-width: 380px;">
+      <h2 class="modal-title" style="color: #9e1b1b;">🔒 ADMIN RESTRICTED</h2>
+      <p class="modal-body">Enter the secret 8-digit passcode to unlock the Crawl Master Admin Console:</p>
       <input type="password" id="passcodeInput" maxlength="12" placeholder="Passcode..." style="width: 100%; text-align: center; letter-spacing: 0.25em; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; border: 2px solid var(--ink); border-radius: 8px; margin-bottom: 12px;" />
       <div class="modal-actions">
-        <button type="button" class="modal-btn" id="submitPasscodeBtn">Unlock Deck</button>
+        <button type="button" class="modal-btn" id="submitPasscodeBtn">Unlock Admin Console</button>
         <button type="button" class="modal-btn secondary" id="closePasscodeModalBtn">Cancel</button>
       </div>
     </div>
@@ -2377,7 +2713,7 @@
 
       // --- 01. STATE & COOKIE PERSISTENCE CONFIGURATION ---
       const COOKIE_KEY = "drunk_uno_game_state";
-      const BINGO_PASSCODE = "22140711";
+      const ADMIN_PASSCODE = "22140711";
 
       function setCookie(name, value, days = 30) {
         const d = new Date();
@@ -2415,78 +2751,46 @@
         { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 0, targetName: "Team Red", players: [], captain: "" }
       ];
 
+      // Exact 10 Stops sequence matching the route & cards on assets/map.png
       const DEFAULT_STOPS = [
         {
           num: 1,
-          name: "The Adelphi",
+          name: "The Station",
           color: "#d62828",
-          colorName: "RED CARD",
-          rule: "No pointing with fingers — 1 sip penalty",
-          vibe: "Preston's historic student institution outside UCLan campus. The official starting line of the crawl!",
-          challenge: "First pint down in under 15 minutes or take 2 penalty sips!",
-          mapsUrl: "https://maps.google.com/?q=The+Adelphi+Preston",
+          colorName: "RED CARD 1",
+          rule: "Left hand drinking only — 1 sip penalty",
+          vibe: "Historic Victorian railway tavern right outside Preston Station. The official starting line of the crawl!",
+          challenge: "First pint down using only your left hand or take 2 penalty sips!",
+          mapsUrl: "https://maps.google.com/?q=The+Station+Pub+Preston",
           visited: true
         },
         {
           num: 2,
-          name: "Ships & Giggles",
+          name: "All Hopes No Promises",
           color: "#1d63b8",
-          colorName: "BLUE CARD",
-          rule: "Say 'Cheers Captain' before each sip",
-          vibe: "Famous student party pub on Fylde Rd with pirate gaming decor, retro games, and cheap pints.",
-          challenge: "Say 'Ahoy Captain!' to the bartender when ordering or drink 1 sip!",
-          mapsUrl: "https://maps.google.com/?q=Ships+and+Giggles+Preston",
+          colorName: "BLUE CARD 2",
+          rule: "No pointing with fingers — 1 sip penalty",
+          vibe: "Moody, neon-lit cocktail and craft bar on Guildhall St with electric pub crawl energy.",
+          challenge: "No pointing permitted! Anyone caught pointing must immediately down 2 sips!",
+          mapsUrl: "https://maps.google.com/?q=All+Hopes+No+Promises+Preston",
           visited: false
         },
         {
           num: 3,
-          name: "Molly O'Malleys",
-          color: "#2b9348",
-          colorName: "GREEN CARD",
-          rule: "Must speak in an accent or drink 2 sips",
-          vibe: "Lively Irish tavern on Church St with live folk music, cold Guinness, and energetic crowds.",
-          challenge: "Must order your drink in an Irish accent or take 2 sips!",
-          mapsUrl: "https://maps.google.com/?q=Molly+OMalleys+Preston",
+          name: "Wings & Beer Co",
+          color: "#f7b801",
+          colorName: "YELLOW CARD 3",
+          rule: "Thumb master active (last thumb drinks)",
+          vibe: "Craft beer and sports den on Cannon St famous for buffalo wings and craft IPA taps.",
+          challenge: "Whenever your captain places a thumb on the table, the last crawler to react takes 2 sips!",
+          mapsUrl: "https://maps.google.com/?q=Wings+and+Beer+Co+Preston",
           visited: false
         },
         {
           num: 4,
-          name: "The Twelve Tellers",
-          color: "#f7b801",
-          colorName: "YELLOW CARD",
-          rule: "No using first names; use team colors only",
-          vibe: "Preston's grand former bank Wetherspoons on Church St with towering ornate ceilings & cheap pitchers.",
-          challenge: "No using anyone's real first name; refer to players by their team color!",
-          mapsUrl: "https://maps.google.com/?q=The+Twelve+Tellers+Preston",
-          visited: false
-        },
-        {
-          num: 5,
-          name: "Kuckoo",
-          color: "#d62828",
-          colorName: "RED CARD",
-          rule: "High five the bartender or take a sip",
-          vibe: "Preston's indie rock 'n' roll cocktail den on Fox St with bartenders dancing on the bar tops.",
-          challenge: "High-five the bartender or down a flaming rock shot!",
-          mapsUrl: "https://maps.google.com/?q=Kuckoo+Preston",
-          visited: false
-        },
-        {
-          num: 6,
-          name: "The Station",
-          color: "#1d63b8",
-          colorName: "BLUE CARD",
-          rule: "Left hand drinking only",
-          vibe: "Historic Victorian railway tavern situated on Butler St right outside Preston Station.",
-          challenge: "Strictly left-hand drinking only while on railway station territory!",
-          mapsUrl: "https://maps.google.com/?q=The+Station+Pub+Preston",
-          visited: false
-        },
-        {
-          num: 7,
           name: "Hogarths",
           color: "#2b9348",
-          colorName: "GREEN CARD",
+          colorName: "GREEN CARD 4",
           rule: "Pinky out while sipping",
           vibe: "Victorian gin palace on Church St featuring over 120 varieties of gin and live screens.",
           challenge: "Pinky finger must be held high in the air while taking any sip or gulp!",
@@ -2494,34 +2798,67 @@
           visited: false
         },
         {
-          num: 8,
-          name: "Wings & Beer Co",
+          num: 5,
+          name: "The Twelve Tellers",
+          color: "#d62828",
+          colorName: "RED CARD 5",
+          rule: "No using first names; call players by team color",
+          vibe: "Preston's grand former bank Wetherspoons on Church St with towering ornate ceilings & cheap pitchers.",
+          challenge: "No using anyone's real first name; refer to teammates and rivals strictly by team colors!",
+          mapsUrl: "https://maps.google.com/?q=The+Twelve+Tellers+Preston",
+          visited: false
+        },
+        {
+          num: 6,
+          name: "Kuckoo",
+          color: "#1d63b8",
+          colorName: "BLUE CARD 6",
+          rule: "High five the bartender or take a sip",
+          vibe: "Preston's indie rock 'n' roll cocktail den on Fox St with bartenders rocking the bar tops.",
+          challenge: "High-five the bartender or down a flaming rock shot with your rival captain!",
+          mapsUrl: "https://maps.google.com/?q=Kuckoo+Preston",
+          visited: false
+        },
+        {
+          num: 7,
+          name: "Molly O'Malleys",
           color: "#f7b801",
-          colorName: "YELLOW CARD",
-          rule: "Thumb master active (last thumb drinks)",
-          vibe: "Craft beer and sports den on Cannon St famous for buffalo wings and craft IPA taps.",
-          challenge: "Thumb Master active: whenever the captain places a thumb on the table, last player to copy takes 2 sips!",
-          mapsUrl: "https://maps.google.com/?q=Wings+and+Beer+Co+Preston",
+          colorName: "YELLOW CARD 7",
+          rule: "Must speak in an Irish accent or drink 2 sips",
+          vibe: "Lively Irish tavern on Church St with live folk music, cold Guinness, and energetic crowds.",
+          challenge: "Must order all drinks in an Irish accent or take 2 penalty sips!",
+          mapsUrl: "https://maps.google.com/?q=Molly+OMalleys+Preston",
+          visited: false
+        },
+        {
+          num: 8,
+          name: "The Adelphi",
+          color: "#2b9348",
+          colorName: "GREEN CARD 8",
+          rule: "Say 'Cheers Captain' before each sip",
+          vibe: "Preston's legendary student institution on Fylde Rd outside UCLan campus.",
+          challenge: "Every team member must toast 'Cheers Captain!' before touching their drink!",
+          mapsUrl: "https://maps.google.com/?q=The+Adelphi+Preston",
           visited: false
         },
         {
           num: 9,
-          name: "The Grey Friar",
+          name: "The Ferret",
           color: "#d62828",
-          colorName: "RED CARD",
-          rule: "No saying 'Drink' or 'Sip'",
-          vibe: "Classic traditional Friargate student pub with an outdoor terrace and lively party atmosphere.",
-          challenge: "The words 'Drink' and 'Sip' are strictly forbidden — say 'Hydrate' instead!",
-          mapsUrl: "https://maps.google.com/?q=The+Grey+Friar+Preston",
+          colorName: "RED CARD 9",
+          rule: "No saying 'Drink' or 'Sip' — say 'Hydrate'",
+          vibe: "Beloved indie music sanctuary on Fylde Rd with legendary terrace and craft ciders.",
+          challenge: "The words 'Drink' and 'Sip' are strictly forbidden — say 'Hydrate' or suffer a penalty sip!",
+          mapsUrl: "https://maps.google.com/?q=The+Ferret+Preston",
           visited: false
         },
         {
           num: 10,
-          name: "Champions Lounge (Popworld)",
+          name: "Ships & Giggles / Popworld",
           color: "#dfb74c",
-          colorName: "GOLD WILD CARD",
+          colorName: "GOLD WILD CARD 10",
           rule: "Winner assigns 10 sips to losing teams!",
-          vibe: "The ultimate pub crawl finish line on Church St! Cheesy 90s/00s party hits, light-up dancefloors & victory shots!",
+          vibe: "The ultimate pub crawl finish line! Cheesy party bangers, light-up dancefloors & victory podium shots!",
           challenge: "The winning Uno team is crowned champions and assigns 10 sips across all losing crews!",
           mapsUrl: "https://maps.google.com/?q=Popworld+Preston",
           visited: false
@@ -2529,22 +2866,35 @@
       ];
 
       const BINGO_CARDS = [
-        { id: "b1", icon: "🍺", title: "Spills Pint / Knocks Drink", pts: -3, desc: "Accidental clumsy spillage", claimedBy: null },
-        { id: "b2", icon: "🚫", title: "Forgets to say UNO", pts: -2, desc: "Caught with 1 card without calling Uno", claimedBy: null },
-        { id: "b3", icon: "🃏", title: "Drops Card on Dirty Floor", pts: -1, desc: "Butterfingers card drop", claimedBy: null },
-        { id: "b4", icon: "🗣️", title: "Argues with Referee", pts: -2, desc: "Disputing official Uno crawl laws", claimedBy: null },
-        { id: "b5", icon: "🥃", title: "Orders Cursed / Bizarre Shot", pts: -2, desc: "Tequila rose, sambuca, or mystery concoction", claimedBy: null },
-        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Turn", pts: -2, desc: "Holding up gameplay for bladder relief", claimedBy: null },
-        { id: "b7", icon: "⏳", title: "Takes > 20s to Play a Card", pts: -1, desc: "Paralysis by analysis", claimedBy: null },
-        { id: "b8", icon: "👁️", title: "Peeking at Captain's Stash", pts: -4, desc: "Illegally spying on hidden wild cards", claimedBy: null },
-        { id: "b9", icon: "💃", title: "Dances / Sings to Pub Music", pts: -2, desc: "Distracted by the tavern bangers", claimedBy: null },
-        { id: "b10", icon: "🤮", title: "Spews / Chunders", pts: -5, desc: "White flag surrendered to toilet bowl", claimedBy: null },
-        { id: "b11", icon: "🎯", title: "Misses Table with Card", pts: -2, desc: "Attempted trick shot fail", claimedBy: null },
-        { id: "b12", icon: "📱", title: "Phone checking during Attack", pts: -2, desc: "Ignoring incoming draw cards", claimedBy: null },
-        { id: "b13", icon: "🏴‍☠️", title: "Calls Bartender 'Captain'", pts: -2, desc: "Taking the pirate roleplay too far", claimedBy: null },
-        { id: "b14", icon: "💥", title: "Plays Wrong Color by Mistake", pts: -1, desc: "Color blindness or drunkenness", claimedBy: null },
-        { id: "b15", icon: "💀", title: "Downs Pint in < 6 Seconds", pts: -4, desc: "Target team forced drinking penalty", claimedBy: null },
-        { id: "b16", icon: "🧂", title: "Fails Lemon / Salt Shot", pts: -3, desc: "Grimaces and coughs on tequila", claimedBy: null }
+        // --- POSITIVE BONUS CARDS (GAIN POINTS) ---
+        { id: "g1", icon: "🍻", title: "Buys Round for Whole Team", pts: 3, isBonus: true, desc: "Generous crawler buys full drink round for their team", claimedBy: null },
+        { id: "g2", icon: "⚡", title: "Chugs Pint in < 8 Seconds", pts: 4, isBonus: true, desc: "Flawless rapid speed-chug triumph", claimedBy: null },
+        { id: "g3", icon: "🎶", title: "Plays Uno Song on Jukebox", pts: 3, isBonus: true, desc: "Takes over pub playlist with crawl anthem", claimedBy: null },
+        { id: "g4", icon: "👑", title: "Beats Rival Captain at RPS", pts: 2, isBonus: true, desc: "Rock Paper Scissors showdown victory", claimedBy: null },
+        { id: "g5", icon: "📸", title: "Selfie with Bartender / Staff", pts: 3, isBonus: true, desc: "Gets bartender in full team photo", claimedBy: null },
+        { id: "g6", icon: "🃏", title: "Finds Mystery Card on Floor", pts: 4, isBonus: true, desc: "Discovers lost playing card in the wild", claimedBy: null },
+        { id: "g7", icon: "🎯", title: "Card Flip Landed on Pint Glass", pts: 4, isBonus: true, desc: "Epic trick shot lands card balanced on brim", claimedBy: null },
+        { id: "g8", icon: "📢", title: "Gets Pub Chanting Team Color", pts: 5, isBonus: true, desc: "Whole room roars your team's color name!", claimedBy: null },
+        { id: "g9", icon: "🥨", title: "Secures Free Bar Snacks / Crisps", pts: 2, isBonus: true, desc: "Charms bartender for complimentary snacks", claimedBy: null },
+        { id: "g10", icon: "🏴‍☠️", title: "Synced Team Victory Toast", pts: 3, isBonus: true, desc: "All 4 crew members drink in perfect unison", claimedBy: null },
+
+        // --- PENALTY CARDS (DEDUCT POINTS) ---
+        { id: "b1", icon: "🍺", title: "Spills Pint / Knocks Drink", pts: -3, isBonus: false, desc: "Accidental clumsy spillage", claimedBy: null },
+        { id: "b2", icon: "🚫", title: "Forgets to say UNO", pts: -2, isBonus: false, desc: "Caught with 1 card without calling Uno", claimedBy: null },
+        { id: "b3", icon: "🃏", title: "Drops Card on Dirty Floor", pts: -1, isBonus: false, desc: "Butterfingers card drop under table", claimedBy: null },
+        { id: "b4", icon: "🗣️", title: "Argues with Referee", pts: -2, isBonus: false, desc: "Disputing official Uno crawl laws", claimedBy: null },
+        { id: "b5", icon: "🥃", title: "Orders Cursed / Bizarre Shot", pts: -2, isBonus: false, desc: "Tequila rose, sambuca, or mystery concoction", claimedBy: null },
+        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Turn", pts: -2, isBonus: false, desc: "Holding up gameplay for bladder relief", claimedBy: null },
+        { id: "b7", icon: "⏳", title: "Takes > 20s to Play a Card", pts: -1, isBonus: false, desc: "Paralysis by analysis", claimedBy: null },
+        { id: "b8", icon: "👁️", title: "Peeking at Captain's Stash", pts: -4, isBonus: false, desc: "Illegally spying on hidden wild cards", claimedBy: null },
+        { id: "b9", icon: "💃", title: "Dances / Sings to Pub Music", pts: -2, isBonus: false, desc: "Distracted by tavern bangers", claimedBy: null },
+        { id: "b10", icon: "🤮", title: "Spews / Chunders", pts: -5, isBonus: false, desc: "White flag surrendered to toilet bowl", claimedBy: null },
+        { id: "b11", icon: "🎯", title: "Misses Table with Card", pts: -2, isBonus: false, desc: "Attempted trick shot fail", claimedBy: null },
+        { id: "b12", icon: "📱", title: "Phone checking during Attack", pts: -2, isBonus: false, desc: "Ignoring incoming draw cards", claimedBy: null },
+        { id: "b13", icon: "🏴‍☠️", title: "Calls Bartender 'Captain'", pts: -2, isBonus: false, desc: "Taking the pirate roleplay too far", claimedBy: null },
+        { id: "b14", icon: "💥", title: "Plays Wrong Color by Mistake", pts: -1, isBonus: false, desc: "Color blindness or drunkenness", claimedBy: null },
+        { id: "b15", icon: "💀", title: "Fails Head-to-Head Chug Race", pts: -3, isBonus: false, desc: "Defeated in tavern drinking contest", claimedBy: null },
+        { id: "b16", icon: "🧂", title: "Fails Lemon / Salt Shot", pts: -3, isBonus: false, desc: "Grimaces and coughs on tequila", claimedBy: null }
       ];
 
       const UNO_CODEX = [
@@ -2566,16 +2916,17 @@
         myTeamIdx: 0,
         targetTeamIdx: 1,
         currentStopIdx: 0,
+        currentTurnIdx: 0,
         stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
         bingoCards: JSON.parse(JSON.stringify(BINGO_CARDS)),
         logs: ["Session initialized. Connected to Room: " + roomCode],
         sound: true,
-        bingoUnlocked: false
+        adminUnlocked: false
       };
 
-      // Check if unlocked in session
-      if (sessionStorage.getItem("drunk_uno_bingo_unlocked") === "true") {
-        state.bingoUnlocked = true;
+      // Check if Admin unlocked in session
+      if (sessionStorage.getItem("drunk_uno_admin_unlocked") === "true") {
+        state.adminUnlocked = true;
       }
 
       function saveGameState(broadcast = true) {
@@ -2611,6 +2962,7 @@
               });
               if (parsed.stops) state.stops = parsed.stops;
               if (parsed.currentStopIdx !== undefined) state.currentStopIdx = parsed.currentStopIdx;
+              if (parsed.currentTurnIdx !== undefined) state.currentTurnIdx = parsed.currentTurnIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
               if (parsed.logs) state.logs = parsed.logs;
               showToast("🍪 State Restored from Cookie");
@@ -2651,14 +3003,17 @@
                 });
                 state.stops = incoming.stops || state.stops;
                 state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
+                if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
                 state.bingoCards = incoming.bingoCards || state.bingoCards;
                 if (incoming.logs) state.logs = incoming.logs;
 
                 renderCrewBar();
                 renderScoringTab();
+                renderTurnBanner();
                 renderStops();
                 renderBingoGrid();
                 renderLogs();
+                renderAdminTab();
                 playTick(660);
                 showToast("📡 Live Score Updated from Room!");
               }
@@ -2930,8 +3285,9 @@
 
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (CHOOSE YOUR TEAM -> TARGET) ---
       function renderScoringTab() {
-        // Step 0: Render Big Podium Leaderboard Box at Top
+        // Step 0: Render Big Podium Leaderboard Box at Top & Active Turn Banner
         renderPodiumBox();
+        renderTurnBanner();
 
         // Step 1: Render My Team Picker
         const myPicker = document.getElementById("myTeamPicker");
@@ -3624,64 +3980,26 @@
         }
       });
 
-      // --- 11. SECRET BINGO LOGIC (PASSWORD: 22140711) ---
+      // --- 11. BINGO ENGINE (OPEN TO ALL PLAYERS: BONUS +PTS & PENALTY -PTS) ---
       let selectedBingoCard = null;
       let selectedBingoTargetTeamIdx = 0;
 
-      const openBingoBtn = document.getElementById("openBingoTabBtn");
-      const passcodeModal = document.getElementById("passcodeModal");
-      const passcodeInput = document.getElementById("passcodeInput");
-
-      openBingoBtn.onclick = () => {
-        if (state.bingoUnlocked) {
-          switchToTab("bingo");
-        } else {
-          passcodeInput.value = "";
-          passcodeModal.classList.add("open");
-          passcodeInput.focus();
-        }
-      };
-
-      document.getElementById("submitPasscodeBtn").onclick = checkPasscode;
-      passcodeInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") checkPasscode();
-      });
-
-      function checkPasscode() {
-        const val = passcodeInput.value.trim();
-        if (val === BINGO_PASSCODE) {
-          state.bingoUnlocked = true;
-          sessionStorage.setItem("drunk_uno_bingo_unlocked", "true");
-          passcodeModal.classList.remove("open");
-          openBingoBtn.innerHTML = "<span>🎯 BINGO ✓</span>";
-          openBingoBtn.classList.remove("secret-tab");
-          switchToTab("bingo");
-          showToast("🔓 Secret Bingo Deck Unlocked!");
-          playFanfare("win");
-        } else {
-          passcodeInput.value = "";
-          passcodeInput.style.borderColor = "#d62828";
-          playTick(200);
-          showToast("❌ Incorrect Passcode!");
-          setTimeout(() => { passcodeInput.style.borderColor = "var(--ink)"; }, 800);
-        }
-      }
-      document.getElementById("closePasscodeModalBtn").onclick = () => {
-        passcodeModal.classList.remove("open");
-      };
-
       function renderBingoGrid() {
         const grid = document.getElementById("bingoGrid");
+        if (!grid) return;
         grid.innerHTML = "";
 
         state.bingoCards.forEach(card => {
           const tile = document.createElement("div");
-          tile.className = `bingo-card-tile ${card.claimedBy ? "claimed" : ""}`;
+          const isBonus = Boolean(card.isBonus || card.pts > 0);
+          tile.className = `bingo-card-tile ${isBonus ? "is-bonus" : ""} ${card.claimedBy ? "claimed" : ""}`;
+          const ptsText = isBonus ? `+${card.pts} PTS` : `${card.pts} PTS`;
+
           tile.innerHTML = `
             <div class="bingo-tile-icon">${card.icon}</div>
-            <div class="bingo-tile-title">${card.title}</div>
-            <div class="bingo-tile-pts">${card.pts} PTS</div>
-            ${card.claimedBy ? `<div style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; text-align: center; color: #8d0801;">Target: ${card.claimedBy}</div>` : ""}
+            <div class="bingo-tile-title">${escapeHtml(card.title)}</div>
+            <div class="bingo-tile-pts">${ptsText}</div>
+            ${card.claimedBy ? `<div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; text-align: center; color: ${isBonus ? '#15803d' : '#8d0801'}; font-weight: 700; margin-top: 4px;">Target: ${escapeHtml(card.claimedBy)}</div>` : ""}
           `;
 
           tile.onclick = () => {
@@ -3693,19 +4011,40 @@
       }
 
       function openBingoTargetModal(card) {
-        document.getElementById("bingoTargetTitle").textContent = `${card.icon} ${card.title}`;
-        document.getElementById("bingoTargetDesc").textContent = `Deducts ${Math.abs(card.pts)} points from the target crew: "${card.desc}".`;
+        const isBonus = Boolean(card.isBonus || card.pts > 0);
+        const ptsAbs = Math.abs(card.pts);
+        const titleEl = document.getElementById("bingoTargetTitle");
+        const descEl = document.getElementById("bingoTargetDesc");
+        const confirmBtn = document.getElementById("confirmBingoStrikeBtn");
+
+        if (titleEl) {
+          titleEl.textContent = `${isBonus ? '⭐ BONUS: ' : '🎯 PENALTY: '}${card.icon} ${card.title}`;
+          titleEl.style.color = isBonus ? '#166534' : '#9e1b1b';
+        }
+
+        if (descEl) {
+          descEl.textContent = isBonus
+            ? `Awards +${card.pts} bonus points to the selected crew: "${card.desc}".`
+            : `Deducts ${ptsAbs} points penalty from the selected crew: "${card.desc}".`;
+        }
+
+        if (confirmBtn) {
+          confirmBtn.textContent = isBonus
+            ? `⭐ Award +${card.pts} Points to Target Team`
+            : `🎯 Deduct -${ptsAbs} Points from Target Team`;
+          confirmBtn.style.background = isBonus ? "#15803d" : "#9e1b1b";
+        }
 
         const list = document.getElementById("bingoTargetTeamsList");
         list.innerHTML = "";
-        selectedBingoTargetTeamIdx = state.targetTeamIdx;
+        selectedBingoTargetTeamIdx = isBonus ? state.myTeamIdx : state.targetTeamIdx;
 
         state.teams.forEach((t, idx) => {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-stop-check";
           btn.style.padding = "8px 6px";
-          btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
+          btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${escapeHtml(t.name)}`;
           if (idx === selectedBingoTargetTeamIdx) {
             btn.style.border = "2px solid var(--gold)";
             btn.style.background = "#fffdf5";
@@ -3729,12 +4068,18 @@
         if (!selectedBingoCard) return;
         const target = state.teams[selectedBingoTargetTeamIdx];
         const points = selectedBingoCard.pts;
+        const isBonus = points > 0;
         target.score += points;
         selectedBingoCard.claimedBy = target.name;
 
-        addLog(`🎯 BINGO STRIKE: ${selectedBingoCard.icon} "${selectedBingoCard.title}" hit ${target.name} (${points} pts)!`);
+        if (isBonus) {
+          addLog(`⭐ BINGO BONUS: ${target.name} scored ${selectedBingoCard.icon} "${selectedBingoCard.title}" (+${points} pts)!`);
+        } else {
+          addLog(`🎯 BINGO PENALTY: ${selectedBingoCard.icon} "${selectedBingoCard.title}" struck ${target.name} (${points} pts)!`);
+        }
+
         playFanfare("win");
-        spawnCoins(25);
+        spawnCoins(isBonus ? 45 : 25);
         saveGameState(true);
         renderCrewBar();
         renderScoringTab();
@@ -3746,17 +4091,231 @@
         document.getElementById("bingoTargetModal").classList.remove("open");
       };
 
+      // --- 11B. TURN BANNER & ROTATION HELPER ---
+      function advanceTurn() {
+        state.currentTurnIdx = (state.currentTurnIdx + 1) % 4;
+        const nextTeam = state.teams[state.currentTurnIdx];
+        addLog(`🎲 TURN ADVANCED: Now it is ${nextTeam.name}'s turn!`);
+        saveGameState(true);
+        renderTurnBanner();
+        renderAdminTab();
+        playTick(600);
+        showToast(`🎲 Turn: ${nextTeam.name}`);
+      }
+
+      function renderTurnBanner() {
+        const currentTeam = state.teams[state.currentTurnIdx] || state.teams[0];
+        const tickerEl = document.getElementById("tickerTurnTeam");
+        if (tickerEl) {
+          const capText = currentTeam.captain ? ` (👑 ${escapeHtml(currentTeam.captain)})` : '';
+          tickerEl.innerHTML = `<span class="crew-dot ${currentTeam.colorClass}"></span> ${escapeHtml(currentTeam.name)}${capText}`;
+        }
+        const scoresTurnEl = document.getElementById("scoresTurnTeam");
+        if (scoresTurnEl) {
+          const capText = currentTeam.captain ? `(👑 Captain: ${escapeHtml(currentTeam.captain)})` : '(Captain: Unassigned)';
+          scoresTurnEl.innerHTML = `
+            <span class="crew-dot ${currentTeam.colorClass}"></span>
+            <strong>${escapeHtml(currentTeam.name)}</strong>
+            <span class="turn-status-captain">${capText}</span>
+          `;
+        }
+      }
+
+      const quickPassBtn = document.getElementById("quickPassTurnBtn");
+      if (quickPassBtn) {
+        quickPassBtn.onclick = advanceTurn;
+      }
+      const passTurnFromScoresBtn = document.getElementById("passTurnFromScoresBtn");
+      if (passTurnFromScoresBtn) {
+        passTurnFromScoresBtn.onclick = advanceTurn;
+      }
+
+      // --- 11C. ADMIN CONSOLE & PASSCODE UNLOCK (PASSWORD: 22140711) ---
+      let adminSelectedPubIdx = 0;
+
+      const openAdminBtn = document.getElementById("openAdminTabBtn");
+      const passcodeModal = document.getElementById("passcodeModal");
+      const passcodeInput = document.getElementById("passcodeInput");
+
+      if (openAdminBtn) {
+        openAdminBtn.onclick = () => {
+          if (state.adminUnlocked) {
+            switchToTab("admin");
+          } else {
+            passcodeInput.value = "";
+            passcodeModal.classList.add("open");
+            passcodeInput.focus();
+          }
+        };
+      }
+
+      document.getElementById("submitPasscodeBtn").onclick = checkAdminPasscode;
+      passcodeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") checkAdminPasscode();
+      });
+
+      function checkAdminPasscode() {
+        const val = passcodeInput.value.trim();
+        if (val === ADMIN_PASSCODE) {
+          state.adminUnlocked = true;
+          sessionStorage.setItem("drunk_uno_admin_unlocked", "true");
+          passcodeModal.classList.remove("open");
+          if (openAdminBtn) {
+            openAdminBtn.innerHTML = "<span>🔒 ADMIN ✓</span>";
+            openAdminBtn.classList.remove("secret-tab");
+          }
+          switchToTab("admin");
+          showToast("🔓 Crawl Master Admin Unlocked!");
+          playFanfare("win");
+        } else {
+          passcodeInput.value = "";
+          passcodeInput.style.borderColor = "#d62828";
+          playTick(200);
+          showToast("❌ Incorrect Admin Passcode!");
+          setTimeout(() => { passcodeInput.style.borderColor = "var(--ink)"; }, 800);
+        }
+      }
+
+      document.getElementById("closePasscodeModalBtn").onclick = () => {
+        passcodeModal.classList.remove("open");
+      };
+
+      function renderAdminTab() {
+        const pubGrid = document.getElementById("adminPubGrid");
+        if (pubGrid) {
+          pubGrid.innerHTML = "";
+          state.stops.forEach((s, idx) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = `btn-admin-pub-select ${idx === adminSelectedPubIdx ? "selected" : ""}`;
+            const isHere = idx === state.currentStopIdx;
+            btn.innerHTML = `
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                <span style="font-weight: 700;">#${s.num} ${escapeHtml(s.name)}</span>
+                ${isHere ? `<span style="font-size: 0.72rem; background: #8d0801; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700;">HERE NOW 📍</span>` : ""}
+              </div>
+              <small style="color: var(--ink-faded);">${escapeHtml(s.rule)}</small>
+            `;
+            btn.onclick = () => {
+              adminSelectedPubIdx = idx;
+              renderAdminTab();
+              playTick(500);
+            };
+            pubGrid.appendChild(btn);
+          });
+        }
+
+        const turnGrid = document.getElementById("adminTurnGrid");
+        if (turnGrid) {
+          turnGrid.innerHTML = "";
+          state.teams.forEach((t, idx) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = `btn-pick-team ${idx === state.currentTurnIdx ? "selected" : ""}`;
+            btn.innerHTML = `
+              <span class="crew-dot ${t.colorClass}"></span>
+              <span>${escapeHtml(t.name)}</span>
+              <span class="sub">${idx === state.currentTurnIdx ? "🎲 ACTIVE TURN" : t.captain ? '👑 ' + escapeHtml(t.captain) : "Pass Turn Here"}</span>
+            `;
+            btn.onclick = () => {
+              state.currentTurnIdx = idx;
+              addLog(`🎲 CRAWL MASTER: Set active turn to ${t.name}!`);
+              saveGameState(true);
+              renderTurnBanner();
+              renderAdminTab();
+              playTick(600);
+              showToast(`🎲 Active Turn: ${t.name}`);
+            };
+            turnGrid.appendChild(btn);
+          });
+        }
+      }
+
+      const adminBroadcastBtn = document.getElementById("adminBroadcastPubBtn");
+      if (adminBroadcastBtn) {
+        adminBroadcastBtn.onclick = () => {
+          state.currentStopIdx = adminSelectedPubIdx;
+          state.stops[adminSelectedPubIdx].visited = true;
+          const stop = state.stops[adminSelectedPubIdx];
+          addLog(`📍 CRAWL MASTER: Broadcasted active pub Stop ${stop.num}: ${stop.name}! Rule: "${stop.rule}"`);
+          saveGameState(true);
+          renderStops();
+          renderAdminTab();
+          playFanfare("win");
+          spawnCoins(35);
+          showToast(`📍 Broadcasted: Stop ${stop.num} - ${stop.name}`);
+        };
+      }
+
+      const adminAdvanceTurnBtn = document.getElementById("adminAdvanceTurnBtn");
+      if (adminAdvanceTurnBtn) {
+        adminAdvanceTurnBtn.onclick = () => {
+          state.currentTurnIdx = (state.currentTurnIdx + 1) % 4;
+          const nextTeam = state.teams[state.currentTurnIdx];
+          addLog(`🎲 TURN ADVANCED: Now it is ${nextTeam.name}'s turn!`);
+          saveGameState(true);
+          renderTurnBanner();
+          renderAdminTab();
+          playTick(600);
+          showToast(`🎲 Turn: ${nextTeam.name}`);
+        };
+      }
+
+      const adminResetScoresBtn = document.getElementById("adminResetScoresBtn");
+      if (adminResetScoresBtn) {
+        adminResetScoresBtn.onclick = () => {
+          if (confirm("Reset all team scores to 12 points and clear penalties?")) {
+            state.teams.forEach(t => {
+              t.score = 12;
+              t.sips = 0;
+              t.stash = 0;
+              t.frozen = false;
+            });
+            state.bingoCards.forEach(c => c.claimedBy = null);
+            addLog("⚠️ CRAWL MASTER: Emergency score reset applied across all teams.");
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+            renderBingoGrid();
+            renderAdminTab();
+            showToast("Scores reset to 12 pts");
+          }
+        };
+      }
+
+      const adminLockBtn = document.getElementById("adminLockConsoleBtn");
+      if (adminLockBtn) {
+        adminLockBtn.onclick = () => {
+          state.adminUnlocked = false;
+          sessionStorage.removeItem("drunk_uno_admin_unlocked");
+          if (openAdminBtn) {
+            openAdminBtn.innerHTML = "<span>🔒 ADMIN</span>";
+            openAdminBtn.classList.add("secret-tab");
+          }
+          switchToTab("scores");
+          showToast("🔒 Admin Console Locked");
+        };
+      }
+
       // --- 12. TAB SWITCHING SYSTEM ---
       function switchToTab(tabId) {
         document.querySelectorAll(".tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
         const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
         if (activeBtn) activeBtn.classList.add("active");
-        if (tabId === "bingo") openBingoBtn.classList.add("active");
-        else openBingoBtn.classList.remove("active");
+
+        if (openAdminBtn) {
+          if (tabId === "admin") openAdminBtn.classList.add("active");
+          else openAdminBtn.classList.remove("active");
+        }
 
         document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
         const target = document.getElementById(`tab-${tabId}`);
         if (target) target.classList.add("active");
+
+        if (tabId === "admin") {
+          adminSelectedPubIdx = state.currentStopIdx;
+          renderAdminTab();
+        }
       }
 
       document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
@@ -4062,11 +4621,18 @@
       loadGameState();
       renderCrewBar();
       renderScoringTab();
+      renderTurnBanner();
       renderStops();
       renderUnoCodex();
       renderBingoGrid();
       renderLogs();
+      renderAdminTab();
       initMqttSync();
+
+      if (state.adminUnlocked && openAdminBtn) {
+        openAdminBtn.innerHTML = "<span>🔒 ADMIN ✓</span>";
+        openAdminBtn.classList.remove("secret-tab");
+      }
 
       // Check first-load onboarding
       let crewSetupDone = false;
