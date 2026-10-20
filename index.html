@@ -20,16 +20,16 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.4" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.5" />
 </head>
 
 <body id="top">
   <!-- Accessibility Skip Link -->
   <a href="#content" class="skip-link">Skip to technical content [Alt+1]</a>
 
-  <!-- Chroma Current Background (React Bits Pro: Currents of light across glowing dot grid) -->
+  <!-- Chroma Waves Background (React Bits Pro: Soft waves of light with chromatic shimmer) -->
   <div class="bp-grid" aria-hidden="true">
-    <canvas id="chroma-current-canvas" class="chroma-canvas"></canvas>
+    <canvas id="chroma-waves-canvas" class="chroma-canvas"></canvas>
   </div>
 
   <!-- Drawing Frame with ISO Zone References -->
@@ -85,7 +85,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V9.4 ▾</span>
+            <span>SPEC V9.5 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -211,7 +211,7 @@
             </h1>
 
             <div class="hero-role">
-              <span class="shiny">ELECTRICAL ENGINEERING // AUTOMOTIVE DIAGNOSTICS // SYSTEMS</span><span class="caret" aria-hidden="true"></span>
+              <span class="shiny">ELECTRICAL // MECHANICAL // COMPUTERS</span><span class="caret" aria-hidden="true"></span>
             </div>
 
             <p class="lead">
@@ -246,7 +246,7 @@
               </div>
               <div>
                 <dt>Academic Track</dt>
-                <dd>BEng EE (Found.)</dd>
+                <dd>Engineering</dd>
               </div>
               <div>
                 <dt>Active Role</dt>
@@ -276,8 +276,6 @@
                 <span class="hand">"learning by getting hands dirty"</span>
               </figcaption>
             </div>
-
-
           </div>
         </div>
 
@@ -308,9 +306,31 @@
             <b class="mono accent">APPROVED ✓</b>
           </div>
         </div>
-        </div>
       </div>
     </section>
+
+    <!-- =====================================================================
+         DRAFTING SHEETS CONTROL TOOLBAR
+         ===================================================================== -->
+    <div class="sheets-toolbar-wrap container">
+      <div class="sheets-toolbar">
+        <div class="sheets-toolbar-status">
+          <span class="status-dot"></span>
+          <span class="mono">DRAFTING SHEETS // 07 SECTIONS &bull; TAP ANY HEADER TO FOLD / EXPAND</span>
+        </div>
+        <div class="sheets-toolbar-actions">
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+            <span>📄 FULL CV</span>
+          </a>
+          <button type="button" class="btn btn-sm" data-sheets-fold-all>
+            <span>[-] FOLD ALL</span>
+          </button>
+          <button type="button" class="btn btn-sm" data-sheets-expand-all>
+            <span>[+] EXPAND ALL</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -326,8 +346,8 @@
             <span class="sheet-code">LP-SHT-01 // PROFILE &amp; TOOLKIT</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">01 // Profile Spec</span>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">01 // ABOUT ME</span>
               <h2 class="h2">A Bit About Me<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 01">
@@ -386,7 +406,6 @@
             </div>
           </div>
         </div>
-        </div>
       </div>
     </section>
 
@@ -402,8 +421,8 @@
             <span class="sheet-code">LP-SHT-02 // TECHNICAL DISCIPLINES</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">02 // Technical Schematics</span>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">02 // SCHEMATICS</span>
               <h2 class="h2">Disciplines &amp; Schematics<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 02">
@@ -542,7 +561,7 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
       </div>
     </section>
 
@@ -558,8 +577,8 @@
             <span class="sheet-code">LP-SHT-03 // ENGINEERING GALLERY</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">03 // Project Gallery</span>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">03 // PROJECTS</span>
               <h2 class="h2">Builds &amp; Technical Gallery<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 03">
@@ -760,7 +779,7 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
       </div>
     </section>
 
@@ -776,9 +795,9 @@
             <span class="sheet-code">LP-SHT-04 // CAREER REVISIONS</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">04 // Career Logbook</span>
-              <h2 class="h2">Work Experience<span class="accent">.</span></h2>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">04 // EXPERIENCE</span>
+              <h2 class="h2">Work Experience &amp; Logbook<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 04">
               <span class="sheet-state-text">SHEET ACTIVE [−]</span>
@@ -925,6 +944,7 @@
           </article>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- =====================================================================
@@ -939,8 +959,8 @@
             <span class="sheet-code">LP-SHT-05 // BILL OF MATERIALS</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">05 // EDUCATION</span>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">05 // EDUCATION</span>
               <h2 class="h2">Academic Qualifications<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 05">
@@ -1086,8 +1106,8 @@
             <span class="sheet-code">LP-SHT-06 // FIELD EXPEDITIONS</span>
           </div>
           <div class="sheet-title-row">
-            <div>
-              <span class="eyebrow">06 // Field Systems</span>
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">06 // FIELD SYSTEMS</span>
               <h2 class="h2">Mountains, Camping &amp; Cars<span class="accent">.</span></h2>
             </div>
             <div class="sheet-state-badge" aria-label="Toggle Sheet 06">
@@ -1208,7 +1228,7 @@
             </p>
           </div>
         </div>
-        </div>
+      </div>
       </div>
     </section>
 
@@ -1224,66 +1244,77 @@
             <rect x="6" y="6" width="calc(100% - 12px)" height="calc(100% - 12px)" rx="2" />
           </svg>
 
-          <div class="sheet-head" style="margin-bottom: 1.5rem;">
+          <div class="sheet-head" data-sheet-toggle="contact" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-contact" style="margin-bottom: 1.5rem;">
             <div class="sheet-meta">
               <span class="sheet-no">SHEET 07</span>
               <div class="sheet-rule"></div>
               <span class="sheet-code">LP-SHT-07 // COMMUNICATION LINK</span>
             </div>
-            <span class="eyebrow">07 // Direct Dispatch</span>
-            <h2 class="h2">Get in Touch<span class="accent">.</span></h2>
+            <div class="sheet-title-row">
+              <div class="sheet-heading-group">
+                <span class="sheet-tag-badge">07 // DISPATCH</span>
+                <h2 class="h2">Get in Touch<span class="accent">.</span></h2>
+              </div>
+              <div class="sheet-state-badge" aria-label="Toggle Sheet 07">
+                <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+                <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
             <p class="lead">
               Open to engineering placements, industrial trainee roles, apprenticeships, and technical opportunities across Preston, Lancashire, and the North West.
             </p>
           </div>
 
-          <div class="contact-grid">
-            <!-- Email -->
-            <div class="contact-cell">
-              <span class="tiny mono">PRIMARY DISPATCH</span>
-              <b>lspky@pm.me</b>
-              <span class="small muted">ProtonMail Secure</span>
-              <button type="button" class="copy-btn" data-copy="lspky@pm.me">Copy Address</button>
+          <div class="sheet-body" id="sheet-body-contact">
+            <div class="contact-grid">
+              <!-- Email -->
+              <div class="contact-cell">
+                <span class="tiny mono">PRIMARY DISPATCH</span>
+                <b>lspky@pm.me</b>
+                <span class="small muted">ProtonMail Secure</span>
+                <button type="button" class="copy-btn" data-copy="lspky@pm.me">Copy Address</button>
+              </div>
+
+              <!-- Location -->
+              <div class="contact-cell">
+                <span class="tiny mono">CAMPUS &amp; BASE</span>
+                <b>Preston, Lancashire</b>
+                <span class="small muted">United Kingdom · PR1</span>
+                <span class="tiny mono" style="margin-top: 0.3rem;">ULan Engineering</span>
+              </div>
+
+              <!-- LinkedIn -->
+              <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" rel="noopener noreferrer" class="contact-cell">
+                <span class="tiny mono">PROFESSIONAL NETWORK</span>
+                <b>LinkedIn ↗</b>
+                <span class="small muted">Lee Parkinson</span>
+                <span class="tiny mono accent" style="margin-top: 0.3rem;">Connect Profile</span>
+              </a>
+
+              <!-- GitHub -->
+              <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="contact-cell">
+                <span class="tiny mono">SOURCE REPOSITORY</span>
+                <b>GitHub ↗</b>
+                <span class="small muted">@leeprky</span>
+                <span class="tiny mono accent" style="margin-top: 0.3rem;">View Codebases</span>
+              </a>
             </div>
 
-            <!-- Location -->
-            <div class="contact-cell">
-              <span class="tiny mono">CAMPUS &amp; BASE</span>
-              <b>Preston, Lancashire</b>
-              <span class="small muted">United Kingdom · PR1</span>
-              <span class="tiny mono" style="margin-top: 0.3rem;">ULan Engineering</span>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem;">
+              <a href="mailto:lspky@pm.me" class="btn btn-primary">
+                <span>Send Email (lspky@pm.me)</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </a>
+              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn">
+                <span>Download CV PDF (252KB)</span>
+              </a>
             </div>
-
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" rel="noopener noreferrer" class="contact-cell">
-              <span class="tiny mono">PROFESSIONAL NETWORK</span>
-              <b>LinkedIn ↗</b>
-              <span class="small muted">Lee Parkinson</span>
-              <span class="tiny mono accent" style="margin-top: 0.3rem;">Connect Profile</span>
-            </a>
-
-            <!-- GitHub -->
-            <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="contact-cell">
-              <span class="tiny mono">SOURCE REPOSITORY</span>
-              <b>GitHub ↗</b>
-              <span class="small muted">@leeprky</span>
-              <span class="tiny mono accent" style="margin-top: 0.3rem;">View Codebases</span>
-            </a>
           </div>
-
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem;">
-            <a href="mailto:lspky@pm.me" class="btn btn-primary">
-              <span>Send Email (lspky@pm.me)</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </a>
-            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn">
-              <span>Download CV PDF (252KB)</span>
-            </a>
-          </div>
-        </div>
         </div>
       </div>
     </section>
@@ -1394,6 +1425,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=9.4"></script>
+  <script src="assets/js/blueprint.js?v=9.5"></script>
 </body>
 </html>

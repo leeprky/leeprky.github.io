@@ -409,6 +409,43 @@
       });
     });
 
+    // Toolbar: Fold All & Expand All
+    const foldAllBtn = document.querySelector('[data-sheets-fold-all]');
+    const expandAllBtn = document.querySelector('[data-sheets-expand-all]');
+
+    const setAllSections = (expand) => {
+      toggles.forEach((header) => {
+        const sectionId = header.getAttribute('data-sheet-toggle');
+        const section = document.getElementById(sectionId) || header.closest('.section');
+        if (!section) return;
+        if (expand) {
+          section.classList.remove('is-folded');
+          header.setAttribute('aria-expanded', 'true');
+          const text = header.querySelector('.sheet-state-text');
+          if (text) text.textContent = 'SHEET ACTIVE [−]';
+        } else {
+          section.classList.add('is-folded');
+          header.setAttribute('aria-expanded', 'false');
+          const text = header.querySelector('.sheet-state-text');
+          if (text) text.textContent = 'SHEET FOLDED [+]';
+        }
+      });
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    };
+
+    if (foldAllBtn) {
+      foldAllBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        setAllSections(false);
+      });
+    }
+    if (expandAllBtn) {
+      expandAllBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        setAllSections(true);
+      });
+    }
+
     const expandSectionById = (id) => {
       if (!id) return;
       const targetSec = document.getElementById(id);
@@ -911,17 +948,17 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 13. CHROMA CURRENT (React Bits Pro: Currents of light across glowing dot grid)
+  // 13. CHROMA WAVES (React Bits Pro: Soft waves of light with chromatic shimmer)
   // ---------------------------------------------------------------------------
   let chromaEngine = null;
 
-  function initChromaCurrent() {
-    const canvas = document.getElementById('chroma-current-canvas');
+  function initChromaWaves() {
+    const canvas = document.getElementById('chroma-waves-canvas') || document.getElementById('chroma-current-canvas');
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) {
-      initChromaCurrentFallback(canvas);
+      initChromaWavesFallback(canvas);
       return;
     }
 
@@ -936,60 +973,70 @@
       precision highp float;
       uniform vec2 u_resolution;
       uniform float u_time;
-      uniform float u_pitch;
       uniform float u_speed;
       uniform vec3 u_accent;
       uniform vec3 u_bg;
-      uniform vec3 u_gridDot;
+      uniform float u_isLight;
+
+      // Smooth multi-frequency wave ribbon with soft gaussian profile
+      float getWave(vec2 uv, float freq, float speed, float phase, float amp, float thickness) {
+        float x = uv.x * freq + u_time * speed + phase;
+        float y = sin(x) * amp + cos(x * 0.68 - u_time * speed * 0.45) * (amp * 0.38) + sin(x * 1.42 + phase * 0.6) * (amp * 0.18);
+        float d = abs(uv.y - y);
+        return exp(-d * thickness);
+      }
 
       void main() {
-        vec2 fragCoord = gl_FragCoord.xy;
-        fragCoord.y = u_resolution.y - fragCoord.y;
+        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+        vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
 
-        // Dot matrix grid
-        vec2 gridUv = fragCoord / u_pitch;
-        vec2 cell = floor(gridUv);
-        vec2 dotCoord = fract(gridUv) - 0.5;
-        float dist = length(dotCoord);
-
-        // Current flow field
-        vec2 p = cell * 0.052;
         float t = u_time * u_speed;
 
-        // Currents of light flowing across grid
-        float s1 = sin(p.x * 1.8 + p.y * 1.2 + t * 1.05);
-        float s2 = sin(p.x * 2.4 - p.y * 1.9 - t * 0.85);
-        float s3 = cos(p.x * 0.9 + p.y * 2.7 + t * 0.65);
-        float flow = (s1 + s2 + s3) * 0.333;
+        // Chromatic dispersion shimmer offset
+        float chroma = 0.040;
 
-        // Pulse wave
-        float wave = sin(flow * 3.14159 + p.x * 1.5 - t * 1.3);
-        float current = smoothstep(0.38, 0.95, wave);
+        // Wave 1: Primary undulating chromatic ribbon
+        vec2 p1 = p - vec2(0.0, -0.12 + sin(t * 0.28) * 0.08);
+        float r1 = getWave(vec2(p1.x - chroma, p1.y), 2.8, 0.42, 0.0, 0.22, 6.2);
+        float g1 = getWave(p1,                         2.8, 0.42, 0.0, 0.22, 6.2);
+        float b1 = getWave(vec2(p1.x + chroma, p1.y), 2.8, 0.42, 0.0, 0.22, 6.2);
 
-        // Crossing diagonal stream
-        float crossFlow = sin(p.y * 2.2 - p.x * 1.5 + t * 0.7);
-        float crossWave = sin(crossFlow * 3.14159 - t * 1.15);
-        float current2 = smoothstep(0.45, 0.98, crossWave) * 0.75;
-        current = max(current, current2);
+        // Wave 2: Harmonic counter-flowing wave
+        vec2 p2 = p - vec2(0.0, 0.14 + cos(t * 0.34) * 0.10);
+        float r2 = getWave(vec2(p2.x - chroma * 1.25, p2.y), 3.6, -0.36, 1.85, 0.17, 7.0);
+        float g2 = getWave(p2,                                3.6, -0.36, 1.85, 0.17, 7.0);
+        float b2 = getWave(vec2(p2.x + chroma * 1.25, p2.y), 3.6, -0.36, 1.85, 0.17, 7.0);
 
-        // Dot radius scales with current brightness (halftone / LED matrix)
-        float baseRadius = 0.09;
-        float maxRadius = 0.38;
-        float radius = mix(baseRadius, maxRadius, current);
+        // Wave 3: Broad gentle harmonic ribbon
+        vec2 p3 = p - vec2(0.0, sin(t * 0.19) * 0.15);
+        float r3 = getWave(vec2(p3.x - chroma * 0.85, p3.y), 1.85, 0.25, 3.14, 0.25, 4.8);
+        float g3 = getWave(p3,                                1.85, 0.25, 3.14, 0.25, 4.8);
+        float b3 = getWave(vec2(p3.x + chroma * 0.85, p3.y), 1.85, 0.25, 3.14, 0.25, 4.8);
 
-        // Anti-aliased circle edge
-        float edge = 0.055;
-        float dotAlpha = smoothstep(radius, radius - edge, dist);
+        // Composite channels
+        float waveR = (r1 * 0.48 + r2 * 0.32 + r3 * 0.42);
+        float waveG = (g1 * 0.48 + g2 * 0.32 + g3 * 0.42);
+        float waveB = (b1 * 0.48 + b2 * 0.32 + b3 * 0.42);
 
-        // Soft bloom around illuminated dots
-        float glow = exp(-dist * 4.6) * current * 0.55;
+        vec3 chromaticLight = vec3(waveR, waveG, waveB);
+        float waveIntensity = (waveR + waveG + waveB) * 0.3333;
 
-        // Color computation
-        vec3 dotColor = mix(u_gridDot, u_accent, current);
-        vec3 col = mix(u_bg, dotColor, dotAlpha);
-        col += u_accent * glow;
+        // Modulate with accent color and subtle chromatic rainbow shimmer on peaks
+        vec3 coloredWave = mix(u_accent * waveIntensity, chromaticLight * u_accent, 0.45);
 
-        gl_FragColor = vec4(col, 1.0);
+        vec3 finalColor;
+        if (u_isLight > 0.5) {
+          // Light mode: delicate tint, high contrast for dark text
+          float dim = 0.15;
+          finalColor = mix(u_bg, coloredWave, dim * waveIntensity);
+        } else {
+          // Dark mode: soft dimmed glow over deep blueprint void
+          // User requested: "make it dimmer so the text is seeable"
+          float dim = 0.20;
+          finalColor = u_bg + coloredWave * dim + chromaticLight * 0.04;
+        }
+
+        gl_FragColor = vec4(finalColor, 1.0);
       }
     `;
 
@@ -1008,7 +1055,7 @@
     const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
     const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
     if (!vs || !fs) {
-      initChromaCurrentFallback(canvas);
+      initChromaWavesFallback(canvas);
       return;
     }
 
@@ -1018,7 +1065,7 @@
     gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.warn('Program link failed', gl.getProgramInfoLog(program));
-      initChromaCurrentFallback(canvas);
+      initChromaWavesFallback(canvas);
       return;
     }
 
@@ -1040,11 +1087,10 @@
     const aPos = gl.getAttribLocation(program, 'a_position');
     const uRes = gl.getUniformLocation(program, 'u_resolution');
     const uTime = gl.getUniformLocation(program, 'u_time');
-    const uPitch = gl.getUniformLocation(program, 'u_pitch');
     const uSpeed = gl.getUniformLocation(program, 'u_speed');
     const uAccent = gl.getUniformLocation(program, 'u_accent');
     const uBg = gl.getUniformLocation(program, 'u_bg');
-    const uGridDot = gl.getUniformLocation(program, 'u_gridDot');
+    const uIsLight = gl.getUniformLocation(program, 'u_isLight');
 
     function parseColor(str, fallback) {
       if (!str) return fallback;
@@ -1064,7 +1110,7 @@
 
     let accentRGB = [0.22, 0.74, 0.97]; // #38bdf8
     let bgRGB = [0.012, 0.031, 0.078]; // #030814
-    let gridDotRGB = [0.07, 0.20, 0.35];
+    let isLightVal = 0.0;
 
     function updateColors() {
       const styles = getComputedStyle(document.documentElement);
@@ -1075,10 +1121,10 @@
 
       if (isWhiteprint) {
         bgRGB = [0.933, 0.953, 0.976]; // #eef3f9
-        gridDotRGB = [0.72, 0.79, 0.88];
+        isLightVal = 1.0;
       } else {
         bgRGB = [0.012, 0.031, 0.078]; // #030814
-        gridDotRGB = [0.07, 0.20, 0.35];
+        isLightVal = 0.0;
       }
     }
 
@@ -1093,7 +1139,7 @@
     let dpr = 1;
 
     function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = Math.floor(width * dpr);
@@ -1110,9 +1156,7 @@
       isVisible = !document.hidden;
     });
 
-    const isMobile = window.innerWidth < 768;
-    const pitch = (isMobile ? 22.0 : 26.0) * dpr;
-    const speed = 0.75;
+    const speed = 0.45;
 
     function render(now) {
       if (isVisible) {
@@ -1125,11 +1169,10 @@
 
         gl.uniform2f(uRes, canvas.width, canvas.height);
         gl.uniform1f(uTime, elapsed);
-        gl.uniform1f(uPitch, pitch);
         gl.uniform1f(uSpeed, speed);
         gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
         gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
-        gl.uniform3f(uGridDot, gridDotRGB[0], gridDotRGB[1], gridDotRGB[2]);
+        gl.uniform1f(uIsLight, isLightVal);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
       }
@@ -1139,26 +1182,44 @@
     requestAnimationFrame(render);
   }
 
-  function initChromaCurrentFallback(canvas) {
+  function initChromaWavesFallback(canvas) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    function draw() {
+    let animId;
+    function draw(now) {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      ctx.fillStyle = '#030814';
+      const isWhite = document.documentElement.getAttribute('data-theme') === 'whiteprint';
+      ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
-      const pitch = 24;
-      for (let x = 12; x < canvas.width; x += pitch) {
-        for (let y = 12; y < canvas.height; y += pitch) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1.2, 0, Math.PI * 2);
-          ctx.fill();
-        }
+
+      const t = (now || 0) * 0.0006;
+      const styles = getComputedStyle(document.documentElement);
+      const accent = styles.getPropertyValue('--accent') || '#38bdf8';
+
+      ctx.save();
+      ctx.globalAlpha = 0.16;
+      ctx.strokeStyle = accent.trim();
+      ctx.lineWidth = 36;
+      ctx.filter = 'blur(28px)';
+
+      ctx.beginPath();
+      const midY = canvas.height * 0.5;
+      ctx.moveTo(0, midY + Math.sin(t) * 60);
+      for (let x = 0; x < canvas.width; x += 40) {
+        const y = midY + Math.sin(x * 0.003 + t) * 70 + Math.cos(x * 0.002 - t * 0.7) * 40;
+        ctx.lineTo(x, y);
       }
+      ctx.stroke();
+      ctx.restore();
+
+      animId = requestAnimationFrame(draw);
     }
-    draw();
-    window.addEventListener('resize', draw, { passive: true });
+    draw(0);
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animId);
+      draw(performance.now());
+    }, { passive: true });
   }
 
   // ---------------------------------------------------------------------------
@@ -1166,7 +1227,7 @@
   // ---------------------------------------------------------------------------
   function boot() {
     ThemeController.init();
-    initChromaCurrent();
+    initChromaWaves();
     initLenis();
     initGSAP();
     initFoldableSheets();
