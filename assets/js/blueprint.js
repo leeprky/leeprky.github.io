@@ -2103,6 +2103,110 @@
   }
 
   // ---------------------------------------------------------------------------
+  // 15. REACT BITS PRO — GHOST TYPE
+  // A headline that writes itself with AI-style ghost completions
+  // ---------------------------------------------------------------------------
+  function initGhostType() {
+    const elements = document.querySelectorAll('.ghost-type');
+    if (!elements.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    elements.forEach((el) => {
+      const baseText = el.getAttribute('data-ghost-base') || '';
+      let completions = [];
+      try {
+        completions = JSON.parse(el.getAttribute('data-ghost-completions') || '[]');
+      } catch (e) {
+        completions = [el.textContent.replace(baseText, '').trim()];
+      }
+      if (!completions.length) return;
+
+      const baseSpan = el.querySelector('.ghost-type-base');
+      const compSpan = el.querySelector('.ghost-type-completion');
+      if (!baseSpan || !compSpan) return;
+
+      if (prefersReducedMotion) {
+        compSpan.textContent = completions[0];
+        return;
+      }
+
+      let compIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      let isWaiting = false;
+      let isVisible = false;
+      let timer = null;
+
+      const typeSpeed = 38;
+      const deleteSpeed = 22;
+      const holdDelay = 2600;
+      const thinkDelay = 400;
+
+      function tick() {
+        if (!isVisible) return;
+
+        const currentText = completions[compIndex];
+
+        if (!isDeleting) {
+          charIndex++;
+          compSpan.textContent = currentText.slice(0, charIndex);
+
+          if (charIndex >= currentText.length) {
+            isWaiting = true;
+            timer = setTimeout(() => {
+              isWaiting = false;
+              isDeleting = true;
+              tick();
+            }, holdDelay);
+            return;
+          }
+          timer = setTimeout(tick, typeSpeed);
+        } else {
+          charIndex--;
+          compSpan.textContent = currentText.slice(0, charIndex);
+
+          if (charIndex <= 0) {
+            isDeleting = false;
+            compIndex = (compIndex + 1) % completions.length;
+            isWaiting = true;
+            timer = setTimeout(() => {
+              isWaiting = false;
+              tick();
+            }, thinkDelay);
+            return;
+          }
+          timer = setTimeout(tick, deleteSpeed);
+        }
+      }
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!isVisible) {
+                isVisible = true;
+                if (!timer) tick();
+              }
+            } else {
+              isVisible = false;
+              if (timer) {
+                clearTimeout(timer);
+                timer = null;
+              }
+            }
+          });
+        }, { threshold: 0.15 });
+
+        observer.observe(el);
+      } else {
+        isVisible = true;
+        tick();
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // BOOTSTRAP
   // ---------------------------------------------------------------------------
   function boot() {
@@ -2120,6 +2224,7 @@
     initNavigation();
     initCopyButtons();
     initKeyboardNav();
+    initGhostType();
     initTechText(document.getElementById('hero-tech-text'), {
       text: 'Lee Parkinson',
       fontFamily: "'Space Grotesk', sans-serif",
