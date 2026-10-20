@@ -932,17 +932,19 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 13. CHROMA WAVES (React Bits Pro: Soft waves of light with chromatic shimmer)
+  // 13. METALLIC SWIRL (React Bits Pro: A swirl of liquid metal)
   // ---------------------------------------------------------------------------
   let chromaEngine = null;
 
-  function initChromaWaves() {
-    const canvas = document.getElementById('chroma-waves-canvas') || document.getElementById('chroma-current-canvas');
+  function initMetallicSwirl() {
+    const canvas = document.getElementById('metallic-swirl-canvas') ||
+                   document.getElementById('chroma-waves-canvas') ||
+                   document.getElementById('chroma-current-canvas');
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) {
-      initChromaWavesFallback(canvas);
+      initMetallicSwirlFallback(canvas);
       return;
     }
 
@@ -958,66 +960,74 @@
       uniform vec2 u_resolution;
       uniform float u_time;
       uniform float u_speed;
+      uniform vec2 u_mouse;
       uniform vec3 u_accent;
       uniform vec3 u_bg;
       uniform float u_isLight;
 
-      // Smooth multi-frequency wave ribbon with soft gaussian profile
-      float getWave(vec2 uv, float freq, float speed, float phase, float amp, float thickness) {
-        float x = uv.x * freq + u_time * speed + phase;
-        float y = sin(x) * amp + cos(x * 0.68 - u_time * speed * 0.45) * (amp * 0.38) + sin(x * 1.42 + phase * 0.6) * (amp * 0.18);
-        float d = abs(uv.y - y);
-        return exp(-d * thickness);
+      // Swirling liquid metal heightfield
+      float liquidField(vec2 p, float t) {
+        float r = length(p);
+        float a = atan(p.y, p.x);
+
+        // Fluid vortex swirl distortion
+        float swirl = 2.4 / (r + 0.32);
+        float angle = a + swirl * 0.75 - t * 0.45;
+        vec2 q = vec2(cos(angle), sin(angle)) * r;
+
+        // Multi-frequency undulating liquid ripples
+        float w1 = sin(q.x * 4.2 + t * 0.85) * cos(q.y * 3.6 - t * 0.65);
+        float w2 = sin(q.x * 2.6 - q.y * 2.8 + w1 * 1.8);
+        float w3 = cos(q.y * 4.8 + q.x * 2.1 + w2 * 1.4 + t * 0.5);
+
+        return (w1 * 0.45 + w2 * 0.35 + w3 * 0.2);
       }
 
       void main() {
-        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-        vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+        vec2 fragCoord = gl_FragCoord.xy;
+        vec2 p = (fragCoord - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+        // Subtle interactive mouse attraction
+        vec2 mouseOffset = (u_mouse - 0.5) * 0.35;
+        p -= mouseOffset;
 
         float t = u_time * u_speed;
 
-        // Chromatic dispersion shimmer offset
-        float chroma = 0.040;
+        // Evaluate surface height & finite differences for surface normals
+        float eps = 0.007;
+        float h = liquidField(p, t);
+        float hx = liquidField(p + vec2(eps, 0.0), t);
+        float hy = liquidField(p + vec2(0.0, eps), t);
 
-        // Wave 1: Primary undulating chromatic ribbon
-        vec2 p1 = p - vec2(0.0, -0.12 + sin(t * 0.28) * 0.08);
-        float r1 = getWave(vec2(p1.x - chroma, p1.y), 2.8, 0.42, 0.0, 0.22, 6.2);
-        float g1 = getWave(p1,                         2.8, 0.42, 0.0, 0.22, 6.2);
-        float b1 = getWave(vec2(p1.x + chroma, p1.y), 2.8, 0.42, 0.0, 0.22, 6.2);
+        vec3 normal = normalize(vec3((hx - h) / eps * 1.8, (hy - h) / eps * 1.8, 1.0));
 
-        // Wave 2: Harmonic counter-flowing wave
-        vec2 p2 = p - vec2(0.0, 0.14 + cos(t * 0.34) * 0.10);
-        float r2 = getWave(vec2(p2.x - chroma * 1.25, p2.y), 3.6, -0.36, 1.85, 0.17, 7.0);
-        float g2 = getWave(p2,                                3.6, -0.36, 1.85, 0.17, 7.0);
-        float b2 = getWave(vec2(p2.x + chroma * 1.25, p2.y), 3.6, -0.36, 1.85, 0.17, 7.0);
+        // Overhead orbiting key light
+        vec3 lightDir = normalize(vec3(cos(t * 0.35) * 0.7, sin(t * 0.35) * 0.7, 0.85));
+        vec3 viewDir = vec3(0.0, 0.0, 1.0);
+        vec3 halfDir = normalize(lightDir + viewDir);
 
-        // Wave 3: Broad gentle harmonic ribbon
-        vec2 p3 = p - vec2(0.0, sin(t * 0.19) * 0.15);
-        float r3 = getWave(vec2(p3.x - chroma * 0.85, p3.y), 1.85, 0.25, 3.14, 0.25, 4.8);
-        float g3 = getWave(p3,                                1.85, 0.25, 3.14, 0.25, 4.8);
-        float b3 = getWave(vec2(p3.x + chroma * 0.85, p3.y), 1.85, 0.25, 3.14, 0.25, 4.8);
+        // Diffuse & Specular liquid metal reflection
+        float diff = max(0.0, dot(normal, lightDir));
+        float spec = pow(max(0.0, dot(normal, halfDir)), 36.0);
+        float gloss = pow(max(0.0, dot(normal, halfDir)), 9.0);
+        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.6);
 
-        // Composite channels
-        float waveR = (r1 * 0.48 + r2 * 0.32 + r3 * 0.42);
-        float waveG = (g1 * 0.48 + g2 * 0.32 + g3 * 0.42);
-        float waveB = (b1 * 0.48 + b2 * 0.32 + b3 * 0.42);
+        // Metallic chrome palette
+        vec3 chromeBase = vec3(0.72, 0.80, 0.88);
+        vec3 metalHue = mix(chromeBase, u_accent, 0.52);
 
-        vec3 chromaticLight = vec3(waveR, waveG, waveB);
-        float waveIntensity = (waveR + waveG + waveB) * 0.3333;
-
-        // Modulate with accent color and subtle chromatic rainbow shimmer on peaks
-        vec3 coloredWave = mix(u_accent * waveIntensity, chromaticLight * u_accent, 0.45);
+        // Specular chrome gleam + accent fringe
+        vec3 liquidMetal = metalHue * (diff * 0.35 + gloss * 0.4) + vec3(1.0) * (spec * 0.75) + u_accent * (fresnel * 0.55);
 
         vec3 finalColor;
         if (u_isLight > 0.5) {
-          // Light mode: delicate tint, high contrast for dark text
-          float dim = 0.15;
-          finalColor = mix(u_bg, coloredWave, dim * waveIntensity);
+          // Light mode: liquid mercury ripples against clean whiteprint
+          float dim = 0.16;
+          finalColor = mix(u_bg, liquidMetal, dim * (diff * 0.5 + spec + fresnel * 0.5));
         } else {
-          // Dark mode: soft dimmed glow over deep blueprint void
-          // User requested: "make it dimmer so the text is seeable"
-          float dim = 0.20;
-          finalColor = u_bg + coloredWave * dim + chromaticLight * 0.04;
+          // Dark mode: dimmed liquid metal flowing through obsidian pool
+          float dim = 0.22;
+          finalColor = u_bg + liquidMetal * dim;
         }
 
         gl_FragColor = vec4(finalColor, 1.0);
@@ -1039,7 +1049,7 @@
     const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
     const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
     if (!vs || !fs) {
-      initChromaWavesFallback(canvas);
+      initMetallicSwirlFallback(canvas);
       return;
     }
 
@@ -1049,7 +1059,7 @@
     gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.warn('Program link failed', gl.getProgramInfoLog(program));
-      initChromaWavesFallback(canvas);
+      initMetallicSwirlFallback(canvas);
       return;
     }
 
@@ -1072,6 +1082,7 @@
     const uRes = gl.getUniformLocation(program, 'u_resolution');
     const uTime = gl.getUniformLocation(program, 'u_time');
     const uSpeed = gl.getUniformLocation(program, 'u_speed');
+    const uMouse = gl.getUniformLocation(program, 'u_mouse');
     const uAccent = gl.getUniformLocation(program, 'u_accent');
     const uBg = gl.getUniformLocation(program, 'u_bg');
     const uIsLight = gl.getUniformLocation(program, 'u_isLight');
@@ -1134,6 +1145,13 @@
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX / window.innerWidth;
+      mouseY = 1.0 - (e.clientY / window.innerHeight);
+    }, { passive: true });
+
     let startTime = performance.now();
     let isVisible = true;
     document.addEventListener('visibilitychange', () => {
@@ -1154,6 +1172,7 @@
         gl.uniform2f(uRes, canvas.width, canvas.height);
         gl.uniform1f(uTime, elapsed);
         gl.uniform1f(uSpeed, speed);
+        gl.uniform2f(uMouse, mouseX, mouseY);
         gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
         gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
         gl.uniform1f(uIsLight, isLightVal);
@@ -1166,7 +1185,7 @@
     requestAnimationFrame(render);
   }
 
-  function initChromaWavesFallback(canvas) {
+  function initMetallicSwirlFallback(canvas) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     let animId;
@@ -1182,17 +1201,20 @@
       const accent = styles.getPropertyValue('--accent') || '#38bdf8';
 
       ctx.save();
-      ctx.globalAlpha = 0.16;
+      ctx.globalAlpha = 0.18;
       ctx.strokeStyle = accent.trim();
-      ctx.lineWidth = 36;
-      ctx.filter = 'blur(28px)';
+      ctx.lineWidth = 42;
+      ctx.filter = 'blur(30px)';
 
+      const cx = canvas.width * 0.5;
+      const cy = canvas.height * 0.5;
       ctx.beginPath();
-      const midY = canvas.height * 0.5;
-      ctx.moveTo(0, midY + Math.sin(t) * 60);
-      for (let x = 0; x < canvas.width; x += 40) {
-        const y = midY + Math.sin(x * 0.003 + t) * 70 + Math.cos(x * 0.002 - t * 0.7) * 40;
-        ctx.lineTo(x, y);
+      for (let a = 0; a < Math.PI * 6; a += 0.15) {
+        const r = a * 24 + Math.sin(a * 2.0 + t) * 18;
+        const x = cx + Math.cos(a + t * 0.5) * r;
+        const y = cy + Math.sin(a + t * 0.5) * r;
+        if (a === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.restore();
@@ -1211,7 +1233,7 @@
   // ---------------------------------------------------------------------------
   function boot() {
     ThemeController.init();
-    initChromaWaves();
+    initMetallicSwirl();
     initLenis();
     initGSAP();
     initFoldableSheets();
