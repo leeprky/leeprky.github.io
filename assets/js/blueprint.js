@@ -1128,13 +1128,31 @@
 
     updateColors();
 
-    chromaEngine = {
-      updateColors
-    };
-
     let width = 0;
     let height = 0;
     let dpr = 1;
+
+    // Static composition parameters: elegant, calm, non-distracting diagonal silk folds
+    const staticTime = 2.4;
+    const staticMouse = [0.5, 0.5];
+
+    function renderStatic() {
+      gl.useProgram(program);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, staticTime);
+      gl.uniform1f(uSpeed, 1.0);
+      gl.uniform2f(uMouse, staticMouse[0], staticMouse[1]);
+      gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
+      gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
+      gl.uniform1f(uIsLight, isLightVal);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1143,63 +1161,33 @@
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
+      renderStatic();
     }
+
+    chromaEngine = {
+      updateColors: () => {
+        updateColors();
+        renderStatic();
+      },
+      render: renderStatic
+    };
 
     resize();
     window.addEventListener('resize', resize, { passive: true });
-
-    let mouseX = 0.5;
-    let mouseY = 0.5;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX / window.innerWidth;
-      mouseY = 1.0 - (e.clientY / window.innerHeight);
-    }, { passive: true });
-
-    let startTime = performance.now();
-    let isVisible = true;
-    document.addEventListener('visibilitychange', () => {
-      isVisible = !document.hidden;
-    });
-
-    const speed = 0.40;
-
-    function render(now) {
-      if (isVisible) {
-        const elapsed = (now - startTime) / 1000;
-        gl.useProgram(program);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-        gl.enableVertexAttribArray(aPos);
-        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-        gl.uniform2f(uRes, canvas.width, canvas.height);
-        gl.uniform1f(uTime, elapsed);
-        gl.uniform1f(uSpeed, speed);
-        gl.uniform2f(uMouse, mouseX, mouseY);
-        gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
-        gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
-        gl.uniform1f(uIsLight, isLightVal);
-
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-      }
-      requestAnimationFrame(render);
-    }
-
-    requestAnimationFrame(render);
   }
 
   function initSatinRidgesFallback(canvas) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    let animId;
-    function draw(now) {
+
+    function drawStatic() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       const isWhite = document.documentElement.getAttribute('data-theme') === 'whiteprint';
       ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const t = (now || 0) * 0.0005;
+      const t = 1.8;
       const styles = getComputedStyle(document.documentElement);
       const accent = styles.getPropertyValue('--accent') || '#38bdf8';
 
@@ -1209,7 +1197,7 @@
       ctx.lineWidth = 48;
       ctx.filter = 'blur(28px)';
 
-      // Flowing satin ribbons across diagonal
+      // Static satin ribbons across diagonal
       const lines = 7;
       for (let i = 0; i < lines; i++) {
         const baseY = (canvas.height / lines) * i;
@@ -1222,14 +1210,16 @@
         ctx.stroke();
       }
       ctx.restore();
-
-      animId = requestAnimationFrame(draw);
     }
-    draw(0);
-    window.addEventListener('resize', () => {
-      cancelAnimationFrame(animId);
-      draw(performance.now());
-    }, { passive: true });
+
+    drawStatic();
+    window.addEventListener('resize', drawStatic, { passive: true });
+    if (!chromaEngine) {
+      chromaEngine = {
+        updateColors: drawStatic,
+        render: drawStatic
+      };
+    }
   }
 
   // ---------------------------------------------------------------------------

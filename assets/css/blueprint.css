@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 10.3
+ * LP-EE-2026 // Blueprint Design System — REV 10.4
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -628,13 +628,17 @@ strong { color: var(--ink); font-weight: 600; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgb(var(--accent-rgb) / 0.12);
-  border: 1px solid rgb(var(--accent-rgb) / 0.35);
+  background: color-mix(in srgb, var(--accent) 14%, var(--paper));
+  border: 1px solid rgb(var(--accent-rgb) / 0.38);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0.22rem 0.55rem;
   border-radius: var(--radius);
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 @media (max-width: 680px) {
   .sheets-toolbar {
@@ -1028,7 +1032,15 @@ strong { color: var(--ink); font-weight: 600; }
 .profile-grid { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); }
 @media (min-width: 960px) { .profile-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } }
 .profile-copy p + p { margin-top: 0.85rem; }
-.field-notes { border-style: dashed; border-color: rgb(var(--mark-rgb) / 0.55); }
+.field-notes {
+  border-style: dashed;
+  border-color: rgb(var(--mark-rgb) / 0.55);
+  border-top-color: rgb(var(--mark-rgb) / 0.75);
+  background: color-mix(in srgb, var(--paper) 58%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
 .field-notes .hand { font-size: 1.15rem; line-height: 1.5; }
 .field-notes ul { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--line); display: grid; gap: 0.45rem; }
 .field-notes li { font: 500 0.78rem var(--font-mono); color: var(--ink-2); display: flex; gap: 0.6rem; }
@@ -1042,14 +1054,38 @@ strong { color: var(--ink); font-weight: 600; }
 /* =========================================================================
    12. DISCIPLINES — filter, cards
    ========================================================================= */
-.filters { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); margin-bottom: 1.25rem; }
+.filters {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--line-strong);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1.25rem;
+}
 .filters button {
-  padding: 0.45rem 0.85rem; font: 600 0.7rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);
-  border-right: 1px solid var(--line); transition: background 0.2s, color 0.2s;
+  padding: 0.5rem 0.95rem;
+  font: 600 0.72rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border-right: 1px solid var(--line);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .filters button:last-child { border-right: 0; }
-.filters button:hover { color: var(--accent); }
-.filters button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.filters button:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.filters button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
 .disc-grid { display: grid; gap: 1rem; }
 @media (min-width: 760px) { .disc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .disc-grid .span-2 { grid-column: span 2; } }
 .disc-card[hidden] { display: none; }
