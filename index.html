@@ -80,6 +80,35 @@
 
       <!-- Action Cluster -->
       <div class="header-actions">
+        <!-- Spec Revision Badge & Accent Palette Menu -->
+        <div class="accent-menu-wrap">
+          <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
+            <span>SPEC V9.1 ▾</span>
+          </button>
+          <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
+            <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
+            <div class="swatch-grid">
+              <button type="button" class="swatch-btn" style="background:#38bdf8;" data-accent-swatch="blue" title="Cyan / Blueprint Default" aria-label="Cyan"></button>
+              <button type="button" class="swatch-btn" style="background:#a855f7;" data-accent-swatch="violet" title="Violet" aria-label="Violet"></button>
+              <button type="button" class="swatch-btn" style="background:#ec4899;" data-accent-swatch="pink" title="Pink" aria-label="Pink"></button>
+              <button type="button" class="swatch-btn" style="background:#ef4444;" data-accent-swatch="red" title="Red" aria-label="Red"></button>
+              <button type="button" class="swatch-btn" style="background:#f97316;" data-accent-swatch="orange" title="Orange" aria-label="Orange"></button>
+              <button type="button" class="swatch-btn" style="background:#10b981;" data-accent-swatch="green" title="Green" aria-label="Green"></button>
+              <button type="button" class="swatch-btn" style="background:#14b8a6;" data-accent-swatch="teal" title="Teal" aria-label="Teal"></button>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.5rem; gap:0.5rem;">
+              <span class="tiny mono" style="color:var(--ink-2);">Custom Hex:</span>
+              <input type="color" id="accent-custom" value="#38bdf8" style="width:34px; height:24px; border:none; background:none; cursor:pointer;" title="Pick custom color" />
+            </div>
+            <div style="border-top:1px dashed var(--line); margin-top:0.6rem; padding-top:0.4rem; display:flex; justify-content:space-between; align-items:center;">
+              <span class="tiny mono muted">Film Mode:</span>
+              <button type="button" class="btn btn-sm" data-theme-toggle style="padding:0.2rem 0.5rem; font-size:0.68rem;">
+                <span class="tiny mono" data-theme-label>LIGHT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Blueprint / Whiteprint Theme Toggle -->
         <button type="button" class="btn btn-sm" data-theme-toggle aria-label="Toggle Blueprint / Whiteprint film theme">
           <span class="tiny mono" data-theme-label>LIGHT</span>
@@ -116,7 +145,7 @@
     <a href="#schematics"><span>02 //</span> Technical Schematics</a>
     <a href="#projects"><span>03 //</span> Projects &amp; Gallery</a>
     <a href="#experience"><span>04 //</span> Career Logbook</a>
-    <a href="#education"><span>05 //</span> Academic BOM</a>
+    <a href="#education"><span>05 //</span> Academic Qualifications</a>
     <a href="#hobbies"><span>06 //</span> Field Systems</a>
     <a href="#contact"><span>07 //</span> Direct Dispatch</a>
   </div>
@@ -182,7 +211,7 @@
             </div>
 
             <p class="lead">
-              Student engineer at the <strong>University of Lancashire (ULan)</strong>. Hands-on workshop mechanics, electrical fault-finding, circuitry, PC hardware, and software.
+              Electrical Engineering student at the <strong>University of Lancashire (ULan)</strong> in Preston. I'm passionate about hands-on diagnostics and practical problem-solving — whether that's wiring 12V automotive systems, testing circuits in the lab, or building custom PC rigs and software.
             </p>
 
             <div class="hero-cta">
@@ -280,41 +309,7 @@
       </div>
     </section>
 
-    <!-- =====================================================================
-         VELOCITY RIBBON (React Bits · ScrollVelocity)
-         ===================================================================== -->
-    <div class="ribbon" aria-hidden="true">
-      <div class="ribbon-row">
-        <div class="ribbon-item"><i>//</i> CIRCUIT THEORY</div>
-        <div class="ribbon-item"><i>//</i> DIGITAL ELECTRONICS</div>
-        <div class="ribbon-item"><i>//</i> POWER SYSTEMS</div>
-        <div class="ribbon-item"><i>//</i> VEHICLE ELECTRICS</div>
-        <div class="ribbon-item"><i>//</i> HYDRAULIC BRAKE BLEEDING</div>
-        <div class="ribbon-item"><i>//</i> CAN-BUS DIAGNOSTICS</div>
-        <div class="ribbon-item"><i>//</i> PC ARCHITECTURE &amp; NETWORKING</div>
-        <div class="ribbon-item"><i>//</i> LIVE AUDIO ROUTING</div>
-        <div class="ribbon-item"><i>//</i> CIRCUIT THEORY</div>
-        <div class="ribbon-item"><i>//</i> DIGITAL ELECTRONICS</div>
-        <div class="ribbon-item"><i>//</i> POWER SYSTEMS</div>
-        <div class="ribbon-item"><i>//</i> VEHICLE ELECTRICS</div>
-        <div class="ribbon-item"><i>//</i> HYDRAULIC BRAKE BLEEDING</div>
-        <div class="ribbon-item"><i>//</i> CAN-BUS DIAGNOSTICS</div>
-        <div class="ribbon-item"><i>//</i> PC ARCHITECTURE &amp; NETWORKING</div>
-        <div class="ribbon-item"><i>//</i> LIVE AUDIO ROUTING</div>
-      </div>
-      <div class="ribbon-row alt">
-        <div class="ribbon-item"><i>*</i> ULan EE Foundation</div>
-        <div class="ribbon-item"><i>*</i> Wetherspoons Team Leader</div>
-        <div class="ribbon-item"><i>*</i> Car Cosmetics Technician</div>
-        <div class="ribbon-item"><i>*</i> Lake District Scrambles</div>
-        <div class="ribbon-item"><i>*</i> BMW E90 3 Series</div>
-        <div class="ribbon-item"><i>*</i> ULan EE Foundation</div>
-        <div class="ribbon-item"><i>*</i> Wetherspoons Team Leader</div>
-        <div class="ribbon-item"><i>*</i> Car Cosmetics Technician</div>
-        <div class="ribbon-item"><i>*</i> Lake District Scrambles</div>
-        <div class="ribbon-item"><i>*</i> BMW E90 3 Series</div>
-      </div>
-    </div>
+
 
     <!-- =====================================================================
          01. ABOUT ME & THREE CORE PILLARS
@@ -378,7 +373,7 @@
         </div>
 
         <!-- Three Core Pillars -->
-        <div class="grid grid-3" style="margin-top: 2.5rem;">
+        <div class="grid grid-3" style="margin-top: 1.5rem;">
           <!-- Pillar 1 -->
           <div class="panel spotlight tilt">
             <div class="panel-head">
@@ -579,117 +574,7 @@
           </div>
         </div>
 
-        <!-- Interactive Integrated Circuit Pinout Schematic Diagram -->
-        <div class="pinout-wrap">
-          <div>
-            <span class="eyebrow">IC-2026 // Pinout Diagram</span>
-            <h3 class="h3" style="margin-top: 0.5rem;">Interactive Operator Pinout</h3>
-            <p class="body small" style="margin-top: 0.5rem;">
-              Hover over any DIP pin on the dual in-line package to probe the signal line and review skill assignments.
-            </p>
-            <div class="panel field-notes" style="margin-top: 1rem; padding: 0.9rem 1.1rem;">
-              <span class="tiny mono">PROBE READOUT:</span>
-              <div class="pinout-note hand" style="margin-top: 0.3rem;">[PIN 01]: 240V AC Mains / Power Systems</div>
-            </div>
-          </div>
 
-          <!-- SVG Dual In-line Package (DIP-16) -->
-          <svg class="pinout" viewBox="0 0 540 280" aria-label="DIP-16 Microcontroller schematic pinout diagram">
-            <!-- IC Body -->
-            <rect class="body-rect" x="150" y="20" width="240" height="240" rx="4" />
-            <!-- Half-moon notch on top -->
-            <path class="notch" d="M250,20 A20,20 0 0,0 290,20" />
-
-            <!-- IC Label -->
-            <text class="chip-title" x="270" y="130" text-anchor="middle">LP-EE-2026</text>
-            <text class="chip-sub" x="270" y="150" text-anchor="middle">DUAL-DISCIPLINE MCU</text>
-            <text class="chip-sub" x="270" y="168" text-anchor="middle">ULAN PRESTON</text>
-
-            <!-- Pins Left (1..8) -->
-            <g class="pin-g is-live" data-desc="[PIN 01 // PWR]: 240V AC Mains &amp; Single/Three-Phase Theory">
-              <rect class="pin" x="110" y="36" width="40" height="16" />
-              <text class="pin-no" x="142" y="48" text-anchor="end">1</text>
-              <text class="pin-label" x="98" y="48" text-anchor="end">MAINS_AC</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 02 // CKT]: Kirchhoff &amp; Ohm Laws / Circuit Analysis">
-              <rect class="pin" x="110" y="66" width="40" height="16" />
-              <text class="pin-no" x="142" y="78" text-anchor="end">2</text>
-              <text class="pin-label" x="98" y="78" text-anchor="end">CKT_ANALY</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 03 // SENS]: Sensor Instrumentation &amp; Transducers">
-              <rect class="pin" x="110" y="96" width="40" height="16" />
-              <text class="pin-no" x="142" y="108" text-anchor="end">3</text>
-              <text class="pin-label" x="98" y="108" text-anchor="end">SENSOR_IO</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 04 // DIG]: Digital Logic &amp; Microcontroller Systems">
-              <rect class="pin" x="110" y="126" width="40" height="16" />
-              <text class="pin-no" x="142" y="138" text-anchor="end">4</text>
-              <text class="pin-label" x="98" y="138" text-anchor="end">DIG_LOGIC</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 05 // AUTO]: 12V DC Vehicle Wiring &amp; Fuse Harnesses">
-              <rect class="pin" x="110" y="156" width="40" height="16" />
-              <text class="pin-no" x="142" y="168" text-anchor="end">5</text>
-              <text class="pin-label" x="98" y="168" text-anchor="end">AUTO_12V</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 06 // MECH]: Hydraulic Brake Systems &amp; Bleeding">
-              <rect class="pin" x="110" y="186" width="40" height="16" />
-              <text class="pin-no" x="142" y="198" text-anchor="end">6</text>
-              <text class="pin-label" x="98" y="198" text-anchor="end">HYDR_BRK</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 07 // OBD]: CAN-Bus Fault Diagnostics &amp; ECU Scan">
-              <rect class="pin" x="110" y="216" width="40" height="16" />
-              <text class="pin-no" x="142" y="228" text-anchor="end">7</text>
-              <text class="pin-label" x="98" y="228" text-anchor="end">CAN_BUS</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 08 // GND]: Common Chassis Earth Ground">
-              <rect class="pin" x="110" y="246" width="40" height="16" />
-              <text class="pin-no" x="142" y="258" text-anchor="end">8</text>
-              <text class="pin-label" x="98" y="258" text-anchor="end">GND_EARTH</text>
-            </g>
-
-            <!-- Pins Right (9..16) -->
-            <g class="pin-g" data-desc="[PIN 16 // VCC]: +5V / +3.3V Regulated Rail Supply">
-              <rect class="pin" x="390" y="36" width="40" height="16" />
-              <text class="pin-no" x="398" y="48">16</text>
-              <text class="pin-label" x="442" y="48">VCC_RAIL</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 15 // NET]: IPv4 / IPv6 TCP/IP Network Routing">
-              <rect class="pin" x="390" y="66" width="40" height="16" />
-              <text class="pin-no" x="398" y="78">15</text>
-              <text class="pin-label" x="442" y="78">NET_TCP</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 14 // PC]: PC Hardware Assembly &amp; Architecture">
-              <rect class="pin" x="390" y="96" width="40" height="16" />
-              <text class="pin-no" x="398" y="108">14</text>
-              <text class="pin-label" x="442" y="108">PC_ARCH</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 13 // AUD]: Live Audio Routing, EQ &amp; PA Mixing">
-              <rect class="pin" x="390" y="126" width="40" height="16" />
-              <text class="pin-no" x="398" y="138">13</text>
-              <text class="pin-label" x="442" y="138">AUDIO_PA</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 12 // LEAD]: High-Volume Hospitality Shift Leadership">
-              <rect class="pin" x="390" y="156" width="40" height="16" />
-              <text class="pin-no" x="398" y="168">12</text>
-              <text class="pin-label" x="442" y="168">TEAM_LEAD</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 11 // CAD]: Technical Orthographic &amp; Circuit Drafting">
-              <rect class="pin" x="390" y="186" width="40" height="16" />
-              <text class="pin-no" x="398" y="198">11</text>
-              <text class="pin-label" x="442" y="198">CAD_DRAFT</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 10 // MATH]: Engineering Mathematics &amp; Calculus">
-              <rect class="pin" x="390" y="216" width="40" height="16" />
-              <text class="pin-no" x="398" y="228">10</text>
-              <text class="pin-label" x="442" y="228">MATH_ENG</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 09 // STAT]: Operational Telemetry &amp; Field Readiness">
-              <rect class="pin" x="390" y="246" width="40" height="16" />
-              <text class="pin-no" x="398" y="258">9</text>
-              <text class="pin-label" x="442" y="258">OPER_RDY</text>
-            </g>
-          </svg>
-        </div>
       </div>
     </section>
 
@@ -776,75 +661,123 @@
           </div>
         </div>
 
-        <!-- 03.2 Orthographic Sketch & Discord Themes -->
-        <div class="subhead">
+        <!-- 03.2 Technical Hand Drafting -->
+        <div class="subhead" style="margin-top: 1.5rem;">
           <h3>
-            <span class="mono">03.2 //</span> Hand Drafting &amp; Open Source
+            <span class="mono">03.2 // DRAFTING</span> Hand-Drawn Engineering Orthographic
           </h3>
           <a href="gallery.html" class="panel-link">Full Gallery Sheet →</a>
         </div>
 
-        <div class="grid grid-3">
-          <!-- Week 3 Screwdriver Sketch -->
-          <div class="panel spotlight tilt figure">
-            <div class="panel-head">
-              <span class="panel-id">ULAN-CAD // WEEK 3</span>
-              <span class="tiny mono">15.10.26</span>
-            </div>
-            <div class="figure-frame ratio-43">
+        <div class="panel spotlight figure" style="padding: 1.25rem;">
+          <div style="display: grid; gap: 1.25rem; align-items: center;" class="grid-2">
+            <div class="figure-frame ratio-43" style="max-height: 280px; overflow: hidden;">
               <img src="assets/images/week3-electric-screwdriver.jpg" alt="Hand-drafted orthographic engineering sketch of electric screwdriver with projection lines" loading="lazy" width="800" height="600" />
             </div>
-            <h4 class="h3" style="margin-top: 0.9rem;">Electric Screwdriver Projection</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Orthographic third-angle projection (Top, Front, End views) completed Week 3 at ULan, with projection lines, revision block (Ref 2 Attempt 2), and title block.
-            </p>
-          </div>
-
-          <!-- WindowsXI Discord Theme -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-01 // CLIENT UI</span>
-              <a href="https://github.com/leeprky/WindowsXI" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">WindowsXI Discord Theme</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Full desktop Discord client redesign bringing Windows 11 Fluent Design — acrylic glass translucency, mica titlebars, reworked channels, and custom SVG icons.
-            </p>
-            <div class="chips" style="margin-top: 1rem;">
-              <span class="chip">Fluent CSS</span>
-              <span class="chip">BetterDiscord</span>
-              <span class="chip">Acrylic Blur</span>
-            </div>
-          </div>
-
-          <!-- MaterialYou & Vintage -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-02 // CLIENT UI</span>
-              <a href="https://github.com/leeprky/Vintage" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">MaterialYou &amp; Vintage</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Android 12 dynamic tonal palette engine applied to Discord, alongside <em>Vintage</em>, <em>Lode</em>, <em>Ovel</em>, and <em>Fluidcord</em> for BetterDiscord and Vencord.
-            </p>
-            <div class="chips" style="margin-top: 1rem;">
-              <span class="chip">Material You</span>
-              <span class="chip">Vencord</span>
-              <span class="chip">Open Source</span>
+            <div>
+              <div class="panel-head" style="margin-bottom: 0.5rem;">
+                <span class="panel-id">ULAN-CAD // WEEK 3</span>
+                <span class="tiny mono">15.10.26</span>
+              </div>
+              <h4 class="h3">Electric Screwdriver Projection</h4>
+              <p class="body small" style="margin-top: 0.4rem; color: var(--ink-2); line-height: 1.6;">
+                Hand-drawn orthographic third-angle projection (Top, Front, End views) completed Week 3 in the engineering drawing lab at ULan. Features full construction projection lines, centre lines, dimensioning, revision block (Ref 2 Attempt 2), and formal title block.
+              </p>
+              <div class="chips" style="margin-top: 0.85rem;">
+                <span class="chip">Third-Angle Projection</span>
+                <span class="chip">Orthographic CAD</span>
+                <span class="chip">BS 8888 Standards</span>
+                <span class="chip">ULan Preston</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- GIF Showcase Banner -->
-        <div class="gif-frame" style="margin-top: 1.5rem;">
-          <div class="figure">
-            <div class="figure-frame ratio-169">
-              <img src="assets/images/discord-theme-showcase.gif" alt="Discord custom themes animated live showcase" loading="lazy" width="1200" height="675" />
+        <!-- 03.3 Discord Client Themes & UI CSS -->
+        <div class="subhead" style="margin-top: 1.75rem;">
+          <h3>
+            <span class="mono">03.3 // DISCORD THEMES</span> Discord Client Themes &amp; UI CSS
+          </h3>
+          <span class="hand" style="color: var(--mark); font-size: 0.95rem;">"open-source theme collection"</span>
+        </div>
+
+        <!-- Featured Showcase Box Matching Screenshot -->
+        <div class="showcase-panel">
+          <div class="panel-head" style="margin-bottom: 0.85rem;">
+            <span class="panel-id">THEME-SHOWCASE // LIVE UI PREVIEW</span>
+            <a href="https://betterdiscord.app/developer/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">BetterDiscord Developer Profile ↗</a>
+          </div>
+          <div class="showcase-grid">
+            <div class="showcase-gif-box">
+              <img src="assets/images/discord-theme-showcase.gif" alt="Discord custom themes live showcase preview" loading="lazy" width="600" height="340" />
+              <a href="assets/images/discord-theme-showcase.gif" target="_blank" rel="noopener noreferrer" class="gif-open-btn">Open Full GIF ↗</a>
             </div>
-            <figcaption style="padding-inline: 0.5rem;">
-              <span>THEME SUITE // LIVE PREVIEW</span>
-              <a href="https://betterdiscord.app/developer/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">BetterDiscord Dev Profile ↗</a>
-            </figcaption>
+            <div>
+              <h4 class="h3" style="color: var(--ink);">Vintage, WindowsXI &amp; MaterialYou in Action</h4>
+              <p class="body small" style="margin-top: 0.5rem; color: var(--ink-2); line-height: 1.6;">
+                Animated demonstration of my custom Discord client themes built with modular CSS, hardware-accelerated animations, acrylic backdrop filters, and custom SVG icon suites. Maintained for BetterDiscord and Vencord users worldwide with active GitHub releases.
+              </p>
+              <div class="chips" style="margin-top: 1rem;">
+                <span class="chip">Vintage v0.9</span>
+                <span class="chip">WindowsXI × MaterialYou</span>
+                <span class="chip">BetterDiscord &amp; Vencord</span>
+                <span class="chip">400+ Community Members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Column Theme Cards -->
+        <div class="grid grid-3" style="margin-top: 1rem;">
+          <!-- Theme 01 -->
+          <div class="panel spotlight tilt">
+            <div class="panel-head">
+              <span class="panel-id">THEME-01</span>
+              <a href="https://github.com/leeprky/WindowsXI" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
+            </div>
+            <h4 class="h3">WindowsXI Discord Theme</h4>
+            <p class="body small" style="margin-top: 0.4rem;">
+              Fluent Design recreation for Discord with acrylic translucency, mica titlebars, subtle glow states, and dark/light mode switching.
+            </p>
+            <div class="chips" style="margin-top: 0.85rem;">
+              <span class="chip">Fluent CSS</span>
+              <span class="chip">Acrylic Blur</span>
+              <span class="chip">Light / Dark</span>
+            </div>
+          </div>
+
+          <!-- Theme 02 -->
+          <div class="panel spotlight tilt">
+            <div class="panel-head">
+              <span class="panel-id">THEME-02</span>
+              <a href="https://github.com/leeprky/Vintage" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
+            </div>
+            <h4 class="h3">MaterialYou &amp; Vintage</h4>
+            <p class="body small" style="margin-top: 0.4rem;">
+              Dynamic tonal palette generation inspired by Android 12, paired with a warm retro aesthetic for Vencord and BetterDiscord.
+            </p>
+            <div class="chips" style="margin-top: 0.85rem;">
+              <span class="chip">Material You</span>
+              <span class="chip">Retro Warmth</span>
+              <span class="chip">Vencord</span>
+            </div>
+          </div>
+
+          <!-- Theme 03 -->
+          <div class="panel spotlight tilt">
+            <div class="panel-head">
+              <span class="panel-id">THEME-03</span>
+              <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
+            </div>
+            <h4 class="h3">Lode, Ovel &amp; Fluidcord</h4>
+            <p class="body small" style="margin-top: 0.4rem;">
+              Minimalist transparent themes and sleek utility stylesheets crafted for high-performance Discord clients and custom CSS engines.
+            </p>
+            <div class="chips" style="margin-top: 0.85rem;">
+              <span class="chip">Fluidcord</span>
+              <span class="chip">Glass UI</span>
+              <span class="chip">Modular CSS</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1002,7 +935,7 @@
     </section>
 
     <!-- =====================================================================
-         05. ACADEMIC QUALIFICATIONS (BILL OF MATERIALS)
+         05. ACADEMIC QUALIFICATIONS
          ===================================================================== -->
     <section id="education" class="section">
       <div class="container">
@@ -1012,116 +945,132 @@
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-05 // BILL OF MATERIALS</span>
           </div>
-          <span class="eyebrow">05 // Academic Record</span>
-          <h2 class="h2">Qualifications &amp; BOM<span class="accent">.</span></h2>
-          <p class="lead">
-            Formal technical education record formatted as an engineering Bill of Materials (BOM).
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <span class="eyebrow">05 // EDUCATION</span>
+              <h2 class="h2">Academic Qualifications<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state tiny mono" style="color: var(--muted); border: 1px solid var(--line); padding: 0.25rem 0.6rem; border-radius: var(--radius); background: var(--paper);">
+              SHEET ACTIVE [−]
+            </div>
+          </div>
+          <p class="lead" style="margin-top: 0.5rem;">
+            Formal technical education record across electrical engineering, computing, and secondary qualifications.
           </p>
         </div>
 
-        <div class="panel spotlight" style="overflow-x: auto;">
-          <table class="bom">
-            <thead>
-              <tr>
-                <th scope="col">ITEM</th>
-                <th scope="col">INSTITUTION</th>
-                <th scope="col">PROGRAMME / QUALIFICATION</th>
-                <th scope="col">RESULT / GRADE</th>
-                <th scope="col">TIMELINE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>BOM-01</td>
-                <td>
-                  <div class="q">University of Lancashire (ULan)</div>
-                  <div class="inst">Preston, Lancashire</div>
-                </td>
-                <td>BEng (Hons) Electrical Engineering (Foundation Year)</td>
-                <td><span class="grade">IN PROGRESS</span></td>
-                <td class="mono small">2026 — Present</td>
-              </tr>
-              <tr>
-                <td>BOM-02</td>
-                <td>
-                  <div class="q">Blackpool Sixth Form College</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>BTEC Level 3 National Extended Diploma in Information Technology</td>
-                <td><span class="grade">D* D* (Distinction*)</span></td>
-                <td class="mono small">09/2021 — 08/2023</td>
-              </tr>
-              <tr>
-                <td>BOM-03</td>
-                <td>
-                  <div class="q">Blackpool Sixth Form College</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCE Advanced Level (A-Level) Computer Science</td>
-                <td><span class="mono">Grade E</span></td>
-                <td class="mono small">09/2021 — 08/2023</td>
-              </tr>
-              <tr>
-                <td>BOM-04</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>Cambridge Nationals Level 2 in Digital ICT</td>
-                <td><span class="grade">D*2 (Distinction* 2)</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-05</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Photography</td>
-                <td><span class="grade">Grade 9 (Highest)</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-06</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Triple Science (Biology, Chemistry, Physics)</td>
-                <td><span class="mono">Bio: 6 · Chem: 5 · Phys: 5</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-07</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Mathematics &amp; English Language / Literature</td>
-                <td><span class="mono">Maths: 4 · Eng Lang: 6 · Eng Lit: 5</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <!-- Academic Cards Container -->
+        <div class="qual-list">
+          <!-- Card 1: ULan -->
+          <article class="qual-card featured">
+            <div class="qual-head">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span class="tag tag-accent">[DEGREE-01]</span>
+                  <h3 class="h3" style="display: inline; margin: 0;">University of Lancashire (ULan)</h3>
+                  <span class="tag tag-ok">FOUNDATION YEAR</span>
+                </div>
+                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
+                  Electrical Engineering (Foundation Year)
+                </div>
+              </div>
+              <div class="qual-meta">
+                <div>2026 — Present</div>
+                <div>Preston, Lancashire</div>
+                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"foundation year"</div>
+              </div>
+            </div>
+            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
+              Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.
+            </p>
+            <div class="chips" style="margin-top: 0.75rem;">
+              <span class="chip">Circuit Theory</span>
+              <span class="chip">Digital Electronics</span>
+              <span class="chip">Power Systems</span>
+              <span class="chip">Sensor Instrumentation</span>
+              <span class="chip">Engineering Maths</span>
+            </div>
+          </article>
 
-        <div class="grade-grid">
-          <div class="grade-cell star">
-            <span>BTEC LEVEL 3 IT</span>
-            <b>D* D* DOUBLE DISTINCTION*</b>
-          </div>
-          <div class="grade-cell star">
-            <span>CAMBRIDGE LEVEL 2</span>
-            <b>D*2 DISTINCTION*</b>
-          </div>
-          <div class="grade-cell star">
-            <span>GCSE PHOTOGRAPHY</span>
-            <b>GRADE 9 (TOP MARK)</b>
-          </div>
-          <div class="grade-cell">
-            <span>FOUNDATION DISCIPLINE</span>
-            <b>ELECTRICAL ENG @ ULAN</b>
-          </div>
+          <!-- Card 2: Blackpool Sixth Form -->
+          <article class="qual-card">
+            <div class="qual-head">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span class="tag">[LEVEL 3]</span>
+                  <h3 class="h3" style="display: inline; margin: 0;">Blackpool Sixth Form College</h3>
+                  <span class="tag">A-LEVELS &amp; BTEC</span>
+                </div>
+                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
+                  BTEC National Extended Diploma &amp; GCE Advanced Level
+                </div>
+              </div>
+              <div class="qual-meta">
+                <div>Completed 08/2023</div>
+                <div>Blackpool, Lancashire</div>
+                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"Double Distinction Star"</div>
+              </div>
+            </div>
+            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
+              Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.
+            </p>
+            <div class="grade-grid-2">
+              <div class="grade-box highlight">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">BTEC NATIONAL DIPLOMA</div>
+                <div style="font-weight: 700; margin-top: 2px;">Information Technology: D* D*</div>
+              </div>
+              <div class="grade-box">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">GCE A-LEVEL</div>
+                <div style="font-weight: 700; margin-top: 2px;">Computer Science: Grade E</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: St Mary's Catholic Academy -->
+          <article class="qual-card">
+            <div class="qual-head">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span class="tag">[LEVEL 2]</span>
+                  <h3 class="h3" style="display: inline; margin: 0;">St Mary's Catholic Academy</h3>
+                  <span class="tag">GCSEs &amp; LEVEL 2</span>
+                </div>
+                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
+                  General Certificate of Secondary Education (GCSEs)
+                </div>
+              </div>
+              <div class="qual-meta">
+                <div>Secondary Education</div>
+                <div>Blackpool, Lancashire</div>
+                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"D*2 in Digital ICT"</div>
+              </div>
+            </div>
+            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
+              Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.
+            </p>
+            <div class="grade-grid-5">
+              <div class="grade-box highlight">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">DIGITAL ICT ★</div>
+                <div style="font-weight: 700; margin-top: 2px;">D*2 (Distinction*)</div>
+              </div>
+              <div class="grade-box">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">PHOTOGRAPHY</div>
+                <div style="font-weight: 700; margin-top: 2px;">Grade 9</div>
+              </div>
+              <div class="grade-box">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">ENGLISH LANG / LIT</div>
+                <div style="font-weight: 700; margin-top: 2px;">Grade 6 / Grade 5</div>
+              </div>
+              <div class="grade-box">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">MATHEMATICS</div>
+                <div style="font-weight: 700; margin-top: 2px;">Grade 4</div>
+              </div>
+              <div class="grade-box full-span">
+                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">SCIENCES (TRIPLE)</div>
+                <div style="font-weight: 700; margin-top: 2px;">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1399,7 +1348,7 @@
           <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
           <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
         </svg>
-        <span class="dock-label">05 // BOM</span>
+        <span class="dock-label">05 // QUALS</span>
       </a>
 
       <a href="#contact" class="dock-item" aria-label="Sheet 07: Dispatch">

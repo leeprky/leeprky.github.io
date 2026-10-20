@@ -8,42 +8,117 @@
   'use strict';
 
   // ---------------------------------------------------------------------------
-  // 01. THEME CONTROLLER
+  // 01. THEME & ACCENT CONTROLLER
   // ---------------------------------------------------------------------------
   const ThemeController = {
     init() {
-      const saved = localStorage.getItem('lp_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'whiteprint' : 'blueprint');
-      this.apply(saved);
+      const savedTheme = localStorage.getItem('lp_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'whiteprint' : 'blueprint');
+      this.applyTheme(savedTheme);
+
+      const savedAccent = localStorage.getItem('lp_accent') || 'blue';
+      this.applyAccent(savedAccent);
 
       const toggleBtn = document.querySelector('[data-theme-toggle]');
       if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
           const current = document.documentElement.getAttribute('data-theme') || 'blueprint';
           const next = current === 'blueprint' ? 'whiteprint' : 'blueprint';
-          this.apply(next);
+          this.applyTheme(next);
         });
       }
 
       window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
         if (!localStorage.getItem('lp_theme')) {
-          this.apply(e.matches ? 'whiteprint' : 'blueprint');
+          this.applyTheme(e.matches ? 'whiteprint' : 'blueprint');
         }
       });
+
+      this.initAccentMenu();
     },
 
-    apply(theme) {
+    applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('lp_theme', theme);
 
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) {
-        metaTheme.setAttribute('content', theme === 'whiteprint' ? '#eef3f9' : '#0b2343');
+        metaTheme.setAttribute('content', theme === 'whiteprint' ? '#eef3f9' : '#030814');
       }
 
       const label = document.querySelector('[data-theme-label]');
       if (label) {
         label.textContent = theme === 'whiteprint' ? 'DARK' : 'LIGHT';
       }
+    },
+
+    applyAccent(accent) {
+      if (!accent || accent === 'blue') {
+        document.documentElement.removeAttribute('data-accent');
+        document.documentElement.style.removeProperty('--accent');
+        document.documentElement.style.removeProperty('--accent-rgb');
+        localStorage.removeItem('lp_accent');
+      } else if (accent.startsWith('custom:')) {
+        const hex = accent.slice(7);
+        document.documentElement.setAttribute('data-accent', 'custom');
+        document.documentElement.style.setProperty('--accent', hex);
+        const r = parseInt(hex.slice(1, 3), 16) || 56;
+        const g = parseInt(hex.slice(3, 5), 16) || 189;
+        const b = parseInt(hex.slice(5, 7), 16) || 248;
+        document.documentElement.style.setProperty('--accent-rgb', `${r} ${g} ${b}`);
+        localStorage.setItem('lp_accent', accent);
+      } else {
+        document.documentElement.style.removeProperty('--accent');
+        document.documentElement.style.removeProperty('--accent-rgb');
+        document.documentElement.setAttribute('data-accent', accent);
+        localStorage.setItem('lp_accent', accent);
+      }
+
+      document.querySelectorAll('[data-accent-swatch]').forEach((btn) => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-accent-swatch') === accent);
+      });
+      const customInput = document.getElementById('accent-custom');
+      if (customInput && accent.startsWith('custom:')) {
+        customInput.value = accent.slice(7);
+      }
+    },
+
+    initAccentMenu() {
+      const wrap = document.querySelector('.accent-menu-wrap');
+      const toggleBtns = document.querySelectorAll('[data-accent-toggle]');
+      if (!wrap || !toggleBtns.length) return;
+
+      const toggle = (e) => {
+        if (e) {
+          if (typeof e.preventDefault === 'function') e.preventDefault();
+          if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        }
+        wrap.classList.toggle('is-open');
+      };
+      const close = () => wrap.classList.remove('is-open');
+
+      toggleBtns.forEach(btn => btn.addEventListener('click', toggle));
+
+      document.querySelectorAll('[data-accent-swatch]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          if (typeof e.stopPropagation === 'function') e.stopPropagation();
+          const acc = btn.getAttribute('data-accent-swatch');
+          this.applyAccent(acc);
+        });
+      });
+
+      const customInput = document.getElementById('accent-custom');
+      if (customInput) {
+        customInput.addEventListener('input', (e) => {
+          this.applyAccent('custom:' + e.target.value);
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
     }
   };
 
@@ -819,7 +894,6 @@
     ThemeController.init();
     initLenis();
     initGSAP();
-    initScrollVelocity();
     initSpotlightCards();
     initTiltedCards();
     initClickSpark();
@@ -828,7 +902,6 @@
     initDock();
     initCrosshair();
     initDisciplineFilter();
-    initPinout();
     initNavigation();
     initCopyButtons();
   }
