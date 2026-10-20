@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=10.0" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=10.1" />
 </head>
 
 <body id="top">
@@ -121,7 +121,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V10.0 ▾</span>
+            <span>SPEC V10.1 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -803,6 +803,73 @@
     </section>
 
     <!-- =====================================================================
+         03.5. PHOTOGRAMMETRY & VISUAL ARCHIVE (REACT BITS: FLEX CAROUSEL)
+         ===================================================================== -->
+    <section id="gallery" class="section">
+      <div class="container">
+        <div class="sheet-head" data-sheet-toggle="gallery" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-gallery">
+          <div class="sheet-meta">
+            <span class="sheet-no">SHEET 03.5</span>
+            <div class="sheet-rule"></div>
+            <span class="sheet-code">LP-SHT-GAL // PHOTOGRAMMETRY &amp; HARDWARE</span>
+          </div>
+          <div class="sheet-title-row">
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">03.5 // VISUAL REPOSITORIES</span>
+              <h2 class="h2">Project &amp; Hardware Gallery<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet Gallery">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+          <p class="lead">
+            Interactive photographic survey across mechanical CAD orthographics, custom UI engines, automotive assemblies, live sound rigs, and Lake District fells. Powered by the React Bits WebGL FlexCarousel liquid lens.
+          </p>
+        </div>
+
+        <div class="sheet-body" id="sheet-body-gallery">
+          <div class="gallery-carousel-shell">
+            <div class="gallery-carousel-toolbar">
+              <div class="toolbar-left">
+                <span class="indicator-dot"></span>
+                <span class="tiny mono">OPTICAL PRESET: LIQUID LENS (0.34 BEND // 0.45 DISPERSION)</span>
+              </div>
+              <div class="toolbar-controls">
+                <button type="button" class="btn btn-sm btn-ghost" id="carousel-prev-btn" aria-label="Previous Slide">← PREV</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="carousel-next-btn" aria-label="Next Slide">NEXT →</button>
+              </div>
+            </div>
+
+            <!-- React Bits FlexCarousel Component Mount -->
+            <div class="flex-carousel" id="project-flex-carousel" data-preset="liquid" role="region" aria-roledescription="carousel" aria-label="Engineering Projects Flex Carousel" tabindex="0">
+              <div class="flex-carousel__caption" aria-hidden="true">
+                <span class="flex-carousel__title">
+                  <span class="flex-carousel__title-main">Electric Screwdriver Orthographic</span>
+                  <span class="flex-carousel__subtitle">DWG: LP-DRW-03 · CAD &amp; Mechanical Assembly</span>
+                </span>
+                <span class="flex-carousel__count">
+                  <span class="flex-carousel__digits">01</span>
+                  <span class="flex-carousel__slash">/</span>
+                  <span class="flex-carousel__total">08</span>
+                </span>
+              </div>
+              <div class="flex-carousel__live" aria-live="polite" aria-atomic="true">
+                Electric Screwdriver Orthographic, 1 of 8
+              </div>
+            </div>
+
+            <div class="gallery-instructions tiny mono muted">
+              <span>DRAG TO PAN · WHEEL TO GLIDE · CLICK CARD TO INSPECT // ESC TO CLOSE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
          04. CAREER LOGBOOK (EXPERIENCE)
          ===================================================================== -->
     <section id="experience" class="section">
@@ -1252,6 +1319,188 @@
     </section>
 
     <!-- =====================================================================
+         06.5. AUDIO ENGINEERING & SOUND ARCHIVE (REACT BITS PRO: ALBUM RAIL)
+         ===================================================================== -->
+    <section id="music" class="section">
+      <div class="container">
+        <div class="sheet-head" data-sheet-toggle="music" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-music">
+          <div class="sheet-meta">
+            <span class="sheet-no">SHEET 06.5</span>
+            <div class="sheet-rule"></div>
+            <span class="sheet-code">LP-SHT-SND // ACOUSTICS &amp; VINYL</span>
+          </div>
+          <div class="sheet-title-row">
+            <div class="sheet-heading-group">
+              <span class="sheet-tag-badge">06.5 // SOUND ENGINEERING</span>
+              <h2 class="h2">Audio Engineering &amp; Album Rail<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet Music">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+          <p class="lead">
+            Live audio routing, turntable cartridge calibration, and modular sound production. An interactive fan of album sleeves, each with a grooved 12" vinyl record tucked inside. Hover to slide out the vinyl, or click to spin and inspect master telemetry.
+          </p>
+        </div>
+
+        <div class="sheet-body" id="sheet-body-music">
+          <!-- Master Deck Console -->
+          <div class="album-deck-console">
+            <div class="deck-display">
+              <div class="deck-track-meta">
+                <div class="deck-status-line">
+                  <span class="deck-indicator" id="deck-status-dot"></span>
+                  <span class="tiny mono" id="deck-track-cat">CAT: LP-VINYL-001 // 33 ⅓ RPM STEREO</span>
+                </div>
+                <h3 class="deck-track-title" id="deck-track-title">Underground Signal</h3>
+                <span class="tiny mono muted" id="deck-track-sub">LEE PARKINSON // SUB-BASS &amp; MODULAR TECHNO</span>
+              </div>
+              <div class="deck-telemetry">
+                <div class="telemetry-item">
+                  <span class="tiny mono muted">SPEED</span>
+                  <span class="telemetry-val" id="deck-rpm">33 ⅓ RPM</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="tiny mono muted">TEMPO</span>
+                  <span class="telemetry-val" id="deck-bpm">132 BPM</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="tiny mono muted">KEY</span>
+                  <span class="telemetry-val" id="deck-key">F MIN</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-controls">
+              <button type="button" class="btn btn-sm btn-ghost" id="deck-play-btn" aria-label="Toggle Record Playback">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" id="deck-play-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span id="deck-play-text">SPIN RECORD</span>
+              </button>
+              <div class="deck-vu-meter" aria-hidden="true" id="deck-vu-meter">
+                <span class="vu-bar" style="--h: 65%;"></span>
+                <span class="vu-bar" style="--h: 85%;"></span>
+                <span class="vu-bar" style="--h: 45%;"></span>
+                <span class="vu-bar" style="--h: 95%;"></span>
+                <span class="vu-bar" style="--h: 70%;"></span>
+                <span class="vu-bar" style="--h: 50%;"></span>
+                <span class="vu-bar" style="--h: 80%;"></span>
+                <span class="vu-bar" style="--h: 60%;"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- React Bits Pro · Album Rail Component -->
+          <div class="album-rail-wrap" id="album-rail" role="region" aria-label="Interactive Album Rail Vinyl Fan">
+            <div class="album-rail-track" id="album-rail-track">
+              <!-- Vinyl 1 -->
+              <div class="album-card is-active" data-index="0" data-title="Underground Signal" data-sub="LEE PARKINSON // SUB-BASS &amp; MODULAR TECHNO" data-cat="CAT: LP-VINYL-001" data-bpm="132 BPM" data-key="F MIN" data-rpm="33 ⅓ RPM" tabindex="0" role="button" aria-label="Select Underground Signal">
+                <div class="album-sleeve">
+                  <div class="sleeve-spine"><span>LP-VINYL-001 · UNDERGROUND SIGNAL</span></div>
+                  <img src="assets/images/dj-block.jpg" alt="Underground Signal Vinyl Sleeve" loading="lazy" />
+                  <div class="sleeve-badge"><span>01 // TECHNO</span></div>
+                  <div class="sleeve-cutout" aria-hidden="true"></div>
+                </div>
+                <div class="album-record" aria-hidden="true">
+                  <div class="record-grooves"></div>
+                  <div class="record-sheen"></div>
+                  <div class="record-label" style="background:#1e3a5f;">
+                    <span class="label-code">LP-001</span>
+                    <span class="label-title">UNDERGROUND</span>
+                    <span class="label-speed">33 ⅓ RPM</span>
+                    <div class="spindle-hole"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vinyl 2 -->
+              <div class="album-card" data-index="1" data-title="Resistor Grooves" data-sub="LEE PARKINSON // MODULAR SYNTH &amp; ELECTRO" data-cat="CAT: LP-VINYL-002" data-bpm="126 BPM" data-key="A MIN" data-rpm="33 ⅓ RPM" tabindex="0" role="button" aria-label="Select Resistor Grooves">
+                <div class="album-sleeve">
+                  <div class="sleeve-spine"><span>LP-VINYL-002 · RESISTOR GROOVES</span></div>
+                  <img src="assets/images/dj-lee.jpg" alt="Resistor Grooves Vinyl Sleeve" loading="lazy" />
+                  <div class="sleeve-badge"><span>02 // ELECTRO</span></div>
+                  <div class="sleeve-cutout" aria-hidden="true"></div>
+                </div>
+                <div class="album-record" aria-hidden="true">
+                  <div class="record-grooves"></div>
+                  <div class="record-sheen"></div>
+                  <div class="record-label" style="background:#2e1f4d;">
+                    <span class="label-code">LP-002</span>
+                    <span class="label-title">RESISTOR</span>
+                    <span class="label-speed">33 ⅓ RPM</span>
+                    <div class="spindle-hole"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vinyl 3 -->
+              <div class="album-card" data-index="2" data-title="Helvellyn Echoes" data-sub="EXPEDITION ACOUSTICS // AMBIENT FELL RECORDINGS" data-cat="CAT: LP-VINYL-003" data-bpm="118 BPM" data-key="D MIN" data-rpm="33 ⅓ RPM" tabindex="0" role="button" aria-label="Select Helvellyn Echoes">
+                <div class="album-sleeve">
+                  <div class="sleeve-spine"><span>LP-VINYL-003 · HELVELLYN ECHOES</span></div>
+                  <img src="assets/images/hobby-mountains.jpg" alt="Helvellyn Echoes Vinyl Sleeve" loading="lazy" />
+                  <div class="sleeve-badge"><span>03 // AMBIENT</span></div>
+                  <div class="sleeve-cutout" aria-hidden="true"></div>
+                </div>
+                <div class="album-record" aria-hidden="true">
+                  <div class="record-grooves"></div>
+                  <div class="record-sheen"></div>
+                  <div class="record-label" style="background:#1b3834;">
+                    <span class="label-code">LP-003</span>
+                    <span class="label-title">HELVELLYN</span>
+                    <span class="label-speed">33 ⅓ RPM</span>
+                    <div class="spindle-hole"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vinyl 4 -->
+              <div class="album-card" data-index="3" data-title="Night Drive E90" data-sub="AUTOMOTIVE HARMONICS // SYNTHWAVE &amp; EXHAUST" data-cat="CAT: LP-VINYL-004" data-bpm="128 BPM" data-key="E MIN" data-rpm="33 ⅓ RPM" tabindex="0" role="button" aria-label="Select Night Drive E90">
+                <div class="album-sleeve">
+                  <div class="sleeve-spine"><span>LP-VINYL-004 · NIGHT DRIVE E90</span></div>
+                  <img src="assets/images/car-night.jpg" alt="Night Drive E90 Vinyl Sleeve" loading="lazy" />
+                  <div class="sleeve-badge"><span>04 // RETRO</span></div>
+                  <div class="sleeve-cutout" aria-hidden="true"></div>
+                </div>
+                <div class="album-record" aria-hidden="true">
+                  <div class="record-grooves"></div>
+                  <div class="record-sheen"></div>
+                  <div class="record-label" style="background:#4a1c22;">
+                    <span class="label-code">LP-004</span>
+                    <span class="label-title">E90 NIGHT</span>
+                    <span class="label-speed">33 ⅓ RPM</span>
+                    <div class="spindle-hole"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vinyl 5 -->
+              <div class="album-card" data-index="4" data-title="Circuit Distortion" data-sub="HARDWARE BENCH // INDUSTRIAL BREAKBEAT" data-cat="CAT: LP-VINYL-005" data-bpm="140 BPM" data-key="C MIN" data-rpm="33 ⅓ RPM" tabindex="0" role="button" aria-label="Select Circuit Distortion">
+                <div class="album-sleeve">
+                  <div class="sleeve-spine"><span>LP-VINYL-005 · CIRCUIT DISTORTION</span></div>
+                  <img src="assets/images/week3-electric-screwdriver.jpg" alt="Circuit Distortion Vinyl Sleeve" loading="lazy" />
+                  <div class="sleeve-badge"><span>05 // BREAKS</span></div>
+                  <div class="sleeve-cutout" aria-hidden="true"></div>
+                </div>
+                <div class="album-record" aria-hidden="true">
+                  <div class="record-grooves"></div>
+                  <div class="record-sheen"></div>
+                  <div class="record-label" style="background:#3d2f1b;">
+                    <span class="label-code">LP-005</span>
+                    <span class="label-title">CIRCUITS</span>
+                    <span class="label-speed">33 ⅓ RPM</span>
+                    <div class="spindle-hole"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
          07. DIRECT DISPATCH (CONTACT)
          ===================================================================== -->
     <section id="contact" class="section">
@@ -1397,6 +1646,15 @@
         <span class="dock-label">03 // BUILDS</span>
       </a>
 
+      <a href="#gallery" class="dock-item" aria-label="Sheet 03.5: Gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <span class="dock-label">03.5 // GAL</span>
+      </a>
+
       <a href="#experience" class="dock-item" aria-label="Sheet 04: Experience">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
@@ -1411,6 +1669,15 @@
           <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
         </svg>
         <span class="dock-label">05 // QUALS</span>
+      </a>
+
+      <a href="#music" class="dock-item hide-sm" aria-label="Sheet 06.5: Sound Engineering">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3"></circle>
+          <line x1="12" y1="2" x2="12" y2="4"></line>
+        </svg>
+        <span class="dock-label">06.5 // AUDIO</span>
       </a>
 
       <a href="#contact" class="dock-item" aria-label="Sheet 07: Dispatch">
@@ -1444,6 +1711,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=10.0"></script>
+  <script src="assets/js/blueprint.js?v=10.1"></script>
 </body>
 </html>

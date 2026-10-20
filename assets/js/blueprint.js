@@ -677,7 +677,7 @@
     });
 
     // Highlight active section based on scroll position
-    const sections = ['top', 'about', 'schematics', 'gallery', 'experience', 'education', 'hobbies', 'contact'];
+    const sections = ['top', 'about', 'schematics', 'projects', 'gallery', 'experience', 'education', 'hobbies', 'music', 'contact'];
     function updateActiveDock() {
       const scrollY = window.scrollY + window.innerHeight * 0.35;
       let active = 'top';
@@ -2116,6 +2116,729 @@
   }
 
   // ---------------------------------------------------------------------------
+  // 15. REACT BITS — FLEX CAROUSEL (GALLERY SECTION)
+  // Liquid optical glass lens with WebGL2 chromatic dispersion & spring physics
+  // ---------------------------------------------------------------------------
+  const GALLERY_ITEMS = [
+    {
+      src: 'assets/images/week3-electric-screwdriver.jpg',
+      title: 'Electric Screwdriver Orthographic',
+      subtitle: 'DWG: LP-DRW-03 · CAD & Mechanical Assembly',
+      alt: 'Week 3 Electric Screwdriver Orthographic Sketch'
+    },
+    {
+      src: 'assets/images/discord-theme-showcase.gif',
+      title: 'Vintage Blueprint Discord Theme',
+      subtitle: 'CSS & Web UI · 12,000+ Active Installs',
+      alt: 'Vintage Blueprint Discord Theme Showcase GIF'
+    },
+    {
+      src: 'assets/images/car-front.jpg',
+      title: 'BMW E90 Mechanical Overhaul',
+      subtitle: 'Automotive Engineering · Front Splitter & Servicing',
+      alt: 'Red BMW E90 front view with front splitter'
+    },
+    {
+      src: 'assets/images/car-night.jpg',
+      title: 'Night Optics & Angel Eyes',
+      subtitle: 'Electrical Wiring & Opto-electronic Retrofit',
+      alt: 'BMW E90 at night with illuminated angel eyes'
+    },
+    {
+      src: 'assets/images/dj-lee.jpg',
+      title: 'Live Audio & Deck Routing',
+      subtitle: 'Sound Engineering · Club PA & Mixer Wiring',
+      alt: 'Lee DJing on the decks with Pioneer mixer and turntables'
+    },
+    {
+      src: 'assets/images/dj-block.jpg',
+      title: 'Vinyl Turntables & Acoustics',
+      subtitle: 'Analog Audio Systems & Cartridge Calibration',
+      alt: 'Close-up of vinyl record turntables and tone arm'
+    },
+    {
+      src: 'assets/images/hobby-mountains.jpg',
+      title: 'Lake District Survey Expedition',
+      subtitle: 'Field Systems · Helvellyn Ridge Mapping',
+      alt: 'Mountain stream looking over valley in the Lake District'
+    },
+    {
+      src: 'assets/images/hobby-waterfall.jpg',
+      title: 'Gorge Hydrology Scramble',
+      subtitle: 'High-contrast Landscape Photography',
+      alt: 'Scrambling up a rocky waterfall gorge'
+    }
+  ];
+
+  function initFlexCarousel() {
+    const container = document.getElementById('project-flex-carousel');
+    if (!container) return;
+
+    const prevBtn = document.getElementById('carousel-prev-btn');
+    const nextBtn = document.getElementById('carousel-next-btn');
+    const titleMain = container.querySelector('.flex-carousel__title-main');
+    const subtitle = container.querySelector('.flex-carousel__subtitle');
+    const digits = container.querySelector('.flex-carousel__digits');
+    const liveText = container.querySelector('.flex-carousel__live');
+
+    let activeIndex = 0;
+    const items = GALLERY_ITEMS;
+    const count = items.length;
+
+    function updateCaption(idx) {
+      activeIndex = idx;
+      const item = items[idx];
+      if (!item) return;
+      if (titleMain) titleMain.textContent = item.title;
+      if (subtitle) subtitle.textContent = item.subtitle;
+      if (digits) digits.textContent = String(idx + 1).padStart(2, '0');
+      if (liveText) liveText.textContent = `${item.title}, ${idx + 1} of ${count}`;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.style.display = 'block';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.setAttribute('aria-hidden', 'true');
+    container.prepend(canvas);
+
+    const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, depth: false });
+    if (!gl) {
+      initFlexCarouselFallback(container, items, updateCaption);
+      return;
+    }
+
+    // Shaders for Card Rendering into Offscreen Texture
+    const vsCardSource = `#version 300 es
+      in vec2 a_pos;
+      in vec2 a_uv;
+      uniform vec4 uRect;
+      uniform vec2 uResolution;
+      out vec2 vUv;
+      out vec2 vLocal;
+      void main() {
+        vUv = a_uv;
+        vLocal = vec2(a_pos.x, -a_pos.y) * uRect.zw;
+        vec2 px = uRect.xy + vLocal;
+        gl_Position = vec4(px.x / uResolution.x * 2.0 - 1.0, 1.0 - px.y / uResolution.y * 2.0, 0.0, 1.0);
+      }
+    `;
+
+    const fsCardSource = `#version 300 es
+      precision highp float;
+      uniform sampler2D tMap;
+      uniform vec2 uSize;
+      uniform vec2 uImage;
+      uniform float uRadius;
+      uniform float uAlpha;
+      uniform float uReady;
+      uniform float uShift;
+      uniform float uDpr;
+      uniform vec3 uPlaceholder;
+      in vec2 vUv;
+      in vec2 vLocal;
+      out vec4 fragColor;
+
+      float roundedBox(vec2 p, vec2 b, float r) {
+        vec2 q = abs(p) - b + r;
+        return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+      }
+
+      void main() {
+        float sd = roundedBox(vLocal, uSize * 0.5, min(uRadius, min(uSize.x, uSize.y) * 0.5));
+        float mask = clamp(0.5 - sd * uDpr, 0.0, 1.0);
+        vec2 local = vLocal / uSize + 0.5;
+        float cardAspect = uSize.x / uSize.y;
+        float imageAspect = uImage.x / max(uImage.y, 1.0);
+        vec2 scale = imageAspect > cardAspect ? vec2(cardAspect / imageAspect, 1.0) : vec2(1.0, imageAspect / cardAspect);
+        scale /= 1.06;
+        vec2 uv = vec2(local.x, 1.0 - local.y);
+        uv = (uv - 0.5) * scale + 0.5;
+        uv.x += uShift * (1.0 - scale.x) * 0.5;
+        vec3 image = texture(tMap, uv).rgb;
+        vec3 color = mix(uPlaceholder, image, uReady);
+        float alpha = mask * uAlpha;
+        fragColor = vec4(color * alpha, alpha);
+      }
+    `;
+
+    // Shaders for Fullscreen Liquid Lens Pass with Chromatic Dispersion
+    const vsLensSource = `#version 300 es
+      in vec2 a_pos;
+      void main() {
+        gl_Position = vec4(a_pos, 0.0, 1.0);
+      }
+    `;
+
+    const fsLensSource = `#version 300 es
+      precision highp float;
+      uniform sampler2D tScene;
+      uniform vec2 uResolution;
+      uniform float uDpr;
+      uniform vec2 uCenter;
+      uniform vec2 uHalf;
+      uniform float uAngle;
+      uniform float uExponent;
+      uniform float uInner;
+      uniform float uOuter;
+      uniform float uFlow;
+      uniform float uCurl;
+      uniform float uDispersion;
+      uniform float uStrength;
+      uniform float uSceneAlpha;
+      out vec4 fragColor;
+
+      void main() {
+        vec2 frag = gl_FragCoord.xy / uDpr;
+        vec2 uv = frag / uResolution;
+        vec2 rel = frag - vec2(uCenter.x, uResolution.y - uCenter.y);
+        float ca = cos(uAngle);
+        float sa = sin(uAngle);
+        vec2 local = vec2(ca * rel.x + sa * rel.y, -sa * rel.x + ca * rel.y);
+        vec2 k = max(abs(local) / uHalf, vec2(1e-5));
+        float nd = pow(pow(k.x, uExponent) + pow(k.y, uExponent), 1.0 / uExponent);
+        vec2 grad = pow(k, vec2(uExponent - 1.0)) * sign(local) / uHalf * pow(nd, 1.0 - uExponent);
+        float glen = max(length(grad), 1e-6);
+        float edge = (nd - 1.0) / glen;
+        vec2 outward = grad / glen;
+        vec2 normal = vec2(ca * outward.x - sa * outward.y, sa * outward.x + ca * outward.y);
+        vec2 along = vec2(-normal.y, normal.x);
+
+        float t = clamp((edge + uInner) / (uInner + uOuter), 0.0, 1.0);
+        float ramp = t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
+        float slope = 16.0 * t * t * (1.0 - t) * (1.0 - t);
+        float reachX = rel.x / (uResolution.x * 0.5);
+        float side = smoothstep(0.02, 0.3, abs(reachX)) * (uCurl == 0.0 ? sign(reachX) : uCurl);
+        float lift = ramp * side * uFlow * uStrength;
+        vec2 swirl = along * along.y * side * slope * uFlow * uStrength * 0.35;
+        vec2 drift = vec2(0.0, -lift) - swirl;
+        vec2 shifted = uv + drift / uResolution;
+
+        vec2 texels = uResolution * uDpr;
+        vec2 gx = dFdx(shifted);
+        vec2 gy = dFdy(shifted);
+        gx *= min(1.0, 3.0 / max(length(gx * texels), 1e-4));
+        gy *= min(1.0, 3.0 / max(length(gy * texels), 1e-4));
+
+        vec4 color = textureGrad(tScene, shifted, gx, gy);
+        vec2 spread = vec2(0.0, side * slope * uFlow * uStrength) / uResolution * uDispersion;
+        float spreadPx = length(spread * texels);
+        if (color.a > 0.002 && spreadPx > 0.25) {
+          vec3 base = color.rgb / color.a;
+          vec3 sumColor = vec3(0.0);
+          vec3 sumWeight = vec3(0.0);
+          for (int i = 0; i < 12; i++) {
+            float s = (float(i) + 0.5) / 12.0;
+            vec4 c = textureGrad(tScene, shifted + spread * (s - 0.5), gx, gy);
+            vec3 w = max(1.0 - abs(vec3(s) - vec3(0.15, 0.5, 0.85)) * 2.6, 0.0) * c.a;
+            sumColor += c.rgb * (w / max(c.a, 0.002));
+            sumWeight += w;
+          }
+          vec3 split = mix(base, sumColor / max(sumWeight, vec3(1e-4)), clamp(sumWeight * 2.0, 0.0, 1.0));
+          color.rgb = mix(color.rgb, clamp(split, 0.0, 1.0) * color.a, smoothstep(0.25, 1.5, spreadPx));
+        }
+
+        fragColor = color * uSceneAlpha;
+      }
+    `;
+
+    function buildProgram(vSrc, fSrc) {
+      function comp(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          console.warn(gl.getShaderInfoLog(s));
+          return null;
+        }
+        return s;
+      }
+      const p = gl.createProgram();
+      const vs = comp(gl.VERTEX_SHADER, vSrc);
+      const fs = comp(gl.FRAGMENT_SHADER, fSrc);
+      if (!vs || !fs) return null;
+      gl.attachShader(p, vs);
+      gl.attachShader(p, fs);
+      gl.linkProgram(p);
+      return p;
+    }
+
+    const cardProgram = buildProgram(vsCardSource, fsCardSource);
+    const lensProgram = buildProgram(vsLensSource, fsLensSource);
+    if (!cardProgram || !lensProgram) {
+      initFlexCarouselFallback(container, items, updateCaption);
+      return;
+    }
+
+    // Geometry quad for cards
+    const planeGeo = new Float32Array([
+      -0.5, -0.5, 0.0, 0.0,
+       0.5, -0.5, 1.0, 0.0,
+      -0.5,  0.5, 0.0, 1.0,
+      -0.5,  0.5, 0.0, 1.0,
+       0.5, -0.5, 1.0, 0.0,
+       0.5,  0.5, 1.0, 1.0
+    ]);
+    const planeBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, planeBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, planeGeo, gl.STATIC_DRAW);
+
+    // Fullscreen triangle for lens pass
+    const triGeo = new Float32Array([
+      -1.0, -1.0,
+       3.0, -1.0,
+      -1.0,  3.0
+    ]);
+    const triBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, triBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, triGeo, gl.STATIC_DRAW);
+
+    // Framebuffer target texture
+    const fboTex = gl.createTexture();
+    const fbo = gl.createFramebuffer();
+    gl.bindTexture(gl.TEXTURE_2D, fboTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fboTex, 0);
+
+    // Load Image Textures
+    const textures = items.map((item) => {
+      const tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      // Temporary 1x1 placeholder
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([20, 30, 45, 255]));
+
+      const img = new Image();
+      const slot = { tex, ready: 0, aspect: 1.33, imageSize: [800, 600], loaded: false };
+      img.onload = () => {
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        slot.aspect = (img.naturalWidth || 800) / (img.naturalHeight || 600);
+        slot.imageSize = [img.naturalWidth || 800, img.naturalHeight || 600];
+        slot.loaded = true;
+      };
+      img.src = item.src;
+      return slot;
+    });
+
+    let width = 1;
+    let height = 1;
+    let dpr = 1;
+
+    function resize() {
+      width = container.clientWidth || 800;
+      height = container.clientHeight || 500;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      gl.bindTexture(gl.TEXTURE_2D, fboTex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, canvas.width, canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.generateMipmap(gl.TEXTURE_2D);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    // Physics State
+    let pos = 0;
+    let goal = 0;
+    let vel = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartPos = 0;
+    let focusIndex = -1;
+    let focusT = 0;
+    let lastTime = performance.now();
+
+    function wrap(val, size) {
+      return ((((val + size / 2) % size) + size) % size) - size / 2;
+    }
+
+    function getMetrics() {
+      const cardH = Math.max(180, height * 0.52);
+      const gap = 14;
+      const widths = textures.map(t => cardH * t.aspect);
+      const centers = [];
+      let cursor = 0;
+      for (let i = 0; i < widths.length; i++) {
+        centers.push(cursor + widths[i] / 2);
+        cursor += widths[i] + gap;
+      }
+      return { cardH, widths, centers, loop: Math.max(cursor, 1), gap };
+    }
+
+    function step(dir) {
+      const m = getMetrics();
+      goal += dir * (m.widths[activeIndex] || 260);
+      focusIndex = -1;
+      focusT = 0;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => step(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => step(1));
+
+    // Pointer Events for Dragging & Centering
+    container.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartPos = pos;
+      container.setAttribute('data-dragging', '');
+      try { container.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      pos = dragStartPos - dx;
+      goal = pos;
+      vel = 0;
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      container.removeAttribute('data-dragging');
+
+      // Click detection if barely moved
+      const dx = Math.abs(e.clientX - dragStartX);
+      if (dx < 6) {
+        if (focusIndex >= 0) {
+          focusIndex = -1;
+          focusT = 0;
+        } else {
+          focusIndex = activeIndex;
+          focusT = 1;
+        }
+      }
+    });
+
+    container.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        goal += e.deltaX * 0.9;
+        e.preventDefault();
+      } else if (e.shiftKey) {
+        goal += e.deltaY * 0.9;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Keyboard support
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { step(1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { step(-1); e.preventDefault(); }
+      else if (e.key === 'Escape') { focusIndex = -1; focusT = 0; }
+    });
+
+    // Render loop
+    function render(now) {
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      const m = getMetrics();
+
+      // Spring physics
+      if (!isDragging) {
+        const k = 48;
+        const c = 2 * Math.sqrt(k);
+        const acc = k * (goal - pos) - c * vel;
+        vel += acc * dt;
+        pos += vel * dt;
+      }
+
+      // Find nearest center
+      let nearestIdx = 0;
+      let minD = Infinity;
+      for (let i = 0; i < m.centers.length; i++) {
+        const d = Math.abs(wrap(m.centers[i] - pos, m.loop));
+        if (d < minD) {
+          minD = d;
+          nearestIdx = i;
+        }
+      }
+      if (nearestIdx !== activeIndex) {
+        updateCaption(nearestIdx);
+      }
+
+      // Smooth focus zoom
+      const targetFocusT = focusIndex >= 0 ? 1 : 0;
+      focusT += (targetFocusT - focusT) * (1 - Math.exp(-dt * 8));
+
+      // PASS 1: Render cards into Framebuffer
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      gl.useProgram(cardProgram);
+      gl.bindBuffer(gl.ARRAY_BUFFER, planeBuf);
+
+      const aCardPos = gl.getAttribLocation(cardProgram, 'a_pos');
+      const aCardUv = gl.getAttribLocation(cardProgram, 'a_uv');
+      gl.enableVertexAttribArray(aCardPos);
+      gl.enableVertexAttribArray(aCardUv);
+      gl.vertexAttribPointer(aCardPos, 2, gl.FLOAT, false, 16, 0);
+      gl.vertexAttribPointer(aCardUv, 2, gl.FLOAT, false, 16, 8);
+
+      const uRect = gl.getUniformLocation(cardProgram, 'uRect');
+      const uRes = gl.getUniformLocation(cardProgram, 'uResolution');
+      const uSize = gl.getUniformLocation(cardProgram, 'uSize');
+      const uImage = gl.getUniformLocation(cardProgram, 'uImage');
+      const uRadius = gl.getUniformLocation(cardProgram, 'uRadius');
+      const uAlpha = gl.getUniformLocation(cardProgram, 'uAlpha');
+      const uReady = gl.getUniformLocation(cardProgram, 'uReady');
+      const uShift = gl.getUniformLocation(cardProgram, 'uShift');
+      const uDprLoc = gl.getUniformLocation(cardProgram, 'uDpr');
+      const uPlaceholder = gl.getUniformLocation(cardProgram, 'uPlaceholder');
+
+      gl.uniform2f(uRes, width, height);
+      gl.uniform1f(uDprLoc, dpr);
+      gl.uniform1f(uRadius, 6.0);
+      gl.uniform3f(uPlaceholder, 0.08, 0.12, 0.18);
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+      const cx = width / 2;
+      const cy = height / 2;
+
+      for (let i = 0; i < count; i++) {
+        const baseRel = wrap(m.centers[i] - pos, m.loop);
+        const w = m.widths[i];
+        const cardH = m.cardH;
+        const slot = textures[i];
+
+        if (slot.loaded && slot.ready < 1) slot.ready = Math.min(1, slot.ready + dt * 2.5);
+
+        for (let k = -1; k <= 1; k++) {
+          const rel = baseRel + k * m.loop;
+          if (Math.abs(rel) - w / 2 > width * 0.75) continue;
+
+          let cardX = cx + rel;
+          let scale = 1.0;
+          if (focusT > 0.01) {
+            if (i === focusIndex && k === 0) {
+              scale = 1.0 + focusT * 0.28;
+            } else {
+              cardX += Math.sign(rel) * focusT * width * 0.45;
+              scale = 1.0 - focusT * 0.15;
+            }
+          }
+
+          const cw = w * scale;
+          const ch = cardH * scale;
+
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, slot.tex);
+
+          gl.uniform4f(uRect, cardX, cy, cw, ch);
+          gl.uniform2f(uSize, cw, ch);
+          gl.uniform2f(uImage, slot.imageSize[0], slot.imageSize[1]);
+          gl.uniform1f(uAlpha, 1.0);
+          gl.uniform1f(uReady, slot.ready);
+          gl.uniform1f(uShift, Math.max(-1, Math.min(1, rel / (width * 0.75))));
+
+          gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+      }
+
+      // Generate Mipmap for offscreen FBO
+      gl.bindTexture(gl.TEXTURE_2D, fboTex);
+      gl.generateMipmap(gl.TEXTURE_2D);
+
+      // PASS 2: Fullscreen Liquid Glass Lens Pass
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.useProgram(lensProgram);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, triBuf);
+      const aLensPos = gl.getAttribLocation(lensProgram, 'a_pos');
+      gl.enableVertexAttribArray(aLensPos);
+      gl.vertexAttribPointer(aLensPos, 2, gl.FLOAT, false, 8, 0);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, fboTex);
+
+      gl.uniform1i(gl.getUniformLocation(lensProgram, 'tScene'), 0);
+      gl.uniform2f(gl.getUniformLocation(lensProgram, 'uResolution'), width, height);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uDpr'), dpr);
+      gl.uniform2f(gl.getUniformLocation(lensProgram, 'uCenter'), cx, cy);
+      gl.uniform2f(gl.getUniformLocation(lensProgram, 'uHalf'), (0.74 * width) / 2, (1.18 * width) / 2);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uAngle'), (62 * Math.PI) / 180);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uExponent'), 2.0);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uInner'), 45.0);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uOuter'), 75.0);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uFlow'), 0.34 * width * 0.35);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uCurl'), 0.0);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uDispersion'), 0.45 * 0.12);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uStrength'), 1.0 - focusT);
+      gl.uniform1f(gl.getUniformLocation(lensProgram, 'uSceneAlpha'), 1.0);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      requestAnimationFrame(render);
+    }
+
+    updateCaption(0);
+    requestAnimationFrame(render);
+  }
+
+  function initFlexCarouselFallback(container, items, updateCaption) {
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.overflowX = 'auto';
+    container.style.gap = '16px';
+    container.style.padding = '24px 32px';
+
+    items.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.style.flex = 'none';
+      card.style.width = '280px';
+      card.style.height = '340px';
+      card.style.borderRadius = '4px';
+      card.style.overflow = 'hidden';
+      card.style.border = '1px solid var(--line-strong)';
+      card.style.cursor = 'pointer';
+
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.alt;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      card.appendChild(img);
+
+      card.addEventListener('click', () => updateCaption(idx));
+      container.appendChild(card);
+    });
+    updateCaption(0);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 16. REACT BITS PRO — ALBUM RAIL & DJ CONSOLE (MUSIC SECTION)
+  // Fan of album sleeves, each with a grooved vinyl record tucked inside
+  // ---------------------------------------------------------------------------
+  function initAlbumRail() {
+    const rail = document.getElementById('album-rail');
+    if (!rail) return;
+
+    const cards = rail.querySelectorAll('.album-card');
+    const playBtn = document.getElementById('deck-play-btn');
+    const playText = document.getElementById('deck-play-text');
+    const playIcon = document.getElementById('deck-play-icon');
+    const statusDot = document.getElementById('deck-status-dot');
+    const trackTitle = document.getElementById('deck-track-title');
+    const trackSub = document.getElementById('deck-track-sub');
+    const trackCat = document.getElementById('deck-track-cat');
+    const trackBpm = document.getElementById('deck-bpm');
+    const trackKey = document.getElementById('deck-key');
+    const trackRpm = document.getElementById('deck-rpm');
+    const vuMeter = document.getElementById('deck-vu-meter');
+
+    let activeIndex = 0;
+    let isPlaying = false;
+    let audioCtx = null;
+    let oscNode = null;
+    let gainNode = null;
+
+    function selectCard(idx) {
+      cards.forEach((c, i) => {
+        if (i === idx) {
+          c.classList.add('is-active');
+          if (isPlaying) c.classList.add('is-playing');
+        } else {
+          c.classList.remove('is-active', 'is-playing');
+        }
+      });
+
+      activeIndex = idx;
+      const card = cards[idx];
+      if (!card) return;
+
+      if (trackTitle) trackTitle.textContent = card.getAttribute('data-title') || 'Untitled Track';
+      if (trackSub) trackSub.textContent = card.getAttribute('data-sub') || 'LEE PARKINSON // SOUND LAB';
+      if (trackCat) trackCat.textContent = `${card.getAttribute('data-cat') || 'LP-VINYL'} // 33 ⅓ RPM STEREO`;
+      if (trackBpm) trackBpm.textContent = card.getAttribute('data-bpm') || '128 BPM';
+      if (trackKey) trackKey.textContent = card.getAttribute('data-key') || 'F MIN';
+      if (trackRpm) trackRpm.textContent = card.getAttribute('data-rpm') || '33 ⅓ RPM';
+
+      if (statusDot) {
+        if (isPlaying) statusDot.classList.add('is-spinning');
+        else statusDot.classList.remove('is-spinning');
+      }
+    }
+
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        selectCard(idx);
+        if (isPlaying) togglePlay(true);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectCard(idx);
+          togglePlay();
+        }
+      });
+    });
+
+    function togglePlay(forceState) {
+      isPlaying = forceState !== undefined ? forceState : !isPlaying;
+
+      const activeCard = cards[activeIndex];
+      if (isPlaying) {
+        if (activeCard) activeCard.classList.add('is-playing');
+        if (playText) playText.textContent = 'STOP RECORD';
+        if (playIcon) playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        if (statusDot) statusDot.classList.add('is-spinning');
+        if (vuMeter) vuMeter.classList.add('is-playing');
+
+        // Ambient Web Audio synth pulse
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          if (!oscNode) {
+            oscNode = audioCtx.createOscillator();
+            gainNode = audioCtx.createGain();
+            oscNode.type = 'triangle';
+            oscNode.frequency.setValueAtTime(55, audioCtx.currentTime); // Low 55Hz sub bass
+            gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            oscNode.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscNode.start();
+          } else {
+            gainNode.gain.setTargetAtTime(0.04, audioCtx.currentTime, 0.05);
+          }
+        } catch (_) {}
+      } else {
+        cards.forEach(c => c.classList.remove('is-playing'));
+        if (playText) playText.textContent = 'SPIN RECORD';
+        if (playIcon) playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        if (statusDot) statusDot.classList.remove('is-spinning');
+        if (vuMeter) vuMeter.classList.remove('is-playing');
+
+        if (gainNode && audioCtx) {
+          gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+        }
+      }
+    }
+
+    if (playBtn) {
+      playBtn.addEventListener('click', () => togglePlay());
+    }
+
+    selectCard(0);
+  }
+
+  // ---------------------------------------------------------------------------
   // BOOTSTRAP
   // ---------------------------------------------------------------------------
   function boot() {
@@ -2130,6 +2853,8 @@
     initMagneticElements();
     initDock();
     initDraftingCursorSystem();
+    initFlexCarousel();
+    initAlbumRail();
     initDisciplineFilter();
     initNavigation();
     initCopyButtons();
