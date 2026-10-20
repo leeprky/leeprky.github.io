@@ -356,22 +356,6 @@
               }
             );
           }
-
-          // Background gears subtle rotation on scroll
-          const gearGroup = document.querySelector('.hero-gears');
-          if (gearGroup) {
-            gsap.to('.hero-gears .gear', {
-              rotation: 180,
-              transformOrigin: '50% 50%',
-              ease: 'none',
-              scrollTrigger: {
-                trigger: '.hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 1
-              }
-            });
-          }
         }
       }
     );

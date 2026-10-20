@@ -647,18 +647,15 @@ strong { color: var(--ink); font-weight: 600; }
 }
 
 
-/* Hero background schematic & gears */
+/* Hero background schematic */
 .hero-art { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 .hero-art svg { position: absolute; }
 .hero-circuit { right: -40px; top: 10px; width: min(760px, 70vw); opacity: 0.5; }
-.hero-gears { left: -90px; bottom: -110px; width: 360px; opacity: 0.35; }
 .trace { fill: none; stroke: var(--line-strong); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
 .trace-accent { stroke: var(--accent); }
 .trace-mark { stroke: var(--mark); }
 .node { fill: var(--accent); }
-.gear { fill: none; stroke: var(--line-strong); stroke-width: 1.2; }
-.gear-hub { fill: none; stroke: var(--accent); stroke-width: 1.2; }
-@media (max-width: 720px) { .hero-circuit { opacity: 0.28; width: 120vw; right: -40vw; } .hero-gears { width: 240px; } }
+@media (max-width: 720px) { .hero-circuit { opacity: 0.28; width: 120vw; right: -40vw; } }
 
 /* React Bits · Crosshair (hero only, desktop) */
 .crosshair { position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.3s ease; }
