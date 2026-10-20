@@ -742,61 +742,6 @@ strong { color: var(--ink); font-weight: 600; }
   border-left: 1px dashed rgb(var(--accent-rgb) / 0.35);
 }
 
-/* Gyroscope Arrow Pointer & Center Dot (Gyroscope Cursor) */
-.cursor-gyro {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 24px;
-  height: 24px;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9995;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.gyro-arrow-svg {
-  width: 18px;
-  height: 18px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
-  transform-origin: 50% 50%;
-  transition: transform 0.08s ease-out;
-}
-.gyro-center-dot {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 6px var(--accent);
-}
-
-/* Morphing Ring (Custom Cursor) */
-.cursor-morph-ring {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid rgb(var(--accent-rgb) / 0.65);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9993;
-  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              border-radius 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease,
-              background-color 0.2s ease,
-              box-shadow 0.2s ease;
-}
-.cursor-morph-ring.is-hovering {
-  border-color: var(--accent);
-  background: rgb(var(--accent-rgb) / 0.09);
-  box-shadow: 0 0 16px rgb(var(--accent-rgb) / 0.25), inset 0 0 8px rgb(var(--accent-rgb) / 0.12);
-}
-
 /* Coordinate Readout Tag (Drafting Cursor) */
 .cursor-readout {
   position: fixed;

@@ -603,36 +603,6 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 09. REACT BITS — MAGNET BUTTONS
-  // ---------------------------------------------------------------------------
-  function initMagneticElements() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (typeof window.gsap === 'undefined') return;
-
-    const magnets = document.querySelectorAll('.btn, .dock-item, .brand-mark');
-    magnets.forEach((el) => {
-      const xTo = window.gsap.quickTo(el, 'x', { duration: 0.25, ease: 'power3.out' });
-      const yTo = window.gsap.quickTo(el, 'y', { duration: 0.25, ease: 'power3.out' });
-
-      el.addEventListener('pointermove', (e) => {
-        if (e.pointerType === 'touch') return;
-        const rect = el.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) * 0.24;
-        const dy = (e.clientY - cy) * 0.24;
-        xTo(Math.max(-8, Math.min(8, dx)));
-        yTo(Math.max(-8, Math.min(8, dy)));
-      }, { passive: true });
-
-      el.addEventListener('pointerleave', () => {
-        xTo(0);
-        yTo(0);
-      });
-    });
-  }
-
-  // ---------------------------------------------------------------------------
   // 10. REACT BITS — MAGNIFYING DOCK
   // ---------------------------------------------------------------------------
   function initDock() {
@@ -707,8 +677,8 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 11. REACT BITS PRO — DRAFTING + GYROSCOPE + CUSTOM CURSOR SYSTEM
-  // Hairline crosshairs, edge rulers, readout, drag-to-measure, gyro arrow, morph ring
+  // 11. REACT BITS PRO — DRAFTING CURSOR SYSTEM
+  // Hairline crosshairs, edge rulers, coordinate readout, drag-to-measure
   // ---------------------------------------------------------------------------
   function initDraftingCursorSystem() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -722,18 +692,11 @@
     const pipX = layer.querySelector('.pip-x');
     const pipY = layer.querySelector('.pip-y');
     const readout = document.getElementById('cursor-readout');
-    const gyro = document.getElementById('cursor-gyro');
-    const gyroArrow = gyro ? gyro.querySelector('.gyro-arrow-svg') : null;
-    const morphRing = document.getElementById('cursor-morph-ring');
     const measureBox = document.getElementById('cursor-measure-box');
     const measureBadge = document.getElementById('cursor-measure-badge');
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-    let prevX = mouseX;
-    let prevY = mouseY;
-    let currentAngle = 0;
-    let isInside = false;
 
     // Drag-to-measure states
     let isMouseDown = false;
@@ -742,33 +705,19 @@
     let startY = 0;
     let measureFadeTimeout = null;
 
-    // Morph ring target tracking
-    let hoveredInteractive = null;
-
     document.addEventListener('pointerenter', () => {
-      isInside = true;
       layer.classList.add('is-on');
     });
 
     document.addEventListener('pointerleave', () => {
-      isInside = false;
       layer.classList.remove('is-on');
     });
-
-    // Shortest angular difference to prevent wrap-around spinning
-    function getAngleDelta(curr, target) {
-      let diff = (target - curr) % 360;
-      if (diff < -180) diff += 360;
-      if (diff > 180) diff -= 360;
-      return diff;
-    }
 
     window.addEventListener('pointermove', (e) => {
       if (e.pointerType === 'touch') {
         layer.classList.remove('is-on');
         return;
       }
-      isInside = true;
       layer.classList.add('is-on');
 
       mouseX = e.clientX;
@@ -780,48 +729,7 @@
       if (pipX) pipX.style.left = `${mouseX}px`;
       if (pipY) pipY.style.top = `${mouseY}px`;
 
-      // 2. Gyroscope cursor position & rotation towards movement velocity
-      if (gyro) {
-        gyro.style.left = `${mouseX}px`;
-        gyro.style.top = `${mouseY}px`;
-      }
-
-      const dx = mouseX - prevX;
-      const dy = mouseY - prevY;
-      const speed = Math.hypot(dx, dy);
-
-      if (gyroArrow && speed > 1.2) {
-        // Arrow points upward at 0deg; atan2 gives angle from positive X axis (+90deg offset aligns with heading)
-        const targetAngle = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
-        currentAngle += getAngleDelta(currentAngle, targetAngle) * 0.42;
-        gyroArrow.style.transform = `rotate(${currentAngle.toFixed(1)}deg)`;
-      }
-
-      prevX = mouseX;
-      prevY = mouseY;
-
-      // 3. Custom Cursor Morph Ring
-      if (morphRing) {
-        if (hoveredInteractive && document.body.contains(hoveredInteractive)) {
-          const rect = hoveredInteractive.getBoundingClientRect();
-          morphRing.classList.add('is-hovering');
-          morphRing.style.left = `${rect.left + rect.width / 2}px`;
-          morphRing.style.top = `${rect.top + rect.height / 2}px`;
-          morphRing.style.width = `${rect.width + 10}px`;
-          morphRing.style.height = `${rect.height + 8}px`;
-          const radius = window.getComputedStyle(hoveredInteractive).borderRadius;
-          morphRing.style.borderRadius = (radius && radius !== '0px') ? radius : '4px';
-        } else {
-          morphRing.classList.remove('is-hovering');
-          morphRing.style.left = `${mouseX}px`;
-          morphRing.style.top = `${mouseY}px`;
-          morphRing.style.width = '32px';
-          morphRing.style.height = '32px';
-          morphRing.style.borderRadius = '50%';
-        }
-      }
-
-      // 4. Coordinate Readout Tag
+      // 2. Coordinate Readout Tag
       if (readout) {
         const readX = mouseX + 16 > window.innerWidth - 170 ? mouseX - 160 : mouseX + 16;
         const readY = mouseY + 16 > window.innerHeight - 38 ? mouseY - 28 : mouseY + 16;
@@ -832,7 +740,7 @@
         readout.textContent = `DATUM [${xmm}, ${ymm}mm]`;
       }
 
-      // 5. Drag-to-Measure Dimension Box
+      // 3. Drag-to-Measure Dimension Box
       if (isMouseDown) {
         const dist = Math.hypot(mouseX - startX, mouseY - startY);
         if (dist > 8) {
@@ -864,25 +772,10 @@
       }
     }, { passive: true });
 
-    // Hover detection for interactive items to morph the custom cursor
-    const interactiveSelector = 'a, button, [role="button"], .dock-item, .card-spotlight, .bp-card, input, select, textarea, summary, .chip, [data-accent-toggle]';
-    document.addEventListener('pointerover', (e) => {
-      const target = e.target.closest(interactiveSelector);
-      if (target) {
-        hoveredInteractive = target;
-      }
-    }, { passive: true });
-
-    document.addEventListener('pointerout', (e) => {
-      if (hoveredInteractive && !hoveredInteractive.contains(e.relatedTarget)) {
-        hoveredInteractive = null;
-      }
-    }, { passive: true });
-
     // Drag-to-Measure activation (only if not clicking interactive items)
     window.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'touch') return;
-      if (e.target.closest('a, button, input, select, textarea, .accent-dropdown, .dock-wrap')) {
+      if (e.target.closest('a, button, input, select, textarea, .accent-dropdown, .dock-wrap, .flex-carousel, .album-rail-wrap')) {
         return;
       }
       isMouseDown = true;
@@ -2850,7 +2743,6 @@
     initSpotlightCards();
     initTiltedCards();
     initDecryptedText();
-    initMagneticElements();
     initDock();
     initDraftingCursorSystem();
     initFlexCarousel();
