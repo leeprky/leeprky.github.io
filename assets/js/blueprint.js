@@ -607,89 +607,7 @@
     });
   }
 
-  // ---------------------------------------------------------------------------
-  // 10. REACT BITS — MAGNIFYING DOCK
-  // ---------------------------------------------------------------------------
-  function initDock() {
-    const dock = document.querySelector('.dock');
-    if (!dock) return;
 
-    const items = dock.querySelectorAll('.dock-item');
-    const maxScale = 1.35;
-    const maxDistance = 100;
-    let dockRaf = false;
-    let pendingMouseX = 0;
-
-    function renderDock() {
-      dockRaf = false;
-      items.forEach((item) => {
-        const rect = item.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(pendingMouseX - center);
-        const icon = item.querySelector('svg');
-
-        if (dist < maxDistance) {
-          const norm = 1 - dist / maxDistance;
-          const scale = 1 + (maxScale - 1) * Math.sin(norm * (Math.PI / 2));
-          if (icon) icon.style.transform = `scale(${scale.toFixed(3)})`;
-          item.style.backgroundColor = `color-mix(in srgb, var(--accent) ${(norm * 16).toFixed(1)}%, var(--paper))`;
-          item.style.borderColor = `rgb(var(--accent-rgb) / ${(0.3 + norm * 0.7).toFixed(2)})`;
-        } else {
-          if (icon) icon.style.transform = 'scale(1)';
-          item.style.backgroundColor = '';
-          item.style.borderColor = '';
-        }
-      });
-    }
-
-    dock.addEventListener('pointermove', (e) => {
-      if (e.pointerType === 'touch') return;
-      pendingMouseX = e.clientX;
-      if (!dockRaf) {
-        dockRaf = true;
-        requestAnimationFrame(renderDock);
-      }
-    }, { passive: true });
-
-    dock.addEventListener('pointerleave', () => {
-      dockRaf = false;
-      items.forEach((item) => {
-        const icon = item.querySelector('svg');
-        if (icon) icon.style.transform = 'scale(1)';
-        item.style.backgroundColor = '';
-        item.style.borderColor = '';
-      });
-    });
-
-    // Highlight active section based on scroll position
-    const sections = ['top', 'about', 'education', 'experience', 'projects', 'hobbies', 'contact'];
-    function updateActiveDock() {
-      const scrollY = window.scrollY + window.innerHeight * 0.35;
-      let active = 'top';
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollY) {
-          active = id;
-        }
-      });
-
-      items.forEach((item) => {
-        const href = item.getAttribute('href');
-        if (href === `#${active}` || (active === 'top' && href === '#top')) {
-          item.classList.add('is-active');
-        } else {
-          item.classList.remove('is-active');
-        }
-      });
-    }
-
-    if (lenis) {
-      lenis.on('scroll', updateActiveDock);
-    } else {
-      window.addEventListener('scroll', updateActiveDock, { passive: true });
-    }
-    updateActiveDock();
-  }
 
   // ---------------------------------------------------------------------------
   // 11. REACT BITS PRO — DRAFTING CURSOR SYSTEM
@@ -730,18 +648,7 @@
       if (pipX) pipX.style.left = `${mouseX}px`;
       if (pipY) pipY.style.top = `${mouseY}px`;
 
-      // 2. Coordinate Readout Tag
-      if (readout) {
-        const readX = mouseX + 16 > window.innerWidth - 170 ? mouseX - 160 : mouseX + 16;
-        const readY = mouseY + 16 > window.innerHeight - 38 ? mouseY - 28 : mouseY + 16;
-        readout.style.left = `${readX}px`;
-        readout.style.top = `${readY}px`;
-        const xmm = (mouseX * 0.26458).toFixed(1);
-        const ymm = (mouseY * 0.26458).toFixed(1);
-        readout.textContent = `DATUM [${xmm}, ${ymm}mm]`;
-      }
-
-      // 3. Drag-to-Measure Dimension Box
+      // 2. Drag-to-Measure Dimension Box
       if (isMouseDown) {
         const dist = Math.hypot(mouseX - startX, mouseY - startY);
         if (dist > 8) {
@@ -2241,7 +2148,6 @@
     initSpotlightCards();
     initTiltedCards();
     initDecryptedText();
-    initDock();
     initDraftingCursorSystem();
     initDisciplineFilter();
     initPrismCarousel();
@@ -2261,11 +2167,11 @@
       dashLength: 4,
       dashGap: 2,
       specks: 15,
-      selection: true,
-      labels: true,
-      draggable: true,
-      bounce: 0.4,
-      clickKick: true,
+      selection: false,
+      labels: false,
+      draggable: false,
+      bounce: 0,
+      clickKick: false,
       intro: 'none',
       sweep: true,
       speed: 1,
