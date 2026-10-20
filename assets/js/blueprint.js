@@ -41,6 +41,11 @@
       if (chromaEngine) chromaEngine.updateColors();
     },
 
+    cycleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'blueprint';
+      this.applyTheme(current === 'whiteprint' ? 'blueprint' : 'whiteprint');
+    },
+
     initThemeButtons() {
       document.querySelectorAll('[data-theme-set]').forEach((btn) => {
         btn.addEventListener('click', (e) => {
@@ -612,15 +617,15 @@
     const items = dock.querySelectorAll('.dock-item');
     const maxScale = 1.35;
     const maxDistance = 100;
+    let dockRaf = false;
+    let pendingMouseX = 0;
 
-    dock.addEventListener('pointermove', (e) => {
-      if (e.pointerType === 'touch') return;
-      const mouseX = e.clientX;
-
+    function renderDock() {
+      dockRaf = false;
       items.forEach((item) => {
         const rect = item.getBoundingClientRect();
         const center = rect.left + rect.width / 2;
-        const dist = Math.abs(mouseX - center);
+        const dist = Math.abs(pendingMouseX - center);
         const icon = item.querySelector('svg');
 
         if (dist < maxDistance) {
@@ -635,9 +640,19 @@
           item.style.borderColor = '';
         }
       });
+    }
+
+    dock.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      pendingMouseX = e.clientX;
+      if (!dockRaf) {
+        dockRaf = true;
+        requestAnimationFrame(renderDock);
+      }
     }, { passive: true });
 
     dock.addEventListener('pointerleave', () => {
+      dockRaf = false;
       items.forEach((item) => {
         const icon = item.querySelector('svg');
         if (icon) icon.style.transform = 'scale(1)';
@@ -704,24 +719,10 @@
     let startX = 0;
     let startY = 0;
     let measureFadeTimeout = null;
+    let cursorRaf = false;
 
-    document.addEventListener('pointerenter', () => {
-      layer.classList.add('is-on');
-    });
-
-    document.addEventListener('pointerleave', () => {
-      layer.classList.remove('is-on');
-    });
-
-    window.addEventListener('pointermove', (e) => {
-      if (e.pointerType === 'touch') {
-        layer.classList.remove('is-on');
-        return;
-      }
-      layer.classList.add('is-on');
-
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+    function renderCursor() {
+      cursorRaf = false;
 
       // 1. Crosshair hairlines & Ruler pips
       if (chX) chX.style.top = `${mouseY}px`;
@@ -769,6 +770,30 @@
             }
           }
         }
+      }
+    }
+
+    document.addEventListener('pointerenter', () => {
+      layer.classList.add('is-on');
+    });
+
+    document.addEventListener('pointerleave', () => {
+      layer.classList.remove('is-on');
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') {
+        layer.classList.remove('is-on');
+        return;
+      }
+      layer.classList.add('is-on');
+
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!cursorRaf) {
+        cursorRaf = true;
+        requestAnimationFrame(renderCursor);
       }
     }, { passive: true });
 
@@ -2024,6 +2049,60 @@
   }
 
   // ---------------------------------------------------------------------------
+  // 14. DESKTOP / PC KEYBOARD NAVIGATION CONTROLLER
+  // Quick jump: 1-6 for Sheets, 0/H for Hero/Top, T for Theme, F for Fold/Expand
+  // ---------------------------------------------------------------------------
+  function initKeyboardNav() {
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) {
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const sheets = {
+        '1': 'about',
+        '2': 'education',
+        '3': 'experience',
+        '4': 'projects',
+        '5': 'hobbies',
+        '6': 'contact'
+      };
+
+      if (sheets[e.key]) {
+        e.preventDefault();
+        const target = document.getElementById(sheets[e.key]);
+        if (target) {
+          if (window.lenisInstance) {
+            window.lenisInstance.scrollTo(target, { offset: -74 });
+          } else {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      } else if (e.key === '0' || e.key.toLowerCase() === 'h') {
+        e.preventDefault();
+        if (window.lenisInstance) {
+          window.lenisInstance.scrollTo(0);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } else if (e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        ThemeController.cycleTheme();
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        const foldAllBtn = document.querySelector('[data-sheets-fold-all]');
+        const expandAllBtn = document.querySelector('[data-sheets-expand-all]');
+        const hasFolded = document.querySelector('.section.is-folded');
+        if (hasFolded && expandAllBtn) {
+          expandAllBtn.click();
+        } else if (foldAllBtn) {
+          foldAllBtn.click();
+        }
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // BOOTSTRAP
   // ---------------------------------------------------------------------------
   function boot() {
@@ -2040,6 +2119,7 @@
     initDisciplineFilter();
     initNavigation();
     initCopyButtons();
+    initKeyboardNav();
     initTechText(document.getElementById('hero-tech-text'), {
       text: 'Lee Parkinson',
       fontFamily: "'Space Grotesk', sans-serif",
