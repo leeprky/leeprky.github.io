@@ -406,7 +406,7 @@ body.cad-dims-visible .blueprint-card .cad-dim-badge,
   justify-content: space-between;
   gap: 0.4rem;
   font-size: 8.5px;
-  color: #38bdf8;
+  color: var(--accent-cyan);
 }
 .cad-scope-mode-pill {
   padding: 0px 4px;

@@ -503,22 +503,23 @@
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <div class="flex items-center border border-sky-400/40 font-mono text-[11px] rounded overflow-hidden">
-          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
-          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
-          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
+          <button type="button" onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
+          <button type="button" onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
+          <button type="button" onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
+          <button type="button" onclick="toggleAccentMenu(event)" id="btn-theme-palette" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40 flex items-center gap-1 font-bold t-cyan" title="Customise blueprint accent colour palette">🎨 <span class="inline">COLOURS</span></button>
         </div>
-        <div id="spec-wrap" class="relative hidden md:inline-flex items-center gap-2">
+        <div id="spec-wrap" class="relative inline-flex items-center gap-1.5">
           <span class="px-1.5 py-0.5 border border-sky-400/40 rounded-sm bg-card t-cyan font-mono text-[10px] font-bold hidden xl:inline-block" title="BS 8888 / ISO 128 Technical Drawing &amp; IEEE 315 Schematic Standard">BS 8888 // IEEE-315 CAD</span>
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V9.0</span>
+          <button type="button" id="spec-label" onclick="toggleAccentMenu(event)" class="t-sketch font-sketch text-xs cursor-pointer select-none px-1 py-0.5 hover:opacity-80 transition-opacity bg-transparent border-0" title="Click or hold hover to open colour palette">SPEC V9.0 ▾</button>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
-              <span class="font-mono text-[10px] font-bold t-dim">SECRET // MATERIAL YOU</span>
-              <button type="button" onclick="closeAccentMenu()" class="t-muted hover:text-sky-400 text-xs" aria-label="Close">✕</button>
+              <span class="font-mono text-[10px] font-bold t-dim">BLUEPRINT // ACCENT PALETTE</span>
+              <button type="button" onclick="closeAccentMenu(event)" class="t-muted hover:text-sky-400 text-xs p-1" aria-label="Close">✕</button>
             </div>
-            <p class="font-sans text-[11px] leading-snug t-muted">You found it. Pick an accent colour — saved on this device only.</p>
+            <p class="font-sans text-[11px] leading-snug t-muted">Choose your blueprint accent colour (saved locally on this device):</p>
             <div class="grid grid-cols-7 gap-1.5">
-              <button type="button" class="accent-swatch" data-accent-btn="blue" onclick="setAccent('blue')" style="--sw: 14 165 233" title="Blueprint Blue" aria-label="Blueprint Blue"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="blue" onclick="setAccent('blue')" style="--sw: 14 165 233" title="Blueprint Blue (Default)" aria-label="Blueprint Blue"></button>
               <button type="button" class="accent-swatch" data-accent-btn="violet" onclick="setAccent('violet')" style="--sw: 139 92 246" title="Violet" aria-label="Violet"></button>
               <button type="button" class="accent-swatch" data-accent-btn="pink" onclick="setAccent('pink')" style="--sw: 236 72 153" title="Pink" aria-label="Pink"></button>
               <button type="button" class="accent-swatch" data-accent-btn="red" onclick="setAccent('red')" style="--sw: 239 68 68" title="Red" aria-label="Red"></button>
@@ -527,10 +528,10 @@
               <button type="button" class="accent-swatch" data-accent-btn="teal" onclick="setAccent('teal')" style="--sw: 20 184 166" title="Teal" aria-label="Teal"></button>
             </div>
             <label class="flex items-center justify-between font-mono text-[11px] t-muted pt-1 border-t border-sky-500/20">
-              <span>CUSTOM COLOUR</span>
-              <input type="color" id="accent-custom" value="#0ea5e9" class="w-9 h-6 bg-transparent border border-sky-500/40 rounded cursor-pointer" />
+              <span>CUSTOM HEX</span>
+              <input type="color" id="accent-custom" value="#0ea5e9" oninput="setAccent('custom:' + this.value)" class="w-9 h-6 bg-transparent border border-sky-500/40 rounded cursor-pointer" />
             </label>
-            <button type="button" onclick="setAccent('blue')" class="w-full py-1.5 font-mono text-[11px] font-bold border border-sky-500/40 rounded-lg hover:bg-sky-500 hover:text-white transition-colors t-cyan">Reset to Blueprint Blue</button>
+            <button type="button" onclick="setAccent('blue')" class="w-full py-1.5 font-mono text-[11px] font-bold border border-sky-500/40 rounded-lg hover:bg-sky-500 hover:text-white transition-colors t-cyan">Reset to Default Blueprint Blue</button>
           </div>
         </div>
       </div>
@@ -778,7 +779,31 @@
     });
 
 
-    // Secret Material You theme menu: hold hover on SPEC for 1 second
+    // Material You blueprint accent palette menu (Instant click + 1s hold-hover)
+    function toggleAccentMenu(e) {
+      if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
+      const wrap = document.getElementById('spec-wrap');
+      if (!wrap) return;
+      if (wrap.classList.contains('menu-open')) {
+        closeAccentMenu();
+      } else {
+        openAccentMenu();
+      }
+    }
+    function openAccentMenu() {
+      const wrap = document.getElementById('spec-wrap');
+      if (!wrap) return;
+      wrap.classList.add('menu-open');
+      wrap.classList.remove('holding');
+      markAccent();
+    }
+    function closeAccentMenu(e) {
+      if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+      document.getElementById('spec-wrap')?.classList.remove('menu-open', 'holding');
+    }
     function markAccent() {
       const cur = localStorage.getItem('accent') || 'blue';
       document.querySelectorAll('[data-accent-btn]').forEach(b => b.classList.toggle('active', b.dataset.accentBtn === cur));
@@ -790,9 +815,7 @@
       lpApplyAccent(a);
       markAccent();
       syncBrowserChrome(document.documentElement.classList.contains('dark'));
-    }
-    function closeAccentMenu() {
-      document.getElementById('spec-wrap')?.classList.remove('menu-open', 'holding');
+      window.dispatchEvent(new CustomEvent('cad-theme-change', { detail: { accent: a } }));
     }
     (function () {
       const wrap = document.getElementById('spec-wrap'), label = document.getElementById('spec-label');
@@ -801,7 +824,7 @@
       const start = () => {
         if (wrap.classList.contains('menu-open')) return;
         wrap.classList.add('holding');
-        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); wrap.classList.add('menu-open'); markAccent(); }, 1000);
+        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); openAccentMenu(); }, 1000);
       };
       const cancel = () => { clearTimeout(holdTimer); wrap.classList.remove('holding'); };
       label.addEventListener('mouseenter', start);

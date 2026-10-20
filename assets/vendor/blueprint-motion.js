@@ -292,10 +292,11 @@
       ctx.lineTo(W, H / 2);
       ctx.stroke();
 
-      // Primary phosphor waveform trace
-      ctx.strokeStyle = '#38bdf8';
+      // Primary phosphor waveform trace (adapts dynamically to active accent)
+      const curAccentHex = getAccentHex();
+      ctx.strokeStyle = curAccentHex;
       ctx.lineWidth = 1.6;
-      ctx.shadowColor = '#38bdf8';
+      ctx.shadowColor = curAccentHex;
       ctx.shadowBlur = 5;
       ctx.beginPath();
 
