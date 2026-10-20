@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 12.4
+ * LP-EE-2026 // Blueprint Design System — REV 12.5
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -214,8 +214,8 @@ html { scrollbar-color: var(--line-strong) var(--bg-deep); }
 }
 .section {
   position: relative;
-  padding-top: clamp(1.25rem, 2.4vw, 1.85rem);
-  padding-bottom: clamp(1.25rem, 2.4vw, 1.85rem);
+  padding-top: clamp(0.85rem, 1.6vw, 1.25rem);
+  padding-bottom: clamp(0.85rem, 1.6vw, 1.25rem);
 }
 .section + .section { border-top: 1px dashed var(--line); }
 .stack > * + * { margin-top: var(--stack, 0.85rem); }
@@ -491,7 +491,7 @@ strong { color: var(--ink); font-weight: 600; }
 .sheet-head {
   display: grid;
   gap: 0.35rem;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.65rem;
   cursor: pointer;
   user-select: none;
   transition: opacity 0.2s ease;
@@ -575,16 +575,16 @@ strong { color: var(--ink); font-weight: 600; }
   pointer-events: none;
 }
 .section.is-folded {
-  padding-top: clamp(0.9rem, 1.8vw, 1.35rem);
-  padding-bottom: clamp(0.75rem, 1.5vw, 1.1rem);
+  padding-top: clamp(0.65rem, 1.2vw, 0.95rem);
+  padding-bottom: clamp(0.55rem, 1vw, 0.8rem);
 }
 
 /* =========================================================================
    08b. DRAFTING SHEETS CONTROL TOOLBAR & UNIFORM SHEET BADGES
    ========================================================================= */
 .sheets-toolbar-wrap {
-  margin-top: clamp(0.85rem, 1.8vw, 1.35rem);
-  margin-bottom: 0;
+  margin-top: clamp(0.5rem, 1vw, 0.75rem);
+  margin-bottom: 0.15rem;
 }
 .sheets-toolbar {
   display: flex;
@@ -712,7 +712,7 @@ strong { color: var(--ink); font-weight: 600; }
 /* =========================================================================
    09. HERO
    ========================================================================= */
-.hero { position: relative; padding-top: clamp(2rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 5vw, 3.5rem); overflow: clip; }
+.hero { position: relative; padding-top: clamp(1.5rem, 3.5vw, 2.5rem); padding-bottom: clamp(0.75rem, 1.6vw, 1.25rem); overflow: clip; }
 .hero-grid { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
 @media (min-width: 960px) { .hero-grid { grid-template-columns: minmax(0, 1.48fr) minmax(0, 0.72fr); } }
 .hero-copy { position: relative; z-index: 5; }
@@ -916,7 +916,7 @@ strong { color: var(--ink); font-weight: 600; }
 
 /* Title block */
 .title-block {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(0.6rem, 1.2vw, 0.95rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   border: 1.5px solid var(--line-strong);
   border-radius: var(--radius);
   overflow: hidden;
