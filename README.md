@@ -63,9 +63,8 @@ Personal engineering portfolio and technical specification sheet for **Lee Parki
   - **`03.2 // DISCORD THEMES`:**
     - **WindowsXI Discord Theme**, **MaterialYou & Vintage**, and **Lode, Ovel & Fluidcord** open-source UI themes.
 
-- **Verified Career Logbook (`04 // EXPERIENCE`, numbered `05` down to `01`):**
-  - **[JOB 05] Wetherspoons (Preston)** — Bar Team Leader *(Promoted Feb 2026)*
-  - **[JOB 04] Amazon Logistics (313 Logistics)** — Multi-Drop Delivery Driver
+- **Verified Career Logbook (`03 // EXPERIENCE`, numbered `04` down to `01`):**
+  - **[JOB 04] Wetherspoons (Preston & Blackpool)** — Bar Team Leader *(Promotion to Team Leader)*
   - **[JOB 03] Car Cosmetics** — Apprentice Automotive Technician — Diagnostics & Repair
   - **[JOB 02] Pleasure Beach Resort** — Ride Operator
   - **[JOB 01] McDonald's** — Crew Member *(Where I started)*
