@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 12.3
+ * LP-EE-2026 // Blueprint Design System — REV 12.4
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -1245,7 +1245,8 @@ strong { color: var(--ink); font-weight: 600; }
 /* =========================================================================
    17. CONTACT
    ========================================================================= */
-.contact-card { padding: clamp(1.5rem, 4vw, 3rem); }
+.contact-card { padding: clamp(1.25rem, 3vw, 2.25rem); }
+#contact.section { padding-bottom: 1rem; }
 .contact-grid {
   display: grid;
   gap: 1px;
@@ -1380,7 +1381,7 @@ a.contact-cell:hover {
 .site-footer {
   border-top: 1px solid var(--line);
   background: var(--bg-deep);
-  padding: 3rem 0 calc(9.5rem + env(safe-area-inset-bottom));
+  padding: 1.75rem 0 calc(1.75rem + env(safe-area-inset-bottom));
 }
 .footer-grid { display: grid; gap: 1.5rem; align-items: end; }
 @media (min-width: 860px) { .footer-grid { grid-template-columns: 1fr auto; } }
