@@ -548,87 +548,8 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 07. REACT BITS — CLICK SPARK PARTICLES
+  // 07. CLICK EFFECTS (Removed per user request)
   // ---------------------------------------------------------------------------
-  function initClickSpark() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.className = 'spark-layer';
-    document.body.appendChild(canvas);
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const sparks = [];
-    const colors = ['#63cbff', '#eef5ff', '#ffbe55', '#4ade9b'];
-
-    function createSparks(x, y) {
-      const count = 8;
-      for (let i = 0; i < count; i++) {
-        const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-        const speed = 2.2 + Math.random() * 2.8;
-        sparks.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 1,
-          decay: 0.035 + Math.random() * 0.02,
-          length: 4 + Math.random() * 5,
-          color: colors[Math.floor(Math.random() * colors.length)]
-        });
-      }
-    }
-
-    let isRunning = false;
-    function loop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = sparks.length - 1; i >= 0; i--) {
-        const s = sparks[i];
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - s.vx * s.length * 0.8, s.y - s.vy * s.length * 0.8);
-        ctx.strokeStyle = s.color;
-        ctx.lineWidth = 1.4;
-        ctx.globalAlpha = s.life;
-        ctx.stroke();
-
-        s.x += s.vx;
-        s.y += s.vy;
-        s.life -= s.decay;
-
-        if (s.life <= 0) {
-          sparks.splice(i, 1);
-        }
-      }
-
-      ctx.globalAlpha = 1;
-
-      if (sparks.length > 0) {
-        requestAnimationFrame(loop);
-      } else {
-        isRunning = false;
-      }
-    }
-
-    window.addEventListener('pointerdown', (e) => {
-      // Don't spark on text selection drags
-      createSparks(e.clientX, e.clientY);
-      if (!isRunning) {
-        isRunning = true;
-        requestAnimationFrame(loop);
-      }
-    }, { passive: true });
-  }
 
   // ---------------------------------------------------------------------------
   // 08. REACT BITS — DECRYPTED TEXT (CIPHER EFFECT ON HOVER / SCROLL)
@@ -719,9 +640,8 @@
     if (!dock) return;
 
     const items = dock.querySelectorAll('.dock-item');
-    const baseSize = 42;
     const maxScale = 1.35;
-    const maxDistance = 110;
+    const maxDistance = 100;
 
     dock.addEventListener('pointermove', (e) => {
       if (e.pointerType === 'touch') return;
@@ -731,20 +651,28 @@
         const rect = item.getBoundingClientRect();
         const center = rect.left + rect.width / 2;
         const dist = Math.abs(mouseX - center);
+        const icon = item.querySelector('svg');
 
         if (dist < maxDistance) {
           const norm = 1 - dist / maxDistance;
           const scale = 1 + (maxScale - 1) * Math.sin(norm * (Math.PI / 2));
-          item.style.transform = `scale(${scale.toFixed(3)})`;
+          if (icon) icon.style.transform = `scale(${scale.toFixed(3)})`;
+          item.style.backgroundColor = `color-mix(in srgb, var(--accent) ${(norm * 16).toFixed(1)}%, var(--paper))`;
+          item.style.borderColor = `rgb(var(--accent-rgb) / ${(0.3 + norm * 0.7).toFixed(2)})`;
         } else {
-          item.style.transform = 'scale(1)';
+          if (icon) icon.style.transform = 'scale(1)';
+          item.style.backgroundColor = '';
+          item.style.borderColor = '';
         }
       });
     }, { passive: true });
 
     dock.addEventListener('pointerleave', () => {
       items.forEach((item) => {
-        item.style.transform = 'scale(1)';
+        const icon = item.querySelector('svg');
+        if (icon) icon.style.transform = 'scale(1)';
+        item.style.backgroundColor = '';
+        item.style.borderColor = '';
       });
     });
 
@@ -779,43 +707,196 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 11. REACT BITS — GLOBAL CROSSHAIR DATUM TRACKER
+  // 11. REACT BITS PRO — DRAFTING + GYROSCOPE + CUSTOM CURSOR SYSTEM
+  // Hairline crosshairs, edge rulers, readout, drag-to-measure, gyro arrow, morph ring
   // ---------------------------------------------------------------------------
-  function initCrosshair() {
-    const crosshair = document.querySelector('.crosshair');
-    if (!crosshair) return;
+  function initDraftingCursorSystem() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(max-width: 768px)').matches) return;
 
-    const chX = crosshair.querySelector('.ch-x');
-    const chY = crosshair.querySelector('.ch-y');
-    const chRead = crosshair.querySelector('.ch-read');
+    const layer = document.querySelector('.drafting-cursor-layer');
+    if (!layer) return;
+
+    const chX = layer.querySelector('.ch-x');
+    const chY = layer.querySelector('.ch-y');
+    const pipX = layer.querySelector('.pip-x');
+    const pipY = layer.querySelector('.pip-y');
+    const readout = document.getElementById('cursor-readout');
+    const gyro = document.getElementById('cursor-gyro');
+    const gyroArrow = gyro ? gyro.querySelector('.gyro-arrow-svg') : null;
+    const morphRing = document.getElementById('cursor-morph-ring');
+    const measureBox = document.getElementById('cursor-measure-box');
+    const measureBadge = document.getElementById('cursor-measure-badge');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let prevX = mouseX;
+    let prevY = mouseY;
+    let currentAngle = 0;
+    let isInside = false;
+
+    // Drag-to-measure states
+    let isMouseDown = false;
+    let isMeasuring = false;
+    let startX = 0;
+    let startY = 0;
+    let measureFadeTimeout = null;
+
+    // Morph ring target tracking
+    let hoveredInteractive = null;
 
     document.addEventListener('pointerenter', () => {
-      crosshair.classList.add('is-on');
+      isInside = true;
+      layer.classList.add('is-on');
     });
 
     document.addEventListener('pointerleave', () => {
-      crosshair.classList.remove('is-on');
+      isInside = false;
+      layer.classList.remove('is-on');
     });
+
+    // Shortest angular difference to prevent wrap-around spinning
+    function getAngleDelta(curr, target) {
+      let diff = (target - curr) % 360;
+      if (diff < -180) diff += 360;
+      if (diff > 180) diff -= 360;
+      return diff;
+    }
 
     window.addEventListener('pointermove', (e) => {
       if (e.pointerType === 'touch') {
-        crosshair.classList.remove('is-on');
+        layer.classList.remove('is-on');
         return;
       }
-      crosshair.classList.add('is-on');
-      const x = e.clientX;
-      const y = e.clientY;
+      isInside = true;
+      layer.classList.add('is-on');
 
-      if (chX) chX.style.top = `${y}px`;
-      if (chY) chY.style.left = `${x}px`;
-      if (chRead) {
-        const readX = x + 16 > window.innerWidth - 145 ? x - 135 : x + 14;
-        const readY = y + 16 > window.innerHeight - 35 ? y - 26 : y + 14;
-        chRead.style.left = `${readX}px`;
-        chRead.style.top = `${readY}px`;
-        const xmm = (x * 0.26458).toFixed(1);
-        const ymm = (y * 0.26458).toFixed(1);
-        chRead.textContent = `DATUM [${xmm}, ${ymm}mm]`;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // 1. Crosshair hairlines & Ruler pips
+      if (chX) chX.style.top = `${mouseY}px`;
+      if (chY) chY.style.left = `${mouseX}px`;
+      if (pipX) pipX.style.left = `${mouseX}px`;
+      if (pipY) pipY.style.top = `${mouseY}px`;
+
+      // 2. Gyroscope cursor position & rotation towards movement velocity
+      if (gyro) {
+        gyro.style.left = `${mouseX}px`;
+        gyro.style.top = `${mouseY}px`;
+      }
+
+      const dx = mouseX - prevX;
+      const dy = mouseY - prevY;
+      const speed = Math.hypot(dx, dy);
+
+      if (gyroArrow && speed > 1.2) {
+        // Arrow points upward at 0deg; atan2 gives angle from positive X axis (+90deg offset aligns with heading)
+        const targetAngle = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+        currentAngle += getAngleDelta(currentAngle, targetAngle) * 0.42;
+        gyroArrow.style.transform = `rotate(${currentAngle.toFixed(1)}deg)`;
+      }
+
+      prevX = mouseX;
+      prevY = mouseY;
+
+      // 3. Custom Cursor Morph Ring
+      if (morphRing) {
+        if (hoveredInteractive && document.body.contains(hoveredInteractive)) {
+          const rect = hoveredInteractive.getBoundingClientRect();
+          morphRing.classList.add('is-hovering');
+          morphRing.style.left = `${rect.left + rect.width / 2}px`;
+          morphRing.style.top = `${rect.top + rect.height / 2}px`;
+          morphRing.style.width = `${rect.width + 10}px`;
+          morphRing.style.height = `${rect.height + 8}px`;
+          const radius = window.getComputedStyle(hoveredInteractive).borderRadius;
+          morphRing.style.borderRadius = (radius && radius !== '0px') ? radius : '4px';
+        } else {
+          morphRing.classList.remove('is-hovering');
+          morphRing.style.left = `${mouseX}px`;
+          morphRing.style.top = `${mouseY}px`;
+          morphRing.style.width = '32px';
+          morphRing.style.height = '32px';
+          morphRing.style.borderRadius = '50%';
+        }
+      }
+
+      // 4. Coordinate Readout Tag
+      if (readout) {
+        const readX = mouseX + 16 > window.innerWidth - 170 ? mouseX - 160 : mouseX + 16;
+        const readY = mouseY + 16 > window.innerHeight - 38 ? mouseY - 28 : mouseY + 16;
+        readout.style.left = `${readX}px`;
+        readout.style.top = `${readY}px`;
+        const xmm = (mouseX * 0.26458).toFixed(1);
+        const ymm = (mouseY * 0.26458).toFixed(1);
+        readout.textContent = `DATUM [${xmm}, ${ymm}mm]`;
+      }
+
+      // 5. Drag-to-Measure Dimension Box
+      if (isMouseDown) {
+        const dist = Math.hypot(mouseX - startX, mouseY - startY);
+        if (dist > 8) {
+          isMeasuring = true;
+          if (measureFadeTimeout) {
+            clearTimeout(measureFadeTimeout);
+            measureFadeTimeout = null;
+          }
+          if (measureBox) {
+            measureBox.classList.add('is-active');
+            const left = Math.min(startX, mouseX);
+            const top = Math.min(startY, mouseY);
+            const width = Math.abs(mouseX - startX);
+            const height = Math.abs(mouseY - startY);
+            measureBox.style.left = `${left}px`;
+            measureBox.style.top = `${top}px`;
+            measureBox.style.width = `${width}px`;
+            measureBox.style.height = `${height}px`;
+
+            if (measureBadge) {
+              const diag = Math.hypot(width, height);
+              const wmm = (width * 0.26458).toFixed(1);
+              const hmm = (height * 0.26458).toFixed(1);
+              const dmm = (diag * 0.26458).toFixed(1);
+              measureBadge.textContent = `ΔX: ${width}px (${wmm}mm) · ΔY: ${height}px (${hmm}mm) · D: ${diag.toFixed(0)}px (${dmm}mm)`;
+            }
+          }
+        }
+      }
+    }, { passive: true });
+
+    // Hover detection for interactive items to morph the custom cursor
+    const interactiveSelector = 'a, button, [role="button"], .dock-item, .card-spotlight, .bp-card, input, select, textarea, summary, .chip, [data-accent-toggle]';
+    document.addEventListener('pointerover', (e) => {
+      const target = e.target.closest(interactiveSelector);
+      if (target) {
+        hoveredInteractive = target;
+      }
+    }, { passive: true });
+
+    document.addEventListener('pointerout', (e) => {
+      if (hoveredInteractive && !hoveredInteractive.contains(e.relatedTarget)) {
+        hoveredInteractive = null;
+      }
+    }, { passive: true });
+
+    // Drag-to-Measure activation (only if not clicking interactive items)
+    window.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch') return;
+      if (e.target.closest('a, button, input, select, textarea, .accent-dropdown, .dock-wrap')) {
+        return;
+      }
+      isMouseDown = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    }, { passive: true });
+
+    window.addEventListener('pointerup', () => {
+      isMouseDown = false;
+      if (isMeasuring && measureBox) {
+        measureFadeTimeout = setTimeout(() => {
+          measureBox.classList.remove('is-active');
+          isMeasuring = false;
+        }, 1200);
       }
     }, { passive: true });
   }
@@ -2045,11 +2126,10 @@
     initFoldableSheets();
     initSpotlightCards();
     initTiltedCards();
-    initClickSpark();
     initDecryptedText();
     initMagneticElements();
     initDock();
-    initCrosshair();
+    initDraftingCursorSystem();
     initDisciplineFilter();
     initNavigation();
     initCopyButtons();

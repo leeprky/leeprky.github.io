@@ -685,8 +685,8 @@ strong { color: var(--ink); font-weight: 600; }
 .node { fill: var(--accent); }
 @media (max-width: 720px) { .hero-circuit { opacity: 0.28; width: 120vw; right: -40vw; } }
 
-/* React Bits · Global Crosshair Datum Tracker (tracks everywhere) */
-.crosshair {
+/* React Bits Pro · Unified Drafting + Gyroscope + Custom Cursor System */
+.drafting-cursor-layer {
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -694,18 +694,156 @@ strong { color: var(--ink); font-weight: 600; }
   opacity: 0;
   transition: opacity 0.25s ease;
 }
-.crosshair.is-on { opacity: 1; }
-.crosshair .ch-x, .crosshair .ch-y { position: absolute; background: none; }
-.crosshair .ch-x { left: 0; right: 0; top: 0; height: 0; border-top: 1px dashed rgb(var(--accent-rgb) / 0.35); }
-.crosshair .ch-y { top: 0; bottom: 0; left: 0; width: 0; border-left: 1px dashed rgb(var(--accent-rgb) / 0.35); }
-.crosshair .ch-read {
-  position: absolute; left: 0; top: 0; padding: 2px 7px; font: 600 0.62rem var(--font-mono); letter-spacing: 0.08em;
-  color: var(--accent); background: var(--header-bg); border: 1px solid rgb(var(--accent-rgb) / 0.45); white-space: nowrap;
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 2px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+.drafting-cursor-layer.is-on { opacity: 1; }
+
+/* Edge Rulers (Drafting Cursor) */
+.cursor-ruler {
+  position: fixed;
+  background: color-mix(in srgb, var(--header-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 9992;
 }
-@media (max-width: 768px) {
-  .crosshair { display: none !important; }
+.ruler-top {
+  top: 0; left: 0; right: 0; height: 14px;
+  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background-image: repeating-linear-gradient(to right, rgb(var(--accent-rgb) / 0.4) 0 1px, transparent 1px 10px),
+                    repeating-linear-gradient(to right, rgb(var(--accent-rgb) / 0.75) 0 1px, transparent 1px 50px);
+  background-size: 100% 6px, 100% 10px;
+  background-position: left bottom, left bottom;
+  background-repeat: no-repeat;
+}
+.ruler-left {
+  top: 0; left: 0; bottom: 0; width: 14px;
+  border-right: 1px solid rgb(var(--accent-rgb) / 0.25);
+  background-image: repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.4) 0 1px, transparent 1px 10px),
+                    repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.75) 0 1px, transparent 1px 50px);
+  background-size: 6px 100%, 10px 100%;
+  background-position: right top, right top;
+  background-repeat: no-repeat;
+}
+.ruler-pip {
+  position: absolute;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+.pip-x { top: 0; bottom: 0; width: 2px; transform: translateX(-50%); }
+.pip-y { left: 0; right: 0; height: 2px; transform: translateY(-50%); }
+
+/* Hairline Crosshairs (Drafting Cursor) */
+.cursor-hairline { position: absolute; pointer-events: none; }
+.cursor-hairline.ch-x {
+  left: 0; right: 0; top: 0; height: 0;
+  border-top: 1px dashed rgb(var(--accent-rgb) / 0.35);
+}
+.cursor-hairline.ch-y {
+  top: 0; bottom: 0; left: 0; width: 0;
+  border-left: 1px dashed rgb(var(--accent-rgb) / 0.35);
+}
+
+/* Gyroscope Arrow Pointer & Center Dot (Gyroscope Cursor) */
+.cursor-gyro {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gyro-arrow-svg {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  transform-origin: 50% 50%;
+  transition: transform 0.08s ease-out;
+}
+.gyro-center-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Morphing Ring (Custom Cursor) */
+.cursor-morph-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(var(--accent-rgb) / 0.65);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9993;
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-radius 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+.cursor-morph-ring.is-hovering {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.09);
+  box-shadow: 0 0 16px rgb(var(--accent-rgb) / 0.25), inset 0 0 8px rgb(var(--accent-rgb) / 0.12);
+}
+
+/* Coordinate Readout Tag (Drafting Cursor) */
+.cursor-readout {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 2px 8px;
+  font: 600 0.62rem var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--header-bg);
+  border: 1px solid rgb(var(--accent-rgb) / 0.45);
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
+  pointer-events: none;
+  z-index: 9994;
+}
+
+/* Drag-to-Measure Dimension Box (Drafting Cursor) */
+.cursor-measure-box {
+  position: fixed;
+  display: none;
+  border: 1px dashed var(--accent);
+  background: rgb(var(--accent-rgb) / 0.08);
+  pointer-events: none;
+  z-index: 9991;
+}
+.cursor-measure-box.is-active { display: block; }
+.measure-badge {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 8px;
+  font: 600 0.62rem var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--bg-deep);
+  background: var(--accent);
+  border-radius: 2px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  .drafting-cursor-layer { display: none !important; }
 }
 
 /* Title block */
@@ -1057,46 +1195,113 @@ a.contact-cell:hover { background: color-mix(in srgb, var(--paper) 80%, var(--ac
 /* =========================================================================
    18. FOOTER
    ========================================================================= */
-.site-footer { border-top: 1px solid var(--line); background: var(--bg-deep); padding: 2.5rem 0 calc(6rem + env(safe-area-inset-bottom)); }
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: var(--bg-deep);
+  padding: 3rem 0 calc(9.5rem + env(safe-area-inset-bottom));
+}
 .footer-grid { display: grid; gap: 1.5rem; align-items: end; }
 @media (min-width: 860px) { .footer-grid { grid-template-columns: 1fr auto; } }
 .footer-links { display: flex; flex-wrap: wrap; gap: 1.25rem; font: 500 0.74rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
 .footer-links a:hover { color: var(--accent); }
 
 /* =========================================================================
-   19. DOCK (React Bits · Dock)
+   19. DOCK (React Bits · Dock Console)
    ========================================================================= */
-.dock-wrap { position: fixed; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 70; pointer-events: none; }
+.dock-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 70;
+  pointer-events: none;
+}
 .dock {
-  pointer-events: auto; display: flex; align-items: flex-end; gap: 6px; padding: 7px 8px; height: 58px;
-  background: color-mix(in srgb, var(--bg-deep) 86%, transparent); border: 1px solid var(--line-strong);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: var(--shadow);
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  height: 60px;
+  background: color-mix(in srgb, var(--bg-deep) 96%, transparent);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(var(--accent-rgb) / 0.15);
 }
 .dock-item {
-  position: relative; width: 42px; height: 42px; flex: none; display: grid; place-items: center;
-  border: 1px solid var(--line); background: var(--paper); color: var(--ink-2); transform-origin: 50% 100%;
-  transition: border-color 0.2s, color 0.2s;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink-2);
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 }
-.dock-item svg { width: 18px; height: 18px; }
-.dock-item:hover, .dock-item.is-active { border-color: var(--accent); color: var(--accent); }
-.dock-item.is-active::after { content: ""; position: absolute; bottom: -5px; left: 50%; width: 4px; height: 4px; margin-left: -2px; background: var(--accent); border-radius: 50%; }
+.dock-item svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+}
+.dock-item:hover, .dock-item.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--paper));
+}
+.dock-item.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent);
+}
 .dock-label {
-  position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
-  padding: 0.25rem 0.5rem; background: var(--paper-2); border: 1px solid var(--line-strong); color: var(--ink);
-  font: 600 0.62rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
-  opacity: 0; pointer-events: none; transition: opacity 0.15s, transform 0.15s;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 0.25rem 0.5rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font: 600 0.62rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, transform 0.15s;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
 }
-.dock-item:hover .dock-label, .dock-item:focus-visible .dock-label { opacity: 1; transform: translateX(-50%); }
-.dock-sep { width: 1px; align-self: stretch; margin: 4px 2px; background: var(--line); }
+.dock-item:hover .dock-label, .dock-item:focus-visible .dock-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.dock-sep {
+  width: 1px;
+  height: 24px;
+  margin: 0 2px;
+  background: var(--line);
+}
 @media (max-width: 560px) {
-  .dock { gap: 4px; padding: 6px; height: 52px; }
+  .dock { gap: 4px; padding: 6px 8px; height: 52px; }
   .dock-item { width: 36px; height: 36px; }
+  .dock-item svg { width: 17px; height: 17px; }
   .dock-label { display: none; }
   .dock .hide-sm { display: none; }
 }
-
-/* ClickSpark canvas */
-.spark-layer { position: fixed; inset: 0; pointer-events: none; z-index: 120; }
 
 /* =========================================================================
    20. MOTION STATES

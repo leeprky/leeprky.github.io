@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.9" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=10.0" />
 </head>
 
 <body id="top">
@@ -58,11 +58,40 @@
     <span class="zy r" style="top: 80%;">D</span>
   </div>
 
-  <!-- React Bits · Global Crosshair Datum Layer -->
-  <div class="crosshair" aria-hidden="true">
-    <div class="ch-x"></div>
-    <div class="ch-y"></div>
-    <div class="ch-read">DATUM [0.0, 0.0mm]</div>
+  <!-- React Bits Pro · Unified Drafting + Gyroscope + Custom Cursor -->
+  <div class="drafting-cursor-layer" aria-hidden="true">
+    <!-- Edge Rulers (Top & Left) -->
+    <div class="cursor-ruler ruler-top">
+      <div class="ruler-pip pip-x"></div>
+    </div>
+    <div class="cursor-ruler ruler-left">
+      <div class="ruler-pip pip-y"></div>
+    </div>
+
+    <!-- Hairline Crosshairs -->
+    <div class="cursor-hairline ch-x"></div>
+    <div class="cursor-hairline ch-y"></div>
+
+    <!-- Drag-to-Measure Dimension Box (React Bits Pro: Drafting Cursor) -->
+    <div class="cursor-measure-box" id="cursor-measure-box">
+      <div class="measure-line-w"></div>
+      <div class="measure-line-h"></div>
+      <div class="measure-badge" id="cursor-measure-badge">0.0 × 0.0mm</div>
+    </div>
+
+    <!-- Morphing Ring (React Bits Pro: Custom Cursor) -->
+    <div class="cursor-morph-ring" id="cursor-morph-ring"></div>
+
+    <!-- Gyroscope Arrow Pointer & Center Dot (React Bits Pro: Gyroscope Cursor) -->
+    <div class="cursor-gyro" id="cursor-gyro">
+      <svg class="gyro-arrow-svg" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L19 21L12 17L5 21L12 2Z" fill="var(--accent)" stroke="var(--bg-deep)" stroke-width="1.2" stroke-linejoin="round" />
+      </svg>
+      <div class="gyro-center-dot"></div>
+    </div>
+
+    <!-- Coordinate Readout Tag (React Bits Pro: Drafting Cursor) -->
+    <div class="cursor-readout" id="cursor-readout">DATUM [0.0, 0.0mm]</div>
   </div>
 
   <!-- TOP HEADER -->
@@ -92,7 +121,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V9.9 ▾</span>
+            <span>SPEC V10.0 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -1362,8 +1391,8 @@
 
       <a href="#projects" class="dock-item" aria-label="Sheet 03: Projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          <polyline points="12 11 14 13 12 15"></polyline>
         </svg>
         <span class="dock-label">03 // BUILDS</span>
       </a>
@@ -1415,6 +1444,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=9.9"></script>
+  <script src="assets/js/blueprint.js?v=10.0"></script>
 </body>
 </html>
