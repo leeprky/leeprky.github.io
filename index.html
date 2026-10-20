@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.2" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.3" />
 </head>
 
 <body id="top">
@@ -83,7 +83,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V9.2 ▾</span>
+            <span>SPEC V9.3 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -99,6 +99,19 @@
             <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.5rem; gap:0.5rem;">
               <span class="tiny mono" style="color:var(--ink-2);">Custom Hex:</span>
               <input type="color" id="accent-custom" value="#38bdf8" style="width:34px; height:24px; border:none; background:none; cursor:pointer;" title="Pick custom color" />
+            </div>
+
+            <!-- Light / Dark Mode Toggle Inside SPEC Box -->
+            <div style="border-top:1px dashed var(--line); margin-top:0.65rem; padding-top:0.5rem;">
+              <div class="tiny mono muted" style="margin-bottom: 0.35rem;">SCHEMATIC FILM MODE:</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <button type="button" class="btn btn-sm" data-theme-set="blueprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
+                  <span>DARK (BLUE)</span>
+                </button>
+                <button type="button" class="btn btn-sm" data-theme-set="whiteprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
+                  <span>LIGHT (FILM)</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -262,9 +275,7 @@
               </figcaption>
             </div>
 
-            <div class="portrait-callout hand" aria-hidden="true">
-              FOUNDATION YEAR<br />PRESTON, UK
-            </div>
+
           </div>
         </div>
 
@@ -295,6 +306,7 @@
             <b class="mono accent">APPROVED ✓</b>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
@@ -305,63 +317,74 @@
          ===================================================================== -->
     <section id="about" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="about" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-about">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 01</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-01 // PROFILE &amp; TOOLKIT</span>
           </div>
-          <span class="eyebrow">01 // Profile Spec</span>
-          <h2 class="h2">A Bit About Me<span class="accent">.</span></h2>
+          <div class="sheet-title-row">
+            <div>
+              <span class="eyebrow">01 // Profile Spec</span>
+              <h2 class="h2">A Bit About Me<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 01">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
           <p class="lead">
             Growing up, I've always loved technology, mechanics, electrics, and computers — whether taking hardware apart to understand how it ticks, building custom PCs, or diagnosing vehicles.
           </p>
         </div>
 
-        <div class="profile-grid">
-          <!-- Story -->
-          <div class="profile-copy body">
-            <p>
-              I'm <strong>21</strong> and living in <strong>Preston</strong>, completing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong> alongside working as a <strong>Bar Team Leader at Wetherspoons</strong> (The Velvet Coaster in Blackpool &amp; The Twelve Tellers in Preston).
-            </p>
-            <p>
-              Before starting university, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, getting proper workshop experience diagnosing mechanical and electrical faults, servicing, bleeding brakes, and wiring vehicle electrics.
-            </p>
-            <p>
-              Outside of academics and shift leadership, I'm usually out in the workshop on car builds, working on electronics, scrambling fells in the Lake District, or tinkering with software and games.
-            </p>
+        <div class="sheet-body" id="sheet-body-about">
+          <div class="profile-grid">
+            <!-- Story -->
+            <div class="profile-copy body">
+              <p>
+                I'm <strong>21</strong> and living in <strong>Preston</strong>, completing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong> alongside working as a <strong>Bar Team Leader at Wetherspoons</strong> (The Velvet Coaster in Blackpool &amp; The Twelve Tellers in Preston).
+              </p>
+              <p>
+                Before starting university, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, getting proper workshop experience diagnosing mechanical and electrical faults, servicing, bleeding brakes, and wiring vehicle electrics.
+              </p>
+              <p>
+                Outside of academics and shift leadership, I'm usually out in the workshop on car builds, working on electronics, scrambling fells in the Lake District, or tinkering with software and games.
+              </p>
 
-            <div class="chips" style="margin-top: 1.5rem;">
-              <span class="chip">Preston, Lancashire UK</span>
-              <span class="chip">University of Lancashire</span>
-              <span class="chip">Electrical Engineering</span>
-              <span class="chip">Workshop Diagnostics</span>
-              <span class="chip">Shift Operations</span>
+              <div class="chips" style="margin-top: 1.5rem;">
+                <span class="chip">Preston, Lancashire UK</span>
+                <span class="chip">University of Lancashire</span>
+                <span class="chip">Electrical Engineering</span>
+                <span class="chip">Workshop Diagnostics</span>
+                <span class="chip">Shift Operations</span>
+              </div>
             </div>
-          </div>
 
-          <!-- Red-line Field Notes Panel -->
-          <div class="panel field-notes spotlight">
-            <div class="panel-head">
-              <span class="panel-id">DWG NOTE // 01-A</span>
-              <span class="tag tag-mark">FIELD NOTES</span>
-            </div>
-            <p class="hand">
-              "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
-            </p>
-            <ul>
-              <li><strong>Discipline:</strong> Electrical &amp; Electronic Engineering</li>
-              <li><strong>Current Campus:</strong> ULan, Preston (Foundation Year)</li>
-              <li><strong>Career:</strong> Bar Team Leader @ Wetherspoons</li>
-              <li><strong>Hands-On:</strong> Mechanics, Electrics, IT Systems &amp; Audio</li>
-            </ul>
-            <div style="margin-top: 1.25rem;">
-              <a href="about.html" class="panel-link">Open Dedicated About Sheet →</a>
+            <!-- Red-line Field Notes Panel -->
+            <div class="panel field-notes spotlight">
+              <div class="panel-head">
+                <span class="panel-id">DWG NOTE // 01-A</span>
+                <span class="tag tag-mark">FIELD NOTES</span>
+              </div>
+              <p class="hand">
+                "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
+              </p>
+              <ul>
+                <li><strong>Discipline:</strong> Electrical &amp; Electronic Engineering</li>
+                <li><strong>Current Campus:</strong> ULan, Preston (Foundation Year)</li>
+                <li><strong>Career:</strong> Bar Team Leader @ Wetherspoons</li>
+                <li><strong>Hands-On:</strong> Mechanics, Electrics, IT Systems &amp; Audio</li>
+              </ul>
+              <div style="margin-top: 1.25rem;">
+                <a href="about.html" class="panel-link">Open Dedicated About Sheet →</a>
+              </div>
             </div>
           </div>
         </div>
-
-
+        </div>
       </div>
     </section>
 
@@ -370,18 +393,30 @@
          ===================================================================== -->
     <section id="schematics" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="schematics" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-schematics">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 02</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-02 // TECHNICAL DISCIPLINES</span>
           </div>
-          <span class="eyebrow">02 // Technical Schematics</span>
-          <h2 class="h2">Disciplines &amp; Schematics<span class="accent">.</span></h2>
+          <div class="sheet-title-row">
+            <div>
+              <span class="eyebrow">02 // Technical Schematics</span>
+              <h2 class="h2">Disciplines &amp; Schematics<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 02">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
           <p class="lead">
             Cross-disciplinary experience spanning academic electrical engineering, automotive mechanics, computer science, and live sound routing.
           </p>
         </div>
+
+        <div class="sheet-body" id="sheet-body-schematics">
 
         <!-- Filter Controls (Powered by GSAP Flip) -->
         <div class="filters" role="group" aria-label="Filter technical disciplines">
@@ -505,8 +540,7 @@
             </div>
           </div>
         </div>
-
-
+        </div>
       </div>
     </section>
 
@@ -515,18 +549,30 @@
          ===================================================================== -->
     <section id="projects" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="projects" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-projects">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 03</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-03 // ENGINEERING GALLERY</span>
           </div>
-          <span class="eyebrow">03 // Project Gallery</span>
-          <h2 class="h2">Builds &amp; Technical Gallery<span class="accent">.</span></h2>
+          <div class="sheet-title-row">
+            <div>
+              <span class="eyebrow">03 // Project Gallery</span>
+              <h2 class="h2">Builds &amp; Technical Gallery<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 03">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
           <p class="lead">
             Hands-on projects covering budget automotive revival, hand-drafted engineering orthographic projections, and open-source UI development.
           </p>
         </div>
+
+        <div class="sheet-body" id="sheet-body-projects">
 
         <!-- 03.1 Sub-£15 Car Project Feature -->
         <div class="panel spotlight project-feature">
@@ -712,6 +758,7 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
@@ -720,18 +767,30 @@
          ===================================================================== -->
     <section id="experience" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="experience" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-experience">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 04</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-04 // CAREER REVISIONS</span>
           </div>
-          <span class="eyebrow">04 // Career Logbook</span>
-          <h2 class="h2">Work Experience<span class="accent">.</span></h2>
+          <div class="sheet-title-row">
+            <div>
+              <span class="eyebrow">04 // Career Logbook</span>
+              <h2 class="h2">Work Experience<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 04">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
           <p class="lead">
             Verified operational career logbook — shift management, logistics, workshop mechanics, and amusement ride safety operations.
           </p>
         </div>
+
+        <div class="sheet-body" id="sheet-body-experience">
 
         <div class="timeline">
           <div class="timeline-rail" aria-hidden="true"><i></i></div>
@@ -871,25 +930,30 @@
          ===================================================================== -->
     <section id="education" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="education" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-education">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 05</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-05 // BILL OF MATERIALS</span>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 0.5rem;">
+          <div class="sheet-title-row">
             <div>
               <span class="eyebrow">05 // EDUCATION</span>
               <h2 class="h2">Academic Qualifications<span class="accent">.</span></h2>
             </div>
-            <div class="sheet-state tiny mono" style="color: var(--muted); border: 1px solid var(--line); padding: 0.25rem 0.6rem; border-radius: var(--radius); background: var(--paper);">
-              SHEET ACTIVE [−]
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 05">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
             </div>
           </div>
           <p class="lead" style="margin-top: 0.5rem;">
             Formal technical education record across electrical engineering, computing, and secondary qualifications.
           </p>
         </div>
+
+        <div class="sheet-body" id="sheet-body-education">
 
         <!-- Academic Cards Container -->
         <div class="qual-list">
@@ -1004,6 +1068,7 @@
             </div>
           </article>
         </div>
+        </div>
       </div>
     </section>
 
@@ -1012,20 +1077,31 @@
          ===================================================================== -->
     <section id="hobbies" class="section">
       <div class="container">
-        <div class="sheet-head">
+        <div class="sheet-head" data-sheet-toggle="hobbies" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-hobbies">
           <div class="sheet-meta">
             <span class="sheet-no">SHEET 06</span>
             <div class="sheet-rule"></div>
             <span class="sheet-code">LP-SHT-06 // FIELD EXPEDITIONS</span>
           </div>
-          <span class="eyebrow">06 // Field Systems</span>
-          <h2 class="h2">Mountains, Camping &amp; Cars<span class="accent">.</span></h2>
+          <div class="sheet-title-row">
+            <div>
+              <span class="eyebrow">06 // Field Systems</span>
+              <h2 class="h2">Mountains, Camping &amp; Cars<span class="accent">.</span></h2>
+            </div>
+            <div class="sheet-state-badge" aria-label="Toggle Sheet 06">
+              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
+              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
           <p class="lead">
             What I do outside the lab and work: fell climbing in the Lake District, car mechanics, and landscape photography.
           </p>
         </div>
 
-        <div class="grid grid-2">
+        <div class="sheet-body" id="sheet-body-hobbies">
+          <div class="grid grid-2">
           <!-- Mountaineering -->
           <article class="panel spotlight hobby">
             <div class="panel-head">
@@ -1130,6 +1206,7 @@
             </p>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
@@ -1204,6 +1281,7 @@
               <span>Download CV PDF (252KB)</span>
             </a>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -1314,6 +1392,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=9.2"></script>
+  <script src="assets/js/blueprint.js?v=9.3"></script>
 </body>
 </html>

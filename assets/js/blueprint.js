@@ -12,19 +12,41 @@
   // ---------------------------------------------------------------------------
   const ThemeController = {
     init() {
-      // Dark blueprint theme locked as primary engineering standard
-      document.documentElement.setAttribute('data-theme', 'blueprint');
-      localStorage.setItem('lp_theme', 'blueprint');
-
-      const metaTheme = document.querySelector('meta[name="theme-color"]');
-      if (metaTheme) {
-        metaTheme.setAttribute('content', '#030814');
-      }
+      const savedTheme = localStorage.getItem('lp_theme') || 'blueprint';
+      this.applyTheme(savedTheme);
 
       const savedAccent = localStorage.getItem('lp_accent') || 'blue';
       this.applyAccent(savedAccent);
 
+      this.initThemeButtons();
       this.initAccentMenu();
+    },
+
+    applyTheme(theme) {
+      const targetTheme = (theme === 'whiteprint') ? 'whiteprint' : 'blueprint';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('lp_theme', targetTheme);
+
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) {
+        metaTheme.setAttribute('content', targetTheme === 'whiteprint' ? '#eef3f9' : '#030814');
+      }
+
+      document.querySelectorAll('[data-theme-set]').forEach((btn) => {
+        const isMatch = btn.getAttribute('data-theme-set') === targetTheme;
+        btn.classList.toggle('btn-primary', isMatch);
+        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+    },
+
+    initThemeButtons() {
+      document.querySelectorAll('[data-theme-set]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          if (typeof e.stopPropagation === 'function') e.stopPropagation();
+          const targetTheme = btn.getAttribute('data-theme-set');
+          this.applyTheme(targetTheme);
+        });
+      });
     },
 
     applyAccent(accent) {
@@ -106,14 +128,27 @@
   function initLenis() {
     if (typeof window.Lenis === 'undefined') return;
 
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    // On mobile devices, native touch momentum scrolling provides instant 120Hz response without lag
+    if (isTouch && window.innerWidth < 960) {
+      const meter = document.querySelector('.scroll-meter i');
+      if (meter) {
+        window.addEventListener('scroll', () => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+          meter.style.transform = `scaleX(${p})`;
+        }, { passive: true });
+      }
+      return;
+    }
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     lenis = new window.Lenis({
-      duration: prefersReducedMotion ? 0 : 1.1,
+      duration: prefersReducedMotion ? 0 : 0.95,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: !prefersReducedMotion,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.95,
       autoResize: true,
       anchors: {
         offset: -72
@@ -339,54 +374,62 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 04. REACT BITS — SCROLL VELOCITY RIBBON
+  // 04. FOLDABLE / COLLAPSIBLE SHEETS (Compact Accordion Drawing Mode)
   // ---------------------------------------------------------------------------
-  function initScrollVelocity() {
-    const ribbons = document.querySelectorAll('.ribbon-row');
-    if (!ribbons.length) return;
+  function initFoldableSheets() {
+    const toggles = document.querySelectorAll('[data-sheet-toggle]');
+    if (!toggles.length) return;
 
-    let offset0 = 0;
-    let offset1 = 0;
-    let lastTime = performance.now();
-    let targetDirection = -1;
+    toggles.forEach((header) => {
+      const sectionId = header.getAttribute('data-sheet-toggle');
+      const section = document.getElementById(sectionId) || header.closest('.section');
+      if (!section) return;
 
-    function animate(now) {
-      const dt = Math.min(0.05, Math.max(0.001, (now - lastTime) / 1000));
-      lastTime = now;
-
-      const vel = lenis ? lenis.velocity : 0;
-      if (Math.abs(vel) > 0.1) {
-        targetDirection = vel > 0 ? -1 : 1;
-      }
-      const speedMultiplier = 1 + Math.min(4, Math.abs(vel) * 0.15);
-      const baseSpeed = 40;
-
-      offset0 += targetDirection * baseSpeed * speedMultiplier * dt;
-      offset1 -= targetDirection * (baseSpeed * 0.85) * speedMultiplier * dt;
-
-      const row0 = ribbons[0];
-      const row1 = ribbons[1];
-
-      if (row0) {
-        const halfWidth = row0.scrollWidth / 2;
-        if (halfWidth > 0) {
-          offset0 = ((offset0 % halfWidth) + halfWidth) % halfWidth - halfWidth;
-          row0.style.transform = `translate3d(${offset0.toFixed(2)}px, 0, 0)`;
+      const toggleAction = (e) => {
+        if (e && e.target && e.target.closest('a, button, input')) return;
+        const isFolded = section.classList.toggle('is-folded');
+        header.setAttribute('aria-expanded', !isFolded);
+        const text = header.querySelector('.sheet-state-text');
+        if (text) {
+          text.textContent = isFolded ? 'SHEET FOLDED [+]' : 'SHEET ACTIVE [−]';
         }
-      }
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      };
 
-      if (row1) {
-        const halfWidth = row1.scrollWidth / 2;
-        if (halfWidth > 0) {
-          offset1 = ((offset1 % halfWidth) + halfWidth) % halfWidth - halfWidth;
-          row1.style.transform = `translate3d(${offset1.toFixed(2)}px, 0, 0)`;
+      header.addEventListener('click', toggleAction);
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleAction(e);
         }
+      });
+    });
+
+    const expandSectionById = (id) => {
+      if (!id) return;
+      const targetSec = document.getElementById(id);
+      if (targetSec && targetSec.classList.contains('is-folded')) {
+        targetSec.classList.remove('is-folded');
+        const header = targetSec.querySelector('[data-sheet-toggle]');
+        if (header) {
+          header.setAttribute('aria-expanded', 'true');
+          const text = header.querySelector('.sheet-state-text');
+          if (text) text.textContent = 'SHEET ACTIVE [−]';
+        }
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       }
+    };
 
-      requestAnimationFrame(animate);
-    }
+    window.addEventListener('hashchange', () => {
+      expandSectionById(window.location.hash.slice(1));
+    });
 
-    requestAnimationFrame(animate);
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const hash = (link.getAttribute('href') || '').replace('#', '');
+        expandSectionById(hash);
+      });
+    });
   }
 
   // ---------------------------------------------------------------------------
@@ -870,6 +913,7 @@
     ThemeController.init();
     initLenis();
     initGSAP();
+    initFoldableSheets();
     initSpotlightCards();
     initTiltedCards();
     initClickSpark();
