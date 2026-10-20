@@ -1,1438 +1,1893 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="blueprint">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Lee Parkinson // Electrical Engineering Blueprint</title>
-  <meta name="description" content="Technical specification & engineering portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan), Preston UK." />
-  <meta name="theme-color" content="#0b2343" />
-
-  <!-- Icons -->
-  <link rel="icon" type="image/png" href="assets/images/lp-logo.png" />
-  <link rel="apple-touch-icon" href="assets/images/lp-logo.png" />
-
-  <!-- Google Fonts: Space Grotesk (technical display), JetBrains Mono (dimensions & code), Architects Daughter (hand-drafted redlines) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" id="meta-color-scheme" />
+  <meta name="theme-color" content="#cee0f2" media="(prefers-color-scheme: light)" id="meta-theme-light" />
+  <meta name="theme-color" content="#030914" media="(prefers-color-scheme: dark)" id="meta-theme-dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" id="meta-apple-status" />
+  <meta name="apple-mobile-web-app-title" content="Lee Parkinson [EE]" />
+  <meta name="application-name" content="Lee Parkinson [EE]" />
+  <meta name="msapplication-navbutton-color" content="#030914" id="meta-ms-nav" />
+  <meta name="msapplication-TileColor" content="#030914" id="meta-ms-tile" />
+  <link rel="apple-touch-icon" href="assets/images/lp-logo.png?v=2" />
+  <link rel="mask-icon" href="assets/images/lp-logo.png?v=2" color="#0ea5e9" />
+  <title>Lee Parkinson | Electrical Engineering Blueprint</title>
+  <meta name="description" content="Personal portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan) in Preston, Bar Team Leader, hands-on with cars, electronics, and computers." />
+  <link rel="icon" type="image/png" href="assets/images/lp-logo.png?v=2" />
+  <link rel="shortcut icon" href="favicon.ico?v=2" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Lenis Smooth Scroll Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
+  <link rel="stylesheet" href="assets/vendor/blueprint-motion.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sky: {
+              400: 'rgb(var(--sky-400) / <alpha-value>)',
+              500: 'rgb(var(--sky-500) / <alpha-value>)',
+            }
+          },
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sketch: ['"Architects Daughter"', 'cursive'],
+          }
+        }
+      }
+    };
+    (function() {
+      const t = localStorage.getItem('theme');
+      const isDark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+      const c = isDark ? '#030914' : '#cee0f2';
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+    })();
+    function lpMix(hex, to, amt) {
+      const n = parseInt(hex.slice(1), 16), c = [n >> 16 & 255, n >> 8 & 255, n & 255];
+      return c.map(v => Math.round(v + (to - v) * amt)).join(' ');
+    }
+    function lpApplyAccent(a) {
+      const r = document.documentElement;
+      ['300', '400', '500', '600', '700'].forEach(s => r.style.removeProperty('--sky-' + s));
+      r.removeAttribute('data-accent');
+      if (!a || a === 'blue') return;
+      if (a.startsWith('custom:')) {
+        const h = a.slice(7);
+        r.style.setProperty('--sky-300', lpMix(h, 255, 0.5));
+        r.style.setProperty('--sky-400', lpMix(h, 255, 0.25));
+        r.style.setProperty('--sky-500', lpMix(h, 0, 0));
+        r.style.setProperty('--sky-600', lpMix(h, 0, 0.15));
+        r.style.setProperty('--sky-700', lpMix(h, 0, 0.3));
+        r.setAttribute('data-accent', 'custom');
+      } else {
+        r.setAttribute('data-accent', a);
+      }
+    }
+    try { lpApplyAccent(localStorage.getItem('accent')); } catch (e) {}
+    try { document.documentElement.classList.add('hero-needs-typing'); } catch (e) {}
+  </script>
+  <style>
+    html.hero-needs-typing #hero-type-target { visibility: hidden; }
+    html.hero-needs-typing #hero-dot { opacity: 0; }
+    @keyframes dotBlink {
+      0%, 49.9% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .dot-blinking {
+      animation: dotBlink 0.85s infinite;
+      display: inline-block;
+    }
+    :root {
+      --bg-color: #ddebf7;
+      --paper-color: #f7fbff;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --border-color: rgba(2, 132, 199, 0.38);
+      --border-hover: rgba(2, 132, 199, 0.85);
+      --grid-major: rgba(2, 132, 199, 0.17);
+      --grid-minor: rgba(2, 132, 199, 0.065);
+      --text-main: #08182e;
+      --text-muted: #1e3a5f;
+      --text-dim: #0369a1;
+      --accent-cyan: #0284c7;
+      --accent-sketch: #b45309;
+      --header-bg: rgba(221, 235, 247, 0.96);
+      --top-strip: #cee0f2;
+    }
+    html.dark {
+      --bg-color: #040c18;
+      --paper-color: #071428;
+      --card-bg: rgba(7, 20, 40, 0.93);
+      --border-color: rgba(56, 189, 248, 0.35);
+      --border-hover: rgba(56, 189, 248, 0.85);
+      --grid-major: rgba(56, 189, 248, 0.17);
+      --grid-minor: rgba(56, 189, 248, 0.065);
+      --text-main: #f8fafc;
+      --text-muted: #bae6fd;
+      --text-dim: #38bdf8;
+      --accent-cyan: #38bdf8;
+      --accent-sketch: #fde047;
+      --header-bg: rgba(4, 12, 24, 0.96);
+      --top-strip: #030914;
+    }
+    /* ===== ACCENT TOKENS (blue defaults match the original blueprint exactly) ===== */
+    :root {
+      --sky-300: 125 211 252; --sky-400: 56 189 248; --sky-500: 14 165 233; --sky-600: 2 132 199; --sky-700: 3 105 161;
+      --accent-cyan: rgb(var(--sky-600));
+      --text-dim: rgb(var(--sky-700));
+      --border-color: rgb(var(--sky-600) / 0.38);
+      --border-hover: rgb(var(--sky-600) / 0.85);
+      --grid-major: rgb(var(--sky-600) / 0.17);
+      --grid-minor: rgb(var(--sky-600) / 0.065);
+    }
+    html.dark {
+      --accent-cyan: rgb(var(--sky-400));
+      --text-dim: rgb(var(--sky-400));
+      --border-color: rgb(var(--sky-400) / 0.35);
+      --border-hover: rgb(var(--sky-400) / 0.85);
+      --grid-major: rgb(var(--sky-400) / 0.17);
+      --grid-minor: rgb(var(--sky-400) / 0.065);
+    }
+    /* Material You palettes */
+    html[data-accent="violet"] { --sky-300: 196 181 253; --sky-400: 167 139 250; --sky-500: 139 92 246; --sky-600: 124 58 237; --sky-700: 109 40 217; }
+    html[data-accent="pink"]   { --sky-300: 249 168 212; --sky-400: 244 114 182; --sky-500: 236 72 153; --sky-600: 219 39 119; --sky-700: 190 24 93; }
+    html[data-accent="red"]    { --sky-300: 252 165 165; --sky-400: 248 113 113; --sky-500: 239 68 68; --sky-600: 220 38 38; --sky-700: 185 28 28; }
+    html[data-accent="orange"] { --sky-300: 253 186 116; --sky-400: 251 146 60; --sky-500: 249 115 22; --sky-600: 234 88 12; --sky-700: 194 65 12; }
+    html[data-accent="green"]  { --sky-300: 110 231 183; --sky-400: 52 211 153; --sky-500: 16 185 129; --sky-600: 5 150 105; --sky-700: 4 120 87; }
+    html[data-accent="teal"]   { --sky-300: 94 234 212; --sky-400: 45 212 191; --sky-500: 20 184 166; --sky-600: 13 148 136; --sky-700: 15 118 110; }
+    /* Material You tonal surfaces: backgrounds pick up a hint of the accent */
+    html[data-accent] {
+      --bg-color: color-mix(in srgb, rgb(var(--sky-500)) 14%, #f3f6f9);
+      --paper-color: color-mix(in srgb, rgb(var(--sky-500)) 4%, #ffffff);
+      --card-bg: color-mix(in srgb, var(--paper-color) 96%, transparent);
+      --top-strip: color-mix(in srgb, rgb(var(--sky-500)) 22%, #eef2f5);
+      --header-bg: color-mix(in srgb, var(--bg-color) 96%, transparent);
+      --text-main: color-mix(in srgb, rgb(var(--sky-700)) 30%, #0b0f14);
+      --text-muted: color-mix(in srgb, rgb(var(--sky-700)) 55%, #1f2937);
+    }
+    html.dark[data-accent] {
+      --bg-color: color-mix(in srgb, rgb(var(--sky-500)) 7%, #05070a);
+      --paper-color: color-mix(in srgb, rgb(var(--sky-500)) 11%, #080b10);
+      --card-bg: color-mix(in srgb, var(--paper-color) 93%, transparent);
+      --top-strip: color-mix(in srgb, rgb(var(--sky-500)) 5%, #030405);
+      --header-bg: color-mix(in srgb, var(--bg-color) 96%, transparent);
+      --text-main: #f8fafc;
+      --text-muted: color-mix(in srgb, rgb(var(--sky-300)) 70%, #ffffff);
+    }
 
-  <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css" />
+    /* ===== COLLAPSIBLE BLUEPRINT SHEETS ===== */
+    .section-content-wrap {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-content-wrap > .section-content-inner {
+      overflow: hidden;
+      min-height: 0;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-collapsed .section-content-wrap {
+      grid-template-rows: 0fr;
+    }
+    .section-collapsed .section-content-wrap > .section-content-inner {
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+    .section-chevron svg {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-collapsed .section-chevron svg {
+      transform: rotate(0deg);
+    }
+    .section-toggle-header {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 44px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-toggle-header:active {
+      transform: scale(0.992);
+    }
+    .section-toggle-header:hover .sec-tag {
+      filter: brightness(1.12);
+      box-shadow: 0 0 14px rgb(var(--sky-500) / 0.45);
+    }
+    .section-toggle-header:hover .section-chevron {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px -2px rgb(var(--sky-500) / 0.35);
+    }
+    .section-collapsed .section-toggle-header {
+      opacity: 0.9;
+    }
+    .section-collapsed .section-toggle-header:hover {
+      opacity: 1;
+    }
+    .section-collapsed.blueprint-section,
+    .section-collapsed .section-content-wrap {
+      margin-top: 0 !important;
+    }
+
+    /* Mobile UX & Touch Enhancements */
+    @media (max-width: 640px) {
+      .blueprint-card { padding: 1.1rem; }
+      .sec-tag { font-size: 0.68rem; padding: 0.25rem 0.55rem; }
+      .section-chevron { width: 2.25rem; height: 2.25rem; }
+    }
+
+    /* Secret SPEC theme menu */
+    .spec-hold-bar { position: absolute; left: 0; bottom: -3px; height: 2px; width: 0; background: var(--accent-sketch); pointer-events: none; }
+    #spec-wrap.holding .spec-hold-bar { width: 100%; transition: width 1s linear; }
+    .accent-menu {
+      position: absolute; right: 0; top: calc(100% + 10px); width: 244px; padding: 0.8rem;
+      background: var(--paper-color); border: 1px solid var(--accent-cyan); border-radius: 16px;
+      box-shadow: 0 16px 36px -8px rgb(var(--sky-600) / 0.45); text-align: left; z-index: 80;
+      opacity: 0; visibility: hidden; transform: translateY(-4px) scale(0.98);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    }
+    #spec-wrap.menu-open .accent-menu { opacity: 1; visibility: visible; transform: none; }
+    .accent-swatch {
+      aspect-ratio: 1; border-radius: 9999px; background: rgb(var(--sw)); cursor: pointer;
+      border: 2px solid var(--paper-color); box-shadow: 0 0 0 1px var(--border-color); transition: transform 0.15s ease;
+    }
+    .accent-swatch:hover { transform: scale(1.08); }
+    .accent-swatch.active { box-shadow: 0 0 0 2px var(--text-main); }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: clip; margin: 0; padding: 0; }
+    @keyframes blueprintDrift {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100px, -100px, 0); }
+    }
+    html {
+      background-color: var(--bg-color);
+      color-scheme: light;
+      scrollbar-color: var(--accent-cyan) var(--top-strip);
+    }
+    html.dark {
+      color-scheme: dark;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--top-strip); }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border: 1px solid var(--accent-cyan); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+    body {
+      position: relative;
+      isolation: isolate;
+      background-color: transparent;
+      color: var(--text-main);
+      transition: color 0.25s ease;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -100px;
+      z-index: -1;
+      pointer-events: none;
+      will-change: transform;
+      background-color: var(--bg-color);
+      background-image:
+        linear-gradient(var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(var(--grid-minor) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+      background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+      animation: blueprintDrift 7s linear infinite;
+      transition: background-color 0.25s ease;
+    }
+    .nav-item-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-hold-bar {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent-cyan);
+      pointer-events: none;
+    }
+    .nav-item-wrap.holding .nav-hold-bar {
+      width: 100%;
+      transition: width 1s linear;
+    }
+    .nav-hover-card {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 215px;
+      background: var(--paper-color);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 12px 28px -6px rgb(var(--sky-600) / 0.4);
+      padding: 0.65rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      z-index: 100;
+    }
+    .nav-item-wrap.align-right .nav-hover-card {
+      left: auto;
+      right: 0;
+      transform: translateY(6px);
+    }
+    .nav-item-wrap.popup-open .nav-hover-card {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-item-wrap.align-right.popup-open .nav-hover-card {
+      transform: translateY(0);
+    }
+    .t-main { color: var(--text-main); }
+    .t-muted { color: var(--text-muted); }
+    .t-dim { color: var(--text-dim); }
+    .t-cyan { color: var(--accent-cyan); }
+    .t-sketch { color: var(--accent-sketch); }
+    .bg-paper { background-color: var(--paper-color); }
+    .bg-card { background-color: var(--card-bg); }
+    .bg-strip { background-color: var(--top-strip); }
+    .bg-hdr { background-color: var(--header-bg); }
+    .drafting-container {
+      width: 100%;
+      max-width: 1380px;
+      margin-inline: auto;
+      padding-left: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-left));
+      padding-right: max(clamp(0.65rem, 2.8vw, 3rem), env(safe-area-inset-right));
+    }
+    .blueprint-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      position: relative;
+      transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 100%;
+    }
+    .blueprint-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 6px 22px -5px rgb(var(--sky-400) / 0.22);
+    }
+    .blueprint-card::before, .blueprint-card::after {
+      content: '+';
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      opacity: 0.7;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.25s ease,
+                  opacity 0.25s ease;
+    }
+    .blueprint-card::before { top: -8px; left: -2px; }
+    .blueprint-card::after { bottom: -8px; right: -2px; }
+    .blueprint-card:hover::before {
+      opacity: 1;
+      transform: translate(-1.5px, -1.5px);
+      color: var(--accent-sketch);
+    }
+    .blueprint-card:hover::after {
+      opacity: 1;
+      transform: translate(1.5px, 1.5px);
+      color: var(--accent-sketch);
+    }
+
+    /* Tactile Elevation & Micro-Interactions on Component Cards */
+    .project-card,
+    .blueprint-interactive {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover,
+    .blueprint-interactive:hover {
+      transform: translateY(-2.5px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 12px 28px -6px rgb(var(--sky-500) / 0.24), 0 0 0 1px rgb(var(--sky-400) / 0.3);
+    }
+
+    .dim-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      overflow: hidden;
+      width: 100%;
+      min-width: 0;
+    }
+    .dim-line::before, .dim-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+      min-width: 12px;
+    }
+    .chip {
+      padding: 0.15rem 0.5rem;
+      border: 1px solid rgb(var(--sky-500) / 0.3);
+      background-color: var(--paper-color);
+      color: var(--text-dim);
+      transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      display: inline-block;
+    }
+    .chip:hover {
+      border-color: var(--accent-cyan);
+      background-color: rgb(var(--sky-500) / 0.12);
+      transform: translateY(-1px);
+    }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      background: rgb(var(--sky-500));
+      color: #fff;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    /* Filter Buttons */
+    .filter-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .filter-btn:hover:not(.active) {
+      background-color: rgb(var(--sky-500) / 0.12);
+      color: var(--accent-cyan);
+    }
+    .filter-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Nav Item Hover & Active Micro-States */
+    .nav-item-wrap > a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      display: inline-block;
+    }
+    .nav-item-wrap > a:active {
+      transform: scale(0.95);
+    }
+
+    /* Telemetry Beacon Pulse */
+    @keyframes telemetryPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgb(16 185 129 / 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgb(16 185 129 / 0);
+      }
+    }
+    .telemetry-beacon {
+      animation: telemetryPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @media (orientation: landscape) and (max-height: 580px) {
+      .landscape-compact-header { height: 2.75rem !important; }
+      .landscape-compact-main { padding-block: 1rem 1.5rem !important; }
+      .landscape-hero-grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
+      .landscape-hero-photo-col { grid-column: span 4 / span 4 !important; }
+      .landscape-hero-photo-box { max-width: 175px !important; }
+      .landscape-hero-text-col { grid-column: span 8 / span 8 !important; }
+    }
+  </style>
 </head>
 
-<body id="top">
-  <!-- Accessibility Skip Link -->
-  <a href="#content" class="skip-link">Skip to technical content [Alt+1]</a>
+<body class="font-sans antialiased selection:bg-sky-400 selection:text-black min-h-screen w-full flex flex-col justify-between text-sm sm:text-base">
 
-  <!-- Blueprint Drafting Grid (Fixed Background) -->
-  <div class="bp-grid" aria-hidden="true"></div>
-
-  <!-- Drawing Frame with ISO Zone References -->
-  <div class="bp-frame" aria-hidden="true">
-    <span class="zx" style="left: 12.5%;">1</span>
-    <span class="zx" style="left: 25%;">2</span>
-    <span class="zx" style="left: 37.5%;">3</span>
-    <span class="zx" style="left: 50%;">4</span>
-    <span class="zx" style="left: 62.5%;">5</span>
-    <span class="zx" style="left: 75%;">6</span>
-    <span class="zx" style="left: 87.5%;">7</span>
-    <span class="zx b" style="left: 12.5%;">1</span>
-    <span class="zx b" style="left: 25%;">2</span>
-    <span class="zx b" style="left: 37.5%;">3</span>
-    <span class="zx b" style="left: 50%;">4</span>
-    <span class="zx b" style="left: 62.5%;">5</span>
-    <span class="zx b" style="left: 75%;">6</span>
-    <span class="zx b" style="left: 87.5%;">7</span>
-    <span class="zy" style="top: 20%;">A</span>
-    <span class="zy" style="top: 40%;">B</span>
-    <span class="zy" style="top: 60%;">C</span>
-    <span class="zy" style="top: 80%;">D</span>
-    <span class="zy r" style="top: 20%;">A</span>
-    <span class="zy r" style="top: 40%;">B</span>
-    <span class="zy r" style="top: 60%;">C</span>
-    <span class="zy r" style="top: 80%;">D</span>
+  <!-- TOP ENGINEERING TECHNICAL STRIP -->
+  <div class="bg-strip w-full border-b border-sky-400/30 text-[11px] sm:text-xs font-mono py-1.5 z-50">
+    <div class="drafting-container flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
+        <span class="flex items-center gap-1.5 font-bold t-dim">
+          <span class="inline-block w-2 h-2 rounded-full animate-ping shrink-0" style="background-color: var(--accent-cyan);"></span>
+          <span class="truncate">DWG: LP-ENG-2026-EE</span>
+        </span>
+        <span class="opacity-30 hidden sm:inline">|</span>
+        <span class="hidden sm:inline t-muted">DISCIPLINE: ELECTRICAL ENGINEERING</span>
+        <span class="opacity-30">|</span>
+        <span class="t-muted">PRESTON, UK</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="flex items-center border border-sky-400/40 font-mono text-[11px] rounded overflow-hidden">
+          <button onclick="setThemeMode('auto')" id="btn-theme-auto" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors" title="Follow browser preference">🖥️ <span class="hidden sm:inline">AUTO</span></button>
+          <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
+          <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
+        </div>
+        <div id="spec-wrap" class="relative hidden md:inline-flex items-center gap-2">
+          <span class="px-1.5 py-0.5 border border-sky-400/40 rounded-sm bg-card t-cyan font-mono text-[10px] font-bold hidden xl:inline-block" title="BS 8888 / ISO 128 Technical Drawing &amp; IEEE 315 Schematic Standard">BS 8888 // IEEE-315 CAD</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V9.0</span>
+          <span class="spec-hold-bar"></span>
+          <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] font-bold t-dim">SECRET // MATERIAL YOU</span>
+              <button type="button" onclick="closeAccentMenu()" class="t-muted hover:text-sky-400 text-xs" aria-label="Close">✕</button>
+            </div>
+            <p class="font-sans text-[11px] leading-snug t-muted">You found it. Pick an accent colour — saved on this device only.</p>
+            <div class="grid grid-cols-7 gap-1.5">
+              <button type="button" class="accent-swatch" data-accent-btn="blue" onclick="setAccent('blue')" style="--sw: 14 165 233" title="Blueprint Blue" aria-label="Blueprint Blue"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="violet" onclick="setAccent('violet')" style="--sw: 139 92 246" title="Violet" aria-label="Violet"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="pink" onclick="setAccent('pink')" style="--sw: 236 72 153" title="Pink" aria-label="Pink"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="red" onclick="setAccent('red')" style="--sw: 239 68 68" title="Red" aria-label="Red"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="orange" onclick="setAccent('orange')" style="--sw: 249 115 22" title="Orange" aria-label="Orange"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="green" onclick="setAccent('green')" style="--sw: 16 185 129" title="Green" aria-label="Green"></button>
+              <button type="button" class="accent-swatch" data-accent-btn="teal" onclick="setAccent('teal')" style="--sw: 20 184 166" title="Teal" aria-label="Teal"></button>
+            </div>
+            <label class="flex items-center justify-between font-mono text-[11px] t-muted pt-1 border-t border-sky-500/20">
+              <span>CUSTOM COLOUR</span>
+              <input type="color" id="accent-custom" value="#0ea5e9" class="w-9 h-6 bg-transparent border border-sky-500/40 rounded cursor-pointer" />
+            </label>
+            <button type="button" onclick="setAccent('blue')" class="w-full py-1.5 font-mono text-[11px] font-bold border border-sky-500/40 rounded-lg hover:bg-sky-500 hover:text-white transition-colors t-cyan">Reset to Blueprint Blue</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- TOP HEADER -->
-  <header class="site-header">
-    <div class="container">
-      <a href="#top" class="brand" aria-label="Lee Parkinson — Return to top">
-        <div class="brand-mark" aria-hidden="true">LP</div>
-        <div class="brand-text">
-          <div class="brand-name">LEE PARKINSON</div>
-          <div class="brand-sub">DWG: LP-ENG-2026-EE</div>
+  <!-- NAVIGATION HEADER (HOLD HOVER 1s FOR DEDICATED PAGE POPUP) -->
+  <header class="bg-hdr w-full border-b border-sky-400/25 backdrop-blur-md sticky top-0 z-40">
+    <div class="drafting-container landscape-compact-header h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
+      <a href="index.html" class="flex items-center gap-2 shrink-0 min-w-0">
+        <div class="min-w-0">
+          <div class="font-bold text-sm sm:text-base tracking-tight flex items-center gap-1.5 truncate t-main">
+            <span class="truncate">LEE PARKINSON</span>
+            <span class="text-xs font-mono font-normal shrink-0 t-dim">[EE]</span>
+          </div>
+          <div class="text-[10px] font-mono uppercase tracking-widest hidden sm:block truncate t-muted">Electrical Engineering</div>
         </div>
       </a>
 
-      <!-- Desktop Nav -->
-      <nav class="nav" aria-label="Drawing sheets">
-        <a href="#about"><span>01</span>About</a>
-        <a href="#schematics"><span>02</span>Schematics</a>
-        <a href="#projects"><span>03</span>Projects</a>
-        <a href="#experience"><span>04</span>Experience</a>
-        <a href="#education"><span>05</span>Education</a>
-        <a href="#hobbies"><span>06</span>Field</a>
-        <a href="#contact"><span>07</span>Dispatch</a>
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-5 text-xs font-mono shrink-0 t-muted">
+        <div class="nav-item-wrap py-2">
+          <a href="#about" class="hover:text-sky-400">01. ABOUT</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 01 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Full Bio, Toolkit &amp; Schedule</div>
+            <a href="about.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#schematics" class="hover:text-sky-400">02. SCHEMATICS</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 02 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Deep Technical Specs &amp; DJ</div>
+            <a href="schematics.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#gallery" class="hover:text-sky-400">03. GALLERY</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 03 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Sub-£15 Car Plan &amp; Themes</div>
+            <a href="gallery.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#experience" class="hover:text-sky-400">04. EXPERIENCE</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 04 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Career Log &amp; Skills Matrix</div>
+            <a href="experience.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#education" class="hover:text-sky-400">05. EDUCATION</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 05 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">ULan Modules, BTEC &amp; GCSEs</div>
+            <a href="education.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#hobbies" class="hover:text-sky-400">06. HOBBIES</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 06 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Mountains, Camping &amp; Cars</div>
+            <a href="hobbies.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap py-2">
+          <a href="#contact" class="hover:text-sky-400">07. CONTACT</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">SHEET 07 // DEDICATED PAGE</div>
+            <div class="text-xs font-sans t-main">Availability &amp; Direct Channels</div>
+            <a href="contact.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Dedicated Page →</a>
+          </div>
+        </div>
       </nav>
 
-      <!-- Action Cluster -->
-      <div class="header-actions">
-        <!-- Blueprint / Whiteprint Theme Toggle -->
-        <button type="button" class="btn btn-sm" data-theme-toggle aria-label="Toggle Blueprint / Whiteprint film theme">
-          <span class="tiny mono" data-theme-label>LIGHT</span>
-        </button>
-
-        <!-- CV Spec Sheet -->
-        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-          <span>CV SPEC</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-        </a>
-
-        <!-- Mobile Drawer Toggle -->
-        <button type="button" class="icon-btn menu-btn" aria-label="Toggle navigation drawer" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+      <div class="flex items-center gap-2 font-mono text-xs shrink-0">
+        <div class="nav-item-wrap align-right py-1">
+          <a href="mailto:lspky@pm.me" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white transition-all t-dim bg-card">✉ lspky@pm.me</a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2 text-left">
+            <div class="text-[10px] font-bold t-dim">DISPATCH // EMAIL PAGE</div>
+            <div class="text-xs font-sans t-main">Quick Templates &amp; Composer</div>
+            <a href="email.html" class="block w-full text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-[11px]">Open Email Page →</a>
+          </div>
+        </div>
+        <div class="nav-item-wrap align-right py-1">
+          <a href="cv.html" class="px-3.5 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold transition-all flex items-center gap-1.5 shadow-md ring-1 ring-sky-300/40 active:scale-95">
+            <span>📄</span>
+            <span>CV SPEC</span>
+            <span class="text-[10px] bg-white/20 px-1 py-0.2 rounded font-mono">PDF ↓</span>
+          </a>
+          <span class="nav-hold-bar"></span>
+          <div class="nav-hover-card space-y-2.5 text-left">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold t-dim">DOCUMENT // CV PAGE</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 bg-sky-500 text-white rounded">OCT 2026</span>
+            </div>
+            <div class="text-xs font-sans t-main">Executive Summary &amp; PDF Viewer</div>
+            <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
+              <a href="cv.html" class="text-center py-1.5 px-2 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded">Web Sheet →</a>
+              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="text-center py-1.5 px-2 border border-sky-400/50 hover:bg-sky-500/20 t-cyan font-bold rounded bg-card">PDF ↗</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Scroll Meter -->
-    <div class="scroll-meter" aria-hidden="true"><i></i></div>
+    <nav class="lg:hidden w-full border-t border-sky-400/20 overflow-x-auto no-scrollbar bg-hdr">
+      <div class="drafting-container py-2 flex items-center gap-3 sm:gap-4 text-xs font-mono whitespace-nowrap t-muted">
+        <a href="cv.html" class="px-2.5 py-1 bg-sky-500 text-white font-bold rounded flex items-center gap-1 shrink-0 shadow-sm">
+          <span>📄</span> <span>CV SPEC</span>
+        </a>
+        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan font-bold rounded flex items-center gap-1 shrink-0 bg-card">
+          <span>PDF ↓</span>
+        </a>
+        <a href="about.html" class="hover:text-sky-400">01. ABOUT</a>
+        <a href="schematics.html" class="hover:text-sky-400">02. SCHEMATICS</a>
+        <a href="gallery.html" class="hover:text-sky-400">03. GALLERY</a>
+        <a href="experience.html" class="hover:text-sky-400">04. EXPERIENCE</a>
+        <a href="education.html" class="hover:text-sky-400">05. EDUCATION</a>
+        <a href="hobbies.html" class="hover:text-sky-400">06. HOBBIES</a>
+        <a href="contact.html" class="hover:text-sky-400">07. CONTACT</a>
+        <a href="email.html" class="hover:text-sky-400">✉ EMAIL</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- Mobile Drawer -->
-  <div class="drawer" aria-label="Mobile navigation">
-    <a href="#about"><span>01 //</span> About &amp; Toolkit</a>
-    <a href="#schematics"><span>02 //</span> Technical Schematics</a>
-    <a href="#projects"><span>03 //</span> Projects &amp; Gallery</a>
-    <a href="#experience"><span>04 //</span> Career Logbook</a>
-    <a href="#education"><span>05 //</span> Academic BOM</a>
-    <a href="#hobbies"><span>06 //</span> Field Systems</a>
-    <a href="#contact"><span>07 //</span> Direct Dispatch</a>
-  </div>
+  <!-- MAIN DRAFTING BOARD -->
+  <main class="drafting-container landscape-compact-main py-5 sm:py-8 lg:py-10 space-y-5 sm:space-y-7 lg:space-y-8 flex-1" id="top">
 
-  <main id="content">
-    <!-- =====================================================================
-         00. HERO SPECIFICATION SHEET
-         ===================================================================== -->
-    <section class="hero section">
-      <!-- Background Technical CAD / Circuit Artwork -->
-      <div class="hero-art" aria-hidden="true">
-        <!-- Circuit traces -->
-        <svg class="hero-circuit" viewBox="0 0 760 480">
-          <path class="trace" d="M20,40 L160,40 L210,90 L420,90 L460,50 L680,50" />
-          <path class="trace trace-accent" d="M120,120 L240,120 L290,170 L520,170 L560,210 L740,210" />
-          <path class="trace" d="M60,200 L180,200 L210,230 L380,230 L420,190 L640,190" />
-          <path class="trace trace-mark" d="M280,300 L390,300 L440,350 L660,350 L700,310" />
-          <circle class="node" cx="160" cy="40" r="3.5" />
-          <circle class="node" cx="420" cy="90" r="3.5" />
-          <circle class="node" cx="240" cy="120" r="3.5" />
-          <circle class="node" cx="520" cy="170" r="3.5" />
-          <circle class="node" cx="380" cy="230" r="3.5" />
-          <circle class="node" cx="440" cy="350" r="3.5" />
-        </svg>
-
-        <!-- Mechanical gears -->
-        <svg class="hero-gears" viewBox="0 0 360 360">
-          <g class="gear">
-            <circle cx="180" cy="180" r="140" stroke-dasharray="8 6" />
-            <circle cx="180" cy="180" r="110" />
-            <circle class="gear-hub" cx="180" cy="180" r="42" />
-            <circle cx="180" cy="180" r="14" />
-            <line x1="180" y1="40" x2="180" y2="320" />
-            <line x1="40" y1="180" x2="320" y2="180" />
-            <line x1="81" y1="81" x2="279" y2="279" />
-            <line x1="81" y1="279" x2="279" y2="81" />
-          </g>
-        </svg>
+    <!-- HERO SECTION -->
+    <section class="blueprint-card p-5 sm:p-7 md:p-8 lg:p-10 border border-sky-500/40">
+      <div class="dim-line mb-5 sm:mb-7">
+        <span class="truncate min-w-0">FIG 01.0 // SPECIFICATION SHEET: HI, I'M LEE</span>
       </div>
 
-      <!-- React Bits · Crosshair Datum Layer -->
-      <div class="crosshair" aria-hidden="true">
-        <div class="ch-x"></div>
-        <div class="ch-y"></div>
-        <div class="ch-read">DATUM [0.0, 0.0mm]</div>
-      </div>
-
-      <div class="container">
-        <div class="hero-grid">
-          <!-- Text Column -->
-          <div class="hero-copy">
-            <div class="status-pill">
-              <span class="status-dot"></span>
-              <span class="mono">ULAN EE // PRESTON, LANCASHIRE UK</span>
+      <div class="landscape-hero-grid grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+        <!-- Portrait -->
+        <div class="landscape-hero-photo-col md:col-span-5 lg:col-span-4 flex flex-col items-center min-w-0">
+          <div class="landscape-hero-photo-box relative p-2.5 border-2 border-sky-500/60 shadow-xl max-w-[285px] sm:max-w-[310px] lg:max-w-sm w-full bg-paper">
+            <div class="overflow-hidden border border-sky-500/30 relative group aspect-[3/4]">
+              <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson" class="w-full h-full object-cover contrast-[1.04] group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute bottom-2 left-2 border border-sky-400/50 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] bg-hdr t-dim">OPERATOR: LEE PARKINSON</div>
             </div>
+            <div class="mt-2 font-mono text-xs flex items-center justify-between px-1 gap-1 t-muted">
+              <span>AGE: 21</span>
+              <span class="t-sketch font-sketch text-xs truncate">← operator photo</span>
+              <span>ULAN EE</span>
+            </div>
+          </div>
+        </div>
 
-            <h1 class="display hero-name">
-              Lee Parkinson<span class="accent">.</span>
+        <!-- Intro -->
+        <div class="landscape-hero-text-col md:col-span-7 lg:col-span-8 space-y-4 sm:space-y-5 min-w-0">
+          <div class="inline-flex max-w-full items-center gap-2 px-3 py-1 border border-sky-500/30 font-mono text-xs bg-card t-dim">
+            <span class="w-2 h-2 rounded-full animate-pulse shrink-0" style="background-color: var(--accent-cyan);"></span>
+            <span class="truncate min-w-0">ELECTRICAL ENGINEERING (FOUNDATION YEAR) • ULAN PRESTON</span>
+          </div>
+
+          <div class="space-y-2">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight t-main select-none flex items-baseline" id="hero-heading" title="Click to replay code typing animation">
+              <span id="hero-type-target">Hi, I'm Lee</span><span id="hero-dot" class="t-cyan">.</span><span id="hero-cursor" class="font-mono t-cyan inline-block text-3xl sm:text-4xl lg:text-5xl ml-1 font-light animate-pulse" style="display:none;">_</span>
             </h1>
-
-            <div class="hero-role">
-              <span class="shiny">ELECTRICAL ENGINEERING // AUTOMOTIVE DIAGNOSTICS // SYSTEMS</span><span class="caret" aria-hidden="true"></span>
-            </div>
-
-            <p class="lead">
-              Student engineer at the <strong>University of Lancashire (ULan)</strong>. Hands-on workshop mechanics, electrical fault-finding, circuitry, PC hardware, and software.
+            <p class="font-sketch t-sketch text-base sm:text-lg lg:text-xl">
+              "Studying Electrical Engineering at ULan. Working on cars, electronics, and software."
             </p>
-
-            <div class="hero-cta">
-              <a href="#contact" class="btn btn-primary">
-                <span>Direct Dispatch</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-              <a href="#schematics" class="btn">
-                <span>View Schematics</span>
-              </a>
-              <a href="cv.html" class="btn">
-                <span>Full CV Spec</span>
-              </a>
-            </div>
-
-            <!-- Engineering Specification Table -->
-            <dl class="spec">
-              <div>
-                <dt>Operator</dt>
-                <dd>Lee Parkinson</dd>
-              </div>
-              <div>
-                <dt>Age / Base</dt>
-                <dd>21 · Preston, UK</dd>
-              </div>
-              <div>
-                <dt>Academic Track</dt>
-                <dd>BEng EE (Found.)</dd>
-              </div>
-              <div>
-                <dt>Active Role</dt>
-                <dd>Bar Team Leader</dd>
-              </div>
-            </dl>
           </div>
 
-          <!-- Portrait Column (TiltedCard + Blueprint Dimensioning) -->
-          <div class="portrait">
-            <!-- Dimension Lines -->
-            <div class="dim dim-h" aria-hidden="true">
-              <b>285mm // WIDTH</b>
-            </div>
-            <div class="dim dim-v" aria-hidden="true">
-              <b>380mm // HEIGHT</b>
-            </div>
+          <p class="text-sm sm:text-base leading-relaxed max-w-2xl t-muted">
+            I'm <strong>21</strong>, based in <strong>Preston</strong>, and studying <strong>Electrical Engineering at the University of Lancashire (ULan)</strong>. Growing up, I've always loved technology, mechanics, electrics, and computers — along with tinkering with <strong>software &amp; games</strong> and a brief stint as a <strong>DJ</strong>.
+          </p>
 
-            <!-- React Bits · TiltedCard -->
-            <div class="tilt figure">
-              <div class="figure-frame">
-                <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson portrait photograph" width="800" height="1066" fetchpriority="high" />
-                <div class="portrait-tag mono">FIG 00.1 // OPERATOR</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-0.5 font-mono text-xs">
+            <div class="border border-sky-500/30 p-2.5 min-w-0 bg-card rounded">
+              <span class="block text-[10px] font-bold tracking-wider t-dim">AGE</span>
+              <span class="font-bold truncate block t-main text-xs sm:text-sm">21 Years Old</span>
+            </div>
+            <div class="border border-sky-500/30 p-2.5 min-w-0 bg-card rounded">
+              <span class="block text-[10px] font-bold tracking-wider t-dim">CAMPUS</span>
+              <span class="font-bold truncate block t-main text-xs sm:text-sm">ULan, Preston</span>
+            </div>
+            <div class="border border-sky-500/30 p-2.5 min-w-0 bg-card rounded">
+              <span class="block text-[10px] font-bold tracking-wider t-dim">DISCIPLINE</span>
+              <span class="font-bold truncate block t-main text-xs sm:text-sm">Electrical Eng.</span>
+            </div>
+            <div class="border border-sky-500/30 p-2.5 min-w-0 bg-card rounded">
+              <span class="block text-[10px] font-bold tracking-wider t-dim">BACKGROUND</span>
+              <span class="font-bold truncate block t-main text-xs sm:text-sm">Hospitality &amp; Eng.</span>
+            </div>
+          </div>
+
+          <!-- PROMINENT CV SPECIFICATION & DISPATCH CARD -->
+          <div class="blueprint-card blueprint-interactive p-3.5 sm:p-4 border-2 border-sky-400/80 bg-sky-500/10 rounded space-y-3 shadow-md relative overflow-hidden group">
+            <!-- Top Metadata Strip -->
+            <div class="flex items-center justify-between gap-2 font-mono text-[10px] border-b border-sky-500/25 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="font-bold px-2 py-0.5 bg-sky-500 text-white rounded-sm tracking-wide">CURRICULUM VITAE</span>
+                <span class="t-cyan font-bold">• UPDATED OCT 2026</span>
               </div>
-              <figcaption>
-                <span>ULAN CAMPUS</span>
-                <span class="hand">"learning by getting hands dirty"</span>
-              </figcaption>
+              <span class="t-dim font-bold hidden sm:inline tracking-wider">ENGINEERING SPECIFICATION</span>
             </div>
 
-            <div class="portrait-callout hand" aria-hidden="true">
-              FOUNDATION YEAR<br />PRESTON, UK
+            <!-- Main Interactive Content Row -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+              <div class="flex items-center gap-3 sm:gap-3.5 min-w-0">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-sky-500 text-white flex items-center justify-center shrink-0 shadow-md ring-1 ring-sky-300/40 group-hover:scale-105 transition-transform">
+                  <svg class="w-5 h-5 sm:w-5.5 sm:h-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs sm:text-sm font-bold t-main leading-snug">
+                    Available for Engineering Placements &amp; Roles
+                  </div>
+                  <div class="text-[11px] font-mono t-muted pt-0.5">
+                    Interactive Web Sheet &amp; Embedded PDF (252KB)
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:items-center sm:gap-2.5 shrink-0 font-mono text-xs">
+                <a href="cv.html" class="h-9 sm:h-10 px-3.5 sm:px-4 bg-sky-500 hover:bg-sky-400 border-2 border-sky-500 hover:border-sky-400 text-white font-bold rounded shadow transition-all flex items-center justify-center gap-1.5 active:scale-95 whitespace-nowrap text-center">
+                  <span>View Full CV</span>
+                  <span class="text-xs">➔</span>
+                </a>
+                <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="h-9 sm:h-10 px-3 sm:px-3.5 border-2 border-sky-500 hover:bg-sky-500 hover:text-white transition-all font-bold t-cyan bg-card rounded flex items-center justify-center gap-1.5 active:scale-95 shadow-sm whitespace-nowrap text-center">
+                  <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>PDF (252KB)</span>
+                  <span class="text-xs">↓</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- BS-8888 / ISO-7200 Title Block -->
-        <div class="title-block">
-          <div>
-            <span>PROJECT SPECIFICATION</span>
-            <b>ELECTRICAL ENGINEERING PORTFOLIO</b>
-          </div>
-          <div>
-            <span>DRAWING NO.</span>
-            <b class="mono accent">LP-2026-EE</b>
-          </div>
-          <div>
-            <span>REVISION</span>
-            <b class="mono">REV 10.0</b>
-          </div>
-          <div>
-            <span>SCALE</span>
-            <b class="mono">1:1 CAD</b>
-          </div>
-          <div>
-            <span>LOCATION</span>
-            <b>ULAN PRESTON</b>
-          </div>
-          <div>
-            <span>STATUS</span>
-            <b class="mono accent">APPROVED ✓</b>
-          </div>
-        </div>
+      <div class="dim-line mt-6 sm:mt-8">
+        <span class="truncate min-w-0">TOLERANCES UNLESS SPECIFIED: ±0.05mm // ALL SYSTEMS FUNCTIONAL</span>
       </div>
     </section>
 
-    <!-- =====================================================================
-         VELOCITY RIBBON (React Bits · ScrollVelocity)
-         ===================================================================== -->
-    <div class="ribbon" aria-hidden="true">
-      <div class="ribbon-row">
-        <div class="ribbon-item"><i>//</i> CIRCUIT THEORY</div>
-        <div class="ribbon-item"><i>//</i> DIGITAL ELECTRONICS</div>
-        <div class="ribbon-item"><i>//</i> POWER SYSTEMS</div>
-        <div class="ribbon-item"><i>//</i> VEHICLE ELECTRICS</div>
-        <div class="ribbon-item"><i>//</i> HYDRAULIC BRAKE BLEEDING</div>
-        <div class="ribbon-item"><i>//</i> CAN-BUS DIAGNOSTICS</div>
-        <div class="ribbon-item"><i>//</i> PC ARCHITECTURE &amp; NETWORKING</div>
-        <div class="ribbon-item"><i>//</i> LIVE AUDIO ROUTING</div>
-        <div class="ribbon-item"><i>//</i> CIRCUIT THEORY</div>
-        <div class="ribbon-item"><i>//</i> DIGITAL ELECTRONICS</div>
-        <div class="ribbon-item"><i>//</i> POWER SYSTEMS</div>
-        <div class="ribbon-item"><i>//</i> VEHICLE ELECTRICS</div>
-        <div class="ribbon-item"><i>//</i> HYDRAULIC BRAKE BLEEDING</div>
-        <div class="ribbon-item"><i>//</i> CAN-BUS DIAGNOSTICS</div>
-        <div class="ribbon-item"><i>//</i> PC ARCHITECTURE &amp; NETWORKING</div>
-        <div class="ribbon-item"><i>//</i> LIVE AUDIO ROUTING</div>
+    <!-- BLUEPRINT SHEETS CONTROL TOOLBAR -->
+    <div class="blueprint-card p-2.5 sm:p-3.5 border border-sky-500/35 flex items-center justify-between gap-2 sm:gap-3 font-mono text-xs flex-wrap">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 telemetry-beacon shrink-0"></span>
+        <span class="font-bold truncate t-main text-[11px] sm:text-xs">DRAFTING SHEETS // 07 SECTIONS</span>
+        <span class="hidden md:inline t-muted">• TAP ANY HEADER TO FOLD / EXPAND</span>
       </div>
-      <div class="ribbon-row alt">
-        <div class="ribbon-item"><i>*</i> ULan EE Foundation</div>
-        <div class="ribbon-item"><i>*</i> Wetherspoons Team Leader</div>
-        <div class="ribbon-item"><i>*</i> Car Cosmetics Technician</div>
-        <div class="ribbon-item"><i>*</i> Lake District Scrambles</div>
-        <div class="ribbon-item"><i>*</i> BMW E90 3 Series</div>
-        <div class="ribbon-item"><i>*</i> ULan EE Foundation</div>
-        <div class="ribbon-item"><i>*</i> Wetherspoons Team Leader</div>
-        <div class="ribbon-item"><i>*</i> Car Cosmetics Technician</div>
-        <div class="ribbon-item"><i>*</i> Lake District Scrambles</div>
-        <div class="ribbon-item"><i>*</i> BMW E90 3 Series</div>
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <a href="cv.html" class="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-sky-500/15 border border-sky-500/60 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95 flex items-center gap-1" title="Open full CV page">
+          <span>📄</span> <span>FULL CV</span>
+        </a>
+        <button type="button" onclick="setAllSections(false)" class="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95" title="Collapse all sheets">
+          [−] FOLD ALL
+        </button>
+        <button type="button" onclick="setAllSections(true)" class="px-2.5 sm:px-3 py-1 sm:py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white rounded transition-colors text-[11px] sm:text-xs font-bold t-cyan active:scale-95" title="Expand all sheets">
+          [+] EXPAND ALL
+        </button>
       </div>
     </div>
 
-    <!-- =====================================================================
-         01. ABOUT ME & THREE CORE PILLARS
-         ===================================================================== -->
-    <section id="about" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 01</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-01 // PROFILE &amp; TOOLKIT</span>
+    <!-- SECTION 01: ABOUT ME -->
+    <section id="about" class="space-y-4 sm:space-y-6">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('about')" role="button" aria-expanded="true" aria-controls="section-content-about" id="toggle-about">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">01 // ABOUT ME</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">A Bit About Me</h2>
           </div>
-          <span class="eyebrow">01 // Profile Spec</span>
-          <h2 class="h2">A Bit About Me<span class="accent">.</span></h2>
-          <p class="lead">
-            Growing up, I've always loved technology, mechanics, electrics, and computers — whether taking hardware apart to understand how it ticks, building custom PCs, or diagnosing vehicles.
-          </p>
         </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
 
-        <div class="profile-grid">
-          <!-- Story -->
-          <div class="profile-copy body">
-            <p>
-              I'm <strong>21</strong> and living in <strong>Preston</strong>, completing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong> alongside working as a <strong>Bar Team Leader at Wetherspoons</strong> (The Velvet Coaster in Blackpool &amp; The Twelve Tellers in Preston).
-            </p>
-            <p>
-              Before starting university, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, getting proper workshop experience diagnosing mechanical and electrical faults, servicing, bleeding brakes, and wiring vehicle electrics.
-            </p>
-            <p>
-              Outside of academics and shift leadership, I'm usually out in the workshop on car builds, working on electronics, scrambling fells in the Lake District, or tinkering with software and games.
-            </p>
+      <div id="section-content-about" class="section-content-wrap">
+        <div class="section-content-inner space-y-6 pt-1">
 
-            <div class="chips" style="margin-top: 1.5rem;">
-              <span class="chip">Preston, Lancashire UK</span>
-              <span class="chip">University of Lancashire</span>
-              <span class="chip">Electrical Engineering</span>
-              <span class="chip">Workshop Diagnostics</span>
-              <span class="chip">Shift Operations</span>
-            </div>
+      <div class="blueprint-card p-5 sm:p-7 md:p-8 border border-sky-500/35 space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 space-y-3.5 text-sm sm:text-base leading-relaxed min-w-0 t-muted">
+            <p>
+              Growing up, I've always been into technology, mechanics, electrics, and computers. Whether it was taking things apart to see how they worked, building PCs, or fixing things up, I've always preferred learning by actually getting my hands dirty.
+            </p>
+            <p>
+              Before starting uni, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, where I got proper hands-on experience working on cars — doing mechanical repairs, servicing, bleeding brakes, and tracking down electrical faults.
+            </p>
+            <p>
+              I'm <strong>21</strong> and living in <strong>Preston</strong>, doing my <strong>Foundation Year in Electrical Engineering at the University of Lancashire (ULan)</strong> alongside working as a <strong>Bar Team Leader at Wetherspoons</strong> (The Velvet Coaster in Blackpool &amp; The Twelve Tellers in Preston). Outside of uni and work, I'm usually working on cars, tinkering with electronics, or tinkering with software and games.
+            </p>
           </div>
 
-          <!-- Red-line Field Notes Panel -->
-          <div class="panel field-notes spotlight">
-            <div class="panel-head">
-              <span class="panel-id">DWG NOTE // 01-A</span>
-              <span class="tag tag-mark">FIELD NOTES</span>
-            </div>
-            <p class="hand">
+          <div class="border-2 border-dashed border-sky-500/50 p-4 sm:p-5 space-y-3 relative min-w-0 bg-paper">
+            <div class="text-xs font-mono uppercase tracking-widest t-sketch font-bold">// FIELD NOTES</div>
+            <p class="font-sketch t-sketch text-sm leading-relaxed">
               "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
             </p>
-            <ul>
-              <li><strong>Discipline:</strong> Electrical &amp; Electronic Engineering</li>
-              <li><strong>Current Campus:</strong> ULan, Preston (Foundation Year)</li>
-              <li><strong>Career:</strong> Bar Team Leader @ Wetherspoons</li>
-              <li><strong>Hands-On:</strong> Mechanics, Electrics, IT Systems &amp; Audio</li>
-            </ul>
-            <div style="margin-top: 1.25rem;">
-              <a href="about.html" class="panel-link">Open Dedicated About Sheet →</a>
+            <div class="pt-2 border-t border-sky-500/20 font-mono text-xs space-y-1.5 t-dim">
+              <div>• Age: 21 • Based in Preston, Lancashire</div>
+              <div>• Electrical Engineering (Foundation) @ ULan</div>
+              <div>• Bar Team Leader @ Wetherspoons (Velvet Coaster &amp; Twelve Tellers)</div>
+              <div>• Cars, Electrics, Computers &amp; ICT</div>
             </div>
           </div>
         </div>
 
-        <!-- Three Core Pillars -->
-        <div class="grid grid-3" style="margin-top: 2.5rem;">
-          <!-- Pillar 1 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">PILLAR 01</span>
-              <span class="tag tag-outline">ELECTRICAL</span>
-            </div>
-            <svg class="pillar-icon" viewBox="0 0 100 60" aria-hidden="true">
-              <line x1="10" y1="30" x2="35" y2="30" />
-              <rect x="35" y="20" width="30" height="20" />
-              <line x1="65" y1="30" x2="90" y2="30" />
-              <circle cx="10" cy="30" r="3" />
-              <circle cx="90" cy="30" r="3" />
-            </svg>
-            <h3 class="h3">Electrical Engineering</h3>
-            <p class="body small">
-              Foundation Year studies at ULan Preston — developing circuit theory, engineering mathematics, digital systems, power transmission, and sensor instrumentation.
-            </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 pt-3 border-t border-sky-500/20 font-mono text-xs">
+          <div class="border border-sky-500/25 p-4 space-y-1.5 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-cyan"><span>PILLAR 01</span><span>[ELECTRICAL]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Electrical Engineering</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Studying my Foundation Year at ULan in Preston — building up the maths, physics, and circuit fundamentals behind electrical systems.</p>
           </div>
-
-          <!-- Pillar 2 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">PILLAR 02</span>
-              <span class="tag tag-outline">MECHANICAL</span>
-            </div>
-            <svg class="pillar-icon" viewBox="0 0 100 60" aria-hidden="true">
-              <circle cx="50" cy="30" r="18" class="dim-stroke" />
-              <line x1="50" y1="8" x2="50" y2="16" />
-              <line x1="50" y1="44" x2="50" y2="52" />
-              <line x1="28" y1="30" x2="36" y2="30" />
-              <line x1="64" y1="30" x2="72" y2="30" />
-              <circle cx="50" cy="30" r="6" />
-            </svg>
-            <h3 class="h3">Working on Cars</h3>
-            <p class="body small">
-              Workshop technician experience at Car Cosmetics — vehicle servicing, hydraulic brake bleeding, electrical fault-finding, suspension overhauls, and aftermarket fitting.
-            </p>
+          <div class="border border-sky-500/25 p-4 space-y-1.5 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-cyan"><span>PILLAR 02</span><span>[MECHANICS]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Working on Cars</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Practical workshop experience from Car Cosmetics — servicing, mechanical repairs, brake bleeding, and sorting out vehicle electrics.</p>
           </div>
-
-          <!-- Pillar 3 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">PILLAR 03</span>
-              <span class="tag tag-outline">DIGITAL &amp; IT</span>
-            </div>
-            <svg class="pillar-icon" viewBox="0 0 100 60" aria-hidden="true">
-              <rect x="25" y="14" width="50" height="32" />
-              <line x1="38" y1="46" x2="62" y2="46" />
-              <line x1="30" y1="24" x2="70" y2="24" class="dim-stroke" />
-            </svg>
-            <h3 class="h3">Computers &amp; ICT</h3>
-            <p class="body small">
-              BTEC Level 3 Double Distinction* (D*D*) in IT and A-Level Computer Science — custom PC building, hardware repair, network setup, relational databases, and software troubleshooting.
-            </p>
+          <div class="border border-sky-500/25 p-4 space-y-1.5 sm:col-span-2 lg:col-span-1 min-w-0 bg-card">
+            <div class="font-bold flex items-center justify-between t-sketch"><span>PILLAR 03</span><span>[TECH &amp; IT]</span></div>
+            <h4 class="font-bold text-base font-sans t-main">Computers &amp; ICT</h4>
+            <p class="text-sm font-sans leading-relaxed t-muted">Strong background in Digital ICT and Computer Science — PC hardware, networking, systems troubleshooting, and tinkering with software and games.</p>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================================
-         02. TECHNICAL SCHEMATICS & DISCIPLINES
-         ===================================================================== -->
-    <section id="schematics" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 02</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-02 // TECHNICAL DISCIPLINES</span>
+    <!-- SECTION 02: DRAFTED SCHEMATICS -->
+    <section id="schematics" class="space-y-6 sm:space-y-8">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('schematics')" role="button" aria-expanded="true" aria-controls="section-content-schematics" id="toggle-schematics">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">02 // SCHEMATICS</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Technical Focus &amp; Schematics</h2>
           </div>
-          <span class="eyebrow">02 // Technical Schematics</span>
-          <h2 class="h2">Disciplines &amp; Schematics<span class="accent">.</span></h2>
-          <p class="lead">
-            Cross-disciplinary experience spanning academic electrical engineering, automotive mechanics, computer science, and live sound routing.
-          </p>
+          <p class="text-xs sm:text-sm font-mono pt-1 t-muted">Electrical engineering, automotive mechanics, Computer Science &amp; ICT, and live audio.</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div id="section-content-schematics" class="section-content-wrap">
+        <div class="section-content-inner space-y-6 pt-1">
+        <div class="flex items-center gap-1 p-1 border border-sky-500/40 font-mono text-xs overflow-x-auto no-scrollbar max-w-full bg-card" id="filter-bar">
+          <button onclick="filterProjects('all')" class="filter-btn active px-3 py-1.5 bg-sky-500 text-white font-bold shrink-0" data-filter="all">ALL</button>
+          <button onclick="filterProjects('engineering')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="engineering">ENGINEERING &amp; CARS</button>
+          <button onclick="filterProjects('cs-ict')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="cs-ict">CS &amp; ICT</button>
+          <button onclick="filterProjects('audio')" class="filter-btn px-3 py-1.5 hover:text-sky-400 shrink-0 t-muted" data-filter="audio">DJ &amp; AUDIO</button>
         </div>
 
-        <!-- Filter Controls (Powered by GSAP Flip) -->
-        <div class="filters" role="group" aria-label="Filter technical disciplines">
-          <button type="button" data-filter="all" aria-pressed="true">ALL DISCIPLINES</button>
-          <button type="button" data-filter="engineering" aria-pressed="false">ENGINEERING &amp; CARS</button>
-          <button type="button" data-filter="computing" aria-pressed="false">COMPUTING &amp; ICT</button>
-          <button type="button" data-filter="audio" aria-pressed="false">AUDIO &amp; DJ</button>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <!-- Card 1 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CAD-01 // ACADEMIC SPEC</span>
+            <span class="shrink-0 t-muted">ULan • Preston</span>
+          </div>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Electrical Engineering (Foundation Year)</h4>
+            <p class="text-sm leading-relaxed t-muted">Currently completing my Foundation Year in Electrical Engineering at the University of Lancashire (ULan) — covering core engineering mathematics, physics, circuit analysis, and practical lab work.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">Circuit Fundamentals</span>
+            <span class="chip">Electronics</span>
+            <span class="chip">Engineering Maths</span>
+            <span class="chip">Lab Practicals</span>
+          </div>
         </div>
 
-        <!-- Disciplines Grid -->
-        <div class="disc-grid">
-          <!-- Card 1: Electrical Eng -->
-          <div class="panel spotlight tilt disc-card" data-category="engineering">
-            <div class="panel-head">
-              <span class="panel-id">CAD-01 // ACADEMIC SPEC</span>
-              <span class="tiny mono">ULAN · PRESTON</span>
+        <!-- Card 2 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="engineering">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CAD-02 // WORKSHOP MECHANICS</span>
+            <span class="shrink-0 t-muted">Car Cosmetics</span>
+          </div>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Automotive Diagnostics &amp; Mechanics</h4>
+            <p class="text-sm leading-relaxed t-muted">Hands-on workshop experience diagnosing mechanical and electrical faults on cars, carrying out servicing and fluid changes, bleeding hydraulic brake lines, and fitting aftermarket parts.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">Fault Finding</span>
+            <span class="chip">Vehicle Electrics</span>
+            <span class="chip">Brake Bleeding</span>
+            <span class="chip">Mechanical Repair</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">CS-01 // SOFTWARE &amp; SYSTEMS</span>
+            <span class="shrink-0 t-muted">Computing</span>
+          </div>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Computer Science</h4>
+            <p class="text-sm leading-relaxed t-muted">Studied Computer Science at A-Level alongside years of tinkering with computers — covering how hardware architectures work, programming basics, operating systems, and customising software.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">PC Architecture</span>
+            <span class="chip">Operating Systems</span>
+            <span class="chip">Code &amp; Scripting</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 space-y-3.5 min-w-0" data-category="cs-ict">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">ICT-02 // DIGITAL ICT &amp; HARDWARE</span>
+            <span class="shrink-0 t-muted">D*D* &amp; D*2</span>
+          </div>
+          <div class="space-y-1.5">
+            <h4 class="text-lg sm:text-xl font-bold t-main">Digital ICT &amp; Systems</h4>
+            <p class="text-sm leading-relaxed t-muted">Achieved top marks in both BTEC IT (D*D*) and Digital ICT (D*2) — hands-on with PC building and hardware repair, networking setups, databases, and troubleshooting systems.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+            <span class="chip">PC Building</span>
+            <span class="chip">Networking</span>
+            <span class="chip">IT Troubleshooting</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Former DJ -->
+        <div class="project-card blueprint-card p-5 sm:p-6 border border-sky-500/40 md:col-span-2 space-y-4 min-w-0" data-category="audio">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold truncate bg-paper t-dim">AUDIO-01 // FORMER DJ</span>
+            <span class="font-sketch t-sketch text-xs shrink-0">brief DJ stint</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
+            <div class="lg:col-span-6 space-y-3 min-w-0">
+              <h4 class="text-lg sm:text-xl font-bold t-main">Former DJ &amp; Live Sound Setups</h4>
+              <p class="text-sm leading-relaxed t-muted">I had a brief stint DJing live sets at local venues. Even though my time DJing was short, it was great fun getting hands-on with Pioneer decks, mixers, live audio routing, and playing music for a crowd.</p>
+              <p class="text-sm leading-relaxed t-muted">It also sparked a lasting interest in sound systems, audio hardware, and how live setups are wired and balanced.</p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-xs">
+                <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">DECKS</span>
+                  <span class="font-bold truncate block t-main">Pioneer DJ</span>
+                </div>
+                <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">AUDIO</span>
+                  <span class="font-bold truncate block t-main">Live Mixing &amp; EQ</span>
+                </div>
+                <div class="p-2.5 border border-sky-500/25 col-span-2 sm:col-span-1 min-w-0 bg-paper">
+                  <span class="block text-[10px] t-dim">SETUP</span>
+                  <span class="font-bold truncate block t-main">Booth &amp; PA Gear</span>
+                </div>
+              </div>
             </div>
-            <h3 class="h3">Electrical Engineering (Foundation Year)</h3>
-            <p class="body small">
-              Covering circuit fundamentals, Ohm’s and Kirchhoff’s laws, AC/DC analysis, operational amplifiers, engineering mathematics, and hands-on laboratory circuit testing at the University of Lancashire.
-            </p>
-            <div class="chips">
-              <span class="chip">Circuit Analysis</span>
-              <span class="chip">Digital Systems</span>
-              <span class="chip">Instrumentation</span>
-              <span class="chip">Lab Practicals</span>
+
+            <div class="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4 items-stretch min-w-0">
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper">
+                  <img src="assets/images/dj-block.jpg" alt="Lee Parkinson live DJ booth" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+                </div>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span>FIG 02.4A</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"live booth"</span>
+                </div>
+              </div>
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <div class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper">
+                  <img src="assets/images/dj-lee.jpg" alt="Lee Parkinson live DJ set" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" />
+                </div>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span>FIG 02.4B</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"on the decks"</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 03: PROJECT GALLERY (03.1 ENGINEERING & 03.2 DISCORD THEMES) -->
+    <section id="gallery" class="space-y-8 sm:space-y-10">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('gallery')" role="button" aria-expanded="true" aria-controls="section-content-gallery" id="toggle-gallery">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">03 // GALLERY</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Project Gallery &amp; Builds</h2>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
+            <a href="#gallery-engineering" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.1 Engineering</a>
+            <a href="#gallery-discord" class="px-2.5 py-1 border border-sky-500/40 hover:bg-sky-500/10 t-dim bg-card">03.2 Discord</a>
+          </div>
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div id="section-content-gallery" class="section-content-wrap">
+        <div class="section-content-inner space-y-8 pt-1">
+
+      <!-- 03.1 // ENGINEERING -->
+      <div id="gallery-engineering" class="space-y-4">
+        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.1 // ENGINEERING</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Engineering &amp; Automotive Projects</h3>
+          </div>
+          <span class="font-sketch t-sketch text-xs">upcoming car &amp; lab builds</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div class="blueprint-card blueprint-interactive p-5 sm:p-6 border-2 border-dashed border-sky-500/60 space-y-4 md:col-span-2 lg:col-span-2 relative min-w-0">
+            <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
+              <span class="px-2 py-0.5 bg-amber-500 text-black font-bold">PROJECT SPEC // UPCOMING</span>
+              <span class="t-sketch font-sketch text-xs">★ UPCOMING CAR PROJECT</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+              <div class="sm:col-span-5 border border-sky-500/40 p-5 flex flex-col items-center justify-center text-center aspect-video sm:aspect-square relative min-w-0 bg-paper">
+                <div class="font-mono text-4xl sm:text-5xl t-cyan">🚗</div>
+                <div class="font-mono text-xs font-bold mt-2 t-main">SUB-£15 CAR PROJECT</div>
+                <div class="t-sketch font-sketch text-xs mt-1">"under £15 challenge"</div>
+                <div class="absolute bottom-1 right-2 font-mono text-[10px] t-dim">FIG. 03.1-A</div>
+              </div>
+              <div class="sm:col-span-7 space-y-2.5 min-w-0">
+                <h4 class="text-lg sm:text-xl font-bold t-main">The Sub-£15 Budget Car Project</h4>
+                <p class="text-sm leading-relaxed t-muted">My upcoming budget car challenge: picking up and fixing a project car for under £15 initial spend, then documenting all the hands-on mechanical repairs, electrical fixes, and servicing to get it sorted.</p>
+                <div class="space-y-1.5 font-mono text-xs pt-1 t-dim">
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span><span>Budget Target: Under £15 initial spend</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span><span>Work: Mechanical servicing, electrics &amp; repairs</span></div>
+                  <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span><span>Updates &amp; photos will be added here as the build starts</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="dim-line pt-2"><span class="truncate min-w-0">SCHEMATIC: UPCOMING LOG // BUILD PHASE 01 PENDING</span></div>
+          </div>
+
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono gap-2">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">ULAN-CAD-01 // WEEK 3</span>
+                <span class="font-sketch t-sketch text-xs">15.10.26 • Ref 2</span>
+              </div>
+              <a href="assets/images/week3-electric-screwdriver.jpg" target="_blank" class="block overflow-hidden border border-sky-500/40 bg-paper group relative aspect-[4/3]">
+                <img src="assets/images/week3-electric-screwdriver.jpg" alt="Week 3 Electric Screwdriver Orthographic Sketch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Click to Enlarge ↗</span>
+              </a>
+              <h4 class="text-lg font-bold t-main">Week 3: Electric Screwdriver Sketch</h4>
+              <p class="text-sm leading-relaxed t-muted">Hand-drafted orthographic engineering sketch (Top, Side, and Front views) completed during Week 3 at ULan, complete with projection alignment lines, revision table (Attempt 2), and title block.</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Orthographic Views</span><span class="chip">ULan Week 3</span><span class="chip">Hand Drafted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03.2 // DISCORD THEMES -->
+      <div id="gallery-discord" class="space-y-4 pt-2">
+        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.2 // DISCORD THEMES</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Discord Client Themes &amp; UI CSS</h3>
+          </div>
+          <span class="font-sketch t-sketch text-xs">open-source theme collection</span>
+        </div>
+
+        <!-- Featured Live Discord Theme Showcase GIF -->
+        <div class="blueprint-card blueprint-interactive p-5 sm:p-6 border border-sky-500/50 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono flex-wrap gap-2">
+            <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-cyan">THEME-SHOWCASE // LIVE UI PREVIEW</span>
+            <a href="https://betterdiscord.app/developer/leeprky" target="_blank" class="hover:underline font-bold t-cyan">BetterDiscord Developer Profile ↗</a>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+            <div class="lg:col-span-7 border-2 border-sky-500/40 p-2 bg-paper">
+              <a href="assets/images/discord-theme-showcase.gif" target="_blank" class="block relative group overflow-hidden">
+                <img src="assets/images/discord-theme-showcase.gif" alt="Vintage & WindowsXI Discord Theme Live Showcase GIF" class="w-full h-auto block" loading="lazy" />
+                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Open Full GIF ↗</span>
+              </a>
+            </div>
+            <div class="lg:col-span-5 space-y-3 min-w-0">
+              <h4 class="text-lg sm:text-xl font-bold t-main">Vintage, WindowsXI &amp; MaterialYou in Action</h4>
+              <p class="text-sm leading-relaxed t-muted">
+                Live preview of my custom Discord client themes running across BetterDiscord, Vencord, and Powercord — featuring floating rounded panels, custom titlebars, reworked server/channel columns, and theme community support.
+              </p>
+              <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+                <span class="chip">Vintage v0.9</span>
+                <span class="chip">WindowsXI × MaterialYou</span>
+                <span class="chip">BetterDiscord &amp; Vencord</span>
+                <span class="chip">400+ Community Members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-01</span>
+                <a href="https://github.com/leeprky/WindowsXI" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
+              </div>
+              <h4 class="text-lg font-bold t-main">WindowsXI Discord Theme</h4>
+              <p class="text-sm leading-relaxed t-muted">A custom redesign bringing Windows 11 Fluent Design to Discord — with clean rounded corners, dark/light modes, acrylic blur effects, and tweaked channel/chat layouts.</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">BetterDiscord</span><span class="chip">Acrylic Glass</span><span class="chip">Fluent CSS</span>
             </div>
           </div>
 
-          <!-- Card 2: Automotive -->
-          <div class="panel spotlight tilt disc-card" data-category="engineering">
-            <div class="panel-head">
-              <span class="panel-id">CAD-02 // WORKSHOP MECHANICS</span>
-              <span class="tiny mono">CAR COSMETICS</span>
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-02</span>
+                <a href="https://github.com/leeprky/Vintage" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
+              </div>
+              <h4 class="text-lg font-bold t-main">MaterialYou &amp; Vintage</h4>
+              <p class="text-sm leading-relaxed t-muted">Android 12 Material You styling applied to Discord, along with <em>Vintage</em> — a popular theme built for Vencord and BetterDiscord.</p>
             </div>
-            <h3 class="h3">Automotive Diagnostics &amp; Repair</h3>
-            <p class="body small">
-              Workshop apprenticeship diagnosing vehicle electrical circuits, sensor harnesses, engine servicing, hydraulic brake bleeding, brake line replacement, and mechanical suspension work.
-            </p>
-            <div class="chips">
-              <span class="chip">Fault Finding</span>
-              <span class="chip">Vehicle Electrics</span>
-              <span class="chip">Hydraulic Bleeding</span>
-              <span class="chip">Mechanical Servicing</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Material You</span><span class="chip">Vencord</span><span class="chip">Custom CSS</span>
             </div>
           </div>
 
-          <!-- Card 3: Computer Science -->
-          <div class="panel spotlight tilt disc-card" data-category="computing">
-            <div class="panel-head">
-              <span class="panel-id">CS-01 // ARCHITECTURE &amp; CODE</span>
-              <span class="tiny mono">A-LEVEL</span>
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">THEME-03</span>
+                <a href="https://github.com/leeprky/Lode" target="_blank" class="hover:underline font-bold t-cyan">GitHub ↗</a>
+              </div>
+              <h4 class="text-lg font-bold t-main">Lode, Ovel &amp; Fluidcord</h4>
+              <p class="text-sm leading-relaxed t-muted">Collection of other custom Discord themes: <strong>Lode</strong> (customizable bubbly layout), <strong>Ovel</strong> (rounded purple redesign), and <strong>Fluidcord / Glasscord</strong> (transparent glass UI).</p>
             </div>
-            <h3 class="h3">Computer Science</h3>
-            <p class="body small">
-              Studied hardware architectures, von Neumann architecture, registers, assembly concepts, programming foundations, data structures, and operating system kernels.
-            </p>
-            <div class="chips">
-              <span class="chip">PC Architecture</span>
-              <span class="chip">Operating Systems</span>
-              <span class="chip">Scripting</span>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <span class="chip">Glasscord</span><span class="chip">Custom Layouts</span><span class="chip">Open Source</span>
             </div>
           </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Card 4: Digital ICT -->
-          <div class="panel spotlight tilt disc-card" data-category="computing">
-            <div class="panel-head">
-              <span class="panel-id">ICT-02 // HARDWARE &amp; NETWORKING</span>
-              <span class="tiny mono">D*D* DIPLOMA</span>
-            </div>
-            <h3 class="h3">Digital ICT &amp; Systems</h3>
-            <p class="body small">
-              Top grades in BTEC IT (D*D*) and GCSE Digital ICT (D*2) — hands-on PC assembly, component fault isolation, IPv4/IPv6 networking, relational database management, and troubleshooting.
-            </p>
-            <div class="chips">
-              <span class="chip">PC Assembly</span>
-              <span class="chip">Networking</span>
-              <span class="chip">Database Systems</span>
-            </div>
+    <!-- SECTION 04: WORK EXPERIENCE (JOBS 05 DOWN TO 01) -->
+    <section id="experience" class="space-y-4 sm:space-y-6">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('experience')" role="button" aria-expanded="true" aria-controls="section-content-experience" id="toggle-experience">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">04 // EXPERIENCE</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Work Experience &amp; Career Logbook</h2>
           </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
+            <a href="cv.html" class="px-2.5 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan bg-card font-bold transition-all">📄 Full CV Page →</a>
+          </div>
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
 
-          <!-- Card 5: DJ & Audio (Full width) -->
-          <div class="panel spotlight disc-card span-2" data-category="audio">
-            <div class="panel-head">
-              <span class="panel-id">AUDIO-01 // LIVE SOUND</span>
-              <span class="hand">"former DJ stint"</span>
+      <div id="section-content-experience" class="section-content-wrap">
+        <div class="section-content-inner space-y-4 pt-1">
+
+      <!-- PROMINENT CV LINK BANNER IN EXPERIENCE SECTION -->
+      <div class="p-3 sm:p-3.5 bg-sky-500/10 border-2 border-sky-500/40 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs font-mono">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-base shrink-0">📄</span>
+          <div class="min-w-0">
+            <span class="font-bold t-main block sm:inline">FULL CURRICULUM VITAE SPECIFICATION</span>
+            <span class="t-muted text-[11px] block sm:inline sm:ml-2">• Includes printable PDF format &amp; complete employer references</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="cv.html" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded transition-colors text-[11px]">View CV Sheet ➔</a>
+          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-2.5 py-1.5 border border-sky-500/50 hover:bg-sky-500/20 t-cyan font-bold rounded transition-colors text-[11px] bg-card">PDF ↓</a>
+        </div>
+      </div>
+
+      <div class="space-y-3.5 font-mono text-xs">
+        <!-- JOB 05 -->
+        <div class="blueprint-card blueprint-interactive p-4 sm:p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-2 font-sans min-w-0 flex-1">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[JOB 05]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Wetherspoons</h4>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500/15 border border-sky-500/40 font-bold t-cyan">The Velvet Coaster</span>
+              <span class="text-xs t-muted font-mono">➔</span>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500/15 border border-sky-500/40 font-bold t-dim">The Twelve Tellers</span>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500 text-white font-bold">BAR TEAM LEADER</span>
             </div>
-            <div class="audio-grid">
-              <div>
-                <h3 class="h3">Former DJ &amp; Live Sound Setups</h3>
-                <p class="body small">
-                  Brief stint DJing live events at venues. Practical hands-on experience with Pioneer DJ decks, mixers, signal routing, gain staging, EQ tuning, and PA audio sound reinforcement.
+            
+            <div class="text-sm font-bold t-cyan">
+              Bar Team Leader <span class="font-normal font-mono text-xs opacity-75">(Team Leader at both venues)</span>
+            </div>
+
+            <!-- Dual-Location Cards: Team Leader at both The Velvet Coaster and The Twelve Tellers -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs font-mono">
+              <div class="border border-sky-500/35 p-3 rounded bg-card space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold t-main">The Velvet Coaster (Blackpool)</span>
+                  <span class="px-1.5 py-0.5 bg-sky-500 text-white font-bold text-[10px]">TEAM LEADER</span>
+                </div>
+                <p class="text-xs leading-relaxed t-muted font-sans">
+                  Bar Team Leader at the massive multi-level venue on Blackpool South Shore. Led shift operations across multiple bars, managed cellar stock, coordinated floor teams, and kept high-volume service moving during peak seaside rushes.
                 </p>
-                <div class="chips" style="margin-top: 1rem;">
-                  <span class="chip">Pioneer DJ</span>
-                  <span class="chip">Live Mixing &amp; EQ</span>
-                  <span class="chip">Signal Chain Routing</span>
-                  <span class="chip">PA Equipment</span>
-                </div>
               </div>
-              <div class="audio-figs">
-                <div class="figure">
-                  <div class="figure-frame ratio-34">
-                    <img src="assets/images/dj-block.jpg" alt="Lee Parkinson live DJ setup booth" loading="lazy" width="600" height="800" />
-                  </div>
-                  <figcaption>
-                    <span>BOOTH</span>
-                    <span class="hand">"live booth"</span>
-                  </figcaption>
+
+              <div class="border border-sky-500/35 p-3 rounded bg-paper space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold t-cyan">The Twelve Tellers (Preston)</span>
+                  <span class="px-1.5 py-0.5 bg-sky-500 text-white font-bold text-[10px]">TEAM LEADER</span>
                 </div>
-                <div class="figure">
-                  <div class="figure-frame ratio-34">
-                    <img src="assets/images/dj-lee.jpg" alt="Lee Parkinson on the decks" loading="lazy" width="600" height="800" />
-                  </div>
-                  <figcaption>
-                    <span>DECKS</span>
-                    <span class="hand">"on the decks"</span>
-                  </figcaption>
-                </div>
+                <p class="text-xs leading-relaxed t-muted font-sans">
+                  Transferred as Bar Team Leader to The Twelve Tellers on Church Street alongside studying Electrical Engineering at ULan. Continuing shift leadership, staff coordination, till reconciliations, and licensing compliance.
+                </p>
               </div>
             </div>
+
+            <ul class="text-xs sm:text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
+              <li><strong>Shift Leadership:</strong> Bar Team Leader across both high-volume venues, running busy shifts, coordinating floor and bar teams, and keeping service moving smoothly during peak periods serving 1,000s of patrons.</li>
+              <li><strong>Operations Management:</strong> Handle till reconciliations, cash management, cellar stock and line maintenance, and opening/closing checks across fast-paced venues.</li>
+              <li><strong>Training &amp; Standards:</strong> Train new starters, stay on top of Challenge 25 and licensing rules, and maintain tight health and safety standards.</li>
+            </ul>
+          </div>
+
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted pt-2 sm:pt-0 border-t sm:border-t-0 border-sky-500/20">
+            03/2025 — Present <br />
+            <span class="font-bold t-main">Blackpool ➔ Preston</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"Velvet Coaster → Twelve Tellers"</div>
           </div>
         </div>
 
-        <!-- Interactive Integrated Circuit Pinout Schematic Diagram -->
-        <div class="pinout-wrap">
-          <div>
-            <span class="eyebrow">IC-2026 // Pinout Diagram</span>
-            <h3 class="h3" style="margin-top: 0.5rem;">Interactive Operator Pinout</h3>
-            <p class="body small" style="margin-top: 0.5rem;">
-              Hover over any DIP pin on the dual in-line package to probe the signal line and review skill assignments.
-            </p>
-            <div class="panel field-notes" style="margin-top: 1rem; padding: 0.9rem 1.1rem;">
-              <span class="tiny mono">PROBE READOUT:</span>
-              <div class="pinout-note hand" style="margin-top: 0.3rem;">[PIN 01]: 240V AC Mains / Power Systems</div>
+        <!-- JOB 04 -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[JOB 04]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Amazon Logistics (313 Logistics)</h4>
+              <span class="chip text-[10px]">OPERATIONS</span>
             </div>
+            <div class="text-sm font-semibold t-dim">Multi-Drop Delivery Driver</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
+              <li>Managed daily van loading and safe delivery of up to 315 parcels across 180+ stops on tight schedules.</li>
+              <li>Worked out efficient routes on the road and kept delivery accuracy and customer handovers consistent.</li>
+              <li>Handled my own self-employment records, mileage logs, and tax admin.</li>
+            </ul>
           </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            11/2024 — 04/2025 <br /><span class="font-bold t-main">Leyland, Lancashire</span>
+          </div>
+        </div>
 
-          <!-- SVG Dual In-line Package (DIP-16) -->
-          <svg class="pinout" viewBox="0 0 540 280" aria-label="DIP-16 Microcontroller schematic pinout diagram">
-            <!-- IC Body -->
-            <rect class="body-rect" x="150" y="20" width="240" height="240" rx="4" />
-            <!-- Half-moon notch on top -->
-            <path class="notch" d="M250,20 A20,20 0 0,0 290,20" />
+        <!-- JOB 03 -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[JOB 03]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Car Cosmetics</h4>
+              <span class="chip text-[10px]">MECHANICAL</span>
+            </div>
+            <div class="text-sm font-semibold t-dim">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
+              <li>Tracked down mechanical faults, wiring issues, and sensor problems on vehicles in the workshop.</li>
+              <li>Carried out routine servicing, fluid changes, brake work, and hydraulic bleeding.</li>
+              <li>Stripped down and replaced worn mechanical parts and fitted upgraded components.</li>
+            </ul>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            04/2024 — 10/2024 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"workshop diagnostics"</div>
+          </div>
+        </div>
 
-            <!-- IC Label -->
-            <text class="chip-title" x="270" y="130" text-anchor="middle">LP-EE-2026</text>
-            <text class="chip-sub" x="270" y="150" text-anchor="middle">DUAL-DISCIPLINE MCU</text>
-            <text class="chip-sub" x="270" y="168" text-anchor="middle">ULAN PRESTON</text>
+        <!-- JOB 02 -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[JOB 02]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Pleasure Beach Resort</h4>
+              <span class="chip text-[10px]">SAFETY OPERATIONS</span>
+            </div>
+            <div class="text-sm font-semibold t-dim">Ride Operator</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
+              <li>Operated major rides following strict health, safety, and mechanical check procedures.</li>
+              <li>Ran daily pre-opening checks on restraints, sensors, and control systems before letting the public on.</li>
+              <li>Helped train newer operators on safe ride operation and emergency procedures.</li>
+            </ul>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            03/2023 — 11/2024 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+          </div>
+        </div>
 
-            <!-- Pins Left (1..8) -->
-            <g class="pin-g is-live" data-desc="[PIN 01 // PWR]: 240V AC Mains &amp; Single/Three-Phase Theory">
-              <rect class="pin" x="110" y="36" width="40" height="16" />
-              <text class="pin-no" x="142" y="48" text-anchor="end">1</text>
-              <text class="pin-label" x="98" y="48" text-anchor="end">MAINS_AC</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 02 // CKT]: Kirchhoff &amp; Ohm Laws / Circuit Analysis">
-              <rect class="pin" x="110" y="66" width="40" height="16" />
-              <text class="pin-no" x="142" y="78" text-anchor="end">2</text>
-              <text class="pin-label" x="98" y="78" text-anchor="end">CKT_ANALY</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 03 // SENS]: Sensor Instrumentation &amp; Transducers">
-              <rect class="pin" x="110" y="96" width="40" height="16" />
-              <text class="pin-no" x="142" y="108" text-anchor="end">3</text>
-              <text class="pin-label" x="98" y="108" text-anchor="end">SENSOR_IO</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 04 // DIG]: Digital Logic &amp; Microcontroller Systems">
-              <rect class="pin" x="110" y="126" width="40" height="16" />
-              <text class="pin-no" x="142" y="138" text-anchor="end">4</text>
-              <text class="pin-label" x="98" y="138" text-anchor="end">DIG_LOGIC</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 05 // AUTO]: 12V DC Vehicle Wiring &amp; Fuse Harnesses">
-              <rect class="pin" x="110" y="156" width="40" height="16" />
-              <text class="pin-no" x="142" y="168" text-anchor="end">5</text>
-              <text class="pin-label" x="98" y="168" text-anchor="end">AUTO_12V</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 06 // MECH]: Hydraulic Brake Systems &amp; Bleeding">
-              <rect class="pin" x="110" y="186" width="40" height="16" />
-              <text class="pin-no" x="142" y="198" text-anchor="end">6</text>
-              <text class="pin-label" x="98" y="198" text-anchor="end">HYDR_BRK</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 07 // OBD]: CAN-Bus Fault Diagnostics &amp; ECU Scan">
-              <rect class="pin" x="110" y="216" width="40" height="16" />
-              <text class="pin-no" x="142" y="228" text-anchor="end">7</text>
-              <text class="pin-label" x="98" y="228" text-anchor="end">CAN_BUS</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 08 // GND]: Common Chassis Earth Ground">
-              <rect class="pin" x="110" y="246" width="40" height="16" />
-              <text class="pin-no" x="142" y="258" text-anchor="end">8</text>
-              <text class="pin-label" x="98" y="258" text-anchor="end">GND_EARTH</text>
-            </g>
-
-            <!-- Pins Right (9..16) -->
-            <g class="pin-g" data-desc="[PIN 16 // VCC]: +5V / +3.3V Regulated Rail Supply">
-              <rect class="pin" x="390" y="36" width="40" height="16" />
-              <text class="pin-no" x="398" y="48">16</text>
-              <text class="pin-label" x="442" y="48">VCC_RAIL</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 15 // NET]: IPv4 / IPv6 TCP/IP Network Routing">
-              <rect class="pin" x="390" y="66" width="40" height="16" />
-              <text class="pin-no" x="398" y="78">15</text>
-              <text class="pin-label" x="442" y="78">NET_TCP</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 14 // PC]: PC Hardware Assembly &amp; Architecture">
-              <rect class="pin" x="390" y="96" width="40" height="16" />
-              <text class="pin-no" x="398" y="108">14</text>
-              <text class="pin-label" x="442" y="108">PC_ARCH</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 13 // AUD]: Live Audio Routing, EQ &amp; PA Mixing">
-              <rect class="pin" x="390" y="126" width="40" height="16" />
-              <text class="pin-no" x="398" y="138">13</text>
-              <text class="pin-label" x="442" y="138">AUDIO_PA</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 12 // LEAD]: High-Volume Hospitality Shift Leadership">
-              <rect class="pin" x="390" y="156" width="40" height="16" />
-              <text class="pin-no" x="398" y="168">12</text>
-              <text class="pin-label" x="442" y="168">TEAM_LEAD</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 11 // CAD]: Technical Orthographic &amp; Circuit Drafting">
-              <rect class="pin" x="390" y="186" width="40" height="16" />
-              <text class="pin-no" x="398" y="198">11</text>
-              <text class="pin-label" x="442" y="198">CAD_DRAFT</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 10 // MATH]: Engineering Mathematics &amp; Calculus">
-              <rect class="pin" x="390" y="216" width="40" height="16" />
-              <text class="pin-no" x="398" y="228">10</text>
-              <text class="pin-label" x="442" y="228">MATH_ENG</text>
-            </g>
-            <g class="pin-g" data-desc="[PIN 09 // STAT]: Operational Telemetry &amp; Field Readiness">
-              <rect class="pin" x="390" y="246" width="40" height="16" />
-              <text class="pin-no" x="398" y="258">9</text>
-              <text class="pin-label" x="442" y="258">OPER_RDY</text>
-            </g>
-          </svg>
+        <!-- JOB 01 -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[JOB 01]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">McDonald's</h4>
+              <span class="chip text-[10px]">CREW</span>
+            </div>
+            <div class="text-sm font-semibold t-dim">Crew Member</div>
+            <ul class="text-sm list-disc list-inside space-y-1 pt-1 leading-relaxed t-muted">
+              <li>Worked across kitchen and front counter systems during busy rushes.</li>
+              <li>Built a solid habit of working fast as part of a team while keeping everything clean and accurate.</li>
+            </ul>
+          </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            03/2022 — 02/2023 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"where I started"</div>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================================
-         03. PROJECT GALLERY & ENGINEERING BUILDS
-         ===================================================================== -->
-    <section id="projects" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 03</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-03 // ENGINEERING GALLERY</span>
+    <!-- SECTION 05: EDUCATION -->
+    <section id="education" class="space-y-4 sm:space-y-6">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('education')" role="button" aria-expanded="true" aria-controls="section-content-education" id="toggle-education">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">05 // EDUCATION</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Academic Qualifications</h2>
           </div>
-          <span class="eyebrow">03 // Project Gallery</span>
-          <h2 class="h2">Builds &amp; Technical Gallery<span class="accent">.</span></h2>
-          <p class="lead">
-            Hands-on projects covering budget automotive revival, hand-drafted engineering orthographic projections, and open-source UI development.
-          </p>
         </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
 
-        <!-- 03.1 Sub-£15 Car Project Feature -->
-        <div class="panel spotlight project-feature">
-          <div>
-            <div class="panel-head">
-              <span class="panel-id">PROJ-01 // AUTOMOTIVE REVIVAL</span>
-              <span class="tag tag-mark">UPCOMING BUILD</span>
+      <div id="section-content-education" class="section-content-wrap">
+        <div class="section-content-inner space-y-4 pt-1">
+
+      <div class="space-y-3.5 font-mono text-xs">
+        <!-- ULan -->
+        <div class="blueprint-card blueprint-interactive p-5 border-2 border-sky-500/50 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-1.5 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[DEGREE-01]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">University of Lancashire (ULan)</h4>
+              <span class="px-2 py-0.5 text-[11px] bg-sky-500 text-white font-bold">FOUNDATION YEAR</span>
             </div>
-            <h3 class="h3">The Sub-£15 Budget Car Project</h3>
-            <p class="body small" style="margin-top: 0.6rem;">
-              An upcoming real-world engineering challenge: sourcing a project car for under £15 initial spend, then documenting every mechanical overhaul, electrical fix, brake line repair, and diagnostic test to make it road-worthy.
-            </p>
-
-            <ol class="phase-list">
-              <li>
-                <span>Phase 01: Sourcing &amp; Recovery</span>
-                <span>Vehicle acquisition under £15 spend target</span>
-                <span class="tiny mono">QUEUED</span>
-              </li>
-              <li>
-                <span>Phase 02: Full Diagnostic Tear-Down</span>
-                <span>Compression test, ECU scan &amp; harness continuity</span>
-                <span class="tiny mono">SPEC'D</span>
-              </li>
-              <li>
-                <span>Phase 03: Mechanical &amp; Electrical Overhaul</span>
-                <span>Hydraulic bleeding, fluid flush &amp; sensor repair</span>
-                <span class="tiny mono">SPEC'D</span>
-              </li>
-              <li>
-                <span>Phase 04: MOT &amp; Shakedown</span>
-                <span>Road testing, emissions &amp; final road readiness</span>
-                <span class="tiny mono">PENDING</span>
-              </li>
-            </ol>
+            <div class="text-sm font-bold t-cyan">Electrical Engineering (Foundation Year)</div>
+            <p class="text-sm leading-relaxed t-muted">Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.</p>
+            <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+              <span class="chip">Circuit Theory</span><span class="chip">Digital Electronics</span><span class="chip">Power Systems</span><span class="chip">Sensor Instrumentation</span><span class="chip">Engineering Maths</span>
+            </div>
           </div>
-
-          <!-- Technical Schematic Wireframe of Project Car -->
-          <div class="figure">
-            <div class="figure-frame" style="padding: 1.5rem; background: var(--bg-deep);">
-              <svg class="car-blueprint" viewBox="0 0 460 220" aria-label="Automotive orthographic side silhouette wireframe">
-                <!-- Silhouette line -->
-                <path d="M40,160 L75,160 A30,30 0 0,1 135,160 L320,160 A30,30 0 0,1 380,160 L420,160 C428,160 435,152 432,142 L420,110 C416,100 405,94 394,94 L340,94 L295,45 C288,38 278,35 268,35 L160,35 C150,35 140,40 134,48 L88,102 L44,106 C36,107 30,114 30,122 L30,150 C30,156 34,160 40,160 Z" />
-                <!-- Wheels -->
-                <circle cx="105" cy="160" r="26" />
-                <circle cx="105" cy="160" r="14" class="faint" />
-                <circle cx="350" cy="160" r="26" />
-                <circle cx="350" cy="160" r="14" class="faint" />
-                <!-- Cabin glass -->
-                <path d="M142,50 L262,50 C270,50 278,53 282,58 L324,96 L104,96 Z" class="faint" />
-                <line x1="210" y1="50" x2="210" y2="96" class="faint" />
-                <!-- Dimension markers -->
-                <line x1="30" y1="195" x2="430" y2="195" class="faint" />
-                <line x1="30" y1="188" x2="30" y2="202" />
-                <line x1="430" y1="188" x2="430" y2="202" />
-                <text x="230" y="208" text-anchor="middle">&lt;--- CHASSIS DATUM: 4200mm ---&gt;</text>
-                <text class="price" x="240" y="130" text-anchor="middle">SUB-£15 SPEC</text>
-              </svg>
-            </div>
-            <figcaption>
-              <span>SPEC 03.1 // AUTO</span>
-              <span class="hand">"under £15 challenge log"</span>
-            </figcaption>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            2026 — Present <br /><span class="font-bold t-main">Preston, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"foundation year"</div>
           </div>
         </div>
 
-        <!-- 03.2 Orthographic Sketch & Discord Themes -->
-        <div class="subhead">
-          <h3>
-            <span class="mono">03.2 //</span> Hand Drafting &amp; Open Source
-          </h3>
-          <a href="gallery.html" class="panel-link">Full Gallery Sheet →</a>
-        </div>
-
-        <div class="grid grid-3">
-          <!-- Week 3 Screwdriver Sketch -->
-          <div class="panel spotlight tilt figure">
-            <div class="panel-head">
-              <span class="panel-id">ULAN-CAD // WEEK 3</span>
-              <span class="tiny mono">15.10.26</span>
+        <!-- Sixth Form -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/40 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[LEVEL 3]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">Blackpool Sixth Form College</h4>
+              <span class="chip text-[10px]">A-LEVELS &amp; BTEC</span>
             </div>
-            <div class="figure-frame ratio-43">
-              <img src="assets/images/week3-electric-screwdriver.jpg" alt="Hand-drafted orthographic engineering sketch of electric screwdriver with projection lines" loading="lazy" width="800" height="600" />
+            <div class="text-sm font-semibold t-dim">BTEC National Extended Diploma &amp; GCE Advanced Level</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">BTEC NATIONAL DIPLOMA</span>
+                <span class="font-bold t-main">Information Technology:</span>
+                <span class="font-bold ml-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">D* D*</span>
+              </div>
+              <div class="p-2.5 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="block text-[10px] t-dim">GCE A-LEVEL</span>
+                <span class="font-bold t-main">Computer Science:</span>
+                <span class="font-bold ml-1 px-1.5 py-0.5 border border-sky-500/30 t-main">Grade E</span>
+              </div>
             </div>
-            <h4 class="h3" style="margin-top: 0.9rem;">Electric Screwdriver Projection</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Orthographic third-angle projection (Top, Front, End views) completed Week 3 at ULan, with projection lines, revision block (Ref 2 Attempt 2), and title block.
-            </p>
+            <p class="text-sm leading-relaxed t-muted">Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.</p>
           </div>
-
-          <!-- WindowsXI Discord Theme -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-01 // CLIENT UI</span>
-              <a href="https://github.com/leeprky/WindowsXI" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">WindowsXI Discord Theme</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Full desktop Discord client redesign bringing Windows 11 Fluent Design — acrylic glass translucency, mica titlebars, reworked channels, and custom SVG icons.
-            </p>
-            <div class="chips" style="margin-top: 1rem;">
-              <span class="chip">Fluent CSS</span>
-              <span class="chip">BetterDiscord</span>
-              <span class="chip">Acrylic Blur</span>
-            </div>
-          </div>
-
-          <!-- MaterialYou & Vintage -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-02 // CLIENT UI</span>
-              <a href="https://github.com/leeprky/Vintage" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">MaterialYou &amp; Vintage</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Android 12 dynamic tonal palette engine applied to Discord, alongside <em>Vintage</em>, <em>Lode</em>, <em>Ovel</em>, and <em>Fluidcord</em> for BetterDiscord and Vencord.
-            </p>
-            <div class="chips" style="margin-top: 1rem;">
-              <span class="chip">Material You</span>
-              <span class="chip">Vencord</span>
-              <span class="chip">Open Source</span>
-            </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Completed 08/2023 <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"Double Distinction Star"</div>
           </div>
         </div>
 
-        <!-- GIF Showcase Banner -->
-        <div class="gif-frame" style="margin-top: 1.5rem;">
-          <div class="figure">
-            <div class="figure-frame ratio-169">
-              <img src="assets/images/discord-theme-showcase.gif" alt="Discord custom themes animated live showcase" loading="lazy" width="1200" height="675" />
+        <!-- St Mary's -->
+        <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/30 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+          <div class="space-y-2 font-sans flex-1 min-w-0">
+            <div class="flex items-center gap-2 font-mono flex-wrap">
+              <span class="font-bold t-dim">[LEVEL 2]</span>
+              <h4 class="font-bold text-base sm:text-lg t-main">St Mary's Catholic Academy</h4>
+              <span class="chip text-[10px]">GCSEs &amp; LEVEL 2</span>
             </div>
-            <figcaption style="padding-inline: 0.5rem;">
-              <span>THEME SUITE // LIVE PREVIEW</span>
-              <a href="https://betterdiscord.app/developer/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">BetterDiscord Dev Profile ↗</a>
-            </figcaption>
+            <div class="text-sm font-semibold t-dim">General Certificate of Secondary Education (GCSEs)</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
+              <div class="p-2 border border-emerald-500/50 bg-emerald-500/10 min-w-0">
+                <span class="text-[10px] block text-emerald-400 font-bold truncate">DIGITAL ICT ★</span>
+                <span class="font-bold text-emerald-400 truncate block">D*2 (Distinction*)</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">PHOTOGRAPHY</span>
+                <span class="font-bold truncate block t-main">Grade 9</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">ENGLISH LANG / LIT</span>
+                <span class="font-bold truncate block t-main">Grade 6 / Grade 5</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 min-w-0 bg-paper">
+                <span class="text-[10px] block truncate t-dim">MATHEMATICS</span>
+                <span class="font-bold truncate block t-main">Grade 4</span>
+              </div>
+              <div class="p-2 border border-sky-500/25 col-span-2 sm:col-span-4 min-w-0 bg-paper">
+                <span class="text-[10px] block t-dim">SCIENCES (TRIPLE)</span>
+                <span class="font-bold t-main">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</span>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed t-muted">Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.</p>
           </div>
+          <div class="text-left sm:text-right sm:whitespace-nowrap text-xs shrink-0 t-muted">
+            Secondary Education <br /><span class="font-bold t-main">Blackpool, Lancashire</span>
+            <div class="font-sketch t-sketch text-xs mt-1">"D*2 in Digital ICT"</div>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================================
-         04. CAREER LOGBOOK (EXPERIENCE)
-         ===================================================================== -->
-    <section id="experience" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 04</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-04 // CAREER REVISIONS</span>
+    <!-- SECTION 06: HOBBIES -->
+    <section id="hobbies" class="space-y-4 sm:space-y-6">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('hobbies')" role="button" aria-expanded="true" aria-controls="section-content-hobbies" id="toggle-hobbies">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">06 // HOBBIES</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Mountains, Camping &amp; Cars</h2>
           </div>
-          <span class="eyebrow">04 // Career Logbook</span>
-          <h2 class="h2">Work Experience<span class="accent">.</span></h2>
-          <p class="lead">
-            Verified operational career logbook — shift management, logistics, workshop mechanics, and amusement ride safety operations.
-          </p>
+          <p class="text-xs sm:text-sm font-mono pt-1 t-muted">what I do when I'm not at uni or work</p>
         </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
 
-        <div class="timeline">
-          <div class="timeline-rail" aria-hidden="true"><i></i></div>
+      <div id="section-content-hobbies" class="section-content-wrap">
+        <div class="section-content-inner space-y-4 sm:space-y-5 pt-1">
 
-          <!-- JOB 05: Wetherspoons -->
-          <article class="panel spotlight job is-current">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag">JOB 05 // CURRENT</span>
-                  <h3 class="h3">Wetherspoons</h3>
-                  <span class="mono small muted">• Blackpool &amp; Preston</span>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        <div class="blueprint-card blueprint-interactive p-5 sm:p-6 border-2 border-sky-500/50 space-y-4 flex flex-col min-w-0">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 bg-sky-500 text-white font-bold">MAIN HOBBY 01 // MOUNTAINEERING</span>
+            <span class="t-muted">Lake District &amp; UK Peaks</span>
+          </div>
+          <div class="space-y-2.5">
+            <h3 class="text-xl sm:text-2xl font-bold t-main">Mountaineering &amp; Camping</h3>
+            <p class="text-sm sm:text-base leading-relaxed t-muted">Getting up into the mountains is my favourite way to switch off — climbing fells, scrambling up rocky gorges, and camping out with a view over the valley.</p>
+            <p class="text-sm sm:text-base leading-relaxed t-muted">Living in Preston makes it easy to head up to the Lake District or across the Pennines for a weekend.</p>
+          </div>
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 mt-auto">
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <a href="assets/images/hobby-waterfall.jpg" target="_blank" class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper block group">
+                  <img src="assets/images/hobby-waterfall.jpg" alt="Lee climbing up to a gorge waterfall" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Enlarge ↗</span>
+                </a>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span class="truncate">FIG 06.1A // GORGE</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"hidden waterfall"</span>
                 </div>
-                <div class="job-role">Bar Team Leader</div>
-                <ul>
-                  <li><strong>Shift Leadership:</strong> Leading high-volume bar and floor teams during peak services with 1,000s of patrons across multi-level seaside and city centre venues.</li>
-                  <li><strong>Operations &amp; Cellar:</strong> Cellar stock management, line cleaning, till reconciliation, cash auditing, health &amp; safety, and licensing compliance.</li>
-                  <li><strong>Team Training:</strong> Mentoring new starters, ensuring speed of service, and strict adherence to Challenge 25 standards.</li>
-                </ul>
-
-                <div class="venues">
-                  <div class="venue">
-                    <b>The Velvet Coaster · Blackpool</b>
-                    <p>Bar Team Leader at one of the UK’s largest seaside hospitality venues on Blackpool South Shore.</p>
-                  </div>
-                  <div class="venue">
-                    <b>The Twelve Tellers · Preston</b>
-                    <p>Bar Team Leader in city-centre Preston alongside studying Electrical Engineering at ULan.</p>
-                  </div>
+              </div>
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <a href="assets/images/hobby-mountains.jpg" target="_blank" class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper block group">
+                  <img src="assets/images/hobby-mountains.jpg" alt="Mountain stream looking out toward lake and fells" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Enlarge ↗</span>
+                </a>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span class="truncate">FIG 06.1B // VALLEY</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"out in the fells"</span>
                 </div>
               </div>
-
-              <div class="job-when">
-                <b>03/2025 — Present</b>
-                <span>Promotion to Team Leader</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"Velvet Coaster → Twelve Tellers"</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 04: Amazon Logistics -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 04</span>
-                  <h3 class="h3">Amazon Logistics (313 Logistics)</h3>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20"><span class="chip">Fells &amp; Ridges</span><span class="chip">Gorge Scrambles</span><span class="chip">Wild &amp; Pitch Camping</span></div>
+        </div>
+        <div class="blueprint-card blueprint-interactive p-5 sm:p-6 border-2 border-sky-500/50 space-y-4 flex flex-col min-w-0">
+          <div class="flex items-center justify-between text-xs font-mono gap-2">
+            <span class="px-2 py-0.5 bg-sky-500 text-white font-bold">MAIN HOBBY 02 // MOTORING</span>
+            <span class="t-muted">BMW E90 3 Series</span>
+          </div>
+          <div class="space-y-2.5">
+            <h3 class="text-xl sm:text-2xl font-bold t-main">Motoring, Racing &amp; Cars</h3>
+            <p class="text-sm sm:text-base leading-relaxed t-muted">Cars have always been a big part of my life — from working on them at Car Cosmetics to looking after my own red BMW E90 3 Series.</p>
+            <p class="text-sm sm:text-base leading-relaxed t-muted">I'm into anything motoring: racing, car meets, driving, and doing my own servicing, fixes, and small mods (like the front splitter).</p>
+          </div>
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 mt-auto">
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <a href="assets/images/car-front.jpg" target="_blank" class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper block group">
+                  <img src="assets/images/car-front.jpg" alt="Front of Lee's red BMW E90 with front splitter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Enlarge ↗</span>
+                </a>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span class="truncate">FIG 06.2A // E90 FRONT</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"fresh wash"</span>
                 </div>
-                <div class="job-role">Multi-Drop Delivery Driver</div>
-                <ul>
-                  <li>Coordinated daily loading and routed time-critical deliveries of up to 315 parcels across 180+ stops.</li>
-                  <li>Self-managed road safety, vehicle checks, navigation optimization, and mileage/tax administration.</li>
-                </ul>
               </div>
-
-              <div class="job-when">
-                <b>11/2024 — 04/2025</b>
-                <span>Leyland, Lancashire</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 03: Car Cosmetics -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 03</span>
-                  <h3 class="h3">Car Cosmetics</h3>
+              <div class="relative p-2 border-2 border-sky-500/50 shadow-lg flex flex-col justify-between min-w-0 bg-card">
+                <a href="assets/images/car-night.jpg" target="_blank" class="relative overflow-hidden border border-sky-500/30 aspect-[3/4] bg-paper block group">
+                  <img src="assets/images/car-night.jpg" alt="Lee's red BMW E90 at night with angel eyes on" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 text-[10px] font-mono bg-hdr border border-sky-400/50 t-cyan">Enlarge ↗</span>
+                </a>
+                <div class="pt-2 flex items-center justify-between font-mono text-[10px] sm:text-xs gap-1 t-dim">
+                  <span class="truncate">FIG 06.2B // NIGHT</span>
+                  <span class="font-sketch t-sketch text-xs truncate">"angel eyes on"</span>
                 </div>
-                <div class="job-role">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
-                <ul>
-                  <li>Diagnosed vehicle wiring faults, sensor harness failures, and mechanical problems in the workshop.</li>
-                  <li>Conducted routine servicing, fluid exchanges, brake rotor/pad replacements, and hydraulic bleeding.</li>
-                  <li>Stripped down mechanical assemblies and fitted aftermarket performance components.</li>
-                </ul>
               </div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-2 border-t border-sky-500/20"><span class="chip">BMW E90</span><span class="chip">Racing &amp; Motorsport</span><span class="chip">Car Meets</span><span class="chip">DIY Servicing &amp; Mods</span></div>
+        </div>
+      </div>
 
-              <div class="job-when">
-                <b>04/2024 — 10/2024</b>
-                <span>Blackpool, Lancashire</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"workshop diagnostics"</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 02: Pleasure Beach Resort -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 02</span>
-                  <h3 class="h3">Pleasure Beach Resort</h3>
-                </div>
-                <div class="job-role">Ride Operator</div>
-                <ul>
-                  <li>Operated major amusement rides under strict mechanical, safety, and interlock protocols.</li>
-                  <li>Executed pre-opening sensor tests, restraint inspections, and emergency stop readiness drills.</li>
-                </ul>
-              </div>
-
-              <div class="job-when">
-                <b>03/2023 — 11/2024</b>
-                <span>Blackpool, Lancashire</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 01: McDonald's -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 01</span>
-                  <h3 class="h3">McDonald's</h3>
-                </div>
-                <div class="job-role">Crew Member</div>
-                <ul>
-                  <li>Maintained high-speed kitchen and front-counter throughput in fast-paced shift environments.</li>
-                  <li>Built solid foundation of teamwork, cleanliness standards, and fast communication.</li>
-                </ul>
-              </div>
-
-              <div class="job-when">
-                <b>03/2022 — 02/2023</b>
-                <span>Blackpool, Lancashire</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"where I started"</span>
-              </div>
-            </div>
-          </article>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="blueprint-card p-3.5 border border-sky-500/30 space-y-1 min-w-0">
+          <div class="font-mono text-[10px] font-bold t-dim">SIDE 01 // PHOTOGRAPHY</div>
+          <h4 class="text-sm font-bold t-main">Landscape Photography</h4>
+          <p class="text-xs leading-relaxed t-muted">Putting my Grade 9 Photography to use shooting mountains, waterfalls, and cars.</p>
+        </div>
+        <div class="blueprint-card p-3.5 border border-sky-500/30 space-y-1 min-w-0">
+          <div class="font-mono text-[10px] font-bold t-dim">SIDE 02 // TECH</div>
+          <h4 class="text-sm font-bold t-main">PCs &amp; Tinkering</h4>
+          <p class="text-xs leading-relaxed t-muted">Building PCs, fixing electronics, and tinkering with software and games.</p>
+        </div>
+        <div class="blueprint-card p-3.5 border border-sky-500/30 space-y-1 min-w-0">
+          <div class="font-mono text-[10px] font-bold t-dim">SIDE 03 // MUSIC</div>
+          <h4 class="text-sm font-bold t-main">Music &amp; Sound</h4>
+          <p class="text-xs leading-relaxed t-muted">Still into music and audio gear after my brief stint as a DJ.</p>
+        </div>
+      </div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================================
-         05. ACADEMIC QUALIFICATIONS (BILL OF MATERIALS)
-         ===================================================================== -->
-    <section id="education" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 05</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-05 // BILL OF MATERIALS</span>
+    <!-- SECTION 07: CONTACT -->
+    <section id="contact" class="space-y-4 sm:space-y-6">
+      <div class="section-toggle-header flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer select-none py-1 group" onclick="toggleBlueprintSection('contact')" role="button" aria-expanded="true" aria-controls="section-content-contact" id="toggle-contact">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span class="sec-tag">07 // CONTACT</span>
+            <h2 class="text-xl sm:text-3xl font-bold tracking-tight t-main group-hover:text-sky-400 transition-colors">Get in Touch</h2>
           </div>
-          <span class="eyebrow">05 // Academic Record</span>
-          <h2 class="h2">Qualifications &amp; BOM<span class="accent">.</span></h2>
-          <p class="lead">
-            Formal technical education record formatted as an engineering Bill of Materials (BOM).
-          </p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 font-mono text-xs hidden md:flex" onclick="event.stopPropagation()">
+            <a href="cv.html" class="px-2.5 py-1 border border-sky-500/50 hover:bg-sky-500 hover:text-white t-cyan bg-card font-bold transition-all">📄 Full CV Page →</a>
+          </div>
+          <span class="section-state-badge font-mono text-[10px] hidden sm:inline-block px-2 py-0.5 border border-sky-500/40 t-dim bg-card">SHEET ACTIVE [−]</span>
+          <span class="section-chevron w-8 h-8 flex items-center justify-center border border-sky-500/40 rounded bg-card text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-all shadow-sm">
+            <svg class="w-4 h-4 transform transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div id="section-content-contact" class="section-content-wrap">
+        <div class="section-content-inner space-y-6 pt-1">
+
+      <div class="blueprint-card p-5 sm:p-8 border border-sky-500/40 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sky-500/25 pb-5">
+          <div class="space-y-1 min-w-0">
+            <h3 class="text-lg sm:text-xl font-bold t-main">Open to Engineering Placements &amp; Opportunities</h3>
+            <p class="text-sm t-muted">Feel free to reach out directly via email or connect on professional channels.</p>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-xs shrink-0 flex-wrap">
+            <a href="cv.html" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold inline-flex items-center gap-1.5 shadow-md active:scale-95"><span>📄 Open CV Sheet</span> ➔</a>
+            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" class="px-4 py-2.5 border-2 border-sky-500 hover:bg-sky-500 hover:text-white t-cyan font-bold inline-flex items-center gap-1.5 bg-card shadow-sm active:scale-95"><span>PDF (252KB)</span> ↓</a>
+          </div>
         </div>
 
-        <div class="panel spotlight" style="overflow-x: auto;">
-          <table class="bom">
-            <thead>
-              <tr>
-                <th scope="col">ITEM</th>
-                <th scope="col">INSTITUTION</th>
-                <th scope="col">PROGRAMME / QUALIFICATION</th>
-                <th scope="col">RESULT / GRADE</th>
-                <th scope="col">TIMELINE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>BOM-01</td>
-                <td>
-                  <div class="q">University of Lancashire (ULan)</div>
-                  <div class="inst">Preston, Lancashire</div>
-                </td>
-                <td>BEng (Hons) Electrical Engineering (Foundation Year)</td>
-                <td><span class="grade">IN PROGRESS</span></td>
-                <td class="mono small">2026 — Present</td>
-              </tr>
-              <tr>
-                <td>BOM-02</td>
-                <td>
-                  <div class="q">Blackpool Sixth Form College</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>BTEC Level 3 National Extended Diploma in Information Technology</td>
-                <td><span class="grade">D* D* (Distinction*)</span></td>
-                <td class="mono small">09/2021 — 08/2023</td>
-              </tr>
-              <tr>
-                <td>BOM-03</td>
-                <td>
-                  <div class="q">Blackpool Sixth Form College</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCE Advanced Level (A-Level) Computer Science</td>
-                <td><span class="mono">Grade E</span></td>
-                <td class="mono small">09/2021 — 08/2023</td>
-              </tr>
-              <tr>
-                <td>BOM-04</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>Cambridge Nationals Level 2 in Digital ICT</td>
-                <td><span class="grade">D*2 (Distinction* 2)</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-05</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Photography</td>
-                <td><span class="grade">Grade 9 (Highest)</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-06</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Triple Science (Biology, Chemistry, Physics)</td>
-                <td><span class="mono">Bio: 6 · Chem: 5 · Phys: 5</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-              <tr>
-                <td>BOM-07</td>
-                <td>
-                  <div class="q">St Mary's Catholic Academy</div>
-                  <div class="inst">Blackpool, Lancashire</div>
-                </td>
-                <td>GCSE Mathematics &amp; English Language / Literature</td>
-                <td><span class="mono">Maths: 4 · Eng Lang: 6 · Eng Lit: 5</span></td>
-                <td class="mono small">Completed 2021</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="mailto:lspky@pm.me" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">DIRECT EMAIL ✉</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">lspky@pm.me</div>
+            <div class="font-sketch t-sketch text-xs">Primary inbox</div>
+          </a>
+          <div class="p-4 border border-sky-500/30 space-y-1 min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">CAMPUS &amp; BASE 📍</div>
+            <div class="font-bold text-base truncate t-main">Preston, Lancashire</div>
+            <div class="text-xs t-muted">United Kingdom</div>
+          </div>
+          <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">PROFESSIONAL ↗</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">LinkedIn</div>
+            <div class="text-xs t-muted">Lee Parkinson</div>
+          </a>
+          <a href="https://github.com/leeprky" target="_blank" class="p-4 border border-sky-500/30 hover:border-sky-500 transition-all space-y-1 group block min-w-0 bg-paper">
+            <div class="font-mono text-[11px] t-dim">GITHUB PROFILE ↗</div>
+            <div class="font-bold text-base group-hover:underline truncate t-main">@leeprky</div>
+            <div class="text-xs t-muted">Open-source projects</div>
+          </a>
         </div>
 
-        <div class="grade-grid">
-          <div class="grade-cell star">
-            <span>BTEC LEVEL 3 IT</span>
-            <b>D* D* DOUBLE DISTINCTION*</b>
-          </div>
-          <div class="grade-cell star">
-            <span>CAMBRIDGE LEVEL 2</span>
-            <b>D*2 DISTINCTION*</b>
-          </div>
-          <div class="grade-cell star">
-            <span>GCSE PHOTOGRAPHY</span>
-            <b>GRADE 9 (TOP MARK)</b>
-          </div>
-          <div class="grade-cell">
-            <span>FOUNDATION DISCIPLINE</span>
-            <b>ELECTRICAL ENG @ ULAN</b>
-          </div>
+        <div class="pt-4 border-t border-sky-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs t-muted">
+          <span>SPECIFICATION SOURCE REPOSITORY:</span>
+          <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="inline-flex items-center gap-1.5 font-bold hover:underline break-all t-cyan">github.com/leeprky/leeprky.github.io ↗</a>
+        </div>
+      </div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================================
-         06. FIELD SYSTEMS & EXPEDITIONS (HOBBIES)
-         ===================================================================== -->
-    <section id="hobbies" class="section">
-      <div class="container">
-        <div class="sheet-head">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 06</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-06 // FIELD EXPEDITIONS</span>
-          </div>
-          <span class="eyebrow">06 // Field Systems</span>
-          <h2 class="h2">Mountains, Camping &amp; Cars<span class="accent">.</span></h2>
-          <p class="lead">
-            What I do outside the lab and work: fell climbing in the Lake District, car mechanics, and landscape photography.
-          </p>
-        </div>
-
-        <div class="grid grid-2">
-          <!-- Mountaineering -->
-          <article class="panel spotlight hobby">
-            <div class="panel-head">
-              <span class="panel-id">FIELD-01 // EXPEDITIONS</span>
-              <span class="tiny mono">LAKE DISTRICT &amp; FELLS</span>
-            </div>
-            <h3 class="h3">Mountaineering, Scrambling &amp; Camping</h3>
-            <p class="body small">
-              Getting up into the mountains is my favourite way to switch off — climbing fells, scrambling up rocky waterfalls and gorges, and pitch-camping overnight in the valleys. Living in Preston puts the Lake District and Pennines right on the doorstep.
-            </p>
-
-            <div class="hobby-figs">
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/hobby-waterfall.jpg" alt="Lee scrambling up a gorge waterfall in the Lake District" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>GORGE</span>
-                  <span class="hand">"waterfall scramble"</span>
-                </figcaption>
-              </div>
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/hobby-mountains.jpg" alt="Mountain stream looking over valley in the Lake District" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>FELLS</span>
-                  <span class="hand">"valley stream"</span>
-                </figcaption>
-              </div>
-            </div>
-
-            <div class="chips">
-              <span class="chip">Lake District</span>
-              <span class="chip">Gorge Scrambles</span>
-              <span class="chip">Wild Camping</span>
-              <span class="chip">Fell Ridges</span>
-            </div>
-          </article>
-
-          <!-- Cars & Motoring -->
-          <article class="panel spotlight hobby">
-            <div class="panel-head">
-              <span class="panel-id">FIELD-02 // MOTORING</span>
-              <span class="tiny mono">BMW E90 3 SERIES</span>
-            </div>
-            <h3 class="h3">Motoring, Racing &amp; DIY Mechanics</h3>
-            <p class="body small">
-              Cars are a major part of my life. From hands-on shop work at Car Cosmetics to maintaining and modifying my own red BMW E90 3 Series — doing my own mechanical servicing, fluid flushes, brake jobs, and styling upgrades like the front splitter.
-            </p>
-
-            <div class="hobby-figs">
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/car-front.jpg" alt="Lee's red BMW E90 front view with front splitter" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>DAY VIEW</span>
-                  <span class="hand">"BMW E90 front"</span>
-                </figcaption>
-              </div>
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/car-night.jpg" alt="Lee's red BMW E90 at night with angel eyes" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>NIGHT VIEW</span>
-                  <span class="hand">"angel eyes"</span>
-                </figcaption>
-              </div>
-            </div>
-
-            <div class="chips">
-              <span class="chip">BMW E90</span>
-              <span class="chip">Motorsport</span>
-              <span class="chip">DIY Servicing</span>
-              <span class="chip">Car Meets</span>
-            </div>
-          </article>
-        </div>
-
-        <div class="side-grid">
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 01</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">Landscape Photography</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Putting my Grade 9 in GCSE Photography to practical use capturing mountain ridges, waterfalls, and automotive shoots.
-            </p>
-          </div>
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 02</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">PC Hardware &amp; Modding</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Building rigs, replacing capacitors, modding software, and troubleshooting electronics.
-            </p>
-          </div>
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 03</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">Live Sound &amp; Music</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Retaining an ear for sound engineering, acoustic setups, and audio routing from my time on the decks.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =====================================================================
-         07. DIRECT DISPATCH (CONTACT)
-         ===================================================================== -->
-    <section id="contact" class="section">
-      <div class="container">
-        <!-- React Bits · ElectricBorder on Primary Contact Sheet -->
-        <div class="panel contact-card electric spotlight">
-          <svg class="electric-svg" aria-hidden="true">
-            <rect class="glow" x="6" y="6" width="calc(100% - 12px)" height="calc(100% - 12px)" rx="2" />
-            <rect x="6" y="6" width="calc(100% - 12px)" height="calc(100% - 12px)" rx="2" />
-          </svg>
-
-          <div class="sheet-head" style="margin-bottom: 1.5rem;">
-            <div class="sheet-meta">
-              <span class="sheet-no">SHEET 07</span>
-              <div class="sheet-rule"></div>
-              <span class="sheet-code">LP-SHT-07 // COMMUNICATION LINK</span>
-            </div>
-            <span class="eyebrow">07 // Direct Dispatch</span>
-            <h2 class="h2">Get in Touch<span class="accent">.</span></h2>
-            <p class="lead">
-              Open to engineering placements, industrial trainee roles, apprenticeships, and technical opportunities across Preston, Lancashire, and the North West.
-            </p>
-          </div>
-
-          <div class="contact-grid">
-            <!-- Email -->
-            <div class="contact-cell">
-              <span class="tiny mono">PRIMARY DISPATCH</span>
-              <b>lspky@pm.me</b>
-              <span class="small muted">ProtonMail Secure</span>
-              <button type="button" class="copy-btn" data-copy="lspky@pm.me">Copy Address</button>
-            </div>
-
-            <!-- Location -->
-            <div class="contact-cell">
-              <span class="tiny mono">CAMPUS &amp; BASE</span>
-              <b>Preston, Lancashire</b>
-              <span class="small muted">United Kingdom · PR1</span>
-              <span class="tiny mono" style="margin-top: 0.3rem;">ULan Engineering</span>
-            </div>
-
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" rel="noopener noreferrer" class="contact-cell">
-              <span class="tiny mono">PROFESSIONAL NETWORK</span>
-              <b>LinkedIn ↗</b>
-              <span class="small muted">Lee Parkinson</span>
-              <span class="tiny mono accent" style="margin-top: 0.3rem;">Connect Profile</span>
-            </a>
-
-            <!-- GitHub -->
-            <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="contact-cell">
-              <span class="tiny mono">SOURCE REPOSITORY</span>
-              <b>GitHub ↗</b>
-              <span class="small muted">@leeprky</span>
-              <span class="tiny mono accent" style="margin-top: 0.3rem;">View Codebases</span>
-            </a>
-          </div>
-
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem;">
-            <a href="mailto:lspky@pm.me" class="btn btn-primary">
-              <span>Send Email (lspky@pm.me)</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </a>
-            <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn">
-              <span>Download CV PDF (252KB)</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- =======================================================================
-       SITE FOOTER
-       ======================================================================= -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="mono" style="font-weight: 700; font-size: 0.95rem;">LEE PARKINSON // ELECTRICAL ENGINEERING</div>
-        <div class="tiny mono" style="margin-top: 0.4rem;">
-          SPEC SPECIFICATION DWG: LP-ENG-2026-EE · BS 8888 / IEEE-315 SCHEMATIC DRAFTING · PRESTON, UK
-        </div>
-      </div>
-      <div class="footer-links">
-        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" rel="noopener noreferrer">Source Code ↗</a>
-        <a href="cv.html">CV Sheet</a>
-        <a href="about.html">About</a>
-        <a href="schematics.html">Schematics</a>
-        <a href="#top">Top ↑</a>
+  <!-- BLUEPRINT DRAWING FOOTER -->
+  <footer class="bg-strip t-muted w-full border-t border-sky-500/30 py-5 sm:py-6 text-xs font-mono">
+    <div class="drafting-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>SHEET: LP-EE-2026 • DISCIPLINE: ELECTRICAL ENGINEERING • © <span id="year">2026</span> LEE PARKINSON</div>
+      <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" class="hover:underline font-bold t-cyan">Website Source (GitHub) ↗</a>
+        <a href="mailto:lspky@pm.me" class="hover:underline t-dim">lspky@pm.me</a>
+        <a href="#top" class="hover:underline t-dim">TOP ↑</a>
       </div>
     </div>
   </footer>
 
-  <!-- =======================================================================
-       REACT BITS · MAGNIFYING DOCK (BOTTOM CONSOLE)
-       ======================================================================= -->
-  <div class="dock-wrap" aria-label="Quick sheet navigator">
-    <nav class="dock" aria-label="Sheet dock">
-      <a href="#top" class="dock-item is-active" aria-label="Top / Master Assembly">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-        <span class="dock-label">00 // TOP</span>
-      </a>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-      <a href="#about" class="dock-item" aria-label="Sheet 01: About">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="16" x2="12" y2="12"></line>
-          <line x1="12" y1="8" x2="12.01" y2="8"></line>
-        </svg>
-        <span class="dock-label">01 // ABOUT</span>
-      </a>
+    function syncBrowserChrome(isDark) {
+      const strip = document.querySelector('.bg-strip');
+      const c = (strip && getComputedStyle(strip).backgroundColor) || (isDark ? '#030914' : '#cee0f2');
+      document.getElementById('meta-theme-light')?.setAttribute('content', c);
+      document.getElementById('meta-theme-dark')?.setAttribute('content', c);
+      document.getElementById('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+      document.getElementById('meta-apple-status')?.setAttribute('content', isDark ? 'black-translucent' : 'default');
+      document.getElementById('meta-ms-nav')?.setAttribute('content', c);
+      document.getElementById('meta-ms-tile')?.setAttribute('content', c);
+    }
 
-      <a href="#schematics" class="dock-item" aria-label="Sheet 02: Schematics">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        <span class="dock-label">02 // SCHEMATICS</span>
-      </a>
+    function setThemeMode(mode) {
+      const html = document.documentElement;
+      const map = { auto: 'btn-theme-auto', light: 'btn-theme-light', dark: 'btn-theme-dark' };
+      Object.values(map).forEach(id => document.getElementById(id)?.classList.remove('bg-sky-500', 'text-white', 'font-bold'));
+      const isDark = mode === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+      if (mode === 'auto') localStorage.removeItem('theme');
+      else localStorage.setItem('theme', mode);
+      html.classList.toggle('dark', isDark);
+      syncBrowserChrome(isDark);
+      document.getElementById(map[mode])?.classList.add('bg-sky-500', 'text-white', 'font-bold');
+    }
+    setThemeMode(localStorage.getItem('theme') || 'auto');
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.classList.toggle('dark', e.matches);
+        syncBrowserChrome(e.matches);
+      }
+    });
 
-      <a href="#projects" class="dock-item" aria-label="Sheet 03: Projects">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-        </svg>
-        <span class="dock-label">03 // BUILDS</span>
-      </a>
+    function filterProjects(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        const active = b.dataset.filter === cat;
+        b.classList.toggle('bg-sky-500', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('font-bold', active);
+      });
+      document.querySelectorAll('.project-card').forEach(c => {
+        c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
+      });
+    }
 
-      <a href="#experience" class="dock-item" aria-label="Sheet 04: Experience">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-          <path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"></path>
-        </svg>
-        <span class="dock-label">04 // EXP</span>
-      </a>
+    // Secret Material You theme menu: hold hover on SPEC for 1 second
+    function markAccent() {
+      const cur = localStorage.getItem('accent') || 'blue';
+      document.querySelectorAll('[data-accent-btn]').forEach(b => b.classList.toggle('active', b.dataset.accentBtn === cur));
+      const ci = document.getElementById('accent-custom');
+      if (ci && cur.startsWith('custom:')) ci.value = cur.slice(7);
+    }
+    function setAccent(a) {
+      if (a === 'blue') localStorage.removeItem('accent'); else localStorage.setItem('accent', a);
+      lpApplyAccent(a);
+      markAccent();
+      syncBrowserChrome(document.documentElement.classList.contains('dark'));
+    }
+    function closeAccentMenu() {
+      document.getElementById('spec-wrap')?.classList.remove('menu-open', 'holding');
+    }
+    (function () {
+      const wrap = document.getElementById('spec-wrap'), label = document.getElementById('spec-label');
+      if (!wrap || !label) return;
+      let holdTimer = null, leaveTimer = null;
+      const start = () => {
+        if (wrap.classList.contains('menu-open')) return;
+        wrap.classList.add('holding');
+        holdTimer = setTimeout(() => { wrap.classList.remove('holding'); wrap.classList.add('menu-open'); markAccent(); }, 1000);
+      };
+      const cancel = () => { clearTimeout(holdTimer); wrap.classList.remove('holding'); };
+      label.addEventListener('mouseenter', start);
+      label.addEventListener('mouseleave', cancel);
+      label.addEventListener('touchstart', start, { passive: true });
+      label.addEventListener('touchend', cancel);
+      wrap.addEventListener('mouseleave', () => { leaveTimer = setTimeout(closeAccentMenu, 400); });
+      wrap.addEventListener('mouseenter', () => clearTimeout(leaveTimer));
+      document.addEventListener('click', e => { if (!wrap.contains(e.target)) closeAccentMenu(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAccentMenu(); });
+      document.getElementById('accent-custom')?.addEventListener('input', e => setAccent('custom:' + e.target.value));
+    })();
 
-      <a href="#education" class="dock-item hide-sm" aria-label="Sheet 05: Education">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-          <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-        </svg>
-        <span class="dock-label">05 // BOM</span>
-      </a>
+    // 1-Second Hover Popup Timer for Topbar Elements (DEV)
+    document.querySelectorAll('.nav-item-wrap').forEach(el => {
+      let timer = null;
+      el.addEventListener('mouseenter', () => {
+        el.classList.add('holding');
+        timer = setTimeout(() => {
+          el.classList.add('popup-open');
+        }, 1000);
+      });
+      el.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        el.classList.remove('holding', 'popup-open');
+      });
+    });
 
-      <a href="#contact" class="dock-item" aria-label="Sheet 07: Dispatch">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>
-        <span class="dock-label">07 // CONTACT</span>
-      </a>
+    // Code Typing Animation for "Hi, I'm Lee." (restarts on refresh, dot blinks once loaded)
+    (function () {
+      const heading = document.getElementById('hero-heading');
+      const target = document.getElementById('hero-type-target');
+      const dot = document.getElementById('hero-dot');
+      const cursor = document.getElementById('hero-cursor');
+      if (!heading || !target || !dot || !cursor) return;
 
-      <div class="dock-sep" aria-hidden="true"></div>
+      const fullText = "Hi, I'm Lee";
+      try { localStorage.removeItem('lee_hero_typed'); } catch (e) {}
 
-      <!-- CV Spec Download -->
-      <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="dock-item" aria-label="Curriculum Vitae PDF">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-        </svg>
-        <span class="dock-label">CV PDF</span>
-      </a>
-    </nav>
-  </div>
+      function runTyping() {
+        document.documentElement.classList.remove('hero-needs-typing');
+        target.textContent = '';
+        dot.classList.remove('dot-blinking');
+        dot.style.opacity = '0';
+        cursor.style.display = 'inline-block';
+        cursor.style.opacity = '1';
+        let i = 0;
+        function typeStep() {
+          if (i < fullText.length) {
+            target.textContent += fullText[i];
+            i++;
+            const variance = 50 + Math.random() * 45;
+            setTimeout(typeStep, variance);
+          } else {
+            cursor.style.display = 'none';
+            dot.style.opacity = '1';
+            dot.classList.add('dot-blinking');
+          }
+        }
+        setTimeout(typeStep, 250);
+      }
 
-  <!-- =======================================================================
-       SCRIPTS: GSAP 3.15 + PLUGINS, LENIS 1.3.27, BLUEPRINT ENGINE
-       ======================================================================= -->
+      runTyping();
+
+      heading.style.cursor = 'pointer';
+      heading.addEventListener('click', runTyping);
+    })();
+
+    // ===== COLLAPSIBLE BLUEPRINT SECTIONS LOGIC =====
+    const BLUEPRINT_SECTIONS = ['about', 'schematics', 'gallery', 'experience', 'education', 'hobbies', 'contact'];
+
+    function toggleBlueprintSection(id) {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      const isCollapsed = sec.classList.toggle('section-collapsed');
+      const badge = sec.querySelector('.section-state-badge');
+      if (badge) badge.textContent = isCollapsed ? 'SHEET FOLDED [+]' : 'SHEET ACTIVE [−]';
+      const btn = sec.querySelector('.section-toggle-header');
+      if (btn) btn.setAttribute('aria-expanded', !isCollapsed);
+    }
+
+    function setAllSections(expand) {
+      BLUEPRINT_SECTIONS.forEach(id => {
+        const sec = document.getElementById(id);
+        if (!sec) return;
+        sec.classList.toggle('section-collapsed', !expand);
+        const badge = sec.querySelector('.section-state-badge');
+        if (badge) badge.textContent = !expand ? 'SHEET FOLDED [+]' : 'SHEET ACTIVE [−]';
+        const btn = sec.querySelector('.section-toggle-header');
+        if (btn) btn.setAttribute('aria-expanded', expand);
+      });
+    }
+
+    function autoExpandHash() {
+      const h = (window.location.hash || '').replace('#', '');
+      if (h) {
+        const base = h.split('-')[0];
+        const sec = document.getElementById(h) || document.getElementById(base);
+        if (sec && sec.classList.contains('section-collapsed')) {
+          sec.classList.remove('section-collapsed');
+          const badge = sec.querySelector('.section-state-badge');
+          if (badge) badge.textContent = 'SHEET ACTIVE [−]';
+        }
+      }
+    }
+    window.addEventListener('hashchange', autoExpandHash);
+    document.addEventListener('DOMContentLoaded', autoExpandHash);
+  </script>
+  <!-- CAD Schematic Telemetry & Instrumentation Engine (GSAP, Lenis, React Bits) -->
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
   <script src="assets/vendor/ScrollToPlugin.min.js"></script>
   <script src="assets/vendor/SplitText.min.js"></script>
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
+  <script src="assets/vendor/TextPlugin.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js"></script>
+  <script src="assets/vendor/blueprint-motion.js"></script>
 </body>
 </html>
