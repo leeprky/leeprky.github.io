@@ -979,10 +979,7 @@
         vec2 fragCoord = gl_FragCoord.xy;
         vec2 p = (fragCoord - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
 
-        // Subtle interactive mouse attraction across the fabric
-        vec2 mouseOffset = (u_mouse - 0.5) * 0.28;
-        p -= mouseOffset;
-
+        // Pure autonomous satin flow — no parallax, no mouse tracking
         float t = u_time * u_speed;
 
         // Evaluate surface height & finite differences for surface normals
@@ -1132,28 +1129,6 @@
     let height = 0;
     let dpr = 1;
 
-    // Static composition parameters: elegant, calm, non-distracting diagonal silk folds
-    const staticTime = 2.4;
-    const staticMouse = [0.5, 0.5];
-
-    function renderStatic() {
-      gl.useProgram(program);
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, staticTime);
-      gl.uniform1f(uSpeed, 1.0);
-      gl.uniform2f(uMouse, staticMouse[0], staticMouse[1]);
-      gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
-      gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
-      gl.uniform1f(uIsLight, isLightVal);
-
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-    }
-
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = window.innerWidth;
@@ -1161,65 +1136,115 @@
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
-      renderStatic();
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    let startTime = performance.now();
+    let isVisible = true;
+    let animId = null;
+
+    document.addEventListener('visibilitychange', () => {
+      isVisible = !document.hidden;
+      if (isVisible && !animId) {
+        animId = requestAnimationFrame(render);
+      }
+    });
+
+    const speed = 0.40;
+
+    function render(now) {
+      if (isVisible) {
+        const elapsed = (now - startTime) / 1000;
+        gl.useProgram(program);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, elapsed);
+        gl.uniform1f(uSpeed, speed);
+        gl.uniform2f(uMouse, 0.5, 0.5);
+        gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
+        gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
+        gl.uniform1f(uIsLight, isLightVal);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
+      animId = requestAnimationFrame(render);
     }
 
     chromaEngine = {
       updateColors: () => {
         updateColors();
-        renderStatic();
       },
-      render: renderStatic
+      render: () => {}
     };
 
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
+    animId = requestAnimationFrame(render);
   }
 
   function initSatinRidgesFallback(canvas) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    let animId;
+    let startTime = performance.now();
+    let isVisible = true;
 
-    function drawStatic() {
+    document.addEventListener('visibilitychange', () => {
+      isVisible = !document.hidden;
+      if (isVisible && !animId) {
+        animId = requestAnimationFrame(draw);
+      }
+    });
+
+    function draw(now) {
+      if (isVisible) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const isWhite = document.documentElement.getAttribute('data-theme') === 'whiteprint';
+        ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const t = (now - startTime) * 0.0004;
+        const styles = getComputedStyle(document.documentElement);
+        const accent = styles.getPropertyValue('--accent') || '#38bdf8';
+
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        ctx.strokeStyle = accent.trim();
+        ctx.lineWidth = 48;
+        ctx.filter = 'blur(28px)';
+
+        // Autonomous flowing satin ribbons — no mouse parallax
+        const lines = 7;
+        for (let i = 0; i < lines; i++) {
+          const baseY = (canvas.height / lines) * i;
+          ctx.beginPath();
+          for (let x = 0; x <= canvas.width; x += 30) {
+            const y = baseY + Math.sin(x * 0.003 + t + i * 0.8) * 60 + Math.cos(x * 0.006 - t * 0.6) * 35;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+      animId = requestAnimationFrame(draw);
+    }
+
+    animId = requestAnimationFrame(draw);
+    window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const isWhite = document.documentElement.getAttribute('data-theme') === 'whiteprint';
-      ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }, { passive: true });
 
-      const t = 1.8;
-      const styles = getComputedStyle(document.documentElement);
-      const accent = styles.getPropertyValue('--accent') || '#38bdf8';
-
-      ctx.save();
-      ctx.globalAlpha = 0.16;
-      ctx.strokeStyle = accent.trim();
-      ctx.lineWidth = 48;
-      ctx.filter = 'blur(28px)';
-
-      // Static satin ribbons across diagonal
-      const lines = 7;
-      for (let i = 0; i < lines; i++) {
-        const baseY = (canvas.height / lines) * i;
-        ctx.beginPath();
-        for (let x = 0; x <= canvas.width; x += 30) {
-          const y = baseY + Math.sin(x * 0.003 + t + i * 0.8) * 60 + Math.cos(x * 0.006 - t * 0.6) * 35;
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    drawStatic();
-    window.addEventListener('resize', drawStatic, { passive: true });
-    if (!chromaEngine) {
-      chromaEngine = {
-        updateColors: drawStatic,
-        render: drawStatic
-      };
-    }
+    chromaEngine = {
+      updateColors: () => {},
+      render: () => {}
+    };
   }
 
   // ---------------------------------------------------------------------------
