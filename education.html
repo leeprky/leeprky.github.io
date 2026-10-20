@@ -22,6 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/vendor/lenis.css" />
+  <link rel="stylesheet" href="assets/vendor/blueprint-motion.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -505,8 +507,9 @@
           <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
-        <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V8.0</span>
+        <div id="spec-wrap" class="relative hidden md:inline-flex items-center gap-2">
+          <span class="px-1.5 py-0.5 border border-sky-400/40 rounded-sm bg-card t-cyan font-mono text-[10px] font-bold hidden xl:inline-block" title="BS 8888 / ISO 128 Technical Drawing &amp; IEEE 315 Schematic Standard">BS 8888 // IEEE-315 CAD</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V9.0</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -995,5 +998,15 @@
     window.addEventListener('hashchange', autoExpandHash);
     document.addEventListener('DOMContentLoaded', autoExpandHash);
   </script>
+  <!-- CAD Schematic Telemetry & Instrumentation Engine -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/ScrollToPlugin.min.js"></script>
+  <script src="assets/vendor/SplitText.min.js"></script>
+  <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
+  <script src="assets/vendor/Flip.min.js"></script>
+  <script src="assets/vendor/TextPlugin.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="assets/vendor/blueprint-motion.js"></script>
 </body>
 </html>

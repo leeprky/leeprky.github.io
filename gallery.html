@@ -22,6 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/vendor/lenis.css" />
+  <link rel="stylesheet" href="assets/vendor/blueprint-motion.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -505,8 +507,9 @@
           <button onclick="setThemeMode('light')" id="btn-theme-light" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Light blueprint">☀️ <span class="hidden sm:inline">LIGHT</span></button>
           <button onclick="setThemeMode('dark')" id="btn-theme-dark" class="px-2 py-0.5 hover:bg-sky-400/20 transition-colors border-l border-sky-400/40" title="Dark blueprint">🌙 <span class="hidden sm:inline">DARK</span></button>
         </div>
-        <div id="spec-wrap" class="relative hidden md:inline-flex items-center">
-          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V8.0</span>
+        <div id="spec-wrap" class="relative hidden md:inline-flex items-center gap-2">
+          <span class="px-1.5 py-0.5 border border-sky-400/40 rounded-sm bg-card t-cyan font-mono text-[10px] font-bold hidden xl:inline-block" title="BS 8888 / ISO 128 Technical Drawing &amp; IEEE 315 Schematic Standard">BS 8888 // IEEE-315 CAD</span>
+          <span id="spec-label" class="t-sketch font-sketch text-xs cursor-default select-none">SPEC V9.0</span>
           <span class="spec-hold-bar"></span>
           <div id="accent-menu" class="accent-menu space-y-2.5" role="dialog" aria-label="Theme colours">
             <div class="flex items-center justify-between">
@@ -915,6 +918,53 @@
           <a href="https://github.com/leeprky/Lode" target="_blank" class="px-3 py-1.5 border border-sky-500/40 hover:bg-sky-500 hover:text-white t-cyan bg-paper">Lode Repo ↗</a>
         </div>
       </div>
+
+      <!-- 03.3 // INTERACTIVE WEB APPS -->
+      <div id="gallery-webapps" class="space-y-4 pt-2">
+        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2 gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono font-bold px-2.5 py-0.5 border border-sky-500/40 bg-paper t-cyan">03.3 // INTERACTIVE WEB APPS</span>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight t-main">Hosted Web Apps &amp; Games</h3>
+          </div>
+          <span class="font-sketch t-sketch text-xs">live interactive builds</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/50 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 bg-sky-500 text-white font-bold">WEBAPP-01 // MOBILE COMPANION</span>
+                <a href="projects/pubcrawlapp/" class="hover:underline font-bold t-cyan">Launch App ↗</a>
+              </div>
+              <h4 class="text-lg font-bold t-main">Preston UNO Pub Crawl Companion App</h4>
+              <p class="text-sm leading-relaxed t-muted">Interactive mobile-first companion app featuring a pinch-zoomable 10-stop Preston route map, an 8-slice physics Wheel of Doom with Web Audio effects, cookie-persisted 4-team &amp; player scoreboards, searchable rule sheet, and a password-locked Chaos Bingo vault.</p>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="chip">Interactive Map</span><span class="chip">Physics Wheel</span><span class="chip">Cookie Sync</span>
+              </div>
+              <a href="projects/pubcrawlapp/" class="px-3 py-1 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded">Open App ➔</a>
+            </div>
+          </div>
+
+          <div class="blueprint-card blueprint-interactive p-5 border border-sky-500/50 space-y-3 flex flex-col justify-between min-w-0">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="px-2 py-0.5 border border-sky-500/50 font-bold bg-paper t-dim">WEBAPP-02 // TWO-PLAYER GAME</span>
+                <a href="projects/chess/" class="hover:underline font-bold t-cyan">Play Game ↗</a>
+              </div>
+              <h4 class="text-lg font-bold t-main">Wizard's Chess — Two-Player Local Edition</h4>
+              <p class="text-sm leading-relaxed t-muted">Full legal-move two-player chess game powered by Chess.js with animated piece shattering, house allegiance scoreboards, move log history, and atmospheric stone-and-gold styling.</p>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs pt-2 border-t border-sky-500/20">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="chip">Chess.js Engine</span><span class="chip">2-Player Local</span><span class="chip">Interactive UI</span>
+              </div>
+              <a href="projects/chess/" class="px-3 py-1 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded">Play Chess ➔</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -1096,5 +1146,15 @@
     window.addEventListener('hashchange', autoExpandHash);
     document.addEventListener('DOMContentLoaded', autoExpandHash);
   </script>
+  <!-- CAD Schematic Telemetry & Instrumentation Engine -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/ScrollToPlugin.min.js"></script>
+  <script src="assets/vendor/SplitText.min.js"></script>
+  <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
+  <script src="assets/vendor/Flip.min.js"></script>
+  <script src="assets/vendor/TextPlugin.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="assets/vendor/blueprint-motion.js"></script>
 </body>
 </html>
