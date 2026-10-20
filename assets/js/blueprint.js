@@ -647,7 +647,7 @@
     });
 
     // Highlight active section based on scroll position
-    const sections = ['top', 'about', 'schematics', 'projects', 'experience', 'education', 'hobbies', 'contact'];
+    const sections = ['top', 'about', 'education', 'experience', 'projects', 'hobbies', 'contact'];
     function updateActiveDock() {
       const scrollY = window.scrollY + window.innerHeight * 0.35;
       let active = 'top';
