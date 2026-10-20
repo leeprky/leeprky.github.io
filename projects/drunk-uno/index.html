@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>The Ultimate UNO Team Crawl — Preston Route // Drunk Uno Tavern Referee</title>
+
+  <!-- Open Graph & Meta -->
+  <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Team Scoreboard with Cookie Save, Pub Tracker, and Interactive Rules." />
+  <meta name="theme-color" content="#120b05" />
+
+  <!-- Google Fonts: Pirate, Antique Serif & Celtic Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Pirata+One&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================================
+       01. COLOR PALETTE & TOKENS (Matching Tavern Parchment & Wheel Slides)
+       ========================================================================= */
+    :root {
+      --parchment-light: #efe0bb;
+      --parchment-mid: #d8bc86;
+      --parchment-dark: #b38e50;
+      --parchment-deep: #8c6732;
+      --ink: #22160a;
+      --ink-faded: #54391e;
+      --ink-muted: #795732;
+      --wood-dark: #190c04;
+      --wood-mid: #3a1c09;
+      --wood-light: #613414;
+      --red-quad: #d62828;
+      --red-glow: #ff4d4d;
+      --blue-quad: #1d63b8;
+      --blue-glow: #4da3ff;
+      --green-quad: #2b9348;
+      --green-glow: #4ee275;
+      --yellow-quad: #f7b801;
+      --yellow-glow: #ffd447;
+      --gold: #dfb74c;
+      --gold-bright: #ffea85;
+      --wax-red: #9e1b1b;
+      --radius: 10px;
+      --shadow-heavy: 0 16px 48px rgba(0, 0, 0, 0.88);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #0f0703;
+      background-image:
+        radial-gradient(circle at 50% 20%, rgba(255, 185, 80, 0.16) 0%, rgba(10, 5, 2, 0.98) 85%),
+        repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.5) 0 2px, transparent 2px 8px);
+      font-family: 'IM Fell English', Georgia, serif;
+      color: var(--ink);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 8px 32px;
+      overflow-x: hidden;
+    }
+
+    /* Confetti Canvas */
+    #fxCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Outer Container */
+    .app-container {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Main Parchment Board */
+    .parchment-board {
+      position: relative;
+      width: 100%;
+      background:
+        radial-gradient(circle at 85% 80%, rgba(139, 90, 43, 0.28) 0%, transparent 22%),
+        radial-gradient(circle at 15% 15%, rgba(120, 72, 25, 0.22) 0%, transparent 18%),
+        radial-gradient(circle at 50% 50%, var(--parchment-light) 0%, var(--parchment-mid) 72%, var(--parchment-dark) 100%);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow-heavy), inset 0 0 45px rgba(62, 34, 8, 0.7);
+      border: 3.5px solid #3c220c;
+    }
+
+    .celtic-frame {
+      border: 3px double var(--ink);
+      border-radius: 10px;
+      padding: 12px 10px;
+      position: relative;
+    }
+
+    /* Celtic Corner Decors */
+    .celtic-frame::before,
+    .celtic-frame::after {
+      content: "✦";
+      position: absolute;
+      font-size: 1.25rem;
+      color: var(--wood-mid);
+      opacity: 0.7;
+    }
+    .celtic-frame::before { top: 3px; left: 6px; }
+    .celtic-frame::after { top: 3px; right: 6px; }
+
+    /* =========================================================================
+       02. TOP NAVIGATION BAR & UTILITY CONTROLS
+       ========================================================================= */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .back-home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Pirata One', cursive;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      background: rgba(58, 34, 12, 0.1);
+      transition: background 0.15s;
+    }
+    .back-home-link:hover {
+      background: rgba(58, 34, 12, 0.22);
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(58, 34, 12, 0.12);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      background: rgba(58, 34, 12, 0.22);
+    }
+    .tab-btn.active {
+      background: var(--wood-mid);
+      color: var(--gold-bright);
+      border-color: var(--wood-dark);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cookie-status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #1e4620;
+      background: rgba(43, 147, 72, 0.22);
+      border: 1px solid rgba(43, 147, 72, 0.5);
+      border-radius: 20px;
+      padding: 4px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .cookie-status-badge .dot {
+      width: 7px;
+      height: 7px;
+      background: #2b9348;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #2b9348;
+    }
+
+    /* =========================================================================
+       03. MAIN RIBBON BANNER & TAVERN HEADER
+       ========================================================================= */
+    .header-area {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .ribbon-banner {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #5a2c0c 0%, #301604 100%);
+      color: var(--gold-bright);
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      position: relative;
+      margin-bottom: 6px;
+    }
+    .ribbon-banner h1 {
+      font-family: 'Pirata One', cursive;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      letter-spacing: 0.08em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      margin: 0;
+    }
+
+    .header-subtext {
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      color: var(--ink-faded);
+      letter-spacing: 0.02em;
+    }
+
+    /* Active Pub Challenge Ticker */
+    .pub-ticker {
+      margin-top: 8px;
+      background: rgba(40, 20, 5, 0.12);
+      border-top: 1px dashed var(--ink-muted);
+      border-bottom: 1px dashed var(--ink-muted);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .pub-ticker b {
+      color: #8b1e1e;
+      font-family: 'Cinzel Decorative', Georgia, serif;
+    }
+
+    /* =========================================================================
+       04. QUICK TEAM BAR (Touch Horizontal Carousel)
+       ========================================================================= */
+    .crew-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    @media (max-width: 680px) {
+      .crew-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .crew-pill {
+      background: rgba(255, 248, 230, 0.85);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .crew-pill:active {
+      transform: scale(0.97);
+    }
+    .crew-pill.active-turn {
+      border-color: #23170b;
+      box-shadow: 0 0 0 3px var(--gold), 0 8px 20px rgba(0, 0, 0, 0.35);
+      background: #fffdf5;
+    }
+
+    .crew-pill-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .crew-name-label {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.15rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .crew-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+    .crew-dot.red { background: var(--red-quad); }
+    .crew-dot.blue { background: var(--blue-quad); }
+    .crew-dot.green { background: var(--green-quad); }
+    .crew-dot.yellow { background: var(--yellow-quad); }
+
+    .crew-score-big {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .crew-rival-tag {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink-muted);
+    }
+    .frozen-banner {
+      position: absolute;
+      top: -8px;
+      right: 6px;
+      background: #0284c7;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* =========================================================================
+       05. TAB VIEW CONTAINER & CONTENT PANELS
+       ========================================================================= */
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================================================
+       06. TAB 1: THE WHEEL OF DOOM STAGE
+       ========================================================================= */
+    .wheel-view-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    @media (min-width: 980px) {
+      .wheel-view-grid {
+        grid-template-columns: 1fr 1.35fr 1fr;
+      }
+    }
+
+    /* Wheel Rules Cards */
+    .wheel-rules-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rule-card-mini {
+      background: rgba(255, 248, 230, 0.75);
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      transition: transform 0.15s;
+    }
+    .rule-card-mini:hover {
+      transform: translateY(-2px);
+    }
+    .rule-card-mini.target-active {
+      box-shadow: 0 0 0 2.5px var(--gold), 0 8px 18px rgba(0,0,0,0.25);
+      background: #fffef8;
+    }
+    .rule-card-mini-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      margin-bottom: 3px;
+    }
+    .rule-card-mini p {
+      font-size: 0.88rem;
+      line-height: 1.35;
+      color: var(--ink-faded);
+    }
+
+    /* The Center Wheel Stage */
+    .wheel-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .wheel-pointer {
+      width: 44px;
+      height: 56px;
+      position: absolute;
+      top: -14px;
+      z-index: 20;
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.75));
+      transform-origin: 50% 12px;
+      transition: transform 0.08s ease-out;
+      pointer-events: none;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: min(84vw, 390px);
+      height: min(84vw, 390px);
+      margin: 10px auto 6px;
+      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.65));
+      touch-action: none;
+      user-select: none;
+    }
+
+    #doomWheelSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+
+    /* Center Spin Button */
+    .center-spin-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #b91c1c 0%, #6e0e0e 70%, #3b0505 100%);
+      border: 4px solid var(--gold);
+      color: var(--gold-bright);
+      font-family: 'Pirata One', cursive;
+      font-size: 1.55rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.8),
+        inset 0 2px 4px rgba(255, 255, 255, 0.35);
+      z-index: 10;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      touch-action: manipulation;
+    }
+    .center-spin-btn:active {
+      transform: translate(-50%, -50%) scale(0.92);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    }
+    .center-spin-btn small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      color: #ffd699;
+      margin-top: -2px;
+    }
+
+    /* Power Charge Bar */
+    .power-bar-wrap {
+      width: min(80vw, 290px);
+      height: 11px;
+      background: rgba(35, 23, 11, 0.7);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 8px auto 4px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    .power-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #f7b801, #d62828);
+      transition: width 0.05s linear;
+    }
+
+    .spin-hint {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--ink-faded);
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    /* =========================================================================
+       07. TAB 2: PRESTON PUB CRAWL MAP & 10 STOPS
+       ========================================================================= */
+    .map-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .map-viewer-card {
+      background: rgba(255, 248, 230, 0.85);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .map-img-container {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      position: relative;
+      cursor: zoom-in;
+      background: #190c04;
+    }
+    .map-img-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .map-img-container:hover img {
+      transform: scale(1.02);
+    }
+    .map-overlay-tip {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(20, 10, 4, 0.85);
+      color: var(--gold-bright);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* 10 Stops Timeline */
+    .stops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+    }
+
+    .stop-card {
+      background: rgba(255, 248, 230, 0.9);
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      position: relative;
+      transition: all 0.15s ease;
+    }
+    .stop-card.is-current {
+      border: 2.5px solid #8d0801;
+      background: #fffdf5;
+      box-shadow: 0 0 0 2px var(--gold), 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .stop-card.is-visited {
+      opacity: 0.75;
+      background: rgba(230, 220, 195, 0.7);
+    }
+
+    .stop-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .stop-num {
+      width: 26px;
+      height: 26px;
+      background: var(--wood-mid);
+      color: var(--gold-bright);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .stop-card.is-current .stop-num {
+      background: var(--red-quad);
+    }
+    .stop-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      flex: 1;
+      line-height: 1.1;
+    }
+
+    .stop-rule-box {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--ink-faded);
+      background: rgba(60, 30, 10, 0.08);
+      padding: 5px 8px;
+      border-radius: 4px;
+      border-left: 3px solid var(--wood-mid);
+    }
+
+    .stop-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-stop-check {
+      background: rgba(58, 34, 12, 0.14);
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: 'Pirata One', cursive;
+      font-size: 0.95rem;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s;
+    }
+    .btn-stop-check:hover {
+      background: rgba(58, 34, 12, 0.28);
+    }
+
+    /* =========================================================================
+       08. TAB 3: DEDICATED SCOREBOARD & CREW LEDGER
+       ========================================================================= */
+    .scoreboard-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .teams-ledger-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .team-box {
+      background: rgba(255, 248, 230, 0.95);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+    .team-box.leader {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px var(--gold), 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .crown-badge {
+      position: absolute;
+      top: -10px;
+      right: 12px;
+      background: var(--gold);
+      color: #3b1d05;
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 900;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #3b1d05;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .team-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid rgba(34, 22, 10, 0.2);
+      padding-bottom: 6px;
+    }
+    .team-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .team-title-text {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .team-sub-target {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink-muted);
+    }
+
+    /* Big Score & Sips Row */
+    .score-sip-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: rgba(60, 30, 10, 0.06);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px dashed rgba(34, 22, 10, 0.25);
+      text-align: center;
+    }
+    .stat-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+    }
+    .stat-val {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 1.7rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    /* Score Increment Buttons */
+    .score-btn-group {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .score-btn {
+      background: rgba(58, 34, 12, 0.12);
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      padding: 6px 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.1s, transform 0.1s;
+    }
+    .score-btn:active {
+      transform: scale(0.93);
+    }
+    .score-btn.plus {
+      background: rgba(43, 147, 72, 0.18);
+      color: #1e612f;
+      border-color: #1e612f;
+    }
+    .score-btn.minus {
+      background: rgba(214, 40, 40, 0.18);
+      color: #8d0801;
+      border-color: #8d0801;
+    }
+
+    /* Quick UNO Triggers Row */
+    .uno-shortcuts-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .uno-shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .btn-uno-trigger {
+      background: rgba(35, 23, 11, 0.08);
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      padding: 5px 2px;
+      font-family: 'Pirata One', cursive;
+      font-size: 0.86rem;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.1s;
+    }
+    .btn-uno-trigger:active {
+      transform: scale(0.94);
+      background: rgba(35, 23, 11, 0.2);
+    }
+
+    /* Captain's Stash Counter */
+    .stash-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(223, 183, 76, 0.18);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 0.82rem;
+    }
+    .stash-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-stash-tally {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      border: 1px solid var(--ink);
+      background: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================================================================
+       09. TAB 4: OFFICIAL RULES & CARD TRIGGERS SHEET
+       ========================================================================= */
+    .rules-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .rules-hero-card {
+      background: rgba(255, 248, 230, 0.95);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .rules-hero-card h2 {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.8rem;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 4px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rules-columns-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      .rules-columns-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .rule-section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .rule-section-block h3 {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      color: #7a1d1d;
+      border-bottom: 1px dashed var(--ink-muted);
+      padding-bottom: 2px;
+    }
+    .rule-section-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rule-section-block li {
+      font-size: 0.92rem;
+      line-height: 1.4;
+      padding-left: 16px;
+      position: relative;
+    }
+    .rule-section-block li::before {
+      content: "⚓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 0.75rem;
+      color: var(--wood-mid);
+    }
+
+    /* Point Matrix Table */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.88rem;
+    }
+    .matrix-table th, .matrix-table td {
+      border: 1px solid var(--ink-muted);
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .matrix-table th {
+      background: var(--wood-mid);
+      color: var(--gold-bright);
+      font-family: 'Pirata One', cursive;
+      font-size: 1.05rem;
+    }
+    .matrix-table tr:nth-child(even) {
+      background: rgba(60, 30, 10, 0.05);
+    }
+
+    /* =========================================================================
+       10. BOTTOM BATTLE LOG & HISTORY
+       ========================================================================= */
+    .bottom-area {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .battle-log-card {
+      background: rgba(255, 248, 230, 0.9);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .battle-log-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .battle-log-head h3 {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-clear-log {
+      font-size: 0.75rem;
+      background: none;
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .log-list {
+      list-style: none;
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      border: 1px solid rgba(34, 22, 10, 0.2);
+      border-radius: 6px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .log-list li {
+      padding: 2px 4px;
+      border-bottom: 1px dashed rgba(34, 22, 10, 0.12);
+    }
+    .log-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* =========================================================================
+       11. MODAL SYSTEM (Outcome Popup, Map Lightbox, Settings)
+       ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 6, 2, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.open {
+      display: flex;
+      animation: modalFade 0.2s ease-out;
+    }
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-scroll {
+      background:
+        radial-gradient(circle at 50% 50%, var(--parchment-light) 0%, var(--parchment-mid) 85%, var(--parchment-dark) 100%);
+      border: 3px double var(--ink);
+      border-radius: 14px;
+      padding: 20px 18px;
+      max-width: 460px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+    .modal-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.85rem;
+      text-align: center;
+      color: #7a1d1d;
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+    .modal-body {
+      font-size: 1rem;
+      line-height: 1.4;
+      text-align: center;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .modal-btn {
+      background: var(--wood-mid);
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      padding: 10px 14px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
+    }
+    .modal-btn:active {
+      transform: scale(0.96);
+    }
+    .modal-btn.secondary {
+      background: rgba(35, 23, 11, 0.15);
+      border: 2px solid var(--ink);
+      color: var(--ink);
+      font-size: 1.05rem;
+    }
+
+    /* Map Lightbox Modal */
+    .lightbox-modal .modal-scroll {
+      max-width: 95vw;
+      width: 950px;
+      padding: 12px;
+    }
+    .lightbox-modal img {
+      width: 100%;
+      height: auto;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #190c04;
+      color: var(--gold-bright);
+      border: 1.5px solid var(--gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Canvas for Gold Coin Particle Bursts -->
+  <canvas id="fxCanvas"></canvas>
+
+  <!-- Live Toast Pill -->
+  <div id="toastPill" class="toast-pill">💾 Saved to Cookies</div>
+
+  <div class="app-container">
+    <main class="parchment-board">
+      <div class="celtic-frame">
+
+        <!-- Top Navigation & Controls Bar -->
+        <nav class="top-bar">
+          <a href="../../index.html" class="back-home-link">
+            <span>← LP-EE CAD PORTFOLIO</span>
+          </a>
+
+          <div class="nav-tabs">
+            <button type="button" class="tab-btn active" data-tab="wheel">
+              <span>🎡 WHEEL</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="scoreboard">
+              <span>🏆 SCORES</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="map">
+              <span>🗺️ ROUTE</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="rules">
+              <span>📜 RULES</span>
+            </button>
+          </div>
+
+          <div class="top-actions">
+            <div class="cookie-status-badge" id="cookieStatus" title="Saved automatically into browser cookies & localStorage">
+              <span class="dot"></span>
+              <span>COOKIE SYNCED</span>
+            </div>
+            <button type="button" class="tab-btn" id="soundToggleBtn" style="padding: 4px 8px; font-size: 0.95rem;">
+              🔊 Sound
+            </button>
+            <button type="button" class="tab-btn" id="resetBtn" style="padding: 4px 8px; font-size: 0.95rem; color: #8d0801;">
+              🔄 Reset
+            </button>
+          </div>
+        </nav>
+
+        <!-- Main Header & Active Pub Banner -->
+        <header class="header-area">
+          <div class="ribbon-banner">
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
+              <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+            <h1>THE ULTIMATE UNO TEAM CRAWL</h1>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
+              <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="header-subtext">
+            Preston Route // 10 Stops to Crown the Champions · Tap any crew pill to set attacking turn
+          </div>
+
+          <!-- Active Pub Ticker -->
+          <div class="pub-ticker" id="pubTicker">
+            <span>📍 CURRENT STOP:</span>
+            <b id="tickerPubName">Stop 1: The Adelphi</b>
+            <span>•</span>
+            <span id="tickerPubRule">Rule 0: "No pointing with your fingers — 1 sip penalty"</span>
+          </div>
+
+          <!-- Sticky Horizontal Crew Score Bar -->
+          <div class="crew-bar" id="crewBar"></div>
+        </header>
+
+
+        <!-- ===================================================================
+             TAB 1: WHEEL OF DOOM
+             =================================================================== -->
+        <section id="tab-wheel" class="tab-panel active">
+          <div class="wheel-view-grid">
+
+            <!-- Left Rules Column -->
+            <div class="wheel-rules-col">
+              <div class="rule-card-mini" id="card-RED">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot red"></span>
+                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
+                </div>
+                <p>Swap your current drink with another team's drink of your choice!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-YELLOW">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot yellow"></span>
+                  <span style="color: #b58500;">YELLOW — Drinker's Freeze</span>
+                </div>
+                <p>Stops all drinking penalties for that targeted team until their next turn!</p>
+              </div>
+            </div>
+
+            <!-- Center Stage: The Physics Wheel -->
+            <div class="wheel-stage">
+              <!-- Top Pointer Needle -->
+              <svg class="wheel-pointer" id="wheelPointer" viewBox="0 0 50 64">
+                <polygon points="25,62 10,14 40,14" fill="#9e1b1b" stroke="#23170b" stroke-width="3"/>
+                <circle cx="25" cy="14" r="11" fill="#dfb74c" stroke="#23170b" stroke-width="3"/>
+                <circle cx="25" cy="14" r="4" fill="#23170b"/>
+              </svg>
+
+              <!-- Rotating SVG Wheel -->
+              <div class="wheel-wrapper" id="wheelWrapper">
+                <svg id="doomWheelSvg" viewBox="0 0 500 500">
+                  <!-- Outer Wooden Rim -->
+                  <circle cx="250" cy="250" r="244" fill="#592f11" stroke="#23170b" stroke-width="6"/>
+                  <circle cx="250" cy="250" r="222" fill="#3c1e08" stroke="#23170b" stroke-width="4"/>
+
+                  <!-- 4 Quadrants -->
+                  <g id="quadrants">
+                    <!-- RED (Top) -->
+                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4"/>
+                    <!-- BLUE (Right) -->
+                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4"/>
+                    <!-- GREEN (Bottom) -->
+                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4"/>
+                    <!-- YELLOW (Left) -->
+                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4"/>
+                  </g>
+
+                  <!-- 24 Brass Pegs Around Rim -->
+                  <g fill="#dfb74c" stroke="#23170b" stroke-width="1.5">
+                    <circle cx="250" cy="48" r="5"/><circle cx="302" cy="55" r="5"/><circle cx="351" cy="75" r="5"/>
+                    <circle cx="393" cy="107" r="5"/><circle cx="425" cy="149" r="5"/><circle cx="445" cy="198" r="5"/>
+                    <circle cx="452" cy="250" r="5"/><circle cx="445" cy="302" r="5"/><circle cx="425" cy="351" r="5"/>
+                    <circle cx="393" cy="393" r="5"/><circle cx="351" cy="425" r="5"/><circle cx="302" cy="445" r="5"/>
+                    <circle cx="250" cy="452" r="5"/><circle cx="198" cy="445" r="5"/><circle cx="149" cy="425" r="5"/>
+                    <circle cx="107" cy="393" r="5"/><circle cx="75" cy="351" r="5"/><circle cx="55" cy="302" r="5"/>
+                    <circle cx="48" cy="250" r="5"/><circle cx="55" cy="198" r="5"/><circle cx="75" cy="149" r="5"/>
+                    <circle cx="107" cy="107" r="5"/><circle cx="149" cy="75" r="5"/><circle cx="198" cy="55" r="5"/>
+                  </g>
+
+                  <!-- Quadrant Illustrations Matching Wheel Slide -->
+                  <!-- Top Red: Drink Swap -->
+                  <g transform="translate(250, 95)" stroke="#23170b" stroke-width="2.5" fill="none">
+                    <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
+                    <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
+                    <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
+                    <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#23170b"/>
+                  </g>
+
+                  <!-- Right Blue: Shot Roulette -->
+                  <g transform="translate(402, 250)" stroke="#23170b" stroke-width="2.5">
+                    <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
+                    <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
+                    <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
+                  </g>
+
+                  <!-- Bottom Green: Chug Tankard -->
+                  <g transform="translate(250, 402)" stroke="#23170b" stroke-width="2.5">
+                    <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
+                    <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
+                    <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
+                  </g>
+
+                  <!-- Left Yellow: Frozen Ice Crystal -->
+                  <g transform="translate(96, 250)" stroke="#23170b" stroke-width="2.5">
+                    <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
+                    <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
+                  </g>
+
+                  <!-- 4 Cardinal UNO Mini Cards on Outer Rim -->
+                  <g stroke="#23170b" stroke-width="1.5">
+                    <rect x="240" y="10" width="20" height="28" rx="3" fill="#d62828"/>
+                    <ellipse cx="250" cy="24" rx="6" ry="9" fill="#f7b801"/>
+                    <rect x="462" y="236" width="28" height="20" rx="3" fill="#d62828"/>
+                    <ellipse cx="476" cy="246" rx="9" ry="6" fill="#f7b801"/>
+                    <rect x="240" y="462" width="20" height="28" rx="3" fill="#d62828"/>
+                    <ellipse cx="250" cy="476" rx="6" ry="9" fill="#f7b801"/>
+                    <rect x="10" y="236" width="28" height="20" rx="3" fill="#d62828"/>
+                    <ellipse cx="24" cy="246" rx="9" ry="6" fill="#f7b801"/>
+                  </g>
+
+                  <!-- Inner Ship Helm -->
+                  <circle cx="250" cy="250" r="134" fill="#23170b"/>
+                  <circle cx="250" cy="250" r="128" fill="none" stroke="#d62828" stroke-width="14" stroke-dasharray="16 16"/>
+                  <circle cx="250" cy="250" r="118" fill="#6b3e19" stroke="#23170b" stroke-width="5"/>
+
+                  <g stroke="#23170b" stroke-width="3.5" fill="#c6934b">
+                    <line x1="250" y1="150" x2="250" y2="350" stroke="#23170b" stroke-width="8"/>
+                    <line x1="150" y1="250" x2="350" y2="250" stroke="#23170b" stroke-width="8"/>
+                    <line x1="179" y1="179" x2="321" y2="321" stroke="#23170b" stroke-width="8"/>
+                    <line x1="321" y1="179" x2="179" y2="321" stroke="#23170b" stroke-width="8"/>
+                    <circle cx="250" cy="250" r="64" fill="none" stroke="#c6934b" stroke-width="12"/>
+                    <circle cx="250" cy="250" r="64" fill="none" stroke="#23170b" stroke-width="3"/>
+                  </g>
+                </svg>
+
+                <!-- Center Spin Trigger -->
+                <button type="button" class="center-spin-btn" id="spinBtn" aria-label="Spin Wheel of Doom">
+                  <span>SPIN</span>
+                  <small>HOLD / TAP</small>
+                </button>
+              </div>
+
+              <!-- Power Charge Meter -->
+              <div class="power-bar-wrap">
+                <div class="power-bar-fill" id="powerBar"></div>
+              </div>
+              <p class="spin-hint">Flick wheel directly with finger or hold <strong>SPIN</strong> to charge!</p>
+            </div>
+
+            <!-- Right Rules Column -->
+            <div class="wheel-rules-col">
+              <div class="rule-card-mini" id="card-BLUE">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot blue"></span>
+                  <span style="color: var(--blue-quad);">BLUE — Shot Roulette</span>
+                </div>
+                <p>Nominate 1 rival player to take a mystery sip/shot!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-GREEN">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot green"></span>
+                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
+                </div>
+                <p>5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss).</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             TAB 2: SCOREBOARD & CREW MANAGER
+             =================================================================== -->
+        <section id="tab-scoreboard" class="tab-panel">
+          <div class="scoreboard-panel">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0;">
+                🏆 OFFICIAL CREW SCOREBOARD & SIP LEDGER
+              </h2>
+              <div style="font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-faded);">
+                Cross-Scoring: Red → Blue → Green → Yellow → Red
+              </div>
+            </div>
+
+            <!-- 4 Teams Full Cards -->
+            <div class="teams-ledger-grid" id="teamsLedgerGrid"></div>
+
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             TAB 3: PRESTON PUB CRAWL ROUTE MAP
+             =================================================================== -->
+        <section id="tab-map" class="tab-panel">
+          <div class="map-panel">
+
+            <!-- Route Map Viewer -->
+            <div class="map-viewer-card">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin: 0;">
+                  🗺️ THE PRESTON ROUTE MAP // 10 STOPS
+                </h3>
+                <button type="button" class="btn-stop-check" id="openLightboxBtn">
+                  🔍 Tap to Enlarge Map
+                </button>
+              </div>
+
+              <div class="map-img-container" id="mapImgWrap" title="Click to view full size map">
+                <img src="assets/map.png" alt="Preston Route Map — 10 Stops to Crown the Champions" id="mapThumb" />
+                <div class="map-overlay-tip">🔍 TAP TO EXPAND</div>
+              </div>
+            </div>
+
+            <!-- 10 Stops Cards List -->
+            <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin-top: 4px;">
+              📍 PUB STOPS PROGRESS & CUSTOM VENUE RULES (0 RULE MAKER)
+            </h3>
+            <div class="stops-grid" id="stopsGrid"></div>
+
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             TAB 4: OFFICIAL RULES & CARD TRIGGERS SHEET
+             =================================================================== -->
+        <section id="tab-rules" class="tab-panel">
+          <div class="rules-panel">
+
+            <div class="rules-hero-card">
+              <h2>📜 OFFICIAL DRUNK UNO RULES & SETUP ESSENTIALS</h2>
+
+              <div class="rules-columns-layout">
+                <!-- Left: Setup & Standard Play -->
+                <div class="rule-section-block">
+                  <h3>⚓ SETUP & ESSENTIALS</h3>
+                  <ul>
+                    <li><strong>Teams:</strong> Red 🔴, Blue 🔵, Green 🟢, Yellow 🟡.</li>
+                    <li><strong>Deck Setup:</strong> Remove all Wild cards before dealing. Deal 5 cards to each team's Captain, then shuffle all Wild cards back into the draw deck.</li>
+                    <li><strong>Hand Size:</strong> Each team starts with 5 non-Wild cards in hand.</li>
+                    <li><strong>Cross-Scoring:</strong> Team Red tracks Blue, Blue tracks Green, Green tracks Yellow, Yellow tracks Red.</li>
+                  </ul>
+
+                  <h3 style="margin-top: 10px;">⚔️ STANDARD PLAY</h3>
+                  <ul>
+                    <li>On your team's turn, play 1 card that matches the top discard by <strong>COLOR</strong> or <strong>NUMBER</strong>. If you cannot play, draw 1 card. If WILD, place into Captain's deck and draw another regular card.</li>
+                    <li><strong>Captain's Stash:</strong> Captains keep their hand secret, with up to 2 face-down WILD cards hidden from opposing teams.</li>
+                  </ul>
+                </div>
+
+                <!-- Right: Card Triggers -->
+                <div class="rule-section-block">
+                  <h3>🃏 CARD TRIGGERS & DRINK ACTIONS</h3>
+                  <ul>
+                    <li><strong>0 (Rule Maker):</strong> Create ANY rule for the current pub (e.g. left hand drinking only).</li>
+                    <li><strong>7 (Wild Thief):</strong> Steal 1 Wild card from a selected team's stash! (Target team takes 2 sips UNLESS opposing team has none).</li>
+                    <li><strong>SKIP:</strong> Skips next team and gives them 1 sip each.</li>
+                    <li><strong>DRAW TWO (+2):</strong> Target team takes 2 sips (Stacks To +4!).</li>
+                    <li><strong>WILD (REVERSE):</strong> Add to captain's stash to reverse an incoming attack.</li>
+                    <li><strong>WILD (WHEEL):</strong> Target a rival team for a special event on the Wheel of Doom!</li>
+                    <li><strong>WILD (+4):</strong> Every member of target team downs drink or takes a shot.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Scoring Point Matrix Table -->
+              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; color: #7a1d1d; margin-top: 18px; border-bottom: 1px dashed var(--ink-muted); padding-bottom: 3px;">
+                🏆 OFFICIAL SCORING POINT MATRIX
+              </h3>
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Event / Trigger</th>
+                    <th>Point Impact</th>
+                    <th>Drinking Consequence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>SKIP</strong></td>
+                    <td>-1 Point to Skipped Team</td>
+                    <td>1 sip each member of skipped team</td>
+                  </tr>
+                  <tr>
+                    <td><strong>DRAW TWO (+2)</strong></td>
+                    <td>-2 Points (or -4 if stacked)</td>
+                    <td>Target team takes 2 sips (or 4 sips)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>WILD (REVERSE)</strong></td>
+                    <td>-4 Points to Attacker / +4 to Defender</td>
+                    <td>Reverses incoming attack penalty</td>
+                  </tr>
+                  <tr>
+                    <td><strong>WILD (WHEEL WIN/LOSS)</strong></td>
+                    <td>+6 Points to Winner / -6 to Loser</td>
+                    <td>Determined by Wheel Quadrant action</td>
+                  </tr>
+                  <tr>
+                    <td><strong>WILD (+4)</strong></td>
+                    <td>+4 to Attacker / -4 to Opposing Team</td>
+                    <td>Entire opposing team downs drink or takes shot</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Spewing / Chunder</strong></td>
+                    <td>-5 Points penalty</td>
+                    <td>Glass of water & public shame</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rule Violation</strong></td>
+                    <td>-1 Point penalty</td>
+                    <td>1 sip penalty</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Wilds in Captain's Stash at End</strong></td>
+                    <td>+1 Point per Wild held (Max +2)</td>
+                    <td>Bonus tactical reward</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             BOTTOM TAVERN BATTLE LOG & RESET MODAL
+             =================================================================== -->
+        <footer class="bottom-area">
+          <div class="battle-log-card">
+            <div class="battle-log-head">
+              <h3>⚔️ TAVERN BATTLE LOG</h3>
+              <button type="button" class="btn-clear-log" id="clearLogBtn">Clear Log</button>
+            </div>
+            <ul class="log-list" id="battleLogList"></ul>
+          </div>
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 1: WHEEL OUTCOME RESOLUTION
+       ========================================================================= -->
+  <div class="modal-backdrop" id="outcomeModal">
+    <div class="modal-scroll">
+      <h2 class="modal-title" id="modalOutcomeTitle">WHEEL OUTCOME</h2>
+      <p class="modal-body" id="modalOutcomeDesc"></p>
+
+      <!-- Target Selection for Attacks -->
+      <div id="modalTargetPicker" style="margin-bottom: 12px; display: none;">
+        <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 6px;">
+          SELECT DEFENDING / TARGET TEAM:
+        </label>
+        <div id="targetTeamsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
+      </div>
+
+      <div class="modal-actions" id="modalOutcomeActions"></div>
+      <button type="button" class="modal-btn secondary" style="margin-top: 6px;" id="closeOutcomeModalBtn">Close / Dismiss</button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 2: MAP LIGHTBOX
+       ========================================================================= -->
+  <div class="modal-backdrop lightbox-modal" id="mapLightbox">
+    <div class="modal-scroll">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; margin: 0;">🗺️ THE PRESTON ROUTE MAP</h3>
+        <button type="button" class="btn-stop-check" id="closeLightboxBtn">✕ Close</button>
+      </div>
+      <img src="assets/map.png" alt="Preston Route Map full view" />
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 3: RULE 0 CUSTOM PUB RULE EDITOR
+       ========================================================================= -->
+  <div class="modal-backdrop" id="ruleModal">
+    <div class="modal-scroll">
+      <h2 class="modal-title">0 (RULE MAKER)</h2>
+      <p class="modal-body">Create or update the custom house rule for this pub:</p>
+      <input type="text" id="ruleInput" placeholder="e.g. Must drink with left hand only..." style="width: 100%; padding: 10px; font-family: 'IM Fell English', serif; font-size: 1rem; border: 2px solid var(--ink); border-radius: 6px; margin-bottom: 12px;" />
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="saveRuleBtn">Save Pub Rule</button>
+        <button type="button" class="modal-btn secondary" id="closeRuleModalBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 4: RESET CONFIRMATION
+       ========================================================================= -->
+  <div class="modal-backdrop" id="resetModal">
+    <div class="modal-scroll">
+      <h2 class="modal-title" style="color: #9e1b1b;">⚠️ RESET GAME STATE</h2>
+      <p class="modal-body">Choose your reset option. All saved cookies and localStorage data will be updated:</p>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="confirmResetScoresBtn">Reset Scores to 12 pts Only</button>
+        <button type="button" class="modal-btn" style="background: #8b1e1e;" id="confirmFactoryResetBtn">Full Factory Reset (Clean Slate)</button>
+        <button type="button" class="modal-btn secondary" id="cancelResetBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       JAVASCRIPT: GAME ENGINE, COOKIE STORAGE & WHEEL PHYSICS
+       ========================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      // --- 01. COOKIE & LOCALSTORAGE DUAL PERSISTENCE SYSTEM ---
+      const COOKIE_KEY = "drunk_uno_game_state";
+
+      function setCookie(name, value, days = 30) {
+        const d = new Date();
+        d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      function showToast(text) {
+        const toast = document.getElementById("toastPill");
+        toast.textContent = text;
+        toast.classList.add("show");
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2200);
+      }
+
+      // --- 02. DEFAULT STATE CONFIGURATION ---
+      const DEFAULT_TEAMS = [
+        { id: 0, key: "RED", name: "Team Red", colorClass: "red", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Blue" },
+        { id: 1, key: "BLUE", name: "Team Blue", colorClass: "blue", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Green" },
+        { id: 2, key: "GREEN", name: "Team Green", colorClass: "green", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Yellow" },
+        { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Red" }
+      ];
+
+      const DEFAULT_STOPS = [
+        { num: 1, name: "The Adelphi", rule: "No pointing with fingers — 1 sip penalty", visited: true },
+        { num: 2, name: "Ships & Giggles", rule: "Say 'Cheers Captain' before each sip", visited: false },
+        { num: 3, name: "Molly O'Malleys", rule: "Must speak in an accent or drink 2 sips", visited: false },
+        { num: 4, name: "The Twelve Tellers", rule: "No using first names; use team colors", visited: false },
+        { num: 5, name: "Kuckoo", rule: "High five the bartender or take a sip", visited: false },
+        { num: 6, name: "The Station", rule: "Left hand drinking only", visited: false },
+        { num: 7, name: "Hogarths", rule: "Pinky out while sipping", visited: false },
+        { num: 8, name: "Wings & Beer Co", rule: "Thumb master active (last thumb on table drinks)", visited: false },
+        { num: 9, name: "Grey Friar / Roper Hall", rule: "No saying 'Drink' or 'Sip'", visited: false },
+        { num: 10, name: "Champions Lounge", rule: "Winner assigns 10 sips to losing teams!", visited: false }
+      ];
+
+      let state = {
+        teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
+        currentTurn: 0,
+        currentStopIdx: 0,
+        stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
+        logs: ["Session started. Welcome to Drunk Uno Preston Route!"],
+        sound: true
+      };
+
+      function saveGameState() {
+        const serialized = JSON.stringify(state);
+        setCookie(COOKIE_KEY, serialized, 30);
+        try { localStorage.setItem(COOKIE_KEY, serialized); } catch (e) {}
+
+        const badge = document.getElementById("cookieStatus");
+        badge.innerHTML = `<span class="dot"></span><span>SAVED ✓</span>`;
+      }
+
+      function loadGameState() {
+        let raw = getCookie(COOKIE_KEY);
+        if (!raw) {
+          try { raw = localStorage.getItem(COOKIE_KEY); } catch (e) {}
+        }
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.teams) && parsed.teams.length === 4) {
+              state = parsed;
+              showToast("🍪 Restored Session from Cookies");
+            }
+          } catch (e) {
+            console.error("Failed to parse saved state:", e);
+          }
+        }
+      }
+
+      // --- 03. SOUND & HAPTICS ENGINE (Synthesized Web Audio) ---
+      let audioCtx = null;
+      function ensureAudio() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+      }
+
+      function triggerHaptic(pattern = 10) {
+        if (navigator.vibrate) {
+          try { navigator.vibrate(pattern); } catch (e) {}
+        }
+      }
+
+      function playTick(freq = 520) {
+        triggerHaptic(6);
+        if (!state.sound || !audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.035);
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      }
+
+      function playFanfare(type = "win") {
+        triggerHaptic([40, 50, 70, 90]);
+        if (!state.sound || !audioCtx) return;
+        const notes = type === "freeze" ? [440, 370, 311, 220] : [330, 440, 554, 660];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.08);
+          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.26);
+        });
+      }
+
+      // --- 04. GOLD COIN CONFETTI SYSTEM ---
+      const fxCanvas = document.getElementById("fxCanvas");
+      const fxCtx = fxCanvas.getContext("2d");
+      let coins = [];
+
+      function resizeCanvas() {
+        fxCanvas.width = window.innerWidth;
+        fxCanvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      function spawnCoins(count = 35) {
+        for (let i = 0; i < count; i++) {
+          coins.push({
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            vx: (Math.random() - 0.5) * 16,
+            vy: (Math.random() - 0.75) * 16,
+            r: 4 + Math.random() * 5,
+            color: Math.random() > 0.35 ? "#f7b801" : "#dfb74c"
+          });
+        }
+        requestAnimationFrame(renderCoins);
+      }
+
+      function renderCoins() {
+        fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+        coins.forEach(c => {
+          c.x += c.vx;
+          c.y += c.vy;
+          c.vy += 0.45;
+          fxCtx.beginPath();
+          fxCtx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+          fxCtx.fillStyle = c.color;
+          fxCtx.fill();
+          fxCtx.strokeStyle = "#281405";
+          fxCtx.stroke();
+        });
+        coins = coins.filter(c => c.y < fxCanvas.height + 20);
+        if (coins.length > 0) requestAnimationFrame(renderCoins);
+      }
+
+      // --- 05. BATTLE LOGGING HELPER ---
+      function addLog(text) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const entry = `[${time}] ${text}`;
+        state.logs.unshift(entry);
+        if (state.logs.length > 50) state.logs.pop();
+        renderLogs();
+        saveGameState();
+      }
+
+      function renderLogs() {
+        const list = document.getElementById("battleLogList");
+        list.innerHTML = "";
+        state.logs.forEach(log => {
+          const li = document.createElement("li");
+          li.textContent = log;
+          list.appendChild(li);
+        });
+      }
+
+      // --- 06. RENDER CREW BARS & SCOREBOARDS ---
+      function renderCrewBars() {
+        const bar = document.getElementById("crewBar");
+        bar.innerHTML = "";
+
+        // Find max score for leader badge
+        const maxScore = Math.max(...state.teams.map(t => t.score));
+
+        state.teams.forEach((team, idx) => {
+          const pill = document.createElement("div");
+          pill.className = `crew-pill ${idx === state.currentTurn ? "active-turn" : ""}`;
+          pill.onclick = () => {
+            state.currentTurn = idx;
+            if (team.frozen) {
+              team.frozen = false;
+              addLog(`❄️ ${team.name}'s Drinker's Freeze expired on their turn.`);
+            }
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+          };
+
+          const isLeader = team.score === maxScore && maxScore > 0;
+
+          pill.innerHTML = `
+            ${team.frozen ? `<div class="frozen-banner">❄️ FROZEN</div>` : ""}
+            <div class="crew-pill-head">
+              <div class="crew-name-label">
+                <span class="crew-dot ${team.colorClass}"></span>
+                <span>${team.name}</span>
+                ${isLeader ? `<span title="Current Leader">👑</span>` : ""}
+              </div>
+              <div class="crew-score-big">${team.score}</div>
+            </div>
+            <div class="crew-rival-tag">
+              🎯 Targets: ${team.targetName} · ${team.sips} sips
+            </div>
+          `;
+          bar.appendChild(pill);
+        });
+      }
+
+      function renderScoreboardTab() {
+        const grid = document.getElementById("teamsLedgerGrid");
+        grid.innerHTML = "";
+
+        const maxScore = Math.max(...state.teams.map(t => t.score));
+
+        state.teams.forEach((team, idx) => {
+          const card = document.createElement("div");
+          const isLeader = team.score === maxScore && maxScore > 0;
+          card.className = `team-box ${isLeader ? "leader" : ""}`;
+
+          card.innerHTML = `
+            ${isLeader ? `<div class="crown-badge">👑 LEADER</div>` : ""}
+            <div class="team-box-header">
+              <div class="team-title-group">
+                <span class="crew-dot ${team.colorClass}"></span>
+                <div>
+                  <div class="team-title-text">${team.name}</div>
+                  <div class="team-sub-target">Tracks: ${team.targetName} ${team.frozen ? "• ❄️ FROZEN" : ""}</div>
+                </div>
+              </div>
+              <button type="button" class="btn-stop-check" style="font-size: 0.8rem; padding: 2px 6px;" data-set-turn="${idx}">
+                ${idx === state.currentTurn ? "⚔️ ACTIVE" : "Set Turn"}
+              </button>
+            </div>
+
+            <!-- Score & Sips Row -->
+            <div class="score-sip-row">
+              <div class="stat-block">
+                <div class="stat-label">POINTS</div>
+                <div class="stat-val" style="color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-label">SIPS TAKEN</div>
+                <div class="stat-val" style="color: #6b3e19;">${team.sips}</div>
+              </div>
+            </div>
+
+            <!-- Score Adjuster Buttons -->
+            <div class="score-btn-group">
+              <button class="score-btn plus" data-adjust-score="${idx}" data-val="1">+1 pt</button>
+              <button class="score-btn plus" data-adjust-score="${idx}" data-val="6">+6 pt</button>
+              <button class="score-btn minus" data-adjust-score="${idx}" data-val="-1">-1 pt</button>
+              <button class="score-btn minus" data-adjust-score="${idx}" data-val="-6">-6 pt</button>
+            </div>
+
+            <div style="display: flex; gap: 4px;">
+              <button class="score-btn" style="flex: 1;" data-adjust-sip="${idx}" data-val="1">🍺 +1 Sip</button>
+              <button class="score-btn" style="flex: 1;" data-adjust-sip="${idx}" data-val="2">🍺🍺 +2 Sips</button>
+            </div>
+
+            <!-- Captain's Stash -->
+            <div class="stash-row">
+              <span>🃏 Captain's Stash (Wilds): <strong>${team.stash}</strong>/2</span>
+              <div class="stash-controls">
+                <button class="btn-stash-tally" data-stash="${idx}" data-dir="-1">-</button>
+                <button class="btn-stash-tally" data-stash="${idx}" data-dir="1">+</button>
+              </div>
+            </div>
+
+            <!-- Quick Card Penalty Shortcuts -->
+            <div class="uno-shortcuts-title">⚡ Quick Triggers:</div>
+            <div class="uno-shortcuts-grid">
+              <button class="btn-uno-trigger" data-trigger="skip" data-team="${idx}">🚫 Skip (-1)</button>
+              <button class="btn-uno-trigger" data-trigger="draw2" data-team="${idx}">+2 Draw (-2)</button>
+              <button class="btn-uno-trigger" data-trigger="stack4" data-team="${idx}">+4 Stack (-4)</button>
+              <button class="btn-uno-trigger" data-trigger="spew" data-team="${idx}">🤮 Spew (-5)</button>
+              <button class="btn-uno-trigger" data-trigger="rulebreak" data-team="${idx}">⚠️ Rule (-1)</button>
+              <button class="btn-uno-trigger" data-trigger="freeze" data-team="${idx}">❄️ Freeze</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        // Attach dynamic button handlers
+        grid.querySelectorAll("[data-set-turn]").forEach(b => {
+          b.onclick = () => {
+            state.currentTurn = parseInt(b.dataset.setTurn, 10);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+          };
+        });
+
+        grid.querySelectorAll("[data-adjust-score]").forEach(b => {
+          b.onclick = () => {
+            const teamIdx = parseInt(b.dataset.adjustScore, 10);
+            const val = parseInt(b.dataset.val, 10);
+            state.teams[teamIdx].score += val;
+            addLog(`${state.teams[teamIdx].name} score adjusted by ${val > 0 ? "+" + val : val} (${state.teams[teamIdx].score} total)`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+          };
+        });
+
+        grid.querySelectorAll("[data-adjust-sip]").forEach(b => {
+          b.onclick = () => {
+            const teamIdx = parseInt(b.dataset.adjustSip, 10);
+            const val = parseInt(b.dataset.val, 10);
+            state.teams[teamIdx].sips += val;
+            addLog(`🍺 ${state.teams[teamIdx].name} took ${val} sip(s). (${state.teams[teamIdx].sips} total)`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+          };
+        });
+
+        grid.querySelectorAll("[data-stash]").forEach(b => {
+          b.onclick = () => {
+            const teamIdx = parseInt(b.dataset.stash, 10);
+            const dir = parseInt(b.dataset.dir, 10);
+            state.teams[teamIdx].stash = Math.max(0, Math.min(2, state.teams[teamIdx].stash + dir));
+            addLog(`🃏 ${state.teams[teamIdx].name} captain's stash: ${state.teams[teamIdx].stash} wild card(s).`);
+            saveGameState();
+            renderScoreboardTab();
+          };
+        });
+
+        grid.querySelectorAll("[data-trigger]").forEach(b => {
+          b.onclick = () => {
+            const action = b.dataset.trigger;
+            const tIdx = parseInt(b.dataset.team, 10);
+            const t = state.teams[tIdx];
+
+            if (action === "skip") {
+              t.score -= 1;
+              t.sips += 1;
+              addLog(`🚫 SKIP: ${t.name} skipped (-1 pt & 1 sip).`);
+            } else if (action === "draw2") {
+              t.score -= 2;
+              t.sips += 2;
+              addLog(`+2 DRAW: ${t.name} draws 2 & drinks 2 sips (-2 pts).`);
+            } else if (action === "stack4") {
+              t.score -= 4;
+              t.sips += 4;
+              addLog(`+4 STACK: ${t.name} hit with stacked +4 (-4 pts & 4 sips).`);
+            } else if (action === "spew") {
+              t.score -= 5;
+              addLog(`🤮 SPEWING PENALTY: ${t.name} chundered! (-5 pts).`);
+            } else if (action === "rulebreak") {
+              t.score -= 1;
+              t.sips += 1;
+              addLog(`⚠️ RULE VIOLATION: ${t.name} broke pub rule (-1 pt & 1 sip).`);
+            } else if (action === "freeze") {
+              t.frozen = !t.frozen;
+              addLog(t.frozen ? `❄️ Drinker's Freeze applied to ${t.name}!` : `☀️ Drinker's Freeze removed from ${t.name}.`);
+            }
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+          };
+        });
+      }
+
+      // --- 07. RENDER 10 PUB CRAWL STOPS ---
+      let editingStopIdx = 0;
+
+      function renderStops() {
+        const grid = document.getElementById("stopsGrid");
+        grid.innerHTML = "";
+
+        const currentStop = state.stops[state.currentStopIdx] || state.stops[0];
+        document.getElementById("tickerPubName").textContent = `Stop ${currentStop.num}: ${currentStop.name}`;
+        document.getElementById("tickerPubRule").textContent = `Rule 0: "${currentStop.rule}"`;
+
+        state.stops.forEach((stop, idx) => {
+          const isCurr = idx === state.currentStopIdx;
+          const card = document.createElement("div");
+          card.className = `stop-card ${isCurr ? "is-current" : ""} ${stop.visited ? "is-visited" : ""}`;
+
+          card.innerHTML = `
+            <div class="stop-head">
+              <div class="stop-num">${stop.num}</div>
+              <div class="stop-title">${stop.name}</div>
+              ${isCurr ? `<span style="font-size: 0.72rem; font-weight: bold; color: #8d0801;">HERE NOW 📍</span>` : ""}
+            </div>
+            <div class="stop-rule-box">
+              <strong>Rule 0:</strong> "${stop.rule}"
+            </div>
+            <div class="stop-actions">
+              <button type="button" class="btn-stop-check" style="${isCurr ? 'background: #2b9348; color: #fff;' : ''}" data-set-stop="${idx}">
+                ${isCurr ? "✓ Current Pub" : "Mark Here"}
+              </button>
+              <button type="button" class="btn-stop-check" data-edit-rule="${idx}">
+                ✏️ Edit Rule 0
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        grid.querySelectorAll("[data-set-stop]").forEach(b => {
+          b.onclick = () => {
+            const idx = parseInt(b.dataset.setStop, 10);
+            state.currentStopIdx = idx;
+            state.stops[idx].visited = true;
+            addLog(`📍 Pub crawl moved to Stop ${state.stops[idx].num}: ${state.stops[idx].name}. Rule 0: "${state.stops[idx].rule}"`);
+            saveGameState();
+            renderStops();
+          };
+        });
+
+        grid.querySelectorAll("[data-edit-rule]").forEach(b => {
+          b.onclick = () => {
+            editingStopIdx = parseInt(b.dataset.editRule, 10);
+            document.getElementById("ruleInput").value = state.stops[editingStopIdx].rule;
+            document.getElementById("ruleModal").classList.add("open");
+          };
+        });
+      }
+
+      // Rule 0 Modal Listeners
+      document.getElementById("saveRuleBtn").onclick = () => {
+        const val = document.getElementById("ruleInput").value.trim();
+        if (val) {
+          state.stops[editingStopIdx].rule = val;
+          addLog(`📜 Rule 0 updated for Stop ${state.stops[editingStopIdx].num}: "${val}"`);
+          saveGameState();
+          renderStops();
+        }
+        document.getElementById("ruleModal").classList.remove("open");
+      };
+
+      document.getElementById("closeRuleModalBtn").onclick = () => {
+        document.getElementById("ruleModal").classList.remove("open");
+      };
+
+      // --- 08. TAB SWITCHING SYSTEM ---
+      document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
+        btn.onclick = () => {
+          const tabId = btn.dataset.tab;
+          document.querySelectorAll(".tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+          const target = document.getElementById(`tab-${tabId}`);
+          if (target) target.classList.add("active");
+        };
+      });
+
+      // --- 09. MAP LIGHTBOX SYSTEM ---
+      document.getElementById("openLightboxBtn").onclick = () => {
+        document.getElementById("mapLightbox").classList.add("open");
+      };
+      document.getElementById("mapThumb").onclick = () => {
+        document.getElementById("mapLightbox").classList.add("open");
+      };
+      document.getElementById("closeLightboxBtn").onclick = () => {
+        document.getElementById("mapLightbox").classList.remove("open");
+      };
+
+      // --- 10. WHEEL PHYSICS, SPIN ANIMATION & DRAG FLICK ---
+      const wheelWrapper = document.getElementById("wheelWrapper");
+      const wheelSvg = document.getElementById("doomWheelSvg");
+      const pointer = document.getElementById("wheelPointer");
+      const spinBtn = document.getElementById("spinBtn");
+      const powerBar = document.getElementById("powerBar");
+
+      let currentAngle = 0;
+      let angularVelocity = 0;
+      let isSpinning = false;
+      let chargePower = 0;
+      let chargeInterval = null;
+      let lastPegSector = 0;
+
+      // 4 Quadrants Definition
+      // Standard SVG layout:
+      // Red: Top (center 0 deg / 360 deg)
+      // Blue: Right (90 deg)
+      // Green: Bottom (180 deg)
+      // Yellow: Left (270 deg)
+      const QUADRANTS = [
+        { id: "RED", name: "Drink Swapper", color: "RED", desc: "Swap your current drink with another team's drink of your choice!", bg: "#d62828" },
+        { id: "BLUE", name: "Shot Roulette", color: "BLUE", desc: "Nominate 1 rival player to take a mystery sip or shot!", bg: "#1d63b8" },
+        { id: "GREEN", name: "Chug Challenge", color: "GREEN", desc: "5-second head-to-head chug race vs the attacker! (+6 pts winner / -6 pts loser).", bg: "#2b9348" },
+        { id: "YELLOW", name: "Drinker's Freeze", color: "YELLOW", desc: "Stops all drinking penalties for that targeted team until their next turn!", bg: "#f7b801" }
+      ];
+
+      function launchSpin(power) {
+        if (isSpinning) return;
+        isSpinning = true;
+        ensureAudio();
+        // Base spin speed + random jitter + power boost
+        angularVelocity = 14 + (power / 100) * 24 + Math.random() * 8;
+        requestAnimationFrame(spinAnimationLoop);
+      }
+
+      function spinAnimationLoop() {
+        if (!isSpinning) return;
+
+        currentAngle = (currentAngle + angularVelocity) % 360;
+        wheelSvg.style.transform = `rotate(${currentAngle}deg)`;
+
+        // Check peg tick (24 pegs total = every 15 degrees)
+        const pegSector = Math.floor(currentAngle / 15);
+        if (pegSector !== lastPegSector) {
+          lastPegSector = pegSector;
+          playTick(480 + Math.random() * 80);
+          pointer.style.transform = "rotate(-18deg)";
+          setTimeout(() => { pointer.style.transform = "rotate(0deg)"; }, 45);
+        }
+
+        // Realistic tavern friction deceleration
+        angularVelocity *= 0.984;
+
+        if (angularVelocity < 0.15) {
+          isSpinning = false;
+          angularVelocity = 0;
+          resolveWheelStop(currentAngle);
+        } else {
+          requestAnimationFrame(spinAnimationLoop);
+        }
+      }
+
+      function resolveWheelStop(angle) {
+        // Pointer is at the top (0 deg).
+        // The wheel rotated clockwise by `angle`.
+        // To find which quadrant is under the top pointer:
+        // effectiveAngle = (360 - (angle % 360)) % 360;
+        const normalized = (360 - (angle % 360)) % 360;
+
+        let quadrantIdx = 0;
+        if (normalized >= 45 && normalized < 135) {
+          quadrantIdx = 1; // Blue (Right)
+        } else if (normalized >= 135 && normalized < 225) {
+          quadrantIdx = 2; // Green (Bottom)
+        } else if (normalized >= 225 && normalized < 315) {
+          quadrantIdx = 3; // Yellow (Left)
+        } else {
+          quadrantIdx = 0; // Red (Top)
+        }
+
+        const outcome = QUADRANTS[quadrantIdx];
+        handleWheelOutcome(outcome);
+      }
+
+      function handleWheelOutcome(outcome) {
+        const attacker = state.teams[state.currentTurn];
+        playFanfare(outcome.id === "YELLOW" ? "freeze" : "win");
+        spawnCoins(outcome.id === "GREEN" ? 50 : 30);
+
+        // Highlight matched rule card on wheel view
+        document.querySelectorAll(".rule-card-mini").forEach(c => c.classList.remove("target-active"));
+        const targetCard = document.getElementById(`card-${outcome.id}`);
+        if (targetCard) targetCard.classList.add("target-active");
+
+        // Populate Modal
+        document.getElementById("modalOutcomeTitle").textContent = `${outcome.color} — ${outcome.name.toUpperCase()}`;
+        document.getElementById("modalOutcomeDesc").textContent = outcome.desc;
+
+        const targetPicker = document.getElementById("modalTargetPicker");
+        const targetList = document.getElementById("targetTeamsList");
+        targetList.innerHTML = "";
+
+        let chosenVictimIdx = (state.currentTurn + 1) % 4;
+
+        // Build rival target selector
+        state.teams.forEach((t, idx) => {
+          if (idx !== state.currentTurn) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "score-btn";
+            btn.style.padding = "8px 6px";
+            btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
+            if (idx === chosenVictimIdx) {
+              btn.style.border = "2px solid var(--gold)";
+              btn.style.background = "#fffdf5";
+            }
+            btn.onclick = () => {
+              chosenVictimIdx = idx;
+              targetList.querySelectorAll("button").forEach(b => {
+                b.style.border = "1.5px solid var(--ink)";
+                b.style.background = "rgba(58, 34, 12, 0.12)";
+              });
+              btn.style.border = "2px solid var(--gold)";
+              btn.style.background = "#fffdf5";
+            };
+            targetList.appendChild(btn);
+          }
+        });
+        targetPicker.style.display = "block";
+
+        const actionsBox = document.getElementById("modalOutcomeActions");
+        actionsBox.innerHTML = "";
+
+        if (outcome.id === "GREEN") {
+          // Chug Challenge: Head-to-Head (+6 to winner, -6 to loser)
+          const btnAtkWin = document.createElement("button");
+          btnAtkWin.className = "modal-btn";
+          btnAtkWin.textContent = `⚔️ ${attacker.name} Won Chug (+6 pts / -6 pts)`;
+          btnAtkWin.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            attacker.score += 6;
+            victim.score -= 6;
+            victim.sips += 4;
+            addLog(`🍺 CHUG CHALLENGE: ${attacker.name} won head-to-head vs ${victim.name}! (+6 pts / -6 pts).`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+
+          const btnVicWin = document.createElement("button");
+          btnVicWin.className = "modal-btn";
+          btnVicWin.style.background = "#4a2810";
+          btnVicWin.textContent = `🛡️ Defender Won (+6 pts / -6 pts)`;
+          btnVicWin.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            victim.score += 6;
+            attacker.score -= 6;
+            attacker.sips += 4;
+            addLog(`🛡️ CHUG CHALLENGE DEFENSE: ${victim.name} defeated ${attacker.name}! (+6 pts / -6 pts).`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnAtkWin);
+          actionsBox.appendChild(btnVicWin);
+
+        } else if (outcome.id === "YELLOW") {
+          // Drinker's Freeze (No point gain/loss, stops penalties)
+          const btnFreeze = document.createElement("button");
+          btnFreeze.className = "modal-btn";
+          btnFreeze.textContent = `❄️ Freeze Target Team Until Next Turn`;
+          btnFreeze.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            victim.frozen = true;
+            addLog(`❄️ DRINKER'S FREEZE: ${attacker.name} froze ${victim.name}! All drinking penalties paused.`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnFreeze);
+
+        } else if (outcome.id === "RED") {
+          // Drink Swapper
+          const btnSwap = document.createElement("button");
+          btnSwap.className = "modal-btn";
+          btnSwap.textContent = `🔄 Confirm Drink Swap`;
+          btnSwap.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            addLog(`🔄 DRINK SWAP: ${attacker.name} swapped drinks with ${victim.name}!`);
+            saveGameState();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnSwap);
+
+        } else if (outcome.id === "BLUE") {
+          // Shot Roulette
+          const btnShot = document.createElement("button");
+          btnShot.className = "modal-btn";
+          btnShot.textContent = `🥃 Assign Mystery Sip / Shot`;
+          btnShot.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            victim.sips += 2;
+            addLog(`🥃 SHOT ROULETTE: ${attacker.name} nominated ${victim.name} for a mystery drink penalty!`);
+            saveGameState();
+            renderCrewBars();
+            renderScoreboardTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnShot);
+        }
+
+        document.getElementById("outcomeModal").classList.add("open");
+      }
+
+      document.getElementById("closeOutcomeModalBtn").onclick = () => {
+        document.getElementById("outcomeModal").classList.remove("open");
+      };
+
+      // Hold-to-Charge Spin Interaction
+      spinBtn.addEventListener("pointerdown", (e) => {
+        e.stopPropagation();
+        if (isSpinning) return;
+        ensureAudio();
+        chargePower = 15;
+        powerBar.style.width = chargePower + "%";
+        chargeInterval = setInterval(() => {
+          chargePower = Math.min(100, chargePower + 4);
+          powerBar.style.width = chargePower + "%";
+          triggerHaptic(6);
+        }, 32);
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (!chargeInterval) return;
+        clearInterval(chargeInterval);
+        chargeInterval = null;
+        launchSpin(chargePower);
+        setTimeout(() => { powerBar.style.width = "0%"; }, 450);
+      });
+
+      // Direct Touch Drag / Flick on Wheel Rim
+      let isDragging = false;
+      let lastAngle = 0;
+      let dragStartAngle = 0;
+      let dragVelocity = 0;
+
+      function getAngleFromCoords(cx, cy, px, py) {
+        return Math.atan2(py - cy, px - cx) * (180 / Math.PI);
+      }
+
+      wheelWrapper.addEventListener("pointerdown", (e) => {
+        if (e.target.closest("#spinBtn")) return;
+        if (isSpinning) return;
+        ensureAudio();
+        isDragging = true;
+        const rect = wheelWrapper.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        dragStartAngle = getAngleFromCoords(cx, cy, e.clientX, e.clientY);
+        lastAngle = dragStartAngle;
+        dragVelocity = 0;
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        const rect = wheelWrapper.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const curAngle = getAngleFromCoords(cx, cy, e.clientX, e.clientY);
+        const delta = curAngle - lastAngle;
+        lastAngle = curAngle;
+        dragVelocity = delta;
+        currentAngle = (currentAngle + delta) % 360;
+        wheelSvg.style.transform = `rotate(${currentAngle}deg)`;
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        if (Math.abs(dragVelocity) > 2) {
+          isSpinning = true;
+          angularVelocity = dragVelocity * 1.6;
+          requestAnimationFrame(spinAnimationLoop);
+        }
+      });
+
+      // --- 11. SOUND & RESET CONTROLS ---
+      const soundBtn = document.getElementById("soundToggleBtn");
+      soundBtn.onclick = () => {
+        state.sound = !state.sound;
+        soundBtn.textContent = state.sound ? "🔊 Sound" : "🔇 Muted";
+        saveGameState();
+      };
+
+      document.getElementById("clearLogBtn").onclick = () => {
+        state.logs = ["Battle log cleared."];
+        renderLogs();
+        saveGameState();
+      };
+
+      const resetModal = document.getElementById("resetModal");
+      document.getElementById("resetBtn").onclick = () => {
+        resetModal.classList.add("open");
+      };
+      document.getElementById("cancelResetBtn").onclick = () => {
+        resetModal.classList.remove("open");
+      };
+
+      document.getElementById("confirmResetScoresBtn").onclick = () => {
+        state.teams.forEach(t => {
+          t.score = 12;
+          t.sips = 0;
+          t.stash = 0;
+          t.frozen = false;
+        });
+        addLog("Scores reset to 12 pts for all teams.");
+        saveGameState();
+        renderCrewBars();
+        renderScoreboardTab();
+        resetModal.classList.remove("open");
+        showToast("Scores reset to 12 pts");
+      };
+
+      document.getElementById("confirmFactoryResetBtn").onclick = () => {
+        state = {
+          teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
+          currentTurn: 0,
+          currentStopIdx: 0,
+          stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
+          logs: ["Fresh session initialized."],
+          sound: true
+        };
+        saveGameState();
+        renderCrewBars();
+        renderScoreboardTab();
+        renderStops();
+        renderLogs();
+        resetModal.classList.remove("open");
+        showToast("Full Factory Reset Applied");
+      };
+
+      // --- 12. INITIALIZATION ON PAGE BOOT ---
+      loadGameState();
+      renderCrewBars();
+      renderScoreboardTab();
+      renderStops();
+      renderLogs();
+      soundBtn.textContent = state.sound ? "🔊 Sound" : "🔇 Muted";
+
+    })();
+  </script>
+</body>
+</html>
