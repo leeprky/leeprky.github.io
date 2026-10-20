@@ -20,15 +20,17 @@
   <link rel="stylesheet" href="assets/vendor/lenis.css" />
 
   <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.3" />
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=9.4" />
 </head>
 
 <body id="top">
   <!-- Accessibility Skip Link -->
   <a href="#content" class="skip-link">Skip to technical content [Alt+1]</a>
 
-  <!-- Blueprint Drafting Grid (Fixed Background) -->
-  <div class="bp-grid" aria-hidden="true"></div>
+  <!-- Chroma Current Background (React Bits Pro: Currents of light across glowing dot grid) -->
+  <div class="bp-grid" aria-hidden="true">
+    <canvas id="chroma-current-canvas" class="chroma-canvas"></canvas>
+  </div>
 
   <!-- Drawing Frame with ISO Zone References -->
   <div class="bp-frame" aria-hidden="true">
@@ -83,7 +85,7 @@
         <!-- Spec Revision Badge & Accent Palette Menu -->
         <div class="accent-menu-wrap">
           <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V9.3 ▾</span>
+            <span>SPEC V9.4 ▾</span>
           </button>
           <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
             <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
@@ -1392,6 +1394,6 @@
   <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
   <script src="assets/vendor/Flip.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=9.3"></script>
+  <script src="assets/js/blueprint.js?v=9.4"></script>
 </body>
 </html>

@@ -157,36 +157,22 @@ html { scrollbar-color: var(--line-strong) var(--bg-deep); }
 }
 .skip-link:focus { top: 1rem; }
 
-/* Drafting grid background — Instant, crisp, hardware-native */
+/* Chroma Current Background (React Bits Pro: Currents of light flowing across a grid of glowing dots) */
 .bp-grid {
   position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background-color: var(--bg);
-  background-image:
-    linear-gradient(var(--grid-major) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
-    linear-gradient(var(--grid-minor) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
-  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
-  background-position: -1px -1px;
+  overflow: hidden;
 }
-@media (min-width: 960px) {
-  @keyframes bpGridMotion {
-    0% { background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px; }
-    100% { background-position: 95px 95px, 95px 95px, 23px 23px, 23px 23px; }
-  }
-  .bp-grid {
-    animation: bpGridMotion 60s linear infinite;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bp-grid { animation: none !important; }
+.chroma-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  pointer-events: none;
 }
 .bp-grid::after {
   /* soft vignette like a printed cyanotype */
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(120% 90% at 50% 0%, transparent 55%, rgb(0 0 0 / 0.45) 100%);
+  background: radial-gradient(120% 90% at 50% 0%, transparent 60%, rgb(0 0 0 / 0.5) 100%);
 }
-[data-theme="whiteprint"] .bp-grid::after { background: radial-gradient(120% 90% at 50% 0%, transparent 60%, rgb(10 33 64 / 0.06) 100%); }
+[data-theme="whiteprint"] .bp-grid::after { background: radial-gradient(120% 90% at 50% 0%, transparent 65%, rgb(10 33 64 / 0.08) 100%); }
 
 /* Drawing frame with zone references (A–F / 1–8), desktop only */
 .bp-frame {

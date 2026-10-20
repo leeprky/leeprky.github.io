@@ -37,6 +37,8 @@
         btn.classList.toggle('btn-primary', isMatch);
         btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
       });
+
+      if (chromaEngine) chromaEngine.updateColors();
     },
 
     initThemeButtons() {
@@ -78,6 +80,8 @@
       if (customInput && accent.startsWith('custom:')) {
         customInput.value = accent.slice(7);
       }
+
+      if (chromaEngine) chromaEngine.updateColors();
     },
 
     initAccentMenu() {
@@ -907,10 +911,262 @@
   }
 
   // ---------------------------------------------------------------------------
+  // 13. CHROMA CURRENT (React Bits Pro: Currents of light across glowing dot grid)
+  // ---------------------------------------------------------------------------
+  let chromaEngine = null;
+
+  function initChromaCurrent() {
+    const canvas = document.getElementById('chroma-current-canvas');
+    if (!canvas) return;
+
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      initChromaCurrentFallback(canvas);
+      return;
+    }
+
+    const vsSource = `
+      attribute vec2 a_position;
+      void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+      }
+    `;
+
+    const fsSource = `
+      precision highp float;
+      uniform vec2 u_resolution;
+      uniform float u_time;
+      uniform float u_pitch;
+      uniform float u_speed;
+      uniform vec3 u_accent;
+      uniform vec3 u_bg;
+      uniform vec3 u_gridDot;
+
+      void main() {
+        vec2 fragCoord = gl_FragCoord.xy;
+        fragCoord.y = u_resolution.y - fragCoord.y;
+
+        // Dot matrix grid
+        vec2 gridUv = fragCoord / u_pitch;
+        vec2 cell = floor(gridUv);
+        vec2 dotCoord = fract(gridUv) - 0.5;
+        float dist = length(dotCoord);
+
+        // Current flow field
+        vec2 p = cell * 0.052;
+        float t = u_time * u_speed;
+
+        // Currents of light flowing across grid
+        float s1 = sin(p.x * 1.8 + p.y * 1.2 + t * 1.05);
+        float s2 = sin(p.x * 2.4 - p.y * 1.9 - t * 0.85);
+        float s3 = cos(p.x * 0.9 + p.y * 2.7 + t * 0.65);
+        float flow = (s1 + s2 + s3) * 0.333;
+
+        // Pulse wave
+        float wave = sin(flow * 3.14159 + p.x * 1.5 - t * 1.3);
+        float current = smoothstep(0.38, 0.95, wave);
+
+        // Crossing diagonal stream
+        float crossFlow = sin(p.y * 2.2 - p.x * 1.5 + t * 0.7);
+        float crossWave = sin(crossFlow * 3.14159 - t * 1.15);
+        float current2 = smoothstep(0.45, 0.98, crossWave) * 0.75;
+        current = max(current, current2);
+
+        // Dot radius scales with current brightness (halftone / LED matrix)
+        float baseRadius = 0.09;
+        float maxRadius = 0.38;
+        float radius = mix(baseRadius, maxRadius, current);
+
+        // Anti-aliased circle edge
+        float edge = 0.055;
+        float dotAlpha = smoothstep(radius, radius - edge, dist);
+
+        // Soft bloom around illuminated dots
+        float glow = exp(-dist * 4.6) * current * 0.55;
+
+        // Color computation
+        vec3 dotColor = mix(u_gridDot, u_accent, current);
+        vec3 col = mix(u_bg, dotColor, dotAlpha);
+        col += u_accent * glow;
+
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    function createShader(gl, type, source) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.warn('Shader compile failed', gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+      }
+      return shader;
+    }
+
+    const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+    const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    if (!vs || !fs) {
+      initChromaCurrentFallback(canvas);
+      return;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.warn('Program link failed', gl.getProgramInfoLog(program));
+      initChromaCurrentFallback(canvas);
+      return;
+    }
+
+    const posBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([
+        -1, -1,
+         1, -1,
+        -1,  1,
+        -1,  1,
+         1, -1,
+         1,  1
+      ]),
+      gl.STATIC_DRAW
+    );
+
+    const aPos = gl.getAttribLocation(program, 'a_position');
+    const uRes = gl.getUniformLocation(program, 'u_resolution');
+    const uTime = gl.getUniformLocation(program, 'u_time');
+    const uPitch = gl.getUniformLocation(program, 'u_pitch');
+    const uSpeed = gl.getUniformLocation(program, 'u_speed');
+    const uAccent = gl.getUniformLocation(program, 'u_accent');
+    const uBg = gl.getUniformLocation(program, 'u_bg');
+    const uGridDot = gl.getUniformLocation(program, 'u_gridDot');
+
+    function parseColor(str, fallback) {
+      if (!str) return fallback;
+      str = str.trim();
+      if (str.startsWith('#')) {
+        let hex = str.slice(1);
+        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+        const num = parseInt(hex, 16);
+        return [(num >> 16 & 255) / 255, (num >> 8 & 255) / 255, (num & 255) / 255];
+      }
+      const parts = str.split(/[\s,]+/).map(Number).filter(n => !isNaN(n));
+      if (parts.length >= 3) {
+        return [parts[0] / 255, parts[1] / 255, parts[2] / 255];
+      }
+      return fallback;
+    }
+
+    let accentRGB = [0.22, 0.74, 0.97]; // #38bdf8
+    let bgRGB = [0.012, 0.031, 0.078]; // #030814
+    let gridDotRGB = [0.07, 0.20, 0.35];
+
+    function updateColors() {
+      const styles = getComputedStyle(document.documentElement);
+      const isWhiteprint = document.documentElement.getAttribute('data-theme') === 'whiteprint';
+
+      const accentStr = styles.getPropertyValue('--accent-rgb');
+      accentRGB = parseColor(accentStr, isWhiteprint ? [0.04, 0.38, 0.79] : [0.22, 0.74, 0.97]);
+
+      if (isWhiteprint) {
+        bgRGB = [0.933, 0.953, 0.976]; // #eef3f9
+        gridDotRGB = [0.72, 0.79, 0.88];
+      } else {
+        bgRGB = [0.012, 0.031, 0.078]; // #030814
+        gridDotRGB = [0.07, 0.20, 0.35];
+      }
+    }
+
+    updateColors();
+
+    chromaEngine = {
+      updateColors
+    };
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    let startTime = performance.now();
+    let isVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      isVisible = !document.hidden;
+    });
+
+    const isMobile = window.innerWidth < 768;
+    const pitch = (isMobile ? 22.0 : 26.0) * dpr;
+    const speed = 0.75;
+
+    function render(now) {
+      if (isVisible) {
+        const elapsed = (now - startTime) / 1000;
+        gl.useProgram(program);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, elapsed);
+        gl.uniform1f(uPitch, pitch);
+        gl.uniform1f(uSpeed, speed);
+        gl.uniform3f(uAccent, accentRGB[0], accentRGB[1], accentRGB[2]);
+        gl.uniform3f(uBg, bgRGB[0], bgRGB[1], bgRGB[2]);
+        gl.uniform3f(uGridDot, gridDotRGB[0], gridDotRGB[1], gridDotRGB[2]);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
+      requestAnimationFrame(render);
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  function initChromaCurrentFallback(canvas) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    function draw() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.fillStyle = '#030814';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+      const pitch = 24;
+      for (let x = 12; x < canvas.width; x += pitch) {
+        for (let y = 12; y < canvas.height; y += pitch) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    draw();
+    window.addEventListener('resize', draw, { passive: true });
+  }
+
+  // ---------------------------------------------------------------------------
   // BOOTSTRAP
   // ---------------------------------------------------------------------------
   function boot() {
     ThemeController.init();
+    initChromaCurrent();
     initLenis();
     initGSAP();
     initFoldableSheets();
