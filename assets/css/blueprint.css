@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 11.6
+ * LP-EE-2026 // Blueprint Design System — REV 11.7
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -16,7 +16,7 @@
   --ruler-w: 18px;
   --header-h: 64px;
   --frame: 34px;
-  --radius: 3px;
+  --radius: 4px;
   --container: 1240px;
   --gutter: clamp(1rem, 3.2vw, 2.5rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -688,7 +688,7 @@ strong { color: var(--ink); font-weight: 600; }
     color: var(--accent);
     background: color-mix(in srgb, var(--accent) 15%, transparent);
     padding: 1px 4px;
-    border-radius: 2px;
+    border-radius: var(--radius);
     border: 1px solid rgb(var(--accent-rgb) / 0.3);
   }
 }
@@ -779,12 +779,14 @@ strong { color: var(--ink); font-weight: 600; }
 .spec {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line);
   background: color-mix(in srgb, var(--paper) 70%, transparent);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 .spec > div { padding: 0.8rem 1rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
 .spec > div:nth-child(2n) { border-right: 0; }
 .spec > div:nth-last-child(-n + 2) { border-bottom: 0; }
 .spec dt { font: 500 0.62rem var(--font-mono); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
-.spec dd { font-weight: 600; font-size: 0.98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.spec dd { font-weight: 600; font-size: clamp(0.85rem, 1.2vw, 0.98rem); line-height: 1.35; white-space: normal; word-break: normal; }
 @media (min-width: 640px) {
   .spec { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .spec > div { border-bottom: 0; }
@@ -928,7 +930,7 @@ strong { color: var(--ink); font-weight: 600; }
   letter-spacing: 0.06em;
   color: var(--bg-deep);
   background: var(--accent);
-  border-radius: 2px;
+  border-radius: var(--radius);
   white-space: nowrap;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
 }
@@ -941,6 +943,8 @@ strong { color: var(--ink); font-weight: 600; }
 .title-block {
   margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
   border-top: 1.5px solid rgba(255, 255, 255, 0.28);
   background: color-mix(in srgb, var(--paper) 65%, transparent);
   backdrop-filter: blur(16px) saturate(180%);
@@ -1014,19 +1018,25 @@ strong { color: var(--ink); font-weight: 600; }
    10B. ACCENT PALETTE & REVISION CONTROLS
    ========================================================================= */
 .spec-badge {
-  font-family: var(--font-hand);
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  height: 38px;
+  padding: 0 0.9rem;
+  font: 600 0.7rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--mark);
-  padding: 0.2rem 0.55rem;
   border: 1px solid rgb(var(--mark-rgb) / 0.45);
   border-top: 1px solid rgba(255, 255, 255, 0.28);
   background: color-mix(in srgb, var(--bg-deep) 65%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.35);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   white-space: nowrap;
 }
 .spec-badge:hover {
@@ -1071,7 +1081,7 @@ strong { color: var(--ink); font-weight: 600; }
 .swatch-btn {
   width: 100%;
   aspect-ratio: 1;
-  border-radius: 9999px;
+  border-radius: var(--radius);
   border: 2px solid var(--paper);
   box-shadow: 0 0 0 1px var(--line);
   cursor: pointer;
@@ -1489,7 +1499,7 @@ a.contact-cell:hover {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s, transform 0.15s;
-  border-radius: 3px;
+  border-radius: var(--radius);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 6px 18px rgba(0, 0, 0, 0.4);
@@ -1583,6 +1593,163 @@ html.motion [data-hero] { visibility: hidden; }
   background: color-mix(in srgb, var(--mark) 26%, transparent);
   box-shadow: 0 0 14px rgb(var(--mark-rgb) / 0.45);
   color: #fff;
+}
+
+/* =========================================================================
+   23. REACT BITS PRO — PRISM CAROUSEL
+   A coverflow that sweeps color into each new image
+   ========================================================================= */
+.prism-carousel-wrap {
+  position: relative;
+  width: 100%;
+  padding: 1.5rem 0 2rem;
+  overflow: hidden;
+  perspective: 1200px;
+}
+.prism-viewport {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.prism-viewport:active {
+  cursor: grabbing;
+}
+.prism-slide {
+  position: absolute;
+  width: clamp(280px, 60vw, 480px);
+  height: 330px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  cursor: pointer;
+}
+.prism-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Prismatic chromatic sheen sweep */
+.prism-slide::after {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    rgba(56, 189, 248, 0.4) 44%,
+    rgba(236, 72, 153, 0.45) 50%,
+    rgba(251, 191, 36, 0.4) 56%,
+    transparent 68%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  mix-blend-mode: screen;
+}
+.prism-slide.is-active::after {
+  opacity: 0.9;
+  animation: prism-sweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes prism-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.prism-slide-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.85rem 1.1rem;
+  background: linear-gradient(to top, rgba(3, 8, 20, 0.94) 0%, rgba(3, 8, 20, 0.65) 75%, transparent 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  z-index: 2;
+}
+[data-theme="whiteprint"] .prism-slide-info {
+  background: linear-gradient(to top, rgba(238, 243, 249, 0.96) 0%, rgba(238, 243, 249, 0.72) 75%, transparent 100%);
+}
+.prism-slide-tag {
+  font: 600 0.62rem var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.prism-slide-title {
+  font: 700 1.05rem var(--font-sans);
+  color: var(--ink);
+  margin: 0.2rem 0 0.25rem;
+}
+.prism-slide-desc {
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  line-height: 1.45;
+  margin: 0;
+}
+.prism-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 0 0.5rem;
+  max-width: 520px;
+  margin-inline: auto;
+}
+.prism-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+.prism-nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  box-shadow: 0 0 12px rgb(var(--accent-rgb) / 0.25);
+}
+.prism-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.prism-dot {
+  width: 18px;
+  height: 4px;
+  border-radius: var(--radius);
+  background: var(--line-strong);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.prism-dot.is-active {
+  width: 36px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
 }
 
 

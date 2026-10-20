@@ -2105,6 +2105,131 @@
 
 
   // ---------------------------------------------------------------------------
+  // 15. REACT BITS PRO — PRISM CAROUSEL (3D Coverflow with Prismatic Sheen)
+  // A coverflow that sweeps color into each new image
+  // ---------------------------------------------------------------------------
+  function initPrismCarousel() {
+    const root = document.querySelector('.prism-carousel-wrap');
+    if (!root) return;
+
+    const viewport = root.querySelector('.prism-viewport');
+    const slides = Array.from(root.querySelectorAll('.prism-slide'));
+    const prevBtn = root.querySelector('.prism-prev');
+    const nextBtn = root.querySelector('.prism-next');
+    const dotsContainer = root.querySelector('.prism-dots');
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+    const total = slides.length;
+
+    // Build dots
+    if (dotsContainer) {
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'prism-dot' + (idx === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
+        dot.addEventListener('click', () => goTo(idx));
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function update() {
+      const isMobile = window.innerWidth < 768;
+      const xSpacing = isMobile ? 130 : 210;
+      const zSpacing = isMobile ? 110 : 150;
+      const yRotation = isMobile ? 26 : 34;
+
+      slides.forEach((slide, i) => {
+        const offset = i - activeIndex;
+        const absOffset = Math.abs(offset);
+
+        slide.classList.toggle('is-active', offset === 0);
+
+        if (offset === 0) {
+          slide.style.transform = 'translateX(0px) translateZ(0px) rotateY(0deg) scale(1)';
+          slide.style.zIndex = '10';
+          slide.style.opacity = '1';
+          slide.style.filter = 'none';
+          slide.style.pointerEvents = 'auto';
+        } else {
+          const dir = offset > 0 ? 1 : -1;
+          const tx = offset * xSpacing;
+          const tz = -absOffset * zSpacing;
+          const ry = dir * -yRotation;
+          const scale = Math.max(0.72, 1 - absOffset * 0.12);
+          const opacity = absOffset > 2 ? '0' : Math.max(0.35, 1 - absOffset * 0.32).toString();
+
+          slide.style.transform = `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`;
+          slide.style.zIndex = String(10 - absOffset);
+          slide.style.opacity = opacity;
+          slide.style.filter = absOffset > 1 ? 'blur(2px) grayscale(30%)' : 'grayscale(15%)';
+          slide.style.pointerEvents = absOffset <= 2 ? 'auto' : 'none';
+        }
+      });
+
+      if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('.prism-dot');
+        dots.forEach((d, idx) => d.classList.toggle('is-active', idx === activeIndex));
+      }
+    }
+
+    function goTo(idx) {
+      activeIndex = (idx + total) % total;
+      update();
+    }
+
+    function next() { goTo(activeIndex + 1); }
+    function prev() { goTo(activeIndex - 1); }
+
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    slides.forEach((slide, idx) => {
+      slide.addEventListener('click', () => {
+        if (idx !== activeIndex) goTo(idx);
+      });
+    });
+
+    let startX = 0;
+    let isDragging = false;
+
+    if (viewport) {
+      viewport.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        isDragging = true;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diff = e.clientX - startX;
+        if (diff > 40) prev();
+        else if (diff < -40) next();
+      });
+
+      viewport.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].clientX - startX;
+        if (diff > 40) prev();
+        else if (diff < -40) next();
+      }, { passive: true });
+    }
+
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+    });
+
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+
+  // ---------------------------------------------------------------------------
   // BOOTSTRAP
   // ---------------------------------------------------------------------------
   function boot() {
@@ -2119,6 +2244,7 @@
     initDock();
     initDraftingCursorSystem();
     initDisciplineFilter();
+    initPrismCarousel();
     initNavigation();
     initCopyButtons();
     initKeyboardNav();
