@@ -178,7 +178,7 @@
         lenis.raf(time * 1000);
       });
 
-      window.gsap.ticker.lagSmoothing(0);
+      window.gsap.ticker.lagSmoothing(500, 33);
     } else {
       function raf(time) {
         lenis.raf(time);
@@ -306,7 +306,7 @@
 
         // --- SCROLLTRIGGER BATCH REVEALS FOR PANELS ---
         if (typeof window.ScrollTrigger !== 'undefined') {
-          // Sheet rule dimension scaleX
+          // Sheet rule dimension scaleX (smooth line reveal, once only)
           gsap.utils.toArray('.sheet-rule').forEach((rule) => {
             gsap.fromTo(rule, 
               { scaleX: 0 }, 
@@ -316,36 +316,12 @@
                 ease: 'power2.out',
                 scrollTrigger: {
                   trigger: rule,
-                  start: 'top 90%',
-                  toggleActions: 'play none none none'
+                  start: 'top 95%',
+                  once: true
                 }
               }
             );
           });
-
-          // Cards & Panels Batching
-          const cards = gsap.utils.toArray('section:not(.hero) .panel, .timeline .job, .hobby');
-          if (cards.length) {
-            window.ScrollTrigger.batch(cards, {
-              interval: 0.08,
-              batchMax: isDesktop ? 3 : 2,
-              start: 'top 88%',
-              onEnter: (batch) => {
-                gsap.fromTo(batch,
-                  { opacity: 0, y: isDesktop ? 28 : 18 },
-                  {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.55,
-                    stagger: 0.08,
-                    ease: 'power3.out',
-                    overwrite: 'auto',
-                    clearProps: 'transform'
-                  }
-                );
-              }
-            });
-          }
 
           // Experience timeline rail scrub
           const rail = document.querySelector('.timeline-rail i');
