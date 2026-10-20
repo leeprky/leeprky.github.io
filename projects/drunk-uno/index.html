@@ -563,6 +563,248 @@
       margin-top: 8px;
     }
 
+    /* -------------------------------------------------------------------------
+       BIG PODIUM LEADERBOARD BOX AT TOP OF SCORES
+       ------------------------------------------------------------------------- */
+    .podium-leaderboard-box {
+      background: radial-gradient(circle at 50% 50%, #fffef8 0%, #fbf1da 85%, #f4e2be 100%);
+      border: 3px double var(--ink);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+      position: relative;
+    }
+
+    .podium-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      border-bottom: 2px dashed rgba(60, 30, 10, 0.25);
+      padding-bottom: 10px;
+    }
+
+    .podium-main-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.85rem;
+      color: #7a1d1d;
+      line-height: 1.1;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .podium-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-top: 3px;
+    }
+
+    .btn-edit-crew {
+      background: var(--parchment-light);
+      border: 2px solid var(--wood-mid);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.15rem;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    }
+    .btn-edit-crew:hover {
+      background: #fff;
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .podium-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 960px) {
+      .podium-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .podium-cards-grid { grid-template-columns: 1fr; }
+    }
+
+    .podium-card {
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      border: 2.5px solid transparent;
+    }
+    .podium-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* 1ST PLACE (GOLD PODIUM) */
+    .podium-card.rank-1 {
+      background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 60%, #fde68a 100%);
+      border-color: #b45309;
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.28), inset 0 0 14px rgba(251, 191, 36, 0.35);
+    }
+
+    /* 2ND PLACE (SILVER PODIUM) */
+    .podium-card.rank-2 {
+      background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 60%, #e2e8f0 100%);
+      border-color: #64748b;
+      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.2);
+    }
+
+    /* 3RD PLACE (BRONZE PODIUM) */
+    .podium-card.rank-3 {
+      background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%);
+      border-color: #9a3412;
+      box-shadow: 0 4px 14px rgba(194, 65, 12, 0.2);
+    }
+
+    /* 4TH PLACE (WOODEN SPOON / ANCHOR) */
+    .podium-card.rank-4 {
+      background: linear-gradient(145deg, #f3f4f6 0%, #e5e7eb 60%, #d1d5db 100%);
+      border-color: #4b5563;
+      box-shadow: 0 3px 10px rgba(75, 85, 99, 0.15);
+    }
+
+    .podium-rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .rank-1 .podium-rank-badge {
+      background: #b45309;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .rank-2 .podium-rank-badge {
+      background: #475569;
+      color: #fff;
+    }
+    .rank-3 .podium-rank-badge {
+      background: #9a3412;
+      color: #fff;
+    }
+    .rank-4 .podium-rank-badge {
+      background: #374151;
+      color: #e5e7eb;
+    }
+
+    .podium-team-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .podium-team-name {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.45rem;
+      color: var(--ink);
+      line-height: 1.1;
+      flex: 1;
+    }
+
+    .podium-score-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin: 4px 0 8px 0;
+      padding: 6px 0;
+      border-top: 1px dashed rgba(0,0,0,0.15);
+      border-bottom: 1px dashed rgba(0,0,0,0.15);
+    }
+    .podium-score-number {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .podium-score-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--ink-muted);
+    }
+
+    .podium-meta-line {
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .podium-meta-line strong {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    .podium-roster {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--ink-faded);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .podium-stats-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    .podium-chip {
+      background: rgba(0, 0, 0, 0.07);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .podium-card.is-my-crew {
+      outline: 3px solid #23170b;
+      outline-offset: 1px;
+    }
+    .podium-my-crew-tag {
+      position: absolute;
+      top: -9px;
+      right: 10px;
+      background: #23170b;
+      color: #dfb74c;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* -------------------------------------------------------------------------
+       SCORING STEPPER CARD & CONSOLE
+       ------------------------------------------------------------------------- */
     .scoring-stepper-card {
       background: rgba(255, 248, 230, 0.95);
       border: 2.5px solid var(--ink);
@@ -718,6 +960,187 @@
       background: rgba(223, 183, 76, 0.22);
       color: #5c3a07;
       border-color: #8a580e;
+    }
+
+    /* Quick Point Adjust Grid */
+    .score-quick-adjust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    @media (max-width: 500px) {
+      .score-quick-adjust-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* =========================================================================
+       ONBOARDING POPUP: CHOOSE YOUR CREW (FIRST LOAD & EDITABLE)
+       ========================================================================= */
+    .crew-setup-dialog {
+      max-width: 520px !important;
+      background: radial-gradient(circle at 50% 50%, #fffef8 0%, #faecd0 85%, #f2dcaf 100%) !important;
+      border: 3.5px double var(--ink) !important;
+    }
+
+    .setup-step-box {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid var(--wood-mid);
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .setup-step-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      color: #7a1d1d;
+      margin-bottom: 8px;
+    }
+    .setup-step-label .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #7a1d1d;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .setup-color-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .btn-setup-color {
+      background: #fff;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .btn-setup-color:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .btn-setup-color.selected {
+      border-color: #23170b;
+      box-shadow: 0 0 0 3px var(--gold), 0 6px 16px rgba(0,0,0,0.25);
+      background: #fffdf5;
+    }
+    .btn-setup-color .color-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      border: 2px solid #23170b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .btn-setup-color .team-label {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+    .btn-setup-color .rival-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-muted);
+    }
+    .btn-setup-color.selected::after {
+      content: "✓ CHOSEN";
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 800;
+      background: #23170b;
+      color: var(--gold);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    .setup-player-input-row {
+      display: flex;
+      gap: 8px;
+    }
+    .setup-player-input-row input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      font-family: 'IM Fell English', serif;
+      font-size: 1rem;
+      background: #fff;
+      color: var(--ink);
+    }
+    .setup-player-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      min-height: 28px;
+    }
+    .player-pill-chip {
+      background: var(--parchment-light);
+      border: 1.5px solid var(--wood-mid);
+      border-radius: 20px;
+      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'IM Fell English', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .player-pill-chip.is-captain {
+      border-color: #b45309;
+      background: #fef3c7;
+      color: #78350f;
+    }
+    .player-pill-chip .remove-player-btn {
+      background: none;
+      border: none;
+      color: #8d0801;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 2px;
+      line-height: 1;
+    }
+
+    .setup-captain-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
     }
 
     /* Leaderboard Standings Table */
@@ -1241,10 +1664,10 @@
           </a>
 
           <div class="nav-tabs">
-            <button type="button" class="tab-btn active" data-tab="wheel">
+            <button type="button" class="tab-btn" data-tab="wheel">
               <span>🎡 WHEEL</span>
             </button>
-            <button type="button" class="tab-btn" data-tab="scores">
+            <button type="button" class="tab-btn active" data-tab="scores">
               <span>🏆 SCORES</span>
             </button>
             <button type="button" class="tab-btn" data-tab="map">
@@ -1307,7 +1730,7 @@
         <!-- ===================================================================
              TAB 1: WHEEL OF DOOM (UNO COLORS FOR LOOKS, NOT TEAMS)
              =================================================================== -->
-        <section id="tab-wheel" class="tab-panel active">
+        <section id="tab-wheel" class="tab-panel">
           <div class="wheel-view-grid">
 
             <!-- Left Rules Column -->
@@ -1446,19 +1869,37 @@
         <!-- ===================================================================
              TAB 2: STEP-BY-STEP DYNAMIC SCORES (CHOOSE YOUR TEAM -> TARGET)
              =================================================================== -->
-        <section id="tab-scores" class="tab-panel">
+        <section id="tab-scores" class="tab-panel active">
           <div class="scores-section-wrap">
+
+            <!-- BIG PODIUM LEADERBOARD BOX AT THE VERY TOP -->
+            <div class="podium-leaderboard-box" id="podiumBox">
+              <div class="podium-header-row">
+                <div>
+                  <h2 class="podium-main-title">🏆 OFFICIAL PODIUM LEADERBOARD</h2>
+                  <div class="podium-subtitle">
+                    Live dynamic standings across all phones • 1st, 2nd, 3rd & 4th Place
+                  </div>
+                </div>
+                <button type="button" class="btn-edit-crew" id="openCrewSetupFromScoresBtn">
+                  ✏️ Edit My Crew / Captain
+                </button>
+              </div>
+
+              <!-- 4 Podium Rank Cards (1st, 2nd, 3rd, 4th) -->
+              <div class="podium-cards-grid" id="podiumCardsGrid"></div>
+            </div>
 
             <div class="scoring-stepper-card">
               <!-- STEP 1: CHOOSE YOUR TEAM -->
               <div class="step-title">
-                <span>1️⃣ CHOOSE YOUR TEAM FIRST:</span>
+                <span>1️⃣ YOUR TEAM (WHO YOU ARE):</span>
               </div>
               <div class="team-picker-grid" id="myTeamPicker"></div>
 
               <!-- STEP 2: CHOOSE WHO YOU ARE SCORING -->
               <div class="step-title" style="margin-top: 10px;">
-                <span>2️⃣ CHOOSE WHO YOU ARE SCORING / ATTACKING:</span>
+                <span>2️⃣ TARGET TEAM (WHO YOU ARE SCORING / ATTACKING):</span>
               </div>
               <div class="team-picker-grid" id="targetTeamPicker"></div>
 
@@ -1469,13 +1910,14 @@
             <!-- FULL LIVE LEADERBOARD STANDINGS -->
             <div class="standings-table-wrap">
               <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 8px;">
-                🏆 OFFICIAL CREW LEADERBOARD (DYNAMIC ACROSS ALL PHONES)
+                📊 FULL CREW STATS BREAKDOWN (LIVE ACROSS ALL PHONES)
               </h3>
               <table class="standings-table">
                 <thead>
                   <tr>
                     <th>Rank</th>
                     <th>Crew</th>
+                    <th>Captain & Roster</th>
                     <th>Cross-Rival</th>
                     <th>Points</th>
                     <th>Drinks Taken</th>
@@ -1862,6 +2304,71 @@
 
 
   <!-- =========================================================================
+       MODAL 8: ONBOARDING CREW & CAPTAIN POPUP (FIRST LOAD & EDITABLE)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="crewSetupModal">
+    <div class="modal-scroll crew-setup-dialog">
+      <div style="text-align: center; margin-bottom: 14px;">
+        <span class="impact-pill special" style="font-size: 0.82rem; padding: 3px 10px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
+        <h2 class="modal-title" style="margin-top: 6px; font-size: 2.1rem; color: #7a1d1d;">CHOOSE YOUR CREW</h2>
+        <p class="modal-body" style="margin-bottom: 4px; font-size: 0.96rem;">
+          Select your team colour, enter your squad players, and crown a Captain!
+        </p>
+      </div>
+
+      <!-- STEP 1: CHOOSE TEAM COLOUR -->
+      <div class="setup-step-box">
+        <div class="setup-step-label">
+          <span class="step-num">1</span>
+          <span>SELECT YOUR TEAM COLOUR:</span>
+        </div>
+        <div class="setup-color-grid" id="setupColorGrid"></div>
+      </div>
+
+      <!-- STEP 2: WRITE PLAYERS' NAMES -->
+      <div class="setup-step-box" style="margin-top: 12px;">
+        <div class="setup-step-label">
+          <span class="step-num">2</span>
+          <span>ENTER PLAYER NAMES:</span>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--ink-faded); margin-bottom: 6px;">
+          Type player name(s) and press Enter or "Add" (or type comma-separated):
+        </p>
+        <div class="setup-player-input-row">
+          <input type="text" id="setupPlayerInput" placeholder="e.g. Liam, Callum, Sarah..." autocomplete="off" />
+          <button type="button" class="modal-btn" id="setupAddPlayerBtn" style="padding: 8px 14px; font-size: 1rem; width: auto; flex-shrink: 0;">+ Add</button>
+        </div>
+        <div class="setup-player-pills" id="setupPlayerPills"></div>
+      </div>
+
+      <!-- STEP 3: SELECT CAPTAIN FROM THE NAMES -->
+      <div class="setup-step-box" style="margin-top: 12px;">
+        <div class="setup-step-label">
+          <span class="step-num">3</span>
+          <span>APPOINT TEAM CAPTAIN:</span>
+        </div>
+        <select id="setupCaptainSelect" class="setup-captain-select">
+          <option value="">-- Add players above to pick Captain --</option>
+        </select>
+        <div style="font-size: 0.76rem; font-style: italic; color: var(--ink-faded); margin-top: 6px;">
+          👑 The Captain holds the Stash wild cards and answers for drinking challenges.
+        </div>
+      </div>
+
+      <!-- SUBMIT / CONFIRM BUTTON -->
+      <div class="modal-actions" style="margin-top: 16px; flex-direction: column; gap: 8px;">
+        <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: #2b9348; font-size: 1.25rem; padding: 12px 20px; width: 100%;">
+          ⚔️ ENTER THE BATTLE & OPEN SCORES
+        </button>
+        <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 6px 12px; width: 100%;">
+          Skip / Enter as Spectator
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
        05. MAIN ENGINE SCRIPT (REAL-TIME MQTT SYNC, COOKIES, WHEEL & BINGO)
        ========================================================================= -->
   <script>
@@ -1891,11 +2398,21 @@
         toast._timeout = setTimeout(() => { toast.classList.remove("show"); }, 2400);
       }
 
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
       const DEFAULT_TEAMS = [
-        { id: 0, key: "RED", name: "Team Red", colorClass: "red", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 1, targetName: "Team Blue" },
-        { id: 1, key: "BLUE", name: "Team Blue", colorClass: "blue", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 2, targetName: "Team Green" },
-        { id: 2, key: "GREEN", name: "Team Green", colorClass: "green", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 3, targetName: "Team Yellow" },
-        { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 0, targetName: "Team Red" }
+        { id: 0, key: "RED", name: "Team Red", colorClass: "red", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 1, targetName: "Team Blue", players: [], captain: "" },
+        { id: 1, key: "BLUE", name: "Team Blue", colorClass: "blue", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 2, targetName: "Team Green", players: [], captain: "" },
+        { id: 2, key: "GREEN", name: "Team Green", colorClass: "green", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 3, targetName: "Team Yellow", players: [], captain: "" },
+        { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 0, targetName: "Team Red", players: [], captain: "" }
       ];
 
       const DEFAULT_STOPS = [
@@ -2088,6 +2605,10 @@
             const parsed = JSON.parse(raw);
             if (parsed && Array.isArray(parsed.teams) && parsed.teams.length === 4) {
               state.teams = parsed.teams;
+              state.teams.forEach(t => {
+                if (!Array.isArray(t.players)) t.players = [];
+                if (!t.captain) t.captain = "";
+              });
               if (parsed.stops) state.stops = parsed.stops;
               if (parsed.currentStopIdx !== undefined) state.currentStopIdx = parsed.currentStopIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
@@ -2124,6 +2645,10 @@
               const incoming = JSON.parse(message.payloadString);
               if (incoming && Array.isArray(incoming.teams)) {
                 state.teams = incoming.teams;
+                state.teams.forEach(t => {
+                  if (!Array.isArray(t.players)) t.players = [];
+                  if (!t.captain) t.captain = "";
+                });
                 state.stops = incoming.stops || state.stops;
                 state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
                 state.bingoCards = incoming.bingoCards || state.bingoCards;
@@ -2304,7 +2829,70 @@
         });
       }
 
-      // --- 06. RENDER CREW BAR & STANDINGS ---
+      // --- 06. RENDER PODIUM BOX & CREW BAR ---
+      function renderPodiumBox() {
+        const grid = document.getElementById("podiumCardsGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        // Sort descending by score; if tied, fewest sips wins tie-break
+        const sorted = [...state.teams].sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return a.sips - b.sips;
+        });
+
+        const ranks = [
+          { rank: 1, class: "rank-1", badge: "👑 1ST PLACE" },
+          { rank: 2, class: "rank-2", badge: "🥈 2ND PLACE" },
+          { rank: 3, class: "rank-3", badge: "🥉 3RD PLACE" },
+          { rank: 4, class: "rank-4", badge: "⚓ 4TH PLACE" }
+        ];
+
+        sorted.forEach((team, idx) => {
+          const r = ranks[idx] || ranks[3];
+          const isMyCrew = team.id === state.myTeamIdx;
+          const card = document.createElement("div");
+          card.className = `podium-card ${r.class} ${isMyCrew ? "is-my-crew" : ""}`;
+
+          const playerListStr = team.players && team.players.length ? team.players.join(", ") : "No crew listed";
+          const captainStr = team.captain ? team.captain : "Unassigned";
+
+          card.innerHTML = `
+            ${isMyCrew ? `<div class="podium-my-crew-tag">★ YOUR CREW</div>` : ""}
+            <div class="podium-rank-badge">
+              <span>${r.badge}</span>
+            </div>
+
+            <div class="podium-team-header">
+              <span class="crew-dot ${team.colorClass}" style="width: 14px; height: 14px;"></span>
+              <strong class="podium-team-name">${escapeHtml(team.name)}</strong>
+              ${team.frozen ? `<span class="frozen-banner" style="position: static; font-size: 0.65rem;">❄️ FROZEN</span>` : ""}
+            </div>
+
+            <div class="podium-score-row">
+              <span class="podium-score-number" style="color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</span>
+              <span class="podium-score-unit">PTS</span>
+            </div>
+
+            <div class="podium-meta-line">
+              <span>👑 <strong>CAPTAIN:</strong> ${escapeHtml(captainStr)}</span>
+            </div>
+
+            <div class="podium-roster" title="${escapeHtml(playerListStr)}">
+              👥 <strong>Crew:</strong> ${escapeHtml(playerListStr)}
+            </div>
+
+            <div class="podium-stats-chips">
+              <span class="podium-chip">🍺 ${team.sips} sips</span>
+              <span class="podium-chip">🃏 ${team.stash}/2 wild</span>
+              <span class="podium-chip" style="color: var(--ink-muted);">🎯 vs ${escapeHtml(team.targetName)}</span>
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+      }
+
       function renderCrewBar() {
         const bar = document.getElementById("crewBar");
         bar.innerHTML = "";
@@ -2327,13 +2915,13 @@
             <div class="crew-pill-head">
               <div class="crew-name-label">
                 <span class="crew-dot ${team.colorClass}"></span>
-                <span>${team.name}</span>
+                <span>${escapeHtml(team.name)}</span>
                 ${isLeader ? `<span title="Current Leader">👑</span>` : ""}
               </div>
               <div class="crew-score-big">${team.score}</div>
             </div>
             <div class="crew-rival-tag">
-              🎯 Targets: ${team.targetName} • ${team.sips} sips
+              ${team.captain ? `👑 ${escapeHtml(team.captain)} • ` : ""}🎯 Targets: ${escapeHtml(team.targetName)} • ${team.sips} sips
             </div>
           `;
           bar.appendChild(pill);
@@ -2342,6 +2930,9 @@
 
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (CHOOSE YOUR TEAM -> TARGET) ---
       function renderScoringTab() {
+        // Step 0: Render Big Podium Leaderboard Box at Top
+        renderPodiumBox();
+
         // Step 1: Render My Team Picker
         const myPicker = document.getElementById("myTeamPicker");
         myPicker.innerHTML = "";
@@ -2351,12 +2942,11 @@
           btn.className = `btn-pick-team ${idx === state.myTeamIdx ? "selected" : ""}`;
           btn.innerHTML = `
             <span class="crew-dot ${t.colorClass}"></span>
-            <span>${t.name}</span>
-            <span class="sub">${idx === state.myTeamIdx ? "★ YOUR CREW" : "Select"}</span>
+            <span>${escapeHtml(t.name)}</span>
+            <span class="sub">${idx === state.myTeamIdx ? "★ YOUR CREW" : t.captain ? '👑 ' + escapeHtml(t.captain) : "Select"}</span>
           `;
           btn.onclick = () => {
             state.myTeamIdx = idx;
-            // Default target to cross-scoring rival
             state.targetTeamIdx = t.targetIdx;
             saveGameState(false);
             renderCrewBar();
@@ -2375,7 +2965,7 @@
           const isOfficialRival = idx === state.teams[state.myTeamIdx].targetIdx;
           btn.innerHTML = `
             <span class="crew-dot ${t.colorClass}"></span>
-            <span>${t.name}</span>
+            <span>${escapeHtml(t.name)}</span>
             <span class="sub">${isOfficialRival ? "🎯 OFFICIAL RIVAL" : idx === state.myTeamIdx ? "(Your Team)" : "Target"}</span>
           `;
           btn.onclick = () => {
@@ -2390,18 +2980,19 @@
         const consoleEl = document.getElementById("scoringConsole");
         const myTeam = state.teams[state.myTeamIdx];
         const targetTeam = state.teams[state.targetTeamIdx];
+        const targetCaptain = targetTeam.captain ? ` • 👑 Captain: ${escapeHtml(targetTeam.captain)}` : "";
 
         consoleEl.innerHTML = `
           <div class="scoring-header-row">
             <div class="scoring-identity">
-              <span class="crew-dot ${targetTeam.colorClass}" style="width: 14px; height: 14px;"></span>
+              <span class="crew-dot ${targetTeam.colorClass}" style="width: 16px; height: 16px;"></span>
               <div>
                 <div class="scoring-target-badge">
-                  <span>${targetTeam.name}</span>
+                  <span>${escapeHtml(targetTeam.name)}</span>
                   ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #0284c7;">[❄️ FROZEN]</span>` : ""}
                 </div>
-                <div style="font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-muted);">
-                  Scoring logged by: <strong>${myTeam.name}</strong> • ${targetTeam.sips} drinks taken
+                <div style="font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-muted);">
+                  Scoring by: <strong>${escapeHtml(myTeam.name)}</strong>${targetCaptain} • ${targetTeam.sips} drinks taken
                 </div>
               </div>
             </div>
@@ -2414,7 +3005,7 @@
             </div>
           </div>
 
-          <!-- Quick Scoring Triggers -->
+          <!-- Quick Uno Triggers -->
           <div class="score-action-grid">
             <button type="button" class="btn-score-tap deduct" data-uno-score="skip">
               <span>🚫 SKIP</span>
@@ -2451,6 +3042,26 @@
             </button>
           </div>
 
+          <!-- Quick Manual Point Adjusters -->
+          <div class="score-quick-adjust-grid">
+            <button type="button" class="btn-score-tap reward" data-point-adj="1">
+              <span>➕ +1 Pt</span>
+              <small>Bonus / Correct</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-point-adj="-1">
+              <span>➖ -1 Pt</span>
+              <small>Foul / Minor</small>
+            </button>
+            <button type="button" class="btn-score-tap reward" data-point-adj="5">
+              <span>⚡ +5 Pts</span>
+              <small>Round Win</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-point-adj="-5">
+              <span>💀 -5 Pts</span>
+              <small>Major Penalty</small>
+            </button>
+          </div>
+
           <!-- Sip Incrementers & Freeze Toggle -->
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             <button type="button" class="btn-score-tap drink" style="flex: 1;" data-sip-add="1">
@@ -2468,7 +3079,7 @@
           </div>
 
           <!-- Stash Control -->
-          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(223, 183, 76, 0.16); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--gold); font-size: 0.86rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(223, 183, 76, 0.16); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--gold); font-size: 0.88rem;">
             <span>🃏 Captain's Stash (Wild Cards): <strong>${targetTeam.stash}</strong>/2 (+1 pt each at end)</span>
             <div style="display: flex; gap: 6px;">
               <button type="button" class="btn-stop-check" data-stash-change="-1">-</button>
@@ -2517,6 +3128,18 @@
           };
         });
 
+        // Attach manual point adjusters
+        consoleEl.querySelectorAll("[data-point-adj]").forEach(btn => {
+          btn.onclick = () => {
+            const delta = parseInt(btn.dataset.pointAdj, 10);
+            targetTeam.score += delta;
+            addLog(`⚖️ MANUAL ADJUST: ${targetTeam.name} adjusted by ${delta > 0 ? '+' + delta : delta} points.`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+          };
+        });
+
         consoleEl.querySelectorAll("[data-sip-add]").forEach(btn => {
           btn.onclick = () => {
             const count = parseInt(btn.dataset.sipAdd, 10);
@@ -2551,21 +3174,30 @@
 
       function renderStandingsTable() {
         const tbody = document.getElementById("standingsTableBody");
+        if (!tbody) return;
         tbody.innerHTML = "";
 
         // Sort teams descending by score
-        const sorted = [...state.teams].sort((a, b) => b.score - a.score);
+        const sorted = [...state.teams].sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return a.sips - b.sips;
+        });
+
         sorted.forEach((team, rank) => {
           const tr = document.createElement("tr");
           if (rank === 0 && team.score > 0) tr.className = "leader-row";
+          const captainDisplay = team.captain ? `👑 ${escapeHtml(team.captain)}` : `<em style="color:var(--ink-faded)">Unassigned</em>`;
+          const rosterDisplay = team.players && team.players.length ? escapeHtml(team.players.join(", ")) : "None registered";
+
           tr.innerHTML = `
-            <td>${rank === 0 ? "👑 1st" : rank === 1 ? "2nd" : rank === 2 ? "3rd" : "4th"}</td>
-            <td><span class="crew-dot ${team.colorClass}"></span> <strong>${team.name}</strong></td>
-            <td>${team.targetName}</td>
-            <td style="font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 1.15rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
+            <td><strong>${rank === 0 ? "👑 1st" : rank === 1 ? "🥈 2nd" : rank === 2 ? "🥉 3rd" : "⚓ 4th"}</strong></td>
+            <td><span class="crew-dot ${team.colorClass}"></span> <strong>${escapeHtml(team.name)}</strong></td>
+            <td><div>${captainDisplay}</div><small style="color: var(--ink-faded); font-size: 0.78rem;">${rosterDisplay}</small></td>
+            <td>${escapeHtml(team.targetName)}</td>
+            <td style="font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 1.25rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
             <td>${team.sips} sips</td>
             <td>${team.stash}/2 wild</td>
-            <td>${team.frozen ? "❄️ FROZEN" : "Active"}</td>
+            <td>${team.frozen ? "<span style='color:#0284c7;font-weight:700;'>❄️ FROZEN</span>" : "<span style='color:#2b9348;'>Active</span>"}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -3225,6 +3857,207 @@
         showToast("Full Factory Reset Applied");
       };
 
+      // --- 13B. ONBOARDING CREW & CAPTAIN SETUP MODAL ---
+      const crewSetupModal = document.getElementById("crewSetupModal");
+      let setupSelectedTeamIdx = 0;
+      let setupPlayers = [];
+      let setupCaptain = "";
+
+      function openCrewSetupModal(isEditing = false) {
+        setupSelectedTeamIdx = state.myTeamIdx || 0;
+        const currentTeam = state.teams[setupSelectedTeamIdx];
+        setupPlayers = Array.isArray(currentTeam.players) ? [...currentTeam.players] : [];
+        setupCaptain = currentTeam.captain || (setupPlayers[0] || "");
+
+        renderSetupColors();
+        renderSetupPlayerPills();
+        renderSetupCaptainSelect();
+
+        const submitBtn = document.getElementById("setupSubmitBtn");
+        if (submitBtn) {
+          submitBtn.textContent = isEditing ? "💾 SAVE CREW & RETURN TO SCORES" : "⚔️ ENTER THE BATTLE & OPEN SCORES";
+        }
+        crewSetupModal.classList.add("open");
+      }
+
+      function renderSetupColors() {
+        const grid = document.getElementById("setupColorGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        state.teams.forEach((t, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `btn-setup-color ${idx === setupSelectedTeamIdx ? "selected" : ""}`;
+
+          let bgHex = "#d62828";
+          if (t.colorClass === "blue") bgHex = "#1d63b8";
+          else if (t.colorClass === "green") bgHex = "#2b9348";
+          else if (t.colorClass === "yellow") bgHex = "#f7b801";
+
+          btn.innerHTML = `
+            <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
+            <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#9a6700' : bgHex};">${escapeHtml(t.name)}</div>
+            <div class="rival-hint">Targets: ${escapeHtml(t.targetName)}</div>
+          `;
+
+          btn.onclick = () => {
+            setupSelectedTeamIdx = idx;
+            const newTeam = state.teams[idx];
+            if (Array.isArray(newTeam.players) && newTeam.players.length > 0) {
+              setupPlayers = [...newTeam.players];
+              setupCaptain = newTeam.captain || setupPlayers[0] || "";
+            }
+            renderSetupColors();
+            renderSetupPlayerPills();
+            renderSetupCaptainSelect();
+            playTick(500);
+          };
+
+          grid.appendChild(btn);
+        });
+      }
+
+      function renderSetupPlayerPills() {
+        const pillsWrap = document.getElementById("setupPlayerPills");
+        if (!pillsWrap) return;
+        pillsWrap.innerHTML = "";
+
+        if (setupPlayers.length === 0) {
+          pillsWrap.innerHTML = `<span style="font-size: 0.82rem; font-style: italic; color: var(--ink-faded);">No players added yet. Enter names above!</span>`;
+          return;
+        }
+
+        setupPlayers.forEach((name, pIdx) => {
+          const chip = document.createElement("span");
+          const isCap = name === setupCaptain;
+          chip.className = `player-pill-chip ${isCap ? "is-captain" : ""}`;
+          chip.innerHTML = `
+            <span>${isCap ? "👑 " : "👤 "}${escapeHtml(name)}</span>
+            <button type="button" class="remove-player-btn" title="Remove player" data-player-idx="${pIdx}">✕</button>
+          `;
+
+          chip.querySelector(".remove-player-btn").onclick = (e) => {
+            e.stopPropagation();
+            setupPlayers.splice(pIdx, 1);
+            if (setupCaptain === name) {
+              setupCaptain = setupPlayers.length > 0 ? setupPlayers[0] : "";
+            }
+            renderSetupPlayerPills();
+            renderSetupCaptainSelect();
+          };
+
+          pillsWrap.appendChild(chip);
+        });
+      }
+
+      function renderSetupCaptainSelect() {
+        const select = document.getElementById("setupCaptainSelect");
+        if (!select) return;
+        select.innerHTML = "";
+
+        if (setupPlayers.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "-- Add players above to pick Captain --";
+          select.appendChild(opt);
+          return;
+        }
+
+        setupPlayers.forEach(name => {
+          const opt = document.createElement("option");
+          opt.value = name;
+          opt.textContent = `👑 ${name}`;
+          if (name === setupCaptain) opt.selected = true;
+          select.appendChild(opt);
+        });
+
+        if (!setupCaptain && setupPlayers.length > 0) {
+          setupCaptain = setupPlayers[0];
+          select.value = setupCaptain;
+        }
+
+        select.onchange = () => {
+          setupCaptain = select.value;
+          renderSetupPlayerPills();
+        };
+      }
+
+      function addPlayerFromInput() {
+        const input = document.getElementById("setupPlayerInput");
+        if (!input) return;
+        const val = input.value.trim();
+        if (!val) return;
+
+        const parts = val.split(",").map(p => p.trim()).filter(Boolean);
+        parts.forEach(name => {
+          if (!setupPlayers.includes(name)) {
+            setupPlayers.push(name);
+          }
+        });
+
+        if (!setupCaptain && setupPlayers.length > 0) {
+          setupCaptain = setupPlayers[0];
+        }
+
+        input.value = "";
+        renderSetupPlayerPills();
+        renderSetupCaptainSelect();
+        playTick(600);
+      }
+
+      const addPlayerBtn = document.getElementById("setupAddPlayerBtn");
+      if (addPlayerBtn) addPlayerBtn.onclick = addPlayerFromInput;
+
+      const playerInput = document.getElementById("setupPlayerInput");
+      if (playerInput) {
+        playerInput.onkeydown = (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addPlayerFromInput();
+          }
+        };
+      }
+
+      document.getElementById("setupSubmitBtn").onclick = () => {
+        if (playerInput && playerInput.value.trim()) {
+          addPlayerFromInput();
+        }
+
+        const team = state.teams[setupSelectedTeamIdx];
+        team.players = [...setupPlayers];
+        team.captain = setupCaptain || (setupPlayers[0] || "");
+
+        state.myTeamIdx = setupSelectedTeamIdx;
+        state.targetTeamIdx = team.targetIdx;
+
+        try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
+
+        saveGameState(true);
+        renderCrewBar();
+        renderScoringTab();
+        switchToTab("scores");
+        crewSetupModal.classList.remove("open");
+
+        addLog(`⚔️ CREW SAVED: ${team.name} ready for crawl! Captain: ${team.captain || 'None'}.`);
+        playFanfare("win");
+        spawnCoins(30);
+        showToast(`🎉 Ready to Battle: ${team.name}!`);
+      };
+
+      document.getElementById("setupDismissBtn").onclick = () => {
+        try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
+        crewSetupModal.classList.remove("open");
+        switchToTab("scores");
+      };
+
+      const openCrewFromScoresBtn = document.getElementById("openCrewSetupFromScoresBtn");
+      if (openCrewFromScoresBtn) {
+        openCrewFromScoresBtn.onclick = () => {
+          openCrewSetupModal(true);
+        };
+      }
+
       // --- 14. INITIAL BOOTSTRAP ---
       loadGameState();
       renderCrewBar();
@@ -3234,6 +4067,15 @@
       renderBingoGrid();
       renderLogs();
       initMqttSync();
+
+      // Check first-load onboarding
+      let crewSetupDone = false;
+      try { crewSetupDone = localStorage.getItem("drunk_uno_crew_setup") === "true"; } catch (e) {}
+      if (!crewSetupDone) {
+        setTimeout(() => {
+          openCrewSetupModal(false);
+        }, 150);
+      }
 
     })();
   </script>
