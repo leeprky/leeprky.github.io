@@ -54,7 +54,7 @@ Personal engineering portfolio and technical specification sheet for **Lee Parki
   - **Automotive Diagnostics & Workshop Mechanics:** Hands-on workshop mechanics from Car Cosmetics covering electrical fault-finding, wiring & sensor testing, hydraulic bleeding, and mechanical repairs.
   - **Discord Client Theming & Open Source:** Custom CSS/UI themes for Discord (*WindowsXI*, *MaterialYou*, *Vintage*, *Lode*).
   - **Computer Science & ICT:** Hardware, networking, relational databases, and software troubleshooting.
-  - **Live Audio & Former DJ Stint:** Brief stint DJing live events, setting up decks, mixers, and PA audio gear.
+  - **Live Audio & DJ Sets:** Live event sound reinforcement, Pioneer DJ gear, mixers, PA systems, and SoundCloud sets ([leethal04](https://soundcloud.com/leethal04)).
 
 - **Project Gallery (`03 // GALLERY`):**
   - **`03.1 // ENGINEERING`:**
