@@ -938,17 +938,21 @@
   // ---------------------------------------------------------------------------
   // 13. METALLIC SWIRL (React Bits Pro: A swirl of liquid metal)
   // ---------------------------------------------------------------------------
+  // 13. REACT BITS PRO — SATIN RIDGES WEBGL SHADER
+  // Flowing satin folds catching soft highlights
+  // ---------------------------------------------------------------------------
   let chromaEngine = null;
 
-  function initMetallicSwirl() {
-    const canvas = document.getElementById('metallic-swirl-canvas') ||
+  function initSatinRidges() {
+    const canvas = document.getElementById('satin-ridges-canvas') ||
+                   document.getElementById('metallic-swirl-canvas') ||
                    document.getElementById('chroma-waves-canvas') ||
                    document.getElementById('chroma-current-canvas');
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) {
-      initMetallicSwirlFallback(canvas);
+      initSatinRidgesFallback(canvas);
       return;
     }
 
@@ -969,69 +973,90 @@
       uniform vec3 u_bg;
       uniform float u_isLight;
 
-      // Swirling liquid metal heightfield
-      float liquidField(vec2 p, float t) {
-        float r = length(p);
-        float a = atan(p.y, p.x);
+      // Single fold frequency calculation
+      float satinFold(vec2 p, float t) {
+        // Flowing diagonal fold coordinates
+        vec2 dir = vec2(0.85, 0.52);
+        vec2 perp = vec2(-0.52, 0.85);
 
-        // Fluid vortex swirl distortion
-        float swirl = 2.4 / (r + 0.32);
-        float angle = a + swirl * 0.75 - t * 0.45;
-        vec2 q = vec2(cos(angle), sin(angle)) * r;
+        float u = dot(p, dir);
+        float v = dot(p, perp);
 
-        // Multi-frequency undulating liquid ripples
-        float w1 = sin(q.x * 4.2 + t * 0.85) * cos(q.y * 3.6 - t * 0.65);
-        float w2 = sin(q.x * 2.6 - q.y * 2.8 + w1 * 1.8);
-        float w3 = cos(q.y * 4.8 + q.x * 2.1 + w2 * 1.4 + t * 0.5);
+        // Multi-frequency undulating fabric folds
+        float f1 = sin(u * 2.8 - t * 0.42 + sin(v * 1.4 + t * 0.22) * 0.75);
+        float f2 = sin(u * 5.2 + v * 2.1 - t * 0.58 + f1 * 1.15);
+        float f3 = cos(v * 3.2 - u * 1.6 + t * 0.32 + f2 * 0.45);
 
-        return (w1 * 0.45 + w2 * 0.35 + w3 * 0.2);
+        return f1 * 0.55 + f2 * 0.30 + f3 * 0.15;
+      }
+
+      // Heightfield of draped satin fabric with soft ridges
+      float satinField(vec2 p, float t) {
+        // Gentle draping curve
+        p.y += sin(p.x * 1.1 + t * 0.12) * 0.16;
+        p.x += cos(p.y * 0.85 - t * 0.10) * 0.12;
+
+        float h1 = satinFold(p, t);
+        float h2 = satinFold(p * 1.35 + vec2(1.6, -2.0), t * 0.8);
+        return h1 * 0.72 + h2 * 0.28;
       }
 
       void main() {
         vec2 fragCoord = gl_FragCoord.xy;
         vec2 p = (fragCoord - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
 
-        // Subtle interactive mouse attraction
-        vec2 mouseOffset = (u_mouse - 0.5) * 0.35;
+        // Subtle interactive mouse attraction across the fabric
+        vec2 mouseOffset = (u_mouse - 0.5) * 0.28;
         p -= mouseOffset;
 
         float t = u_time * u_speed;
 
         // Evaluate surface height & finite differences for surface normals
-        float eps = 0.007;
-        float h = liquidField(p, t);
-        float hx = liquidField(p + vec2(eps, 0.0), t);
-        float hy = liquidField(p + vec2(0.0, eps), t);
+        float eps = 0.006;
+        float h = satinField(p, t);
+        float hx = satinField(p + vec2(eps, 0.0), t);
+        float hy = satinField(p + vec2(0.0, eps), t);
 
-        vec3 normal = normalize(vec3((hx - h) / eps * 1.8, (hy - h) / eps * 1.8, 1.0));
+        vec3 normal = normalize(vec3((h - hx) / eps * 1.6, (h - hy) / eps * 1.6, 1.0));
 
-        // Overhead orbiting key light
-        vec3 lightDir = normalize(vec3(cos(t * 0.35) * 0.7, sin(t * 0.35) * 0.7, 0.85));
+        // Satin tangent running along the fold direction
+        vec3 foldDir = normalize(vec3(0.85, 0.52, 0.0));
+        vec3 tangent = normalize(cross(normal, foldDir));
+
+        // Soft studio lighting catching ridge crests
+        vec3 lightDir = normalize(vec3(cos(t * 0.28) * 0.65, sin(t * 0.28) * 0.65, 0.9));
         vec3 viewDir = vec3(0.0, 0.0, 1.0);
         vec3 halfDir = normalize(lightDir + viewDir);
 
-        // Diffuse & Specular liquid metal reflection
+        // Diffuse & Anisotropic satin sheen highlights
         float diff = max(0.0, dot(normal, lightDir));
-        float spec = pow(max(0.0, dot(normal, halfDir)), 36.0);
-        float gloss = pow(max(0.0, dot(normal, halfDir)), 9.0);
-        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.6);
+        float dotTH = dot(tangent, halfDir);
+        float sinTH = sqrt(max(0.0, 1.0 - dotTH * dotTH));
+        float satinSheen = pow(sinTH, 14.0); // Anisotropic silk sheen
 
-        // Metallic chrome palette
-        vec3 chromeBase = vec3(0.72, 0.80, 0.88);
-        vec3 metalHue = mix(chromeBase, u_accent, 0.52);
+        float spec = pow(max(0.0, dot(normal, halfDir)), 32.0);
+        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.8);
 
-        // Specular chrome gleam + accent fringe
-        vec3 liquidMetal = metalHue * (diff * 0.35 + gloss * 0.4) + vec3(1.0) * (spec * 0.75) + u_accent * (fresnel * 0.55);
+        // Soft ridge crest illumination
+        float ridgeHighlight = pow(clamp(h * 0.5 + 0.5, 0.0, 1.0), 2.5);
+
+        // Compose satin fold highlights tinted by accent
+        vec3 satinTint = mix(vec3(0.82, 0.88, 0.94), u_accent, 0.55);
+        vec3 foldHighlight = satinTint * (diff * 0.35 + satinSheen * 0.55 + ridgeHighlight * 0.35)
+                           + vec3(1.0) * (spec * 0.4)
+                           + u_accent * (fresnel * 0.45);
 
         vec3 finalColor;
         if (u_isLight > 0.5) {
-          // Light mode: liquid mercury ripples against clean whiteprint
+          // Light mode: pristine blueprint / whiteprint with soft silver & accent satin folds
           float dim = 0.16;
-          finalColor = mix(u_bg, liquidMetal, dim * (diff * 0.5 + spec + fresnel * 0.5));
+          vec3 foldColor = mix(vec3(0.84, 0.90, 0.96), u_accent, 0.35);
+          vec3 satinLit = mix(u_bg, foldColor, (diff * 0.4 + satinSheen * 0.45 + fresnel * 0.25));
+          finalColor = mix(u_bg, satinLit, dim);
         } else {
-          // Dark mode: dimmed liquid metal flowing through obsidian pool
+          // Dark mode: deep obsidian background catching flowing luminous satin folds
           float dim = 0.22;
-          finalColor = u_bg + liquidMetal * dim;
+          finalColor = u_bg + foldHighlight * dim;
         }
 
         gl_FragColor = vec4(finalColor, 1.0);
@@ -1053,7 +1078,7 @@
     const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
     const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
     if (!vs || !fs) {
-      initMetallicSwirlFallback(canvas);
+      initSatinRidgesFallback(canvas);
       return;
     }
 
@@ -1063,7 +1088,7 @@
     gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.warn('Program link failed', gl.getProgramInfoLog(program));
-      initMetallicSwirlFallback(canvas);
+      initSatinRidgesFallback(canvas);
       return;
     }
 
@@ -1162,7 +1187,7 @@
       isVisible = !document.hidden;
     });
 
-    const speed = 0.45;
+    const speed = 0.40;
 
     function render(now) {
       if (isVisible) {
@@ -1189,7 +1214,7 @@
     requestAnimationFrame(render);
   }
 
-  function initMetallicSwirlFallback(canvas) {
+  function initSatinRidgesFallback(canvas) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     let animId;
@@ -1200,27 +1225,28 @@
       ctx.fillStyle = isWhite ? '#eef3f9' : '#030814';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const t = (now || 0) * 0.0006;
+      const t = (now || 0) * 0.0005;
       const styles = getComputedStyle(document.documentElement);
       const accent = styles.getPropertyValue('--accent') || '#38bdf8';
 
       ctx.save();
-      ctx.globalAlpha = 0.18;
+      ctx.globalAlpha = 0.16;
       ctx.strokeStyle = accent.trim();
-      ctx.lineWidth = 42;
-      ctx.filter = 'blur(30px)';
+      ctx.lineWidth = 48;
+      ctx.filter = 'blur(28px)';
 
-      const cx = canvas.width * 0.5;
-      const cy = canvas.height * 0.5;
-      ctx.beginPath();
-      for (let a = 0; a < Math.PI * 6; a += 0.15) {
-        const r = a * 24 + Math.sin(a * 2.0 + t) * 18;
-        const x = cx + Math.cos(a + t * 0.5) * r;
-        const y = cy + Math.sin(a + t * 0.5) * r;
-        if (a === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      // Flowing satin ribbons across diagonal
+      const lines = 7;
+      for (let i = 0; i < lines; i++) {
+        const baseY = (canvas.height / lines) * i;
+        ctx.beginPath();
+        for (let x = 0; x <= canvas.width; x += 30) {
+          const y = baseY + Math.sin(x * 0.003 + t + i * 0.8) * 60 + Math.cos(x * 0.006 - t * 0.6) * 35;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
       }
-      ctx.stroke();
       ctx.restore();
 
       animId = requestAnimationFrame(draw);
@@ -2013,7 +2039,7 @@
   // ---------------------------------------------------------------------------
   function boot() {
     ThemeController.init();
-    initMetallicSwirl();
+    initSatinRidges();
     initLenis();
     initGSAP();
     initFoldableSheets();
