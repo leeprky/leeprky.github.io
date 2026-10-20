@@ -1,5 +1,5 @@
 /*!
- * LP-EE-2026 // Blueprint Design System — REV 11.3
+ * LP-EE-2026 // Blueprint Design System — REV 11.4
  * Lee Parkinson · Electrical Engineering Portfolio
  * Motion: GSAP 3 (ScrollTrigger, SplitText, ScrambleText, Flip) · Lenis · React Bits patterns
  */
@@ -1585,48 +1585,5 @@ html.motion [data-hero] { visibility: hidden; }
   color: #fff;
 }
 
-/* =========================================================================
-   23. REACT BITS PRO — GHOST TYPE
-   A headline that writes itself with AI-style ghost completions
-   ========================================================================= */
-.ghost-type {
-  display: inline-flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0 0.15em;
-  margin: 0;
-  line-height: 1.15;
-}
-.ghost-type-base {
-  color: var(--ink);
-  font-weight: 700;
-}
-.ghost-type-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 0.85em;
-  margin-inline: 2px;
-  vertical-align: -0.05em;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  animation: ghost-cursor-blink 1s steps(2, start) infinite;
-}
-@keyframes ghost-cursor-blink {
-  to {
-    visibility: hidden;
-  }
-}
-.ghost-type-completion {
-  color: var(--accent);
-  opacity: 0.46;
-  font-weight: 500;
-  font-style: normal;
-  letter-spacing: 0.01em;
-  transition: opacity 0.2s ease;
-  user-select: none;
-}
-[data-theme="whiteprint"] .ghost-type-completion {
-  opacity: 0.58;
-  color: var(--muted);
-}
+
 
