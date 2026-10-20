@@ -6,17 +6,28 @@
   <title>The Ultimate UNO Team Crawl — Preston Route // Drunk Uno Tavern Referee</title>
 
   <!-- Open Graph & Meta -->
-  <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Team Scoreboard with Cookie Save, Pub Tracker, and Interactive Rules." />
+  <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
   <meta name="theme-color" content="#120b05" />
 
-  <!-- Google Fonts: Pirate, Antique Serif & Celtic Display -->
+  <!-- Google Fonts: Pirate Display, Antique Serif & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Pirata+One&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Pirata+One&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- GSAP 3 & Plugins (Local + CDN Fallback) -->
+  <script src="../../assets/vendor/gsap.min.js"></script>
+  <script>
+    if (typeof gsap === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- Paho MQTT WebSocket Client for Real-Time Phone Synchronization -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
   <style>
     /* =========================================================================
-       01. COLOR PALETTE & TOKENS (Matching Tavern Parchment & Wheel Slides)
+       01. PALETTE & DESIGN TOKENS (Tavern Parchment + Portfolio Tools)
        ========================================================================= */
     :root {
       --parchment-light: #efe0bb;
@@ -26,8 +37,8 @@
       --ink: #22160a;
       --ink-faded: #54391e;
       --ink-muted: #795732;
-      --wood-dark: #190c04;
-      --wood-mid: #3a1c09;
+      --wood-dark: #150903;
+      --wood-mid: #381a07;
       --wood-light: #613414;
       --red-quad: #d62828;
       --red-glow: #ff4d4d;
@@ -41,7 +52,8 @@
       --gold-bright: #ffea85;
       --wax-red: #9e1b1b;
       --radius: 10px;
-      --shadow-heavy: 0 16px 48px rgba(0, 0, 0, 0.88);
+      --shadow-heavy: 0 16px 50px rgba(0, 0, 0, 0.9);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -54,9 +66,9 @@
     }
 
     body {
-      background: #0f0703;
+      background: #0d0602;
       background-image:
-        radial-gradient(circle at 50% 20%, rgba(255, 185, 80, 0.16) 0%, rgba(10, 5, 2, 0.98) 85%),
+        radial-gradient(circle at 50% 15%, rgba(255, 185, 80, 0.18) 0%, rgba(8, 4, 1, 0.98) 85%),
         repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.5) 0 2px, transparent 2px 8px);
       font-family: 'IM Fell English', Georgia, serif;
       color: var(--ink);
@@ -64,11 +76,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 8px 8px 32px;
+      padding: 8px 8px 36px;
       overflow-x: hidden;
     }
 
-    /* Confetti Canvas */
+    /* Satin Ridges Dynamic Background Canvas */
+    #satinCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.28;
+    }
+
+    /* Confetti Particle Canvas */
     #fxCanvas {
       position: fixed;
       inset: 0;
@@ -76,8 +97,10 @@
       z-index: 999;
     }
 
-    /* Outer Container */
+    /* Outer Wrapper */
     .app-container {
+      position: relative;
+      z-index: 10;
       width: 100%;
       max-width: 1240px;
       display: flex;
@@ -105,10 +128,7 @@
       padding: 12px 10px;
       position: relative;
     }
-
-    /* Celtic Corner Decors */
-    .celtic-frame::before,
-    .celtic-frame::after {
+    .celtic-frame::before, .celtic-frame::after {
       content: "✦";
       position: absolute;
       font-size: 1.25rem;
@@ -119,7 +139,7 @@
     .celtic-frame::after { top: 3px; right: 6px; }
 
     /* =========================================================================
-       02. TOP NAVIGATION BAR & UTILITY CONTROLS
+       02. TOP NAVIGATION & DYNAMIC ROOM SYNC CONTROLS
        ========================================================================= */
     .top-bar {
       display: flex;
@@ -151,7 +171,7 @@
     .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
 
@@ -159,7 +179,7 @@
       background: rgba(58, 34, 12, 0.12);
       border: 2px solid var(--ink);
       border-radius: 8px;
-      padding: 6px 12px;
+      padding: 6px 11px;
       font-family: 'Pirata One', cursive;
       font-size: 1.05rem;
       letter-spacing: 0.04em;
@@ -167,7 +187,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s ease;
     }
     .tab-btn:hover {
@@ -179,40 +199,68 @@
       border-color: var(--wood-dark);
       box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
     }
+    .tab-btn.secret-tab {
+      background: #4a1515;
+      color: #ffd8d8;
+      border-color: #8d0801;
+    }
+    .tab-btn.secret-tab.active {
+      background: #8d0801;
+      color: #fff;
+    }
 
     .top-actions {
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .cookie-status-badge {
+    /* Live Real-Time Network Sync Pill */
+    .sync-status-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       font-weight: 700;
       color: #1e4620;
       background: rgba(43, 147, 72, 0.22);
-      border: 1px solid rgba(43, 147, 72, 0.5);
+      border: 1.5px solid rgba(43, 147, 72, 0.6);
       border-radius: 20px;
-      padding: 4px 8px;
+      padding: 4px 10px;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
     }
-    .cookie-status-badge .dot {
+    .sync-status-pill .sync-dot {
       width: 7px;
       height: 7px;
       background: #2b9348;
       border-radius: 50%;
       box-shadow: 0 0 6px #2b9348;
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .sync-status-pill.offline {
+      color: #7a1d1d;
+      background: rgba(214, 40, 40, 0.18);
+      border-color: rgba(214, 40, 40, 0.5);
+    }
+    .sync-status-pill.offline .sync-dot {
+      background: #d62828;
+      box-shadow: 0 0 6px #d62828;
+      animation: none;
     }
 
     /* =========================================================================
-       03. MAIN RIBBON BANNER & TAVERN HEADER
+       03. RIBBON HEADER & TICKER
        ========================================================================= */
     .header-area {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .ribbon-banner {
@@ -227,7 +275,7 @@
       border: 2px solid var(--gold);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.3);
       position: relative;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
     .ribbon-banner h1 {
       font-family: 'Pirata One', cursive;
@@ -239,12 +287,10 @@
 
     .header-subtext {
       font-style: italic;
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      font-size: clamp(0.85rem, 2vw, 1.02rem);
       color: var(--ink-faded);
-      letter-spacing: 0.02em;
     }
 
-    /* Active Pub Challenge Ticker */
     .pub-ticker {
       margin-top: 8px;
       background: rgba(40, 20, 5, 0.12);
@@ -257,15 +303,14 @@
       gap: 8px;
       font-size: 0.92rem;
       font-weight: 600;
+      flex-wrap: wrap;
     }
     .pub-ticker b {
       color: #8b1e1e;
       font-family: 'Cinzel Decorative', Georgia, serif;
     }
 
-    /* =========================================================================
-       04. QUICK TEAM BAR (Touch Horizontal Carousel)
-       ========================================================================= */
+    /* Sticky Horizontal Crew Bar */
     .crew-bar {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -279,7 +324,7 @@
     }
 
     .crew-pill {
-      background: rgba(255, 248, 230, 0.85);
+      background: rgba(255, 248, 230, 0.88);
       border: 2px solid var(--ink);
       border-radius: 8px;
       padding: 8px 10px;
@@ -291,10 +336,8 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
       transition: transform 0.12s, box-shadow 0.12s;
     }
-    .crew-pill:active {
-      transform: scale(0.97);
-    }
-    .crew-pill.active-turn {
+    .crew-pill:active { transform: scale(0.97); }
+    .crew-pill.active-my-team {
       border-color: #23170b;
       box-shadow: 0 0 0 3px var(--gold), 0 8px 20px rgba(0, 0, 0, 0.35);
       background: #fffdf5;
@@ -353,22 +396,20 @@
     }
 
     /* =========================================================================
-       05. TAB VIEW CONTAINER & CONTENT PANELS
+       04. TAB PANELS SYSTEM
        ========================================================================= */
-    .tab-panel {
-      display: none;
-    }
+    .tab-panel { display: none; }
     .tab-panel.active {
       display: block;
-      animation: fadeIn 0.25s ease;
+      animation: tabFadeIn 0.22s var(--ease-out);
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     /* =========================================================================
-       06. TAB 1: THE WHEEL OF DOOM STAGE
+       05. TAB 1: POLISHED WHEEL OF DOOM
        ========================================================================= */
     .wheel-view-grid {
       display: grid;
@@ -378,12 +419,9 @@
       margin-top: 10px;
     }
     @media (min-width: 980px) {
-      .wheel-view-grid {
-        grid-template-columns: 1fr 1.35fr 1fr;
-      }
+      .wheel-view-grid { grid-template-columns: 1fr 1.35fr 1fr; }
     }
 
-    /* Wheel Rules Cards */
     .wheel-rules-col {
       display: flex;
       flex-direction: column;
@@ -391,17 +429,15 @@
     }
 
     .rule-card-mini {
-      background: rgba(255, 248, 230, 0.75);
+      background: rgba(255, 248, 230, 0.8);
       border: 1.5px solid var(--ink);
       border-radius: 8px;
       padding: 10px 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       position: relative;
-      transition: transform 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .rule-card-mini:hover {
-      transform: translateY(-2px);
-    }
+    .rule-card-mini:hover { transform: translateY(-2px); }
     .rule-card-mini.target-active {
       box-shadow: 0 0 0 2.5px var(--gold), 0 8px 18px rgba(0,0,0,0.25);
       background: #fffef8;
@@ -420,7 +456,6 @@
       color: var(--ink-faded);
     }
 
-    /* The Center Wheel Stage */
     .wheel-stage {
       display: flex;
       flex-direction: column;
@@ -430,23 +465,22 @@
     }
 
     .wheel-pointer {
-      width: 44px;
-      height: 56px;
+      width: 46px;
+      height: 58px;
       position: absolute;
-      top: -14px;
-      z-index: 20;
-      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.75));
+      top: -16px;
+      z-index: 25;
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.85));
       transform-origin: 50% 12px;
-      transition: transform 0.08s ease-out;
       pointer-events: none;
     }
 
     .wheel-wrapper {
       position: relative;
-      width: min(84vw, 390px);
-      height: min(84vw, 390px);
+      width: min(84vw, 400px);
+      height: min(84vw, 400px);
       margin: 10px auto 6px;
-      filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.65));
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75));
       touch-action: none;
       user-select: none;
     }
@@ -459,20 +493,19 @@
       will-change: transform;
     }
 
-    /* Center Spin Button */
     .center-spin-btn {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 90px;
-      height: 90px;
+      width: 94px;
+      height: 94px;
       border-radius: 50%;
-      background: radial-gradient(circle, #b91c1c 0%, #6e0e0e 70%, #3b0505 100%);
+      background: radial-gradient(circle, #c91818 0%, #7d0d0d 70%, #3d0505 100%);
       border: 4px solid var(--gold);
       color: var(--gold-bright);
       font-family: 'Pirata One', cursive;
-      font-size: 1.55rem;
+      font-size: 1.6rem;
       letter-spacing: 0.08em;
       cursor: pointer;
       display: flex;
@@ -480,15 +513,14 @@
       align-items: center;
       justify-content: center;
       box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.8),
-        inset 0 2px 4px rgba(255, 255, 255, 0.35);
-      z-index: 10;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
+        0 8px 22px rgba(0, 0, 0, 0.85),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      z-index: 15;
+      transition: transform 0.1s ease;
       touch-action: manipulation;
     }
     .center-spin-btn:active {
       transform: translate(-50%, -50%) scale(0.92);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
     }
     .center-spin-btn small {
       font-family: 'JetBrains Mono', monospace;
@@ -498,11 +530,10 @@
       margin-top: -2px;
     }
 
-    /* Power Charge Bar */
     .power-bar-wrap {
-      width: min(80vw, 290px);
-      height: 11px;
-      background: rgba(35, 23, 11, 0.7);
+      width: min(80vw, 300px);
+      height: 12px;
+      background: rgba(35, 23, 11, 0.75);
       border: 2px solid var(--ink);
       border-radius: 8px;
       overflow: hidden;
@@ -513,19 +544,210 @@
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, #f7b801, #d62828);
-      transition: width 0.05s linear;
+      transition: width 0.04s linear;
     }
-
     .spin-hint {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-style: italic;
       color: var(--ink-faded);
       text-align: center;
-      margin-top: 2px;
     }
 
     /* =========================================================================
-       07. TAB 2: PRESTON PUB CRAWL MAP & 10 STOPS
+       06. TAB 2: STEP-BY-STEP DYNAMIC SCORES (CHOOSE YOUR TEAM -> CHOOSE TARGET)
+       ========================================================================= */
+    .scores-section-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .scoring-stepper-card {
+      background: rgba(255, 248, 230, 0.95);
+      border: 2.5px solid var(--ink);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    }
+
+    .step-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.45rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #7a1d1d;
+      margin-bottom: 8px;
+    }
+
+    .team-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 680px) {
+      .team-picker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .btn-pick-team {
+      background: rgba(255, 248, 230, 0.7);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 8px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.2rem;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s;
+    }
+    .btn-pick-team:hover { background: #fffdf5; }
+    .btn-pick-team.selected {
+      background: #fffef8;
+      border-color: #23170b;
+      box-shadow: 0 0 0 3px var(--gold), 0 6px 16px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    .btn-pick-team .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-muted);
+    }
+
+    /* Active Target Scoring Box */
+    .active-scoring-console {
+      background: #fffdf5;
+      border: 2px solid var(--wood-mid);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .scoring-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1.5px dashed var(--ink-muted);
+      padding-bottom: 8px;
+    }
+
+    .scoring-identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scoring-target-badge {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.6rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .big-score-display {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .big-score-num {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .big-score-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    /* Score Action Buttons */
+    .score-action-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    @media (max-width: 600px) {
+      .score-action-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .btn-score-tap {
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      padding: 10px 4px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.15rem;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: transform 0.1s;
+    }
+    .btn-score-tap:active { transform: scale(0.94); }
+    .btn-score-tap small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .btn-score-tap.deduct {
+      background: rgba(214, 40, 40, 0.15);
+      color: #8d0801;
+      border-color: #8d0801;
+    }
+    .btn-score-tap.reward {
+      background: rgba(43, 147, 72, 0.15);
+      color: #1e612f;
+      border-color: #1e612f;
+    }
+    .btn-score-tap.drink {
+      background: rgba(223, 183, 76, 0.22);
+      color: #5c3a07;
+      border-color: #8a580e;
+    }
+
+    /* Leaderboard Standings Table */
+    .standings-table-wrap {
+      background: rgba(255, 248, 230, 0.9);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .standings-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .standings-table th, .standings-table td {
+      border: 1px solid var(--ink-muted);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .standings-table th {
+      background: var(--wood-mid);
+      color: var(--gold-bright);
+      font-family: 'Pirata One', cursive;
+      font-size: 1.1rem;
+    }
+    .standings-table tr:nth-child(even) { background: rgba(60, 30, 10, 0.05); }
+    .standings-table tr.leader-row { background: rgba(223, 183, 76, 0.2); font-weight: 700; }
+
+    /* =========================================================================
+       07. TAB 3: INTERACTIVE PRESTON ROUTE MAP & 10 STOPS
        ========================================================================= */
     .map-panel {
       display: flex;
@@ -534,52 +756,58 @@
       margin-top: 8px;
     }
 
-    .map-viewer-card {
-      background: rgba(255, 248, 230, 0.85);
+    .interactive-map-card {
+      background: rgba(255, 248, 230, 0.95);
       border: 2px solid var(--ink);
       border-radius: 12px;
       padding: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      position: relative;
     }
 
-    .map-img-container {
+    .map-canvas-wrap {
+      position: relative;
       width: 100%;
       border-radius: 8px;
       overflow: hidden;
       border: 2px solid var(--ink);
-      position: relative;
-      cursor: zoom-in;
       background: #190c04;
     }
-    .map-img-container img {
+    .map-canvas-wrap img {
       width: 100%;
       height: auto;
       display: block;
-      transition: transform 0.3s ease;
-    }
-    .map-img-container:hover img {
-      transform: scale(1.02);
-    }
-    .map-overlay-tip {
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      background: rgba(20, 10, 4, 0.85);
-      color: var(--gold-bright);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      padding: 4px 8px;
-      border-radius: 4px;
-      pointer-events: none;
     }
 
-    /* 10 Stops Timeline */
+    /* Interactive Map SVG Pin Overlay */
+    .map-pins-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    .map-pin {
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .map-pin:hover {
+      transform: scale(1.28);
+      filter: drop-shadow(0 0 8px #f7b801);
+    }
+    .map-pin.active-stop circle.outer {
+      stroke: #ffd447;
+      stroke-width: 4;
+      animation: pulsePin 1.5s infinite;
+    }
+    @keyframes pulsePin {
+      0%, 100% { r: 18; }
+      50% { r: 22; }
+    }
+
     .stops-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 10px;
     }
 
@@ -600,10 +828,6 @@
       background: #fffdf5;
       box-shadow: 0 0 0 2px var(--gold), 0 8px 20px rgba(0,0,0,0.2);
     }
-    .stop-card.is-visited {
-      opacity: 0.75;
-      background: rgba(230, 220, 195, 0.7);
-    }
 
     .stop-head {
       display: flex;
@@ -612,8 +836,8 @@
       gap: 6px;
     }
     .stop-num {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       background: var(--wood-mid);
       color: var(--gold-bright);
       border-radius: 50%;
@@ -621,26 +845,24 @@
       align-items: center;
       justify-content: center;
       font-family: 'Cinzel Decorative', Georgia, serif;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 700;
       flex-shrink: 0;
     }
-    .stop-card.is-current .stop-num {
-      background: var(--red-quad);
-    }
+    .stop-card.is-current .stop-num { background: var(--red-quad); }
     .stop-title {
       font-family: 'Pirata One', cursive;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       flex: 1;
       line-height: 1.1;
     }
 
     .stop-rule-box {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-style: italic;
       color: var(--ink-faded);
       background: rgba(60, 30, 10, 0.08);
-      padding: 5px 8px;
+      padding: 6px 8px;
       border-radius: 4px;
       border-left: 3px solid var(--wood-mid);
     }
@@ -649,12 +871,13 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
     .btn-stop-check {
       background: rgba(58, 34, 12, 0.14);
       border: 1.5px solid var(--ink);
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 5px 9px;
       font-family: 'Pirata One', cursive;
       font-size: 0.95rem;
       color: var(--ink);
@@ -662,313 +885,190 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      text-decoration: none;
       transition: background 0.12s;
     }
-    .btn-stop-check:hover {
-      background: rgba(58, 34, 12, 0.28);
-    }
+    .btn-stop-check:hover { background: rgba(58, 34, 12, 0.28); }
 
     /* =========================================================================
-       08. TAB 3: DEDICATED SCOREBOARD & CREW LEDGER
+       08. TAB 4: VISUAL UNO CARD CODEX (EASY TO UNDERSTAND RULES)
        ========================================================================= */
-    .scoreboard-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 8px;
-    }
-
-    .teams-ledger-grid {
+    .rules-codex-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 12px;
+      margin-top: 10px;
     }
 
-    .team-box {
+    .codex-card {
       background: rgba(255, 248, 230, 0.95);
       border: 2px solid var(--ink);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: transform 0.15s;
+    }
+    .codex-card:hover { transform: translateY(-2px); }
+
+    .uno-card-art {
+      width: 58px;
+      height: 84px;
+      border-radius: 6px;
+      border: 2px solid #23170b;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-    .team-box.leader {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px var(--gold), 0 8px 24px rgba(0, 0, 0, 0.25);
-    }
-    .crown-badge {
-      position: absolute;
-      top: -10px;
-      right: 12px;
-      background: var(--gold);
-      color: #3b1d05;
-      font-family: 'Cinzel Decorative', serif;
-      font-weight: 900;
-      font-size: 0.72rem;
-      padding: 2px 8px;
-      border-radius: 12px;
-      border: 1px solid #3b1d05;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    .team-box-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1.5px solid rgba(34, 22, 10, 0.2);
-      padding-bottom: 6px;
-    }
-    .team-title-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .team-title-text {
-      font-family: 'Pirata One', cursive;
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .team-sub-target {
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--ink-muted);
-    }
-
-    /* Big Score & Sips Row */
-    .score-sip-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      background: rgba(60, 30, 10, 0.06);
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px dashed rgba(34, 22, 10, 0.25);
-      text-align: center;
-    }
-    .stat-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--ink-muted);
-      letter-spacing: 0.05em;
-    }
-    .stat-val {
-      font-family: 'Cinzel Decorative', Georgia, serif;
-      font-size: 1.7rem;
-      font-weight: 900;
-      line-height: 1.1;
-    }
-
-    /* Score Increment Buttons */
-    .score-btn-group {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-    }
-    .score-btn {
-      background: rgba(58, 34, 12, 0.12);
-      border: 1.5px solid var(--ink);
-      border-radius: 6px;
-      padding: 6px 2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--ink);
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.1s, transform 0.1s;
-    }
-    .score-btn:active {
-      transform: scale(0.93);
-    }
-    .score-btn.plus {
-      background: rgba(43, 147, 72, 0.18);
-      color: #1e612f;
-      border-color: #1e612f;
-    }
-    .score-btn.minus {
-      background: rgba(214, 40, 40, 0.18);
-      color: #8d0801;
-      border-color: #8d0801;
-    }
-
-    /* Quick UNO Triggers Row */
-    .uno-shortcuts-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--ink-muted);
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-    .uno-shortcuts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-    .btn-uno-trigger {
-      background: rgba(35, 23, 11, 0.08);
-      border: 1px solid var(--ink);
-      border-radius: 4px;
-      padding: 5px 2px;
-      font-family: 'Pirata One', cursive;
-      font-size: 0.86rem;
-      color: var(--ink);
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.1s;
-    }
-    .btn-uno-trigger:active {
-      transform: scale(0.94);
-      background: rgba(35, 23, 11, 0.2);
-    }
-
-    /* Captain's Stash Counter */
-    .stash-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(223, 183, 76, 0.18);
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      padding: 5px 8px;
-      font-size: 0.82rem;
-    }
-    .stash-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-stash-tally {
-      width: 22px;
-      height: 22px;
-      border-radius: 4px;
-      border: 1px solid var(--ink);
-      background: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: flex;
       align-items: center;
       justify-content: center;
+      color: #fff;
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .uno-card-art.card-wild {
+      background: linear-gradient(135deg, #d62828 25%, #1d63b8 25% 50%, #f7b801 50% 75%, #2b9348 75%);
+    }
+
+    .codex-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .codex-title {
+      font-family: 'Pirata One', cursive;
+      font-size: 1.35rem;
+      line-height: 1.1;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .impact-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .impact-pill.danger { background: #ffebee; color: #b71c1c; border: 1px solid #b71c1c; }
+    .impact-pill.reward { background: #e8f5e9; color: #1b5e20; border: 1px solid #1b5e20; }
+    .impact-pill.special { background: #fff8e1; color: #b78103; border: 1px solid #b78103; }
+
+    .codex-desc {
+      font-size: 0.88rem;
+      line-height: 1.35;
+      color: var(--ink-faded);
+    }
+    .codex-drink {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #7a1d1d;
+      margin-top: 2px;
     }
 
     /* =========================================================================
-       09. TAB 4: OFFICIAL RULES & CARD TRIGGERS SHEET
+       09. TAB 5: SECRET BINGO BOARD (LOCKED BEHIND 22140711)
        ========================================================================= */
-    .rules-panel {
+    .bingo-panel {
       display: flex;
       flex-direction: column;
       gap: 14px;
       margin-top: 8px;
     }
 
-    .rules-hero-card {
+    .bingo-header-card {
+      background: linear-gradient(180deg, #3d0d0d 0%, #1a0505 100%);
+      border: 2.5px solid var(--gold);
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--gold-bright);
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .bingo-header-card h2 {
+      font-family: 'Pirata One', cursive;
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: 0.08em;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 768px) {
+      .bingo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .bingo-card-tile {
       background: rgba(255, 248, 230, 0.95);
       border: 2px solid var(--ink);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .rules-hero-card h2 {
-      font-family: 'Pirata One', cursive;
-      font-size: 1.8rem;
-      border-bottom: 2px solid var(--ink);
-      padding-bottom: 4px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .rules-columns-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 768px) {
-      .rules-columns-layout {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .rule-section-block {
+      border-radius: 8px;
+      padding: 10px 8px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-    }
-    .rule-section-block h3 {
-      font-family: 'Pirata One', cursive;
-      font-size: 1.35rem;
-      color: #7a1d1d;
-      border-bottom: 1px dashed var(--ink-muted);
-      padding-bottom: 2px;
-    }
-    .rule-section-block ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       gap: 6px;
-    }
-    .rule-section-block li {
-      font-size: 0.92rem;
-      line-height: 1.4;
-      padding-left: 16px;
+      min-height: 105px;
       position: relative;
+      transition: transform 0.12s, box-shadow 0.12s;
     }
-    .rule-section-block li::before {
-      content: "⚓";
+    .bingo-card-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+    .bingo-card-tile.claimed {
+      background: #f0e6cf;
+      opacity: 0.75;
+      border-color: #8d0801;
+    }
+    .bingo-card-tile.claimed::after {
+      content: "STAMPED ✓";
       position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 0.75rem;
-      color: var(--wood-mid);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-18deg);
+      font-family: 'Pirata One', cursive;
+      font-size: 1.3rem;
+      color: rgba(158, 27, 27, 0.85);
+      border: 2px dashed #9e1b1b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      pointer-events: none;
     }
 
-    /* Point Matrix Table */
-    .matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 0.88rem;
-    }
-    .matrix-table th, .matrix-table td {
-      border: 1px solid var(--ink-muted);
-      padding: 6px 10px;
-      text-align: left;
-    }
-    .matrix-table th {
-      background: var(--wood-mid);
-      color: var(--gold-bright);
+    .bingo-tile-icon { font-size: 1.5rem; text-align: center; }
+    .bingo-tile-title {
       font-family: 'Pirata One', cursive;
       font-size: 1.05rem;
+      line-height: 1.15;
+      text-align: center;
+      color: var(--ink);
     }
-    .matrix-table tr:nth-child(even) {
-      background: rgba(60, 30, 10, 0.05);
+    .bingo-tile-pts {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #9e1b1b;
+      text-align: center;
+      background: rgba(158, 27, 27, 0.1);
+      padding: 2px 4px;
+      border-radius: 4px;
     }
 
     /* =========================================================================
-       10. BOTTOM BATTLE LOG & HISTORY
+       10. BOTTOM BATTLE LOG
        ========================================================================= */
-    .bottom-area {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
     .battle-log-card {
+      margin-top: 14px;
       background: rgba(255, 248, 230, 0.9);
       border: 2px solid var(--ink);
       border-radius: 10px;
@@ -987,19 +1087,9 @@
       align-items: center;
       gap: 6px;
     }
-    .btn-clear-log {
-      font-size: 0.75rem;
-      background: none;
-      border: 1px solid var(--ink);
-      border-radius: 4px;
-      padding: 2px 6px;
-      cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
     .log-list {
       list-style: none;
-      max-height: 150px;
+      max-height: 140px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -1009,36 +1099,30 @@
       border: 1px solid rgba(34, 22, 10, 0.2);
       border-radius: 6px;
       padding: 8px;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.55);
     }
     .log-list li {
       padding: 2px 4px;
       border-bottom: 1px dashed rgba(34, 22, 10, 0.12);
     }
-    .log-list li:last-child {
-      border-bottom: none;
-    }
 
     /* =========================================================================
-       11. MODAL SYSTEM (Outcome Popup, Map Lightbox, Settings)
+       11. MODAL SYSTEM & TOAST
        ========================================================================= */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(12, 6, 2, 0.85);
-      backdrop-filter: blur(4px);
+      background: rgba(12, 6, 2, 0.88);
+      backdrop-filter: blur(5px);
       z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
-    .modal-backdrop.open {
-      display: flex;
-      animation: modalFade 0.2s ease-out;
-    }
-    @keyframes modalFade {
-      from { opacity: 0; transform: scale(0.96); }
+    .modal-backdrop.open { display: flex; animation: modalIn 0.2s ease-out; }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
 
@@ -1048,7 +1132,7 @@
       border: 3px double var(--ink);
       border-radius: 14px;
       padding: 20px 18px;
-      max-width: 460px;
+      max-width: 480px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -1061,10 +1145,9 @@
       text-align: center;
       color: #7a1d1d;
       margin-bottom: 6px;
-      line-height: 1.1;
     }
     .modal-body {
-      font-size: 1rem;
+      font-size: 0.98rem;
       line-height: 1.4;
       text-align: center;
       margin-bottom: 14px;
@@ -1089,9 +1172,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       transition: transform 0.1s;
     }
-    .modal-btn:active {
-      transform: scale(0.96);
-    }
+    .modal-btn:active { transform: scale(0.96); }
     .modal-btn.secondary {
       background: rgba(35, 23, 11, 0.15);
       border: 2px solid var(--ink);
@@ -1099,20 +1180,6 @@
       font-size: 1.05rem;
     }
 
-    /* Map Lightbox Modal */
-    .lightbox-modal .modal-scroll {
-      max-width: 95vw;
-      width: 950px;
-      padding: 12px;
-    }
-    .lightbox-modal img {
-      width: 100%;
-      height: auto;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
-    }
-
-    /* Toast Notification */
     .toast-pill {
       position: fixed;
       bottom: 20px;
@@ -1128,7 +1195,7 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
       z-index: 2000;
       opacity: 0;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s var(--ease-out);
       pointer-events: none;
     }
     .toast-pill.show {
@@ -1139,27 +1206,30 @@
 </head>
 
 <body>
-  <!-- Canvas for Gold Coin Particle Bursts -->
+  <!-- Satin Ridges Canvas Background -->
+  <canvas id="satinCanvas"></canvas>
+
+  <!-- Particle Confetti Canvas -->
   <canvas id="fxCanvas"></canvas>
 
-  <!-- Live Toast Pill -->
+  <!-- Live Action Toast -->
   <div id="toastPill" class="toast-pill">💾 Saved to Cookies</div>
 
   <div class="app-container">
     <main class="parchment-board">
       <div class="celtic-frame">
 
-        <!-- Top Navigation & Controls Bar -->
+        <!-- Top Navigation & Room Sync Bar -->
         <nav class="top-bar">
           <a href="../../index.html" class="back-home-link">
-            <span>← LP-EE CAD PORTFOLIO</span>
+            <span>← LP-EE PORTFOLIO</span>
           </a>
 
           <div class="nav-tabs">
             <button type="button" class="tab-btn active" data-tab="wheel">
               <span>🎡 WHEEL</span>
             </button>
-            <button type="button" class="tab-btn" data-tab="scoreboard">
+            <button type="button" class="tab-btn" data-tab="scores">
               <span>🏆 SCORES</span>
             </button>
             <button type="button" class="tab-btn" data-tab="map">
@@ -1168,13 +1238,18 @@
             <button type="button" class="tab-btn" data-tab="rules">
               <span>📜 RULES</span>
             </button>
+            <button type="button" class="tab-btn secret-tab" id="openBingoTabBtn">
+              <span>🔒 BINGO</span>
+            </button>
           </div>
 
           <div class="top-actions">
-            <div class="cookie-status-badge" id="cookieStatus" title="Saved automatically into browser cookies & localStorage">
-              <span class="dot"></span>
-              <span>COOKIE SYNCED</span>
-            </div>
+            <!-- Dynamic Room Status Pill -->
+            <button type="button" class="sync-status-pill" id="syncRoomBtn" title="Tap to view Room Code & Invite Friends">
+              <span class="sync-dot"></span>
+              <span id="syncRoomLabel">SYNC: PRESTON-2026</span>
+            </button>
+
             <button type="button" class="tab-btn" id="soundToggleBtn" style="padding: 4px 8px; font-size: 0.95rem;">
               🔊 Sound
             </button>
@@ -1198,12 +1273,12 @@
             </svg>
           </div>
           <div class="header-subtext">
-            Preston Route // 10 Stops to Crown the Champions · Tap any crew pill to set attacking turn
+            Preston Route // 10 Stops · Live Scoreboard across all phones · Tap your crew pill to select
           </div>
 
           <!-- Active Pub Ticker -->
           <div class="pub-ticker" id="pubTicker">
-            <span>📍 CURRENT STOP:</span>
+            <span>📍 CURRENT PUB:</span>
             <b id="tickerPubName">Stop 1: The Adelphi</b>
             <span>•</span>
             <span id="tickerPubRule">Rule 0: "No pointing with your fingers — 1 sip penalty"</span>
@@ -1215,7 +1290,7 @@
 
 
         <!-- ===================================================================
-             TAB 1: WHEEL OF DOOM
+             TAB 1: WHEEL OF DOOM (UNO COLORS FOR LOOKS, NOT TEAMS)
              =================================================================== -->
         <section id="tab-wheel" class="tab-panel active">
           <div class="wheel-view-grid">
@@ -1239,35 +1314,33 @@
               </div>
             </div>
 
-            <!-- Center Stage: The Physics Wheel -->
+            <!-- Center Stage: The Physics Wheel with Needle Bounce -->
             <div class="wheel-stage">
-              <!-- Top Pointer Needle -->
               <svg class="wheel-pointer" id="wheelPointer" viewBox="0 0 50 64">
                 <polygon points="25,62 10,14 40,14" fill="#9e1b1b" stroke="#23170b" stroke-width="3"/>
                 <circle cx="25" cy="14" r="11" fill="#dfb74c" stroke="#23170b" stroke-width="3"/>
                 <circle cx="25" cy="14" r="4" fill="#23170b"/>
               </svg>
 
-              <!-- Rotating SVG Wheel -->
               <div class="wheel-wrapper" id="wheelWrapper">
                 <svg id="doomWheelSvg" viewBox="0 0 500 500">
-                  <!-- Outer Wooden Rim -->
+                  <!-- Outer Wooden Rim with Depth Shading -->
                   <circle cx="250" cy="250" r="244" fill="#592f11" stroke="#23170b" stroke-width="6"/>
-                  <circle cx="250" cy="250" r="222" fill="#3c1e08" stroke="#23170b" stroke-width="4"/>
+                  <circle cx="250" cy="250" r="224" fill="#3c1e08" stroke="#1a0c03" stroke-width="4"/>
 
-                  <!-- 4 Quadrants -->
+                  <!-- 4 UNO Color Quadrants (Red, Blue, Green, Yellow) -->
                   <g id="quadrants">
                     <!-- RED (Top) -->
-                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4"/>
+                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4.5"/>
                     <!-- BLUE (Right) -->
-                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4"/>
+                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4.5"/>
                     <!-- GREEN (Bottom) -->
-                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4"/>
+                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4.5"/>
                     <!-- YELLOW (Left) -->
-                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4"/>
+                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4.5"/>
                   </g>
 
-                  <!-- 24 Brass Pegs Around Rim -->
+                  <!-- 24 Brass Metallic Pegs -->
                   <g fill="#dfb74c" stroke="#23170b" stroke-width="1.5">
                     <circle cx="250" cy="48" r="5"/><circle cx="302" cy="55" r="5"/><circle cx="351" cy="75" r="5"/>
                     <circle cx="393" cy="107" r="5"/><circle cx="425" cy="149" r="5"/><circle cx="445" cy="198" r="5"/>
@@ -1279,52 +1352,36 @@
                     <circle cx="107" cy="107" r="5"/><circle cx="149" cy="75" r="5"/><circle cx="198" cy="55" r="5"/>
                   </g>
 
-                  <!-- Quadrant Illustrations Matching Wheel Slide -->
-                  <!-- Top Red: Drink Swap -->
+                  <!-- Quadrant Illustrations (From Reference Slide) -->
+                  <!-- Red: Drink Swap -->
                   <g transform="translate(250, 95)" stroke="#23170b" stroke-width="2.5" fill="none">
                     <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
                     <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
                     <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
                     <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#23170b"/>
                   </g>
-
-                  <!-- Right Blue: Shot Roulette -->
+                  <!-- Blue: Shot Roulette -->
                   <g transform="translate(402, 250)" stroke="#23170b" stroke-width="2.5">
                     <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
                     <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
                     <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
                   </g>
-
-                  <!-- Bottom Green: Chug Tankard -->
+                  <!-- Green: Chug Tankard -->
                   <g transform="translate(250, 402)" stroke="#23170b" stroke-width="2.5">
                     <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
                     <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
                     <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
                   </g>
-
-                  <!-- Left Yellow: Frozen Ice Crystal -->
+                  <!-- Yellow: Ice Snowflake -->
                   <g transform="translate(96, 250)" stroke="#23170b" stroke-width="2.5">
                     <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
                     <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
                   </g>
 
-                  <!-- 4 Cardinal UNO Mini Cards on Outer Rim -->
-                  <g stroke="#23170b" stroke-width="1.5">
-                    <rect x="240" y="10" width="20" height="28" rx="3" fill="#d62828"/>
-                    <ellipse cx="250" cy="24" rx="6" ry="9" fill="#f7b801"/>
-                    <rect x="462" y="236" width="28" height="20" rx="3" fill="#d62828"/>
-                    <ellipse cx="476" cy="246" rx="9" ry="6" fill="#f7b801"/>
-                    <rect x="240" y="462" width="20" height="28" rx="3" fill="#d62828"/>
-                    <ellipse cx="250" cy="476" rx="6" ry="9" fill="#f7b801"/>
-                    <rect x="10" y="236" width="28" height="20" rx="3" fill="#d62828"/>
-                    <ellipse cx="24" cy="246" rx="9" ry="6" fill="#f7b801"/>
-                  </g>
-
-                  <!-- Inner Ship Helm -->
+                  <!-- Inner Helm & Hub -->
                   <circle cx="250" cy="250" r="134" fill="#23170b"/>
                   <circle cx="250" cy="250" r="128" fill="none" stroke="#d62828" stroke-width="14" stroke-dasharray="16 16"/>
                   <circle cx="250" cy="250" r="118" fill="#6b3e19" stroke="#23170b" stroke-width="5"/>
-
                   <g stroke="#23170b" stroke-width="3.5" fill="#c6934b">
                     <line x1="250" y1="150" x2="250" y2="350" stroke="#23170b" stroke-width="8"/>
                     <line x1="150" y1="250" x2="350" y2="250" stroke="#23170b" stroke-width="8"/>
@@ -1335,18 +1392,17 @@
                   </g>
                 </svg>
 
-                <!-- Center Spin Trigger -->
                 <button type="button" class="center-spin-btn" id="spinBtn" aria-label="Spin Wheel of Doom">
                   <span>SPIN</span>
-                  <small>HOLD / TAP</small>
+                  <small>HOLD / FLICK</small>
                 </button>
               </div>
 
-              <!-- Power Charge Meter -->
+              <!-- Power Charge Bar -->
               <div class="power-bar-wrap">
                 <div class="power-bar-fill" id="powerBar"></div>
               </div>
-              <p class="spin-hint">Flick wheel directly with finger or hold <strong>SPIN</strong> to charge!</p>
+              <p class="spin-hint">Flick wheel with finger or hold <strong>SPIN</strong> to charge!</p>
             </div>
 
             <!-- Right Rules Column -->
@@ -1373,53 +1429,132 @@
 
 
         <!-- ===================================================================
-             TAB 2: SCOREBOARD & CREW MANAGER
+             TAB 2: STEP-BY-STEP DYNAMIC SCORES (CHOOSE YOUR TEAM -> TARGET)
              =================================================================== -->
-        <section id="tab-scoreboard" class="tab-panel">
-          <div class="scoreboard-panel">
+        <section id="tab-scores" class="tab-panel">
+          <div class="scores-section-wrap">
 
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0;">
-                🏆 OFFICIAL CREW SCOREBOARD & SIP LEDGER
-              </h2>
-              <div style="font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-faded);">
-                Cross-Scoring: Red → Blue → Green → Yellow → Red
+            <div class="scoring-stepper-card">
+              <!-- STEP 1: CHOOSE YOUR TEAM -->
+              <div class="step-title">
+                <span>1️⃣ CHOOSE YOUR TEAM FIRST:</span>
               </div>
+              <div class="team-picker-grid" id="myTeamPicker"></div>
+
+              <!-- STEP 2: CHOOSE WHO YOU ARE SCORING -->
+              <div class="step-title" style="margin-top: 10px;">
+                <span>2️⃣ CHOOSE WHO YOU ARE SCORING / ATTACKING:</span>
+              </div>
+              <div class="team-picker-grid" id="targetTeamPicker"></div>
+
+              <!-- DYNAMIC SCORING CONSOLE FOR TARGET TEAM -->
+              <div class="active-scoring-console" id="scoringConsole"></div>
             </div>
 
-            <!-- 4 Teams Full Cards -->
-            <div class="teams-ledger-grid" id="teamsLedgerGrid"></div>
+            <!-- FULL LIVE LEADERBOARD STANDINGS -->
+            <div class="standings-table-wrap">
+              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 8px;">
+                🏆 OFFICIAL CREW LEADERBOARD (DYNAMIC ACROSS ALL PHONES)
+              </h3>
+              <table class="standings-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Crew</th>
+                    <th>Cross-Rival</th>
+                    <th>Points</th>
+                    <th>Drinks Taken</th>
+                    <th>Stash</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="standingsTableBody"></tbody>
+              </table>
+            </div>
 
           </div>
         </section>
 
 
         <!-- ===================================================================
-             TAB 3: PRESTON PUB CRAWL ROUTE MAP
+             TAB 3: INTERACTIVE PRESTON ROUTE MAP & 10 STOPS
              =================================================================== -->
         <section id="tab-map" class="tab-panel">
           <div class="map-panel">
 
-            <!-- Route Map Viewer -->
-            <div class="map-viewer-card">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="interactive-map-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
                 <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin: 0;">
-                  🗺️ THE PRESTON ROUTE MAP // 10 STOPS
+                  🗺️ INTERACTIVE PRESTON CRAWL MAP // TAP PINS TO VIEW PUBS
                 </h3>
-                <button type="button" class="btn-stop-check" id="openLightboxBtn">
-                  🔍 Tap to Enlarge Map
+                <button type="button" class="btn-stop-check" id="openMapLightboxBtn">
+                  🔍 Fullscreen View
                 </button>
               </div>
 
-              <div class="map-img-container" id="mapImgWrap" title="Click to view full size map">
-                <img src="assets/map.png" alt="Preston Route Map — 10 Stops to Crown the Champions" id="mapThumb" />
-                <div class="map-overlay-tip">🔍 TAP TO EXPAND</div>
+              <!-- Map Container with Clickable SVG Pin Hotspots -->
+              <div class="map-canvas-wrap" id="mapCanvasWrap">
+                <img src="assets/map.png" alt="Preston Route Map" id="mapMainImage" />
+
+                <!-- SVG Overlay Pins (10 Pub Stops) -->
+                <svg class="map-pins-svg" viewBox="0 0 1024 572" preserveAspectRatio="none">
+                  <!-- Stop 1: Adelphi -->
+                  <g class="map-pin" data-pin="0" transform="translate(370, 140)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">1</text>
+                  </g>
+                  <!-- Stop 2: Ships & Giggles -->
+                  <g class="map-pin" data-pin="1" transform="translate(130, 150)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">2</text>
+                  </g>
+                  <!-- Stop 3: Molly O'Malleys -->
+                  <g class="map-pin" data-pin="2" transform="translate(160, 240)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">3</text>
+                  </g>
+                  <!-- Stop 4: The Twelve Tellers -->
+                  <g class="map-pin" data-pin="3" transform="translate(440, 200)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">4</text>
+                  </g>
+                  <!-- Stop 5: Kuckoo -->
+                  <g class="map-pin" data-pin="4" transform="translate(680, 200)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">5</text>
+                  </g>
+                  <!-- Stop 6: The Station -->
+                  <g class="map-pin" data-pin="5" transform="translate(140, 390)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">6</text>
+                  </g>
+                  <!-- Stop 7: Hogarths -->
+                  <g class="map-pin" data-pin="6" transform="translate(390, 390)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">7</text>
+                  </g>
+                  <!-- Stop 8: Wings & Beer Co -->
+                  <g class="map-pin" data-pin="7" transform="translate(480, 480)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">8</text>
+                  </g>
+                  <!-- Stop 9: Grey Friar / Friargate -->
+                  <g class="map-pin" data-pin="8" transform="translate(260, 310)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#d62828" stroke="#fff" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#fff" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="12" text-anchor="middle">9</text>
+                  </g>
+                  <!-- Stop 10: Champions Finish -->
+                  <g class="map-pin" data-pin="9" transform="translate(710, 460)">
+                    <circle class="outer" cx="0" cy="0" r="16" fill="#f7b801" stroke="#23170b" stroke-width="2.5"/>
+                    <text x="0" y="5" fill="#23170b" font-family="'Cinzel Decorative', serif" font-weight="900" font-size="11" text-anchor="middle">10</text>
+                  </g>
+                </svg>
               </div>
             </div>
 
-            <!-- 10 Stops Cards List -->
+            <!-- 10 Stops Checklist & Live Navigation -->
             <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin-top: 4px;">
-              📍 PUB STOPS PROGRESS & CUSTOM VENUE RULES (0 RULE MAKER)
+              📍 PUB STOPS PROGRESS & RULE 0 CREATOR
             </h3>
             <div class="stops-grid" id="stopsGrid"></div>
 
@@ -1428,100 +1563,45 @@
 
 
         <!-- ===================================================================
-             TAB 4: OFFICIAL RULES & CARD TRIGGERS SHEET
+             TAB 4: UNO CARD CODEX (SIMPLIFIED & VISUAL RULES)
              =================================================================== -->
         <section id="tab-rules" class="tab-panel">
-          <div class="rules-panel">
+          <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
 
-            <div class="rules-hero-card">
-              <h2>📜 OFFICIAL DRUNK UNO RULES & SETUP ESSENTIALS</h2>
+            <div style="background: rgba(255, 248, 230, 0.95); border: 2px solid var(--ink); border-radius: 12px; padding: 14px;">
+              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0; color: #7a1d1d; border-bottom: 2px solid var(--ink); padding-bottom: 4px;">
+                🃏 UNO CARD CODEX // TAP ANY CARD FOR RULES
+              </h2>
+              <p style="font-size: 0.92rem; font-style: italic; color: var(--ink-faded); margin-top: 4px;">
+                Simplified for quick reference during pub crawl rounds. Play 1 card on color or number!
+              </p>
 
-              <div class="rules-columns-layout">
-                <!-- Left: Setup & Standard Play -->
-                <div class="rule-section-block">
-                  <h3>⚓ SETUP & ESSENTIALS</h3>
-                  <ul>
-                    <li><strong>Teams:</strong> Red 🔴, Blue 🔵, Green 🟢, Yellow 🟡.</li>
-                    <li><strong>Deck Setup:</strong> Remove all Wild cards before dealing. Deal 5 cards to each team's Captain, then shuffle all Wild cards back into the draw deck.</li>
-                    <li><strong>Hand Size:</strong> Each team starts with 5 non-Wild cards in hand.</li>
-                    <li><strong>Cross-Scoring:</strong> Team Red tracks Blue, Blue tracks Green, Green tracks Yellow, Yellow tracks Red.</li>
-                  </ul>
+              <!-- Interactive Card Grid -->
+              <div class="rules-codex-grid" id="rulesCodexGrid"></div>
+            </div>
 
-                  <h3 style="margin-top: 10px;">⚔️ STANDARD PLAY</h3>
-                  <ul>
-                    <li>On your team's turn, play 1 card that matches the top discard by <strong>COLOR</strong> or <strong>NUMBER</strong>. If you cannot play, draw 1 card. If WILD, place into Captain's deck and draw another regular card.</li>
-                    <li><strong>Captain's Stash:</strong> Captains keep their hand secret, with up to 2 face-down WILD cards hidden from opposing teams.</li>
-                  </ul>
-                </div>
-
-                <!-- Right: Card Triggers -->
-                <div class="rule-section-block">
-                  <h3>🃏 CARD TRIGGERS & DRINK ACTIONS</h3>
-                  <ul>
-                    <li><strong>0 (Rule Maker):</strong> Create ANY rule for the current pub (e.g. left hand drinking only).</li>
-                    <li><strong>7 (Wild Thief):</strong> Steal 1 Wild card from a selected team's stash! (Target team takes 2 sips UNLESS opposing team has none).</li>
-                    <li><strong>SKIP:</strong> Skips next team and gives them 1 sip each.</li>
-                    <li><strong>DRAW TWO (+2):</strong> Target team takes 2 sips (Stacks To +4!).</li>
-                    <li><strong>WILD (REVERSE):</strong> Add to captain's stash to reverse an incoming attack.</li>
-                    <li><strong>WILD (WHEEL):</strong> Target a rival team for a special event on the Wheel of Doom!</li>
-                    <li><strong>WILD (+4):</strong> Every member of target team downs drink or takes a shot.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Scoring Point Matrix Table -->
-              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; color: #7a1d1d; margin-top: 18px; border-bottom: 1px dashed var(--ink-muted); padding-bottom: 3px;">
-                🏆 OFFICIAL SCORING POINT MATRIX
+            <!-- Point Matrix Cheat Sheet -->
+            <div style="background: rgba(255, 248, 230, 0.95); border: 2px solid var(--ink); border-radius: 12px; padding: 14px;">
+              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 6px;">
+                ⚡ SCORING QUICK REFERENCE
               </h3>
-              <table class="matrix-table">
+              <table class="standings-table">
                 <thead>
                   <tr>
-                    <th>Event / Trigger</th>
-                    <th>Point Impact</th>
+                    <th>Action</th>
+                    <th>Points</th>
                     <th>Drinking Consequence</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><strong>SKIP</strong></td>
-                    <td>-1 Point to Skipped Team</td>
-                    <td>1 sip each member of skipped team</td>
-                  </tr>
-                  <tr>
-                    <td><strong>DRAW TWO (+2)</strong></td>
-                    <td>-2 Points (or -4 if stacked)</td>
-                    <td>Target team takes 2 sips (or 4 sips)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>WILD (REVERSE)</strong></td>
-                    <td>-4 Points to Attacker / +4 to Defender</td>
-                    <td>Reverses incoming attack penalty</td>
-                  </tr>
-                  <tr>
-                    <td><strong>WILD (WHEEL WIN/LOSS)</strong></td>
-                    <td>+6 Points to Winner / -6 to Loser</td>
-                    <td>Determined by Wheel Quadrant action</td>
-                  </tr>
-                  <tr>
-                    <td><strong>WILD (+4)</strong></td>
-                    <td>+4 to Attacker / -4 to Opposing Team</td>
-                    <td>Entire opposing team downs drink or takes shot</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Spewing / Chunder</strong></td>
-                    <td>-5 Points penalty</td>
-                    <td>Glass of water & public shame</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Rule Violation</strong></td>
-                    <td>-1 Point penalty</td>
-                    <td>1 sip penalty</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Wilds in Captain's Stash at End</strong></td>
-                    <td>+1 Point per Wild held (Max +2)</td>
-                    <td>Bonus tactical reward</td>
-                  </tr>
+                  <tr><td><strong>SKIP</strong></td><td>-1 pt to Skipped</td><td>1 sip each member</td></tr>
+                  <tr><td><strong>DRAW TWO (+2)</strong></td><td>-2 pts to Target</td><td>2 sips (Stacks to +4!)</td></tr>
+                  <tr><td><strong>WILD (REVERSE)</strong></td><td>-4 Atk / +4 Def</td><td>Reverses incoming attack</td></tr>
+                  <tr><td><strong>WILD (WHEEL WIN)</strong></td><td>+6 Winner / -6 Loser</td><td>Wheel of Doom challenge</td></tr>
+                  <tr><td><strong>WILD (+4)</strong></td><td>+4 Atk / -4 Def</td><td>Entire opposing team downs drink / shot</td></tr>
+                  <tr><td><strong>Spewing / Chunder</strong></td><td>-5 pts penalty</td><td>Drink water & public shame</td></tr>
+                  <tr><td><strong>Rule Violation</strong></td><td>-1 pt penalty</td><td>1 sip penalty</td></tr>
+                  <tr><td><strong>Wilds in Stash at End</strong></td><td>+1 pt per card (max +2)</td><td>Bonus tactical stash reward</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1531,16 +1611,36 @@
 
 
         <!-- ===================================================================
-             BOTTOM TAVERN BATTLE LOG & RESET MODAL
+             TAB 5: SECRET BINGO BOARD (LOCKED BEHIND 22140711)
              =================================================================== -->
-        <footer class="bottom-area">
-          <div class="battle-log-card">
-            <div class="battle-log-head">
-              <h3>⚔️ TAVERN BATTLE LOG</h3>
-              <button type="button" class="btn-clear-log" id="clearLogBtn">Clear Log</button>
+        <section id="tab-bingo" class="tab-panel">
+          <div class="bingo-panel">
+
+            <div class="bingo-header-card">
+              <h2>🔒 SECRET PUB CRAWL BINGO</h2>
+              <p style="font-style: italic; font-size: 0.92rem; color: #ffebaa; margin-top: 2px;">
+                Confidential Referee Deck • Tap any bingo tile when witnessed to target a team & deduct points!
+              </p>
             </div>
-            <ul class="log-list" id="battleLogList"></ul>
+
+            <!-- Bingo 16 Cards Grid -->
+            <div class="bingo-grid" id="bingoGrid"></div>
+
           </div>
+        </section>
+
+
+        <!-- ===================================================================
+             BOTTOM AREA: TAVERN BATTLE LOG
+             =================================================================== -->
+        <footer class="battle-log-card">
+          <div class="battle-log-head">
+            <h3>⚔️ LIVE TAVERN BATTLE LOG</h3>
+            <button type="button" class="btn-stop-check" style="font-size: 0.75rem; padding: 2px 6px;" id="clearLogBtn">
+              Clear Log
+            </button>
+          </div>
+          <ul class="log-list" id="battleLogList"></ul>
         </footer>
 
       </div>
@@ -1549,19 +1649,18 @@
 
 
   <!-- =========================================================================
-       MODAL 1: WHEEL OUTCOME RESOLUTION
+       MODAL 1: WHEEL OUTCOME RESOLUTION (CHOOSE WHICH TEAM TO TARGET)
        ========================================================================= -->
   <div class="modal-backdrop" id="outcomeModal">
     <div class="modal-scroll">
       <h2 class="modal-title" id="modalOutcomeTitle">WHEEL OUTCOME</h2>
       <p class="modal-body" id="modalOutcomeDesc"></p>
 
-      <!-- Target Selection for Attacks -->
-      <div id="modalTargetPicker" style="margin-bottom: 12px; display: none;">
+      <div style="margin-bottom: 12px;">
         <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 6px;">
-          SELECT DEFENDING / TARGET TEAM:
+          CHOOSE WHICH RIVAL TEAM TO TARGET:
         </label>
-        <div id="targetTeamsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
+        <div id="wheelTargetList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
       </div>
 
       <div class="modal-actions" id="modalOutcomeActions"></div>
@@ -1571,26 +1670,89 @@
 
 
   <!-- =========================================================================
-       MODAL 2: MAP LIGHTBOX
+       MODAL 2: BINGO TARGET SELECTION MODAL
        ========================================================================= -->
-  <div class="modal-backdrop lightbox-modal" id="mapLightbox">
+  <div class="modal-backdrop" id="bingoTargetModal">
     <div class="modal-scroll">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; margin: 0;">🗺️ THE PRESTON ROUTE MAP</h3>
-        <button type="button" class="btn-stop-check" id="closeLightboxBtn">✕ Close</button>
+      <h2 class="modal-title" style="color: #9e1b1b;" id="bingoTargetTitle">BINGO EVENT TRIGGERED</h2>
+      <p class="modal-body" id="bingoTargetDesc"></p>
+
+      <div style="margin-bottom: 12px;">
+        <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 6px;">
+          WHICH TEAM COMMITTED THIS? (POINTS WILL BE DEDUCTED):
+        </label>
+        <div id="bingoTargetTeamsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
       </div>
-      <img src="assets/map.png" alt="Preston Route Map full view" />
+
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="confirmBingoStrikeBtn" style="background: #8b1e1e;">
+          💥 Confirm & Deduct Points
+        </button>
+        <button type="button" class="modal-btn secondary" id="cancelBingoTargetBtn">Cancel</button>
+      </div>
     </div>
   </div>
 
 
   <!-- =========================================================================
-       MODAL 3: RULE 0 CUSTOM PUB RULE EDITOR
+       MODAL 3: SECRET BINGO PASSCODE UNLOCK (PASSWORD: 22140711)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="passcodeModal">
+    <div class="modal-scroll" style="max-width: 360px;">
+      <h2 class="modal-title" style="color: #9e1b1b;">🔒 RESTRICTED ACCESS</h2>
+      <p class="modal-body">Enter the secret 8-digit passcode to unlock the confidential Bingo deck:</p>
+      <input type="password" id="passcodeInput" maxlength="12" placeholder="Passcode..." style="width: 100%; text-align: center; letter-spacing: 0.25em; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; border: 2px solid var(--ink); border-radius: 8px; margin-bottom: 12px;" />
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="submitPasscodeBtn">Unlock Deck</button>
+        <button type="button" class="modal-btn secondary" id="closePasscodeModalBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 4: MULTI-PHONE ROOM SYNC & SHARE LINK
+       ========================================================================= -->
+  <div class="modal-backdrop" id="roomSyncModal">
+    <div class="modal-scroll">
+      <h2 class="modal-title">📡 REAL-TIME PHONE SYNC</h2>
+      <p class="modal-body">
+        All phones with this Room Code share live scores instantly across pub 4G/5G:
+      </p>
+      <div style="margin-bottom: 12px;">
+        <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 4px;">ROOM CODE:</label>
+        <input type="text" id="roomCodeInput" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 6px;" />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn" id="joinRoomBtn">Connect to Room</button>
+        <button type="button" class="modal-btn secondary" id="copyRoomLinkBtn">📋 Copy Share Link for Friends</button>
+        <button type="button" class="modal-btn secondary" id="closeRoomSyncModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 5: MAP FULLSCREEN LIGHTBOX
+       ========================================================================= -->
+  <div class="modal-backdrop" id="mapLightbox" style="padding: 10px;">
+    <div class="modal-scroll" style="max-width: 95vw; width: 950px; padding: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; margin: 0;">🗺️ THE PRESTON ROUTE MAP</h3>
+        <button type="button" class="btn-stop-check" id="closeMapLightboxBtn">✕ Close</button>
+      </div>
+      <img src="assets/map.png" alt="Preston Route Map full view" style="width: 100%; height: auto; border: 2px solid var(--ink); border-radius: 8px;" />
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 6: RULE 0 EDITOR
        ========================================================================= -->
   <div class="modal-backdrop" id="ruleModal">
     <div class="modal-scroll">
       <h2 class="modal-title">0 (RULE MAKER)</h2>
-      <p class="modal-body">Create or update the custom house rule for this pub:</p>
+      <p class="modal-body">Create or update the house rule for this pub:</p>
       <input type="text" id="ruleInput" placeholder="e.g. Must drink with left hand only..." style="width: 100%; padding: 10px; font-family: 'IM Fell English', serif; font-size: 1rem; border: 2px solid var(--ink); border-radius: 6px; margin-bottom: 12px;" />
       <div class="modal-actions">
         <button type="button" class="modal-btn" id="saveRuleBtn">Save Pub Rule</button>
@@ -1601,12 +1763,12 @@
 
 
   <!-- =========================================================================
-       MODAL 4: RESET CONFIRMATION
+       MODAL 7: RESET CONFIRMATION
        ========================================================================= -->
   <div class="modal-backdrop" id="resetModal">
     <div class="modal-scroll">
       <h2 class="modal-title" style="color: #9e1b1b;">⚠️ RESET GAME STATE</h2>
-      <p class="modal-body">Choose your reset option. All saved cookies and localStorage data will be updated:</p>
+      <p class="modal-body">Choose reset level. Synced to all connected phones:</p>
       <div class="modal-actions">
         <button type="button" class="modal-btn" id="confirmResetScoresBtn">Reset Scores to 12 pts Only</button>
         <button type="button" class="modal-btn" style="background: #8b1e1e;" id="confirmFactoryResetBtn">Full Factory Reset (Clean Slate)</button>
@@ -1617,14 +1779,15 @@
 
 
   <!-- =========================================================================
-       JAVASCRIPT: GAME ENGINE, COOKIE STORAGE & WHEEL PHYSICS
-       ========================================================================= -->
+       05. MAIN ENGINE SCRIPT (REAL-TIME MQTT SYNC, COOKIES, WHEEL & BINGO)
+       ========================================================================= */
   <script>
     (function () {
       'use strict';
 
-      // --- 01. COOKIE & LOCALSTORAGE DUAL PERSISTENCE SYSTEM ---
+      // --- 01. STATE & COOKIE PERSISTENCE CONFIGURATION ---
       const COOKIE_KEY = "drunk_uno_game_state";
+      const BINGO_PASSCODE = "22140711";
 
       function setCookie(name, value, days = 30) {
         const d = new Date();
@@ -1642,48 +1805,94 @@
         toast.textContent = text;
         toast.classList.add("show");
         clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => {
-          toast.classList.remove("show");
-        }, 2200);
+        toast._timeout = setTimeout(() => { toast.classList.remove("show"); }, 2400);
       }
 
-      // --- 02. DEFAULT STATE CONFIGURATION ---
       const DEFAULT_TEAMS = [
-        { id: 0, key: "RED", name: "Team Red", colorClass: "red", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Blue" },
-        { id: 1, key: "BLUE", name: "Team Blue", colorClass: "blue", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Green" },
-        { id: 2, key: "GREEN", name: "Team Green", colorClass: "green", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Yellow" },
-        { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetName: "Team Red" }
+        { id: 0, key: "RED", name: "Team Red", colorClass: "red", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 1, targetName: "Team Blue" },
+        { id: 1, key: "BLUE", name: "Team Blue", colorClass: "blue", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 2, targetName: "Team Green" },
+        { id: 2, key: "GREEN", name: "Team Green", colorClass: "green", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 3, targetName: "Team Yellow" },
+        { id: 3, key: "YELLOW", name: "Team Yellow", colorClass: "yellow", score: 12, sips: 0, stash: 0, frozen: false, targetIdx: 0, targetName: "Team Red" }
       ];
 
       const DEFAULT_STOPS = [
-        { num: 1, name: "The Adelphi", rule: "No pointing with fingers — 1 sip penalty", visited: true },
-        { num: 2, name: "Ships & Giggles", rule: "Say 'Cheers Captain' before each sip", visited: false },
-        { num: 3, name: "Molly O'Malleys", rule: "Must speak in an accent or drink 2 sips", visited: false },
-        { num: 4, name: "The Twelve Tellers", rule: "No using first names; use team colors", visited: false },
-        { num: 5, name: "Kuckoo", rule: "High five the bartender or take a sip", visited: false },
-        { num: 6, name: "The Station", rule: "Left hand drinking only", visited: false },
-        { num: 7, name: "Hogarths", rule: "Pinky out while sipping", visited: false },
-        { num: 8, name: "Wings & Beer Co", rule: "Thumb master active (last thumb on table drinks)", visited: false },
-        { num: 9, name: "Grey Friar / Roper Hall", rule: "No saying 'Drink' or 'Sip'", visited: false },
-        { num: 10, name: "Champions Lounge", rule: "Winner assigns 10 sips to losing teams!", visited: false }
+        { num: 1, name: "The Adelphi", rule: "No pointing with fingers — 1 sip penalty", mapsUrl: "https://maps.google.com/?q=The+Adelphi+Preston", visited: true },
+        { num: 2, name: "Ships & Giggles", rule: "Say 'Cheers Captain' before each sip", mapsUrl: "https://maps.google.com/?q=Ships+and+Giggles+Preston", visited: false },
+        { num: 3, name: "Molly O'Malleys", rule: "Must speak in an accent or drink 2 sips", mapsUrl: "https://maps.google.com/?q=Molly+OMalleys+Preston", visited: false },
+        { num: 4, name: "The Twelve Tellers", rule: "No using first names; use team colors", mapsUrl: "https://maps.google.com/?q=The+Twelve+Tellers+Preston", visited: false },
+        { num: 5, name: "Kuckoo", rule: "High five the bartender or take a sip", mapsUrl: "https://maps.google.com/?q=Kuckoo+Preston", visited: false },
+        { num: 6, name: "The Station", rule: "Left hand drinking only", mapsUrl: "https://maps.google.com/?q=The+Station+Pub+Preston", visited: false },
+        { num: 7, name: "Hogarths", rule: "Pinky out while sipping", mapsUrl: "https://maps.google.com/?q=Hogarths+Preston", visited: false },
+        { num: 8, name: "Wings & Beer Co", rule: "Thumb master active (last thumb drinks)", mapsUrl: "https://maps.google.com/?q=Wings+and+Beer+Co+Preston", visited: false },
+        { num: 9, name: "Grey Friar / Friargate", rule: "No saying 'Drink' or 'Sip'", mapsUrl: "https://maps.google.com/?q=The+Grey+Friar+Preston", visited: false },
+        { num: 10, name: "Champions Lounge", rule: "Winner assigns 10 sips to losing teams!", mapsUrl: "https://maps.google.com/?q=Popworld+Preston", visited: false }
       ];
+
+      const BINGO_CARDS = [
+        { id: "b1", icon: "🍺", title: "Spills Pint / Knocks Drink", pts: -3, desc: "Accidental clumsy spillage", claimedBy: null },
+        { id: "b2", icon: "🚫", title: "Forgets to say UNO", pts: -2, desc: "Caught with 1 card without calling Uno", claimedBy: null },
+        { id: "b3", icon: "🃏", title: "Drops Card on Dirty Floor", pts: -1, desc: "Butterfingers card drop", claimedBy: null },
+        { id: "b4", icon: "🗣️", title: "Argues with Referee", pts: -2, desc: "Disputing official Uno crawl laws", claimedBy: null },
+        { id: "b5", icon: "🥃", title: "Orders Cursed / Bizarre Shot", pts: -2, desc: "Tequila rose, sambuca, or mystery concoction", claimedBy: null },
+        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Turn", pts: -2, desc: "Holding up gameplay for bladder relief", claimedBy: null },
+        { id: "b7", icon: "⏳", title: "Takes > 20s to Play a Card", pts: -1, desc: "Paralysis by analysis", claimedBy: null },
+        { id: "b8", icon: "👁️", title: "Peeking at Captain's Stash", pts: -4, desc: "Illegally spying on hidden wild cards", claimedBy: null },
+        { id: "b9", icon: "💃", title: "Dances / Sings to Pub Music", pts: -2, desc: "Distracted by the tavern bangers", claimedBy: null },
+        { id: "b10", icon: "🤮", title: "Spews / Chunders", pts: -5, desc: "White flag surrendered to toilet bowl", claimedBy: null },
+        { id: "b11", icon: "🎯", title: "Misses Table with Card", pts: -2, desc: "Attempted trick shot fail", claimedBy: null },
+        { id: "b12", icon: "📱", title: "Phone checking during Attack", pts: -2, desc: "Ignoring incoming draw cards", claimedBy: null },
+        { id: "b13", icon: "🏴‍☠️", title: "Calls Bartender 'Captain'", pts: -2, desc: "Taking the pirate roleplay too far", claimedBy: null },
+        { id: "b14", icon: "💥", title: "Plays Wrong Color by Mistake", pts: -1, desc: "Color blindness or drunkenness", claimedBy: null },
+        { id: "b15", icon: "💀", title: "Downs Pint in < 6 Seconds", pts: -4, desc: "Target team forced drinking penalty", claimedBy: null },
+        { id: "b16", icon: "🧂", title: "Fails Lemon / Salt Shot", pts: -3, desc: "Grimaces and coughs on tequila", claimedBy: null }
+      ];
+
+      const UNO_CODEX = [
+        { code: "0", bg: "#1d63b8", title: "0 (Rule Maker)", impact: "HOUSE LAW", impactType: "special", desc: "Invent ANY rule for the current pub (e.g. left hand only, speak in accents). Violators drink!", drink: "1 sip per violation" },
+        { code: "7", bg: "#d62828", title: "7 (Wild Thief)", impact: "STEAL WILD", impactType: "special", desc: "Steal 1 face-down Wild card from a selected team's Captain Stash! If they have none, you drink 2 sips.", drink: "Target takes 2 sips" },
+        { code: "🚫", bg: "#f7b801", title: "SKIP", impact: "-1 POINT", impactType: "danger", desc: "Skips the next team in rotation. The skipped team loses 1 point and drinks.", drink: "All members take 1 sip" },
+        { code: "+2", bg: "#2b9348", title: "DRAW TWO (+2)", impact: "-2 POINTS", impactType: "danger", desc: "Forces target team to draw 2 cards and drink 2 sips. Stacks to +4 if countered!", drink: "2 sips (or 4 sips)" },
+        { code: "🔄", bg: "#1d63b8", title: "WILD (REVERSE)", impact: "±4 POINTS", impactType: "reward", desc: "Reverses an incoming attack! Gives +4 pts to the defender and -4 pts to the attacker.", drink: "Reverses drinking penalty" },
+        { code: "🎡", bg: "#d62828", title: "WILD (WHEEL)", impact: "±6 POINTS", impactType: "special", desc: "Triggers a spin on the Wheel of Doom! Play the mini-game for ±6 points and drinking events.", drink: "Depends on Wheel outcome" },
+        { code: "+4", bg: "#23170b", title: "WILD (+4)", impact: "+4 / -4 PTS", impactType: "danger", isWild: true, desc: "Ultimate weapon! +4 points to attacking team and -4 to victim. Target team takes shots!", drink: "Whole team downs drink / shot" }
+      ];
+
+      // Get Room Code from URL query param (e.g. ?room=PRESTON-2026) or default
+      const urlParams = new URLSearchParams(window.location.search);
+      let roomCode = (urlParams.get("room") || "PRESTON-2026").toUpperCase().trim();
 
       let state = {
         teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
-        currentTurn: 0,
+        myTeamIdx: 0,
+        targetTeamIdx: 1,
         currentStopIdx: 0,
         stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
-        logs: ["Session started. Welcome to Drunk Uno Preston Route!"],
-        sound: true
+        bingoCards: JSON.parse(JSON.stringify(BINGO_CARDS)),
+        logs: ["Session initialized. Connected to Room: " + roomCode],
+        sound: true,
+        bingoUnlocked: false
       };
 
-      function saveGameState() {
+      // Check if unlocked in session
+      if (sessionStorage.getItem("drunk_uno_bingo_unlocked") === "true") {
+        state.bingoUnlocked = true;
+      }
+
+      function saveGameState(broadcast = true) {
         const serialized = JSON.stringify(state);
         setCookie(COOKIE_KEY, serialized, 30);
         try { localStorage.setItem(COOKIE_KEY, serialized); } catch (e) {}
 
-        const badge = document.getElementById("cookieStatus");
-        badge.innerHTML = `<span class="dot"></span><span>SAVED ✓</span>`;
+        if (broadcast && mqttClient && mqttClient.isConnected()) {
+          try {
+            const message = new Paho.MQTT.Message(serialized);
+            message.destinationName = `leeprky/drunkuno/${roomCode}`;
+            message.retained = false;
+            mqttClient.send(message);
+          } catch (err) {
+            console.warn("MQTT broadcast error:", err);
+          }
+        }
       }
 
       function loadGameState() {
@@ -1695,24 +1904,88 @@
           try {
             const parsed = JSON.parse(raw);
             if (parsed && Array.isArray(parsed.teams) && parsed.teams.length === 4) {
-              state = parsed;
-              showToast("🍪 Restored Session from Cookies");
+              state.teams = parsed.teams;
+              if (parsed.stops) state.stops = parsed.stops;
+              if (parsed.currentStopIdx !== undefined) state.currentStopIdx = parsed.currentStopIdx;
+              if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
+              if (parsed.logs) state.logs = parsed.logs;
+              showToast("🍪 State Restored from Cookie");
             }
           } catch (e) {
-            console.error("Failed to parse saved state:", e);
+            console.error("Parse state error:", e);
           }
         }
       }
 
-      // --- 03. SOUND & HAPTICS ENGINE (Synthesized Web Audio) ---
+      // --- 02. REAL-TIME MULTI-PHONE MQTT WEBSOCKET SYNCHRONIZATION ---
+      let mqttClient = null;
+      const syncBtn = document.getElementById("syncRoomBtn");
+      const syncLabel = document.getElementById("syncRoomLabel");
+
+      function initMqttSync() {
+        const clientId = "uno_" + Math.random().toString(16).substr(2, 8);
+        syncLabel.textContent = `SYNCING... (${roomCode})`;
+
+        try {
+          // Connect to HiveMQ Public Secure WebSocket Broker
+          mqttClient = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
+
+          mqttClient.onConnectionLost = (responseObject) => {
+            syncBtn.classList.add("offline");
+            syncLabel.textContent = `RECONNECTING...`;
+            setTimeout(initMqttSync, 4000);
+          };
+
+          mqttClient.onMessageArrived = (message) => {
+            try {
+              const incoming = JSON.parse(message.payloadString);
+              if (incoming && Array.isArray(incoming.teams)) {
+                state.teams = incoming.teams;
+                state.stops = incoming.stops || state.stops;
+                state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
+                state.bingoCards = incoming.bingoCards || state.bingoCards;
+                if (incoming.logs) state.logs = incoming.logs;
+
+                renderCrewBar();
+                renderScoringTab();
+                renderStops();
+                renderBingoGrid();
+                renderLogs();
+                playTick(660);
+                showToast("📡 Live Score Updated from Room!");
+              }
+            } catch (err) {
+              console.error("MQTT receive error:", err);
+            }
+          };
+
+          mqttClient.connect({
+            useSSL: true,
+            timeout: 5,
+            onSuccess: () => {
+              syncBtn.classList.remove("offline");
+              syncLabel.textContent = `ROOM: ${roomCode} 🟢`;
+              mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
+              // Broadcast our state so new devices receive it
+              saveGameState(true);
+            },
+            onFailure: (err) => {
+              console.warn("MQTT connect failed:", err);
+              syncBtn.classList.add("offline");
+              syncLabel.textContent = `OFFLINE (${roomCode})`;
+              setTimeout(initMqttSync, 8000);
+            }
+          });
+        } catch (e) {
+          console.warn("MQTT init error:", e);
+        }
+      }
+
+      // --- 03. SOUND & HAPTICS (SYNTHESIZED WEB AUDIO) ---
       let audioCtx = null;
       function ensureAudio() {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
       }
 
       function triggerHaptic(pattern = 10) {
@@ -1728,7 +2001,7 @@
         const gain = audioCtx.createGain();
         osc.type = "triangle";
         osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.035);
+        osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.035);
         gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
         osc.connect(gain);
@@ -1746,26 +2019,56 @@
           const gain = audioCtx.createGain();
           osc.type = "sawtooth";
           osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
-          gain.gain.setValueAtTime(0.15, audioCtx.currentTime + idx * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.25);
+          gain.gain.setValueAtTime(0.14, audioCtx.currentTime + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.24);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.start(audioCtx.currentTime + idx * 0.08);
-          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.26);
+          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.25);
         });
       }
 
-      // --- 04. GOLD COIN CONFETTI SYSTEM ---
+      // --- 04. SATIN RIDGES DYNAMIC CANVAS (FROM MAIN PORTFOLIO) ---
+      const satinCanvas = document.getElementById("satinCanvas");
+      const satinCtx = satinCanvas.getContext("2d");
+      let satinTime = 0;
+
+      function resizeSatin() {
+        satinCanvas.width = window.innerWidth;
+        satinCanvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeSatin);
+      resizeSatin();
+
+      function stepSatin() {
+        satinCtx.clearRect(0, 0, satinCanvas.width, satinCanvas.height);
+        satinTime += 0.008;
+
+        const w = satinCanvas.width;
+        const h = satinCanvas.height;
+
+        // Draw graceful flowing satin waves
+        for (let i = 0; i < 4; i++) {
+          satinCtx.beginPath();
+          satinCtx.moveTo(0, h * 0.4 + i * 80);
+          for (let x = 0; x < w; x += 30) {
+            const y = (h * 0.4 + i * 80) + Math.sin(x * 0.003 + satinTime + i) * 60 + Math.cos(x * 0.006 - satinTime) * 35;
+            satinCtx.lineTo(x, y);
+          }
+          satinCtx.lineTo(w, h);
+          satinCtx.lineTo(0, h);
+          satinCtx.closePath();
+          satinCtx.fillStyle = `rgba(223, 183, 76, ${0.02 + i * 0.01})`;
+          satinCtx.fill();
+        }
+        requestAnimationFrame(stepSatin);
+      }
+      requestAnimationFrame(stepSatin);
+
+      // Gold Coin Confetti Particles
       const fxCanvas = document.getElementById("fxCanvas");
       const fxCtx = fxCanvas.getContext("2d");
       let coins = [];
-
-      function resizeCanvas() {
-        fxCanvas.width = window.innerWidth;
-        fxCanvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resizeCanvas);
-      resizeCanvas();
 
       function spawnCoins(count = 35) {
         for (let i = 0; i < count; i++) {
@@ -1803,9 +2106,9 @@
         const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const entry = `[${time}] ${text}`;
         state.logs.unshift(entry);
-        if (state.logs.length > 50) state.logs.pop();
+        if (state.logs.length > 60) state.logs.pop();
         renderLogs();
-        saveGameState();
+        saveGameState(true);
       }
 
       function renderLogs() {
@@ -1818,30 +2121,24 @@
         });
       }
 
-      // --- 06. RENDER CREW BARS & SCOREBOARDS ---
-      function renderCrewBars() {
+      // --- 06. RENDER CREW BAR & STANDINGS ---
+      function renderCrewBar() {
         const bar = document.getElementById("crewBar");
         bar.innerHTML = "";
-
-        // Find max score for leader badge
         const maxScore = Math.max(...state.teams.map(t => t.score));
 
         state.teams.forEach((team, idx) => {
           const pill = document.createElement("div");
-          pill.className = `crew-pill ${idx === state.currentTurn ? "active-turn" : ""}`;
+          pill.className = `crew-pill ${idx === state.myTeamIdx ? "active-my-team" : ""}`;
           pill.onclick = () => {
-            state.currentTurn = idx;
-            if (team.frozen) {
-              team.frozen = false;
-              addLog(`❄️ ${team.name}'s Drinker's Freeze expired on their turn.`);
-            }
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            state.myTeamIdx = idx;
+            state.targetTeamIdx = team.targetIdx;
+            saveGameState(false);
+            renderCrewBar();
+            renderScoringTab();
           };
 
           const isLeader = team.score === maxScore && maxScore > 0;
-
           pill.innerHTML = `
             ${team.frozen ? `<div class="frozen-banner">❄️ FROZEN</div>` : ""}
             <div class="crew-pill-head">
@@ -1853,169 +2150,245 @@
               <div class="crew-score-big">${team.score}</div>
             </div>
             <div class="crew-rival-tag">
-              🎯 Targets: ${team.targetName} · ${team.sips} sips
+              🎯 Targets: ${team.targetName} • ${team.sips} sips
             </div>
           `;
           bar.appendChild(pill);
         });
       }
 
-      function renderScoreboardTab() {
-        const grid = document.getElementById("teamsLedgerGrid");
-        grid.innerHTML = "";
+      // --- 07. STEP-BY-STEP DYNAMIC SCORING (CHOOSE YOUR TEAM -> TARGET) ---
+      function renderScoringTab() {
+        // Step 1: Render My Team Picker
+        const myPicker = document.getElementById("myTeamPicker");
+        myPicker.innerHTML = "";
+        state.teams.forEach((t, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `btn-pick-team ${idx === state.myTeamIdx ? "selected" : ""}`;
+          btn.innerHTML = `
+            <span class="crew-dot ${t.colorClass}"></span>
+            <span>${t.name}</span>
+            <span class="sub">${idx === state.myTeamIdx ? "★ YOUR CREW" : "Select"}</span>
+          `;
+          btn.onclick = () => {
+            state.myTeamIdx = idx;
+            // Default target to cross-scoring rival
+            state.targetTeamIdx = t.targetIdx;
+            saveGameState(false);
+            renderCrewBar();
+            renderScoringTab();
+          };
+          myPicker.appendChild(btn);
+        });
 
-        const maxScore = Math.max(...state.teams.map(t => t.score));
+        // Step 2: Render Target Team Picker
+        const targetPicker = document.getElementById("targetTeamPicker");
+        targetPicker.innerHTML = "";
+        state.teams.forEach((t, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `btn-pick-team ${idx === state.targetTeamIdx ? "selected" : ""}`;
+          const isOfficialRival = idx === state.teams[state.myTeamIdx].targetIdx;
+          btn.innerHTML = `
+            <span class="crew-dot ${t.colorClass}"></span>
+            <span>${t.name}</span>
+            <span class="sub">${isOfficialRival ? "🎯 OFFICIAL RIVAL" : idx === state.myTeamIdx ? "(Your Team)" : "Target"}</span>
+          `;
+          btn.onclick = () => {
+            state.targetTeamIdx = idx;
+            saveGameState(false);
+            renderScoringTab();
+          };
+          targetPicker.appendChild(btn);
+        });
 
-        state.teams.forEach((team, idx) => {
-          const card = document.createElement("div");
-          const isLeader = team.score === maxScore && maxScore > 0;
-          card.className = `team-box ${isLeader ? "leader" : ""}`;
+        // Step 3: Render Active Scoring Console
+        const consoleEl = document.getElementById("scoringConsole");
+        const myTeam = state.teams[state.myTeamIdx];
+        const targetTeam = state.teams[state.targetTeamIdx];
 
-          card.innerHTML = `
-            ${isLeader ? `<div class="crown-badge">👑 LEADER</div>` : ""}
-            <div class="team-box-header">
-              <div class="team-title-group">
-                <span class="crew-dot ${team.colorClass}"></span>
-                <div>
-                  <div class="team-title-text">${team.name}</div>
-                  <div class="team-sub-target">Tracks: ${team.targetName} ${team.frozen ? "• ❄️ FROZEN" : ""}</div>
+        consoleEl.innerHTML = `
+          <div class="scoring-header-row">
+            <div class="scoring-identity">
+              <span class="crew-dot ${targetTeam.colorClass}" style="width: 14px; height: 14px;"></span>
+              <div>
+                <div class="scoring-target-badge">
+                  <span>${targetTeam.name}</span>
+                  ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #0284c7;">[❄️ FROZEN]</span>` : ""}
+                </div>
+                <div style="font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-muted);">
+                  Scoring logged by: <strong>${myTeam.name}</strong> • ${targetTeam.sips} drinks taken
                 </div>
               </div>
-              <button type="button" class="btn-stop-check" style="font-size: 0.8rem; padding: 2px 6px;" data-set-turn="${idx}">
-                ${idx === state.currentTurn ? "⚔️ ACTIVE" : "Set Turn"}
-              </button>
             </div>
 
-            <!-- Score & Sips Row -->
-            <div class="score-sip-row">
-              <div class="stat-block">
-                <div class="stat-label">POINTS</div>
-                <div class="stat-val" style="color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</div>
+            <div class="big-score-display">
+              <div class="big-score-num" style="color: ${targetTeam.score < 0 ? '#9e1b1b' : 'inherit'};">
+                ${targetTeam.score}
               </div>
-              <div class="stat-block">
-                <div class="stat-label">SIPS TAKEN</div>
-                <div class="stat-val" style="color: #6b3e19;">${team.sips}</div>
-              </div>
+              <div class="big-score-label">POINTS</div>
             </div>
+          </div>
 
-            <!-- Score Adjuster Buttons -->
-            <div class="score-btn-group">
-              <button class="score-btn plus" data-adjust-score="${idx}" data-val="1">+1 pt</button>
-              <button class="score-btn plus" data-adjust-score="${idx}" data-val="6">+6 pt</button>
-              <button class="score-btn minus" data-adjust-score="${idx}" data-val="-1">-1 pt</button>
-              <button class="score-btn minus" data-adjust-score="${idx}" data-val="-6">-6 pt</button>
+          <!-- Quick Scoring Triggers -->
+          <div class="score-action-grid">
+            <button type="button" class="btn-score-tap deduct" data-uno-score="skip">
+              <span>🚫 SKIP</span>
+              <small>-1 Point & 1 Sip</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="draw2">
+              <span>+2 DRAW</span>
+              <small>-2 Points & 2 Sips</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="stack4">
+              <span>+4 STACK</span>
+              <small>-4 Points & 4 Sips</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="spew">
+              <span>🤮 SPEWING</span>
+              <small>-5 Points Penalty</small>
+            </button>
+
+            <button type="button" class="btn-score-tap reward" data-uno-score="reverse">
+              <span>🔄 REVERSE</span>
+              <small>+4 Defender / -4 Atk</small>
+            </button>
+            <button type="button" class="btn-score-tap reward" data-uno-score="wheelwin">
+              <span>🎡 WHEEL WIN</span>
+              <small>+6 Points</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="wheelloss">
+              <span>🎡 WHEEL LOSS</span>
+              <small>-6 Points</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="rulebreak">
+              <span>⚠️ RULE VIOLATION</span>
+              <small>-1 Point & 1 Sip</small>
+            </button>
+          </div>
+
+          <!-- Sip Incrementers & Freeze Toggle -->
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button type="button" class="btn-score-tap drink" style="flex: 1;" data-sip-add="1">
+              <span>🍺 +1 Sip</span>
+            </button>
+            <button type="button" class="btn-score-tap drink" style="flex: 1;" data-sip-add="2">
+              <span>🍺🍺 +2 Sips</span>
+            </button>
+            <button type="button" class="btn-score-tap drink" style="flex: 1;" data-sip-add="4">
+              <span>🥃 +1 Shot / Chug</span>
+            </button>
+            <button type="button" class="btn-score-tap" style="flex: 1; background: #e0f2fe; color: #0369a1; border-color: #0369a1;" data-freeze-toggle="true">
+              <span>${targetTeam.frozen ? "☀️ Defrost" : "❄️ Freeze"}</span>
+            </button>
+          </div>
+
+          <!-- Stash Control -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(223, 183, 76, 0.16); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--gold); font-size: 0.86rem;">
+            <span>🃏 Captain's Stash (Wild Cards): <strong>${targetTeam.stash}</strong>/2 (+1 pt each at end)</span>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-stop-check" data-stash-change="-1">-</button>
+              <button type="button" class="btn-stop-check" data-stash-change="1">+</button>
             </div>
+          </div>
+        `;
 
-            <div style="display: flex; gap: 4px;">
-              <button class="score-btn" style="flex: 1;" data-adjust-sip="${idx}" data-val="1">🍺 +1 Sip</button>
-              <button class="score-btn" style="flex: 1;" data-adjust-sip="${idx}" data-val="2">🍺🍺 +2 Sips</button>
-            </div>
-
-            <!-- Captain's Stash -->
-            <div class="stash-row">
-              <span>🃏 Captain's Stash (Wilds): <strong>${team.stash}</strong>/2</span>
-              <div class="stash-controls">
-                <button class="btn-stash-tally" data-stash="${idx}" data-dir="-1">-</button>
-                <button class="btn-stash-tally" data-stash="${idx}" data-dir="1">+</button>
-              </div>
-            </div>
-
-            <!-- Quick Card Penalty Shortcuts -->
-            <div class="uno-shortcuts-title">⚡ Quick Triggers:</div>
-            <div class="uno-shortcuts-grid">
-              <button class="btn-uno-trigger" data-trigger="skip" data-team="${idx}">🚫 Skip (-1)</button>
-              <button class="btn-uno-trigger" data-trigger="draw2" data-team="${idx}">+2 Draw (-2)</button>
-              <button class="btn-uno-trigger" data-trigger="stack4" data-team="${idx}">+4 Stack (-4)</button>
-              <button class="btn-uno-trigger" data-trigger="spew" data-team="${idx}">🤮 Spew (-5)</button>
-              <button class="btn-uno-trigger" data-trigger="rulebreak" data-team="${idx}">⚠️ Rule (-1)</button>
-              <button class="btn-uno-trigger" data-trigger="freeze" data-team="${idx}">❄️ Freeze</button>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-
-        // Attach dynamic button handlers
-        grid.querySelectorAll("[data-set-turn]").forEach(b => {
-          b.onclick = () => {
-            state.currentTurn = parseInt(b.dataset.setTurn, 10);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
-          };
-        });
-
-        grid.querySelectorAll("[data-adjust-score]").forEach(b => {
-          b.onclick = () => {
-            const teamIdx = parseInt(b.dataset.adjustScore, 10);
-            const val = parseInt(b.dataset.val, 10);
-            state.teams[teamIdx].score += val;
-            addLog(`${state.teams[teamIdx].name} score adjusted by ${val > 0 ? "+" + val : val} (${state.teams[teamIdx].score} total)`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
-          };
-        });
-
-        grid.querySelectorAll("[data-adjust-sip]").forEach(b => {
-          b.onclick = () => {
-            const teamIdx = parseInt(b.dataset.adjustSip, 10);
-            const val = parseInt(b.dataset.val, 10);
-            state.teams[teamIdx].sips += val;
-            addLog(`🍺 ${state.teams[teamIdx].name} took ${val} sip(s). (${state.teams[teamIdx].sips} total)`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
-          };
-        });
-
-        grid.querySelectorAll("[data-stash]").forEach(b => {
-          b.onclick = () => {
-            const teamIdx = parseInt(b.dataset.stash, 10);
-            const dir = parseInt(b.dataset.dir, 10);
-            state.teams[teamIdx].stash = Math.max(0, Math.min(2, state.teams[teamIdx].stash + dir));
-            addLog(`🃏 ${state.teams[teamIdx].name} captain's stash: ${state.teams[teamIdx].stash} wild card(s).`);
-            saveGameState();
-            renderScoreboardTab();
-          };
-        });
-
-        grid.querySelectorAll("[data-trigger]").forEach(b => {
-          b.onclick = () => {
-            const action = b.dataset.trigger;
-            const tIdx = parseInt(b.dataset.team, 10);
-            const t = state.teams[tIdx];
-
-            if (action === "skip") {
-              t.score -= 1;
-              t.sips += 1;
-              addLog(`🚫 SKIP: ${t.name} skipped (-1 pt & 1 sip).`);
-            } else if (action === "draw2") {
-              t.score -= 2;
-              t.sips += 2;
-              addLog(`+2 DRAW: ${t.name} draws 2 & drinks 2 sips (-2 pts).`);
-            } else if (action === "stack4") {
-              t.score -= 4;
-              t.sips += 4;
-              addLog(`+4 STACK: ${t.name} hit with stacked +4 (-4 pts & 4 sips).`);
-            } else if (action === "spew") {
-              t.score -= 5;
-              addLog(`🤮 SPEWING PENALTY: ${t.name} chundered! (-5 pts).`);
-            } else if (action === "rulebreak") {
-              t.score -= 1;
-              t.sips += 1;
-              addLog(`⚠️ RULE VIOLATION: ${t.name} broke pub rule (-1 pt & 1 sip).`);
-            } else if (action === "freeze") {
-              t.frozen = !t.frozen;
-              addLog(t.frozen ? `❄️ Drinker's Freeze applied to ${t.name}!` : `☀️ Drinker's Freeze removed from ${t.name}.`);
+        // Attach action handlers
+        consoleEl.querySelectorAll("[data-uno-score]").forEach(btn => {
+          btn.onclick = () => {
+            const act = btn.dataset.unoScore;
+            if (act === "skip") {
+              targetTeam.score -= 1;
+              targetTeam.sips += 1;
+              addLog(`🚫 SKIP: ${myTeam.name} skipped ${targetTeam.name} (-1 pt, 1 sip).`);
+            } else if (act === "draw2") {
+              targetTeam.score -= 2;
+              targetTeam.sips += 2;
+              addLog(`+2 DRAW: ${myTeam.name} hit ${targetTeam.name} with Draw 2 (-2 pts, 2 sips).`);
+            } else if (act === "stack4") {
+              targetTeam.score -= 4;
+              targetTeam.sips += 4;
+              addLog(`+4 STACK: ${targetTeam.name} hit with stacked +4 (-4 pts, 4 sips).`);
+            } else if (act === "spew") {
+              targetTeam.score -= 5;
+              addLog(`🤮 SPEW: ${targetTeam.name} suffered a spewing penalty! (-5 pts).`);
+            } else if (act === "reverse") {
+              targetTeam.score += 4;
+              myTeam.score -= 4;
+              addLog(`🔄 REVERSE: ${targetTeam.name} reversed attack! (+4 to defender, -4 to attacker).`);
+            } else if (act === "wheelwin") {
+              targetTeam.score += 6;
+              addLog(`🎡 WHEEL VICTORY: ${targetTeam.name} awarded +6 points.`);
+            } else if (act === "wheelloss") {
+              targetTeam.score -= 6;
+              addLog(`🎡 WHEEL DEFEAT: ${targetTeam.name} docked -6 points.`);
+            } else if (act === "rulebreak") {
+              targetTeam.score -= 1;
+              targetTeam.sips += 1;
+              addLog(`⚠️ RULE BREAK: ${targetTeam.name} violated house rule (-1 pt, 1 sip).`);
             }
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
           };
+        });
+
+        consoleEl.querySelectorAll("[data-sip-add]").forEach(btn => {
+          btn.onclick = () => {
+            const count = parseInt(btn.dataset.sipAdd, 10);
+            targetTeam.sips += count;
+            addLog(`🍺 ${targetTeam.name} logged ${count} drink/sip(s) by ${myTeam.name}.`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+          };
+        });
+
+        consoleEl.querySelector("[data-freeze-toggle]").onclick = () => {
+          targetTeam.frozen = !targetTeam.frozen;
+          addLog(targetTeam.frozen ? `❄️ Drinker's Freeze activated on ${targetTeam.name}!` : `☀️ Freeze lifted from ${targetTeam.name}.`);
+          saveGameState(true);
+          renderCrewBar();
+          renderScoringTab();
+        };
+
+        consoleEl.querySelectorAll("[data-stash-change]").forEach(btn => {
+          btn.onclick = () => {
+            const dir = parseInt(btn.dataset.stashChange, 10);
+            targetTeam.stash = Math.max(0, Math.min(2, targetTeam.stash + dir));
+            addLog(`🃏 ${targetTeam.name} Captain's Stash updated to ${targetTeam.stash} Wild(s).`);
+            saveGameState(true);
+            renderScoringTab();
+          };
+        });
+
+        renderStandingsTable();
+      }
+
+      function renderStandingsTable() {
+        const tbody = document.getElementById("standingsTableBody");
+        tbody.innerHTML = "";
+
+        // Sort teams descending by score
+        const sorted = [...state.teams].sort((a, b) => b.score - a.score);
+        sorted.forEach((team, rank) => {
+          const tr = document.createElement("tr");
+          if (rank === 0 && team.score > 0) tr.className = "leader-row";
+          tr.innerHTML = `
+            <td>${rank === 0 ? "👑 1st" : rank === 1 ? "2nd" : rank === 2 ? "3rd" : "4th"}</td>
+            <td><span class="crew-dot ${team.colorClass}"></span> <strong>${team.name}</strong></td>
+            <td>${team.targetName}</td>
+            <td style="font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 1.15rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
+            <td>${team.sips} sips</td>
+            <td>${team.stash}/2 wild</td>
+            <td>${team.frozen ? "❄️ FROZEN" : "Active"}</td>
+          `;
+          tbody.appendChild(tr);
         });
       }
 
-      // --- 07. RENDER 10 PUB CRAWL STOPS ---
+      // --- 08. RENDER INTERACTIVE MAP & 10 STOPS ---
       let editingStopIdx = 0;
 
       function renderStops() {
@@ -2026,39 +2399,62 @@
         document.getElementById("tickerPubName").textContent = `Stop ${currentStop.num}: ${currentStop.name}`;
         document.getElementById("tickerPubRule").textContent = `Rule 0: "${currentStop.rule}"`;
 
+        // Update active SVG pin on map
+        document.querySelectorAll(".map-pin").forEach(pin => {
+          const pinIdx = parseInt(pin.dataset.pin, 10);
+          if (pinIdx === state.currentStopIdx) {
+            pin.classList.add("active-stop");
+          } else {
+            pin.classList.remove("active-stop");
+          }
+        });
+
         state.stops.forEach((stop, idx) => {
           const isCurr = idx === state.currentStopIdx;
           const card = document.createElement("div");
-          card.className = `stop-card ${isCurr ? "is-current" : ""} ${stop.visited ? "is-visited" : ""}`;
+          card.className = `stop-card ${isCurr ? "is-current" : ""}`;
 
           card.innerHTML = `
             <div class="stop-head">
               <div class="stop-num">${stop.num}</div>
               <div class="stop-title">${stop.name}</div>
-              ${isCurr ? `<span style="font-size: 0.72rem; font-weight: bold; color: #8d0801;">HERE NOW 📍</span>` : ""}
+              ${isCurr ? `<span style="font-size: 0.74rem; font-weight: bold; color: #8d0801;">HERE NOW 📍</span>` : ""}
             </div>
             <div class="stop-rule-box">
               <strong>Rule 0:</strong> "${stop.rule}"
             </div>
             <div class="stop-actions">
               <button type="button" class="btn-stop-check" style="${isCurr ? 'background: #2b9348; color: #fff;' : ''}" data-set-stop="${idx}">
-                ${isCurr ? "✓ Current Pub" : "Mark Here"}
+                ${isCurr ? "✓ Checked In" : "Check In"}
               </button>
               <button type="button" class="btn-stop-check" data-edit-rule="${idx}">
-                ✏️ Edit Rule 0
+                ✏️ Rule 0
               </button>
+              <a href="${stop.mapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-stop-check" style="color: #1d63b8;">
+                🗺️ Directions ↗
+              </a>
             </div>
           `;
           grid.appendChild(card);
+        });
+
+        // Pin click events
+        document.querySelectorAll(".map-pin").forEach(pin => {
+          pin.onclick = () => {
+            const idx = parseInt(pin.dataset.pin, 10);
+            state.currentStopIdx = idx;
+            addLog(`📍 Crawl checked in at Stop ${state.stops[idx].num}: ${state.stops[idx].name}`);
+            saveGameState(true);
+            renderStops();
+          };
         });
 
         grid.querySelectorAll("[data-set-stop]").forEach(b => {
           b.onclick = () => {
             const idx = parseInt(b.dataset.setStop, 10);
             state.currentStopIdx = idx;
-            state.stops[idx].visited = true;
-            addLog(`📍 Pub crawl moved to Stop ${state.stops[idx].num}: ${state.stops[idx].name}. Rule 0: "${state.stops[idx].rule}"`);
-            saveGameState();
+            addLog(`📍 Crawl checked in at Stop ${state.stops[idx].num}: ${state.stops[idx].name}`);
+            saveGameState(true);
             renderStops();
           };
         });
@@ -2072,47 +2468,45 @@
         });
       }
 
-      // Rule 0 Modal Listeners
       document.getElementById("saveRuleBtn").onclick = () => {
         const val = document.getElementById("ruleInput").value.trim();
         if (val) {
           state.stops[editingStopIdx].rule = val;
           addLog(`📜 Rule 0 updated for Stop ${state.stops[editingStopIdx].num}: "${val}"`);
-          saveGameState();
+          saveGameState(true);
           renderStops();
         }
         document.getElementById("ruleModal").classList.remove("open");
       };
-
       document.getElementById("closeRuleModalBtn").onclick = () => {
         document.getElementById("ruleModal").classList.remove("open");
       };
 
-      // --- 08. TAB SWITCHING SYSTEM ---
-      document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
-        btn.onclick = () => {
-          const tabId = btn.dataset.tab;
-          document.querySelectorAll(".tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
+      // --- 09. RENDER UNO CARD CODEX (SIMPLIFIED RULES) ---
+      function renderUnoCodex() {
+        const grid = document.getElementById("rulesCodexGrid");
+        grid.innerHTML = "";
+        UNO_CODEX.forEach(c => {
+          const card = document.createElement("div");
+          card.className = "codex-card";
+          card.innerHTML = `
+            <div class="uno-card-art ${c.isWild ? 'card-wild' : ''}" style="${c.isWild ? '' : 'background: ' + c.bg};">
+              <span>${c.code}</span>
+            </div>
+            <div class="codex-body">
+              <div class="codex-title">
+                <span>${c.title}</span>
+                <span class="impact-pill ${c.impactType}">${c.impact}</span>
+              </div>
+              <div class="codex-desc">${c.desc}</div>
+              <div class="codex-drink">🍺 Penalty: ${c.drink}</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
 
-          document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-          const target = document.getElementById(`tab-${tabId}`);
-          if (target) target.classList.add("active");
-        };
-      });
-
-      // --- 09. MAP LIGHTBOX SYSTEM ---
-      document.getElementById("openLightboxBtn").onclick = () => {
-        document.getElementById("mapLightbox").classList.add("open");
-      };
-      document.getElementById("mapThumb").onclick = () => {
-        document.getElementById("mapLightbox").classList.add("open");
-      };
-      document.getElementById("closeLightboxBtn").onclick = () => {
-        document.getElementById("mapLightbox").classList.remove("open");
-      };
-
-      // --- 10. WHEEL PHYSICS, SPIN ANIMATION & DRAG FLICK ---
+      // --- 10. POLISHED WHEEL OF DOOM WITH GSAP EASING ---
       const wheelWrapper = document.getElementById("wheelWrapper");
       const wheelSvg = document.getElementById("doomWheelSvg");
       const pointer = document.getElementById("wheelPointer");
@@ -2120,22 +2514,15 @@
       const powerBar = document.getElementById("powerBar");
 
       let currentAngle = 0;
-      let angularVelocity = 0;
       let isSpinning = false;
       let chargePower = 0;
       let chargeInterval = null;
-      let lastPegSector = 0;
 
-      // 4 Quadrants Definition
-      // Standard SVG layout:
-      // Red: Top (center 0 deg / 360 deg)
-      // Blue: Right (90 deg)
-      // Green: Bottom (180 deg)
-      // Yellow: Left (270 deg)
+      // 4 Quadrants: Uno Colors for Looks Only
       const QUADRANTS = [
-        { id: "RED", name: "Drink Swapper", color: "RED", desc: "Swap your current drink with another team's drink of your choice!", bg: "#d62828" },
+        { id: "RED", name: "Drink Swapper", color: "RED", desc: "Swap your current drink with any rival team's drink of your choice!", bg: "#d62828" },
         { id: "BLUE", name: "Shot Roulette", color: "BLUE", desc: "Nominate 1 rival player to take a mystery sip or shot!", bg: "#1d63b8" },
-        { id: "GREEN", name: "Chug Challenge", color: "GREEN", desc: "5-second head-to-head chug race vs the attacker! (+6 pts winner / -6 pts loser).", bg: "#2b9348" },
+        { id: "GREEN", name: "Chug Challenge", color: "GREEN", desc: "5-second head-to-head chug race vs attacker! (+6 pts winner / -6 pts loser).", bg: "#2b9348" },
         { id: "YELLOW", name: "Drinker's Freeze", color: "YELLOW", desc: "Stops all drinking penalties for that targeted team until their next turn!", bg: "#f7b801" }
       ];
 
@@ -2143,86 +2530,67 @@
         if (isSpinning) return;
         isSpinning = true;
         ensureAudio();
-        // Base spin speed + random jitter + power boost
-        angularVelocity = 14 + (power / 100) * 24 + Math.random() * 8;
-        requestAnimationFrame(spinAnimationLoop);
+
+        // Extra rotations + power boost
+        const extraTurns = 5 + Math.floor((power / 100) * 4);
+        const randomTargetAngle = Math.random() * 360;
+        const totalDelta = extraTurns * 360 + randomTargetAngle;
+        const targetAngle = currentAngle + totalDelta;
+
+        let lastPeg = Math.floor(currentAngle / 15);
+
+        // GSAP 3 Smooth Physics Rotation
+        gsap.to(wheelSvg, {
+          rotation: targetAngle,
+          duration: 4.8 + (power / 100) * 1.5,
+          ease: "power4.out",
+          onUpdate: function () {
+            const rot = gsap.getProperty(wheelSvg, "rotation");
+            const curPeg = Math.floor(rot / 15);
+            if (curPeg !== lastPeg) {
+              lastPeg = curPeg;
+              playTick(500 + (curPeg % 8) * 20);
+              // Spring pointer needle deflection
+              gsap.fromTo(pointer, { rotation: -18 }, { rotation: 0, duration: 0.08, ease: "back.out(2)" });
+            }
+          },
+          onComplete: function () {
+            isSpinning = false;
+            currentAngle = targetAngle % 360;
+            resolveWheelOutcome(currentAngle);
+          }
+        });
       }
 
-      function spinAnimationLoop() {
-        if (!isSpinning) return;
-
-        currentAngle = (currentAngle + angularVelocity) % 360;
-        wheelSvg.style.transform = `rotate(${currentAngle}deg)`;
-
-        // Check peg tick (24 pegs total = every 15 degrees)
-        const pegSector = Math.floor(currentAngle / 15);
-        if (pegSector !== lastPegSector) {
-          lastPegSector = pegSector;
-          playTick(480 + Math.random() * 80);
-          pointer.style.transform = "rotate(-18deg)";
-          setTimeout(() => { pointer.style.transform = "rotate(0deg)"; }, 45);
-        }
-
-        // Realistic tavern friction deceleration
-        angularVelocity *= 0.984;
-
-        if (angularVelocity < 0.15) {
-          isSpinning = false;
-          angularVelocity = 0;
-          resolveWheelStop(currentAngle);
-        } else {
-          requestAnimationFrame(spinAnimationLoop);
-        }
-      }
-
-      function resolveWheelStop(angle) {
-        // Pointer is at the top (0 deg).
-        // The wheel rotated clockwise by `angle`.
-        // To find which quadrant is under the top pointer:
-        // effectiveAngle = (360 - (angle % 360)) % 360;
+      function resolveWheelOutcome(angle) {
         const normalized = (360 - (angle % 360)) % 360;
-
         let quadrantIdx = 0;
-        if (normalized >= 45 && normalized < 135) {
-          quadrantIdx = 1; // Blue (Right)
-        } else if (normalized >= 135 && normalized < 225) {
-          quadrantIdx = 2; // Green (Bottom)
-        } else if (normalized >= 225 && normalized < 315) {
-          quadrantIdx = 3; // Yellow (Left)
-        } else {
-          quadrantIdx = 0; // Red (Top)
-        }
+        if (normalized >= 45 && normalized < 135) quadrantIdx = 1; // Blue
+        else if (normalized >= 135 && normalized < 225) quadrantIdx = 2; // Green
+        else if (normalized >= 225 && normalized < 315) quadrantIdx = 3; // Yellow
+        else quadrantIdx = 0; // Red
 
         const outcome = QUADRANTS[quadrantIdx];
-        handleWheelOutcome(outcome);
+        openWheelOutcomeModal(outcome);
       }
 
-      function handleWheelOutcome(outcome) {
-        const attacker = state.teams[state.currentTurn];
+      function openWheelOutcomeModal(outcome) {
+        const myTeam = state.teams[state.myTeamIdx];
         playFanfare(outcome.id === "YELLOW" ? "freeze" : "win");
         spawnCoins(outcome.id === "GREEN" ? 50 : 30);
 
-        // Highlight matched rule card on wheel view
-        document.querySelectorAll(".rule-card-mini").forEach(c => c.classList.remove("target-active"));
-        const targetCard = document.getElementById(`card-${outcome.id}`);
-        if (targetCard) targetCard.classList.add("target-active");
-
-        // Populate Modal
         document.getElementById("modalOutcomeTitle").textContent = `${outcome.color} — ${outcome.name.toUpperCase()}`;
         document.getElementById("modalOutcomeDesc").textContent = outcome.desc;
 
-        const targetPicker = document.getElementById("modalTargetPicker");
-        const targetList = document.getElementById("targetTeamsList");
+        const targetList = document.getElementById("wheelTargetList");
         targetList.innerHTML = "";
+        let chosenVictimIdx = state.targetTeamIdx;
 
-        let chosenVictimIdx = (state.currentTurn + 1) % 4;
-
-        // Build rival target selector
         state.teams.forEach((t, idx) => {
-          if (idx !== state.currentTurn) {
+          if (idx !== state.myTeamIdx) {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "score-btn";
+            btn.className = "btn-stop-check";
             btn.style.padding = "8px 6px";
             btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
             if (idx === chosenVictimIdx) {
@@ -2233,7 +2601,7 @@
               chosenVictimIdx = idx;
               targetList.querySelectorAll("button").forEach(b => {
                 b.style.border = "1.5px solid var(--ink)";
-                b.style.background = "rgba(58, 34, 12, 0.12)";
+                b.style.background = "rgba(58, 34, 12, 0.14)";
               });
               btn.style.border = "2px solid var(--gold)";
               btn.style.background = "#fffdf5";
@@ -2241,87 +2609,83 @@
             targetList.appendChild(btn);
           }
         });
-        targetPicker.style.display = "block";
 
         const actionsBox = document.getElementById("modalOutcomeActions");
         actionsBox.innerHTML = "";
 
         if (outcome.id === "GREEN") {
-          // Chug Challenge: Head-to-Head (+6 to winner, -6 to loser)
-          const btnAtkWin = document.createElement("button");
-          btnAtkWin.className = "modal-btn";
-          btnAtkWin.textContent = `⚔️ ${attacker.name} Won Chug (+6 pts / -6 pts)`;
-          btnAtkWin.onclick = () => {
+          // Chug Challenge (+6 to winner / -6 to loser)
+          const btnAtk = document.createElement("button");
+          btnAtk.className = "modal-btn";
+          btnAtk.textContent = `⚔️ ${myTeam.name} Won (+6 pts / -6 pts)`;
+          btnAtk.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
-            attacker.score += 6;
+            myTeam.score += 6;
             victim.score -= 6;
             victim.sips += 4;
-            addLog(`🍺 CHUG CHALLENGE: ${attacker.name} won head-to-head vs ${victim.name}! (+6 pts / -6 pts).`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            addLog(`🍺 CHUG CHALLENGE: ${myTeam.name} defeated ${victim.name}! (+6 pts / -6 pts).`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
             document.getElementById("outcomeModal").classList.remove("open");
           };
 
-          const btnVicWin = document.createElement("button");
-          btnVicWin.className = "modal-btn";
-          btnVicWin.style.background = "#4a2810";
-          btnVicWin.textContent = `🛡️ Defender Won (+6 pts / -6 pts)`;
-          btnVicWin.onclick = () => {
+          const btnDef = document.createElement("button");
+          btnDef.className = "modal-btn";
+          btnDef.style.background = "#4a2810";
+          btnDef.textContent = `🛡️ Defender Won (+6 pts / -6 pts)`;
+          btnDef.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.score += 6;
-            attacker.score -= 6;
-            attacker.sips += 4;
-            addLog(`🛡️ CHUG CHALLENGE DEFENSE: ${victim.name} defeated ${attacker.name}! (+6 pts / -6 pts).`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            myTeam.score -= 6;
+            myTeam.sips += 4;
+            addLog(`🛡️ CHUG CHALLENGE: Defender ${victim.name} won against ${myTeam.name}! (+6 pts / -6 pts).`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
             document.getElementById("outcomeModal").classList.remove("open");
           };
-          actionsBox.appendChild(btnAtkWin);
-          actionsBox.appendChild(btnVicWin);
+          actionsBox.appendChild(btnAtk);
+          actionsBox.appendChild(btnDef);
 
         } else if (outcome.id === "YELLOW") {
-          // Drinker's Freeze (No point gain/loss, stops penalties)
           const btnFreeze = document.createElement("button");
           btnFreeze.className = "modal-btn";
           btnFreeze.textContent = `❄️ Freeze Target Team Until Next Turn`;
           btnFreeze.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.frozen = true;
-            addLog(`❄️ DRINKER'S FREEZE: ${attacker.name} froze ${victim.name}! All drinking penalties paused.`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            addLog(`❄️ DRINKER'S FREEZE: ${myTeam.name} froze ${victim.name}!`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
             document.getElementById("outcomeModal").classList.remove("open");
           };
           actionsBox.appendChild(btnFreeze);
 
         } else if (outcome.id === "RED") {
-          // Drink Swapper
           const btnSwap = document.createElement("button");
           btnSwap.className = "modal-btn";
           btnSwap.textContent = `🔄 Confirm Drink Swap`;
           btnSwap.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
-            addLog(`🔄 DRINK SWAP: ${attacker.name} swapped drinks with ${victim.name}!`);
-            saveGameState();
+            addLog(`🔄 DRINK SWAP: ${myTeam.name} swapped drinks with ${victim.name}!`);
+            saveGameState(true);
             document.getElementById("outcomeModal").classList.remove("open");
           };
           actionsBox.appendChild(btnSwap);
 
         } else if (outcome.id === "BLUE") {
-          // Shot Roulette
           const btnShot = document.createElement("button");
           btnShot.className = "modal-btn";
           btnShot.textContent = `🥃 Assign Mystery Sip / Shot`;
           btnShot.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.sips += 2;
-            addLog(`🥃 SHOT ROULETTE: ${attacker.name} nominated ${victim.name} for a mystery drink penalty!`);
-            saveGameState();
-            renderCrewBars();
-            renderScoreboardTab();
+            addLog(`🥃 SHOT ROULETTE: ${myTeam.name} nominated ${victim.name} for mystery drink!`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
             document.getElementById("outcomeModal").classList.remove("open");
           };
           actionsBox.appendChild(btnShot);
@@ -2334,7 +2698,7 @@
         document.getElementById("outcomeModal").classList.remove("open");
       };
 
-      // Hold-to-Charge Spin Interaction
+      // Spin Interactions
       spinBtn.addEventListener("pointerdown", (e) => {
         e.stopPropagation();
         if (isSpinning) return;
@@ -2345,7 +2709,7 @@
           chargePower = Math.min(100, chargePower + 4);
           powerBar.style.width = chargePower + "%";
           triggerHaptic(6);
-        }, 32);
+        }, 30);
       });
 
       window.addEventListener("pointerup", () => {
@@ -2353,76 +2717,244 @@
         clearInterval(chargeInterval);
         chargeInterval = null;
         launchSpin(chargePower);
-        setTimeout(() => { powerBar.style.width = "0%"; }, 450);
+        setTimeout(() => { powerBar.style.width = "0%"; }, 400);
       });
 
-      // Direct Touch Drag / Flick on Wheel Rim
+      // Direct Finger Drag & Flick
       let isDragging = false;
       let lastAngle = 0;
-      let dragStartAngle = 0;
       let dragVelocity = 0;
 
-      function getAngleFromCoords(cx, cy, px, py) {
+      function getAngleFromCenter(px, py) {
+        const rect = wheelWrapper.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
         return Math.atan2(py - cy, px - cx) * (180 / Math.PI);
       }
 
       wheelWrapper.addEventListener("pointerdown", (e) => {
-        if (e.target.closest("#spinBtn")) return;
-        if (isSpinning) return;
+        if (e.target.closest("#spinBtn") || isSpinning) return;
         ensureAudio();
         isDragging = true;
-        const rect = wheelWrapper.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        dragStartAngle = getAngleFromCoords(cx, cy, e.clientX, e.clientY);
-        lastAngle = dragStartAngle;
+        lastAngle = getAngleFromCenter(e.clientX, e.clientY);
         dragVelocity = 0;
       });
 
       window.addEventListener("pointermove", (e) => {
         if (!isDragging) return;
-        const rect = wheelWrapper.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const curAngle = getAngleFromCoords(cx, cy, e.clientX, e.clientY);
+        const curAngle = getAngleFromCenter(e.clientX, e.clientY);
         const delta = curAngle - lastAngle;
         lastAngle = curAngle;
         dragVelocity = delta;
-        currentAngle = (currentAngle + delta) % 360;
-        wheelSvg.style.transform = `rotate(${currentAngle}deg)`;
+        currentAngle += delta;
+        gsap.set(wheelSvg, { rotation: currentAngle });
       });
 
       window.addEventListener("pointerup", () => {
         if (!isDragging) return;
         isDragging = false;
         if (Math.abs(dragVelocity) > 2) {
-          isSpinning = true;
-          angularVelocity = dragVelocity * 1.6;
-          requestAnimationFrame(spinAnimationLoop);
+          launchSpin(Math.min(100, Math.abs(dragVelocity) * 8));
         }
       });
 
-      // --- 11. SOUND & RESET CONTROLS ---
+      // --- 11. SECRET BINGO LOGIC (PASSWORD: 22140711) ---
+      let selectedBingoCard = null;
+      let selectedBingoTargetTeamIdx = 0;
+
+      const openBingoBtn = document.getElementById("openBingoTabBtn");
+      const passcodeModal = document.getElementById("passcodeModal");
+      const passcodeInput = document.getElementById("passcodeInput");
+
+      openBingoBtn.onclick = () => {
+        if (state.bingoUnlocked) {
+          switchToTab("bingo");
+        } else {
+          passcodeInput.value = "";
+          passcodeModal.classList.add("open");
+          passcodeInput.focus();
+        }
+      };
+
+      document.getElementById("submitPasscodeBtn").onclick = checkPasscode;
+      passcodeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") checkPasscode();
+      });
+
+      function checkPasscode() {
+        const val = passcodeInput.value.trim();
+        if (val === BINGO_PASSCODE) {
+          state.bingoUnlocked = true;
+          sessionStorage.setItem("drunk_uno_bingo_unlocked", "true");
+          passcodeModal.classList.remove("open");
+          openBingoBtn.innerHTML = "<span>🎯 BINGO ✓</span>";
+          openBingoBtn.classList.remove("secret-tab");
+          switchToTab("bingo");
+          showToast("🔓 Secret Bingo Deck Unlocked!");
+          playFanfare("win");
+        } else {
+          passcodeInput.value = "";
+          passcodeInput.style.borderColor = "#d62828";
+          playTick(200);
+          showToast("❌ Incorrect Passcode!");
+          setTimeout(() => { passcodeInput.style.borderColor = "var(--ink)"; }, 800);
+        }
+      }
+      document.getElementById("closePasscodeModalBtn").onclick = () => {
+        passcodeModal.classList.remove("open");
+      };
+
+      function renderBingoGrid() {
+        const grid = document.getElementById("bingoGrid");
+        grid.innerHTML = "";
+
+        state.bingoCards.forEach(card => {
+          const tile = document.createElement("div");
+          tile.className = `bingo-card-tile ${card.claimedBy ? "claimed" : ""}`;
+          tile.innerHTML = `
+            <div class="bingo-tile-icon">${card.icon}</div>
+            <div class="bingo-tile-title">${card.title}</div>
+            <div class="bingo-tile-pts">${card.pts} PTS</div>
+            ${card.claimedBy ? `<div style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; text-align: center; color: #8d0801;">Target: ${card.claimedBy}</div>` : ""}
+          `;
+
+          tile.onclick = () => {
+            selectedBingoCard = card;
+            openBingoTargetModal(card);
+          };
+          grid.appendChild(tile);
+        });
+      }
+
+      function openBingoTargetModal(card) {
+        document.getElementById("bingoTargetTitle").textContent = `${card.icon} ${card.title}`;
+        document.getElementById("bingoTargetDesc").textContent = `Deducts ${Math.abs(card.pts)} points from the target crew: "${card.desc}".`;
+
+        const list = document.getElementById("bingoTargetTeamsList");
+        list.innerHTML = "";
+        selectedBingoTargetTeamIdx = state.targetTeamIdx;
+
+        state.teams.forEach((t, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-stop-check";
+          btn.style.padding = "8px 6px";
+          btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
+          if (idx === selectedBingoTargetTeamIdx) {
+            btn.style.border = "2px solid var(--gold)";
+            btn.style.background = "#fffdf5";
+          }
+          btn.onclick = () => {
+            selectedBingoTargetTeamIdx = idx;
+            list.querySelectorAll("button").forEach(b => {
+              b.style.border = "1.5px solid var(--ink)";
+              b.style.background = "rgba(58, 34, 12, 0.14)";
+            });
+            btn.style.border = "2px solid var(--gold)";
+            btn.style.background = "#fffdf5";
+          };
+          list.appendChild(btn);
+        });
+
+        document.getElementById("bingoTargetModal").classList.add("open");
+      }
+
+      document.getElementById("confirmBingoStrikeBtn").onclick = () => {
+        if (!selectedBingoCard) return;
+        const target = state.teams[selectedBingoTargetTeamIdx];
+        const points = selectedBingoCard.pts;
+        target.score += points;
+        selectedBingoCard.claimedBy = target.name;
+
+        addLog(`🎯 BINGO STRIKE: ${selectedBingoCard.icon} "${selectedBingoCard.title}" hit ${target.name} (${points} pts)!`);
+        playFanfare("win");
+        spawnCoins(25);
+        saveGameState(true);
+        renderCrewBar();
+        renderScoringTab();
+        renderBingoGrid();
+        document.getElementById("bingoTargetModal").classList.remove("open");
+      };
+
+      document.getElementById("cancelBingoTargetBtn").onclick = () => {
+        document.getElementById("bingoTargetModal").classList.remove("open");
+      };
+
+      // --- 12. TAB SWITCHING SYSTEM ---
+      function switchToTab(tabId) {
+        document.querySelectorAll(".tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
+        const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+        if (activeBtn) activeBtn.classList.add("active");
+        if (tabId === "bingo") openBingoBtn.classList.add("active");
+        else openBingoBtn.classList.remove("active");
+
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        const target = document.getElementById(`tab-${tabId}`);
+        if (target) target.classList.add("active");
+      }
+
+      document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
+        btn.onclick = () => { switchToTab(btn.dataset.tab); };
+      });
+
+      // --- 13. ROOM SYNC MODAL & SHARING ---
+      document.getElementById("syncRoomBtn").onclick = () => {
+        document.getElementById("roomCodeInput").value = roomCode;
+        document.getElementById("roomSyncModal").classList.add("open");
+      };
+
+      document.getElementById("joinRoomBtn").onclick = () => {
+        const newCode = document.getElementById("roomCodeInput").value.toUpperCase().trim();
+        if (newCode && newCode !== roomCode) {
+          roomCode = newCode;
+          window.history.replaceState({}, '', `?room=${roomCode}`);
+          initMqttSync();
+          showToast(`Connected to Room: ${roomCode}`);
+        }
+        document.getElementById("roomSyncModal").classList.remove("open");
+      };
+
+      document.getElementById("copyRoomLinkBtn").onclick = () => {
+        const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}`;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            showToast("📋 Share Link Copied to Clipboard!");
+          });
+        } else {
+          prompt("Copy this share URL to invite players:", shareUrl);
+        }
+      };
+
+      document.getElementById("closeRoomSyncModalBtn").onclick = () => {
+        document.getElementById("roomSyncModal").classList.remove("open");
+      };
+
+      // Map Lightbox
+      document.getElementById("openMapLightboxBtn").onclick = () => {
+        document.getElementById("mapLightbox").classList.add("open");
+      };
+      document.getElementById("closeMapLightboxBtn").onclick = () => {
+        document.getElementById("mapLightbox").classList.remove("open");
+      };
+
+      // Sound Toggle
       const soundBtn = document.getElementById("soundToggleBtn");
       soundBtn.onclick = () => {
         state.sound = !state.sound;
         soundBtn.textContent = state.sound ? "🔊 Sound" : "🔇 Muted";
-        saveGameState();
+        saveGameState(false);
       };
 
       document.getElementById("clearLogBtn").onclick = () => {
         state.logs = ["Battle log cleared."];
         renderLogs();
-        saveGameState();
+        saveGameState(true);
       };
 
+      // Reset Modal
       const resetModal = document.getElementById("resetModal");
-      document.getElementById("resetBtn").onclick = () => {
-        resetModal.classList.add("open");
-      };
-      document.getElementById("cancelResetBtn").onclick = () => {
-        resetModal.classList.remove("open");
-      };
+      document.getElementById("resetBtn").onclick = () => { resetModal.classList.add("open"); };
+      document.getElementById("cancelResetBtn").onclick = () => { resetModal.classList.remove("open"); };
 
       document.getElementById("confirmResetScoresBtn").onclick = () => {
         state.teams.forEach(t => {
@@ -2431,39 +2963,43 @@
           t.stash = 0;
           t.frozen = false;
         });
+        state.bingoCards.forEach(c => c.claimedBy = null);
         addLog("Scores reset to 12 pts for all teams.");
-        saveGameState();
-        renderCrewBars();
-        renderScoreboardTab();
+        saveGameState(true);
+        renderCrewBar();
+        renderScoringTab();
+        renderBingoGrid();
         resetModal.classList.remove("open");
         showToast("Scores reset to 12 pts");
       };
 
       document.getElementById("confirmFactoryResetBtn").onclick = () => {
-        state = {
-          teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
-          currentTurn: 0,
-          currentStopIdx: 0,
-          stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
-          logs: ["Fresh session initialized."],
-          sound: true
-        };
-        saveGameState();
-        renderCrewBars();
-        renderScoreboardTab();
+        state.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
+        state.myTeamIdx = 0;
+        state.targetTeamIdx = 1;
+        state.currentStopIdx = 0;
+        state.stops = JSON.parse(JSON.stringify(DEFAULT_STOPS));
+        state.bingoCards = JSON.parse(JSON.stringify(BINGO_CARDS));
+        state.logs = ["Fresh session initialized."];
+        saveGameState(true);
+        renderCrewBar();
+        renderScoringTab();
         renderStops();
+        renderBingoGrid();
         renderLogs();
         resetModal.classList.remove("open");
         showToast("Full Factory Reset Applied");
       };
 
-      // --- 12. INITIALIZATION ON PAGE BOOT ---
+      // --- 14. INITIAL BOOTSTRAP ---
       loadGameState();
-      renderCrewBars();
-      renderScoreboardTab();
+      renderCrewBar();
+      renderScoringTab();
       renderStops();
+      renderUnoCodex();
+      renderBingoGrid();
       renderLogs();
-      soundBtn.textContent = state.sound ? "🔊 Sound" : "🔇 Muted";
+      initMqttSync();
 
     })();
   </script>
