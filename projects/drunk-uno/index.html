@@ -30,6 +30,24 @@
   <!-- Paho MQTT WebSocket Client for Real-Time Phone Synchronization -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
+  <!-- Immediate Device Scheme Detection (Eliminates Theme Flash) -->
+  <script>
+    (function() {
+      try {
+        var mode = localStorage.getItem("drunk_uno_appearance_mode") || "system";
+        var isLight = false;
+        if (mode === "light") {
+          isLight = true;
+        } else if (mode === "system") {
+          isLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        }
+        if (isLight) {
+          document.documentElement.classList.add("light-mode");
+        }
+      } catch(e) {}
+    })();
+  </script>
+
   <style>
     /* =========================================================================
        01. PALETTE & DESIGN TOKENS (Tavern Parchment + Portfolio Tools)
@@ -2157,14 +2175,8 @@
     .rule-card,
     .bingo-tile,
     .modal-scroll,
-    .crew-setup-dialog {
-      width: min(94vw, 440px) !important;
-      max-width: 440px !important;
-      box-sizing: border-box !important;
-      overflow-x: hidden !important;
-      padding: 16px 14px !important;
-    }
-    .setup-step-box {
+    .setup-step-box,
+    .glass-panel {
       background: var(--glass-card-bg, rgba(42, 24, 12, 0.72)) !important;
       backdrop-filter: blur(16px) saturate(180%);
       -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -2176,6 +2188,14 @@
         0 0 22px -4px var(--theme-glow, rgba(0,0,0,0)) !important;
       border-radius: 14px;
       transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .crew-setup-dialog {
+      width: min(94vw, 440px) !important;
+      max-width: 440px !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      padding: 16px 14px !important;
     }
 
     /* Glossy Glass Buttons */
@@ -2387,6 +2407,242 @@
     body[class*="theme-"] .parchment-board {
       border-color: var(--theme-border) !important;
       box-shadow: var(--shadow-heavy), 0 0 50px var(--theme-glow) !important;
+    }
+
+    /* =========================================================================
+       LIGHT / DARK THEME SYSTEM (FOLLOWS DEVICE PREFERENCE + USER OVERRIDE)
+       ========================================================================= */
+    body.light-mode {
+      background: #f6efe2;
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(255, 240, 205, 0.95) 0%, rgba(246, 236, 218, 0.95) 60%, #e6d3ad 100%),
+        repeating-linear-gradient(45deg, rgba(160, 115, 60, 0.06) 0 2px, transparent 2px 8px);
+      color: #241609;
+    }
+    body.light-mode #satinCanvas,
+    body.light-mode .rubber-fluid-canvas {
+      opacity: 0.12;
+      mix-blend-mode: multiply;
+    }
+
+    /* Light Mode Team Palettes */
+    body.light-mode.theme-red {
+      --md-surface: #fdf5f5;
+      --md-surface-container: #fae8e8;
+      --md-surface-container-high: #f5d8d8;
+      --theme-primary: #c22020;
+      --theme-primary-dark: #8c0c0c;
+      --theme-glow: rgba(214, 40, 40, 0.32);
+      --theme-accent-bg: rgba(214, 40, 40, 0.10);
+      --theme-border: #d62828;
+      --glass-card-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: 1.5px solid rgba(214, 40, 40, 0.35);
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(255, 225, 225, 0.95) 0%, rgba(253, 240, 240, 0.95) 60%, #edd3d3 100%),
+        repeating-linear-gradient(45deg, rgba(214, 40, 40, 0.05) 0 2px, transparent 2px 8px);
+    }
+    body.light-mode.theme-blue {
+      --md-surface: #f4f8fe;
+      --md-surface-container: #e6f0fd;
+      --md-surface-container-high: #d6e6fc;
+      --theme-primary: #1963c6;
+      --theme-primary-dark: #0e3d7d;
+      --theme-glow: rgba(43, 127, 255, 0.32);
+      --theme-accent-bg: rgba(43, 127, 255, 0.10);
+      --theme-border: #1d63b8;
+      --glass-card-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: 1.5px solid rgba(43, 127, 255, 0.35);
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(222, 240, 255, 0.95) 0%, rgba(238, 246, 255, 0.95) 60%, #cfdff4 100%),
+        repeating-linear-gradient(45deg, rgba(43, 127, 255, 0.05) 0 2px, transparent 2px 8px);
+    }
+    body.light-mode.theme-green {
+      --md-surface: #f3fcf5;
+      --md-surface-container: #e2f7e7;
+      --md-surface-container-high: #d0f0d8;
+      --theme-primary: #218c3f;
+      --theme-primary-dark: #115625;
+      --theme-glow: rgba(46, 204, 113, 0.32);
+      --theme-accent-bg: rgba(46, 204, 113, 0.10);
+      --theme-border: #2b9348;
+      --glass-card-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: 1.5px solid rgba(46, 204, 113, 0.35);
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(224, 252, 232, 0.95) 0%, rgba(240, 252, 244, 0.95) 60%, #cdeada 100%),
+        repeating-linear-gradient(45deg, rgba(46, 204, 113, 0.05) 0 2px, transparent 2px 8px);
+    }
+    body.light-mode.theme-yellow {
+      --md-surface: #fdfaf2;
+      --md-surface-container: #faf1df;
+      --md-surface-container-high: #f5e4c6;
+      --theme-primary: #b86a04;
+      --theme-primary-dark: #7a4300;
+      --theme-glow: rgba(245, 158, 11, 0.32);
+      --theme-accent-bg: rgba(245, 158, 11, 0.10);
+      --theme-border: #d97706;
+      --glass-card-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: 1.5px solid rgba(245, 158, 11, 0.35);
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(255, 246, 220, 0.95) 0%, rgba(254, 250, 238, 0.95) 60%, #ede0be 100%),
+        repeating-linear-gradient(45deg, rgba(245, 158, 11, 0.05) 0 2px, transparent 2px 8px);
+    }
+
+    /* Navigation & Dock in Light Mode */
+    body.light-mode .top-bar {
+      background: rgba(255, 252, 245, 0.92) !important;
+      border: 1px solid var(--theme-border, #c2a26c) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 0 4px 18px rgba(100, 70, 30, 0.14), 0 0 16px var(--theme-glow, rgba(0,0,0,0)) !important;
+    }
+    body.light-mode .mobile-bottom-dock {
+      background: rgba(255, 252, 245, 0.95) !important;
+      border-top: 1.5px solid var(--theme-border, #c2a26c) !important;
+      box-shadow: 0 -8px 26px rgba(100, 70, 30, 0.14), 0 0 20px var(--theme-glow, rgba(0,0,0,0)) !important;
+    }
+    body.light-mode .dock-tab {
+      color: #4a341e !important;
+    }
+    body.light-mode .dock-tab:hover {
+      background: rgba(140, 100, 50, 0.12) !important;
+      color: #1a0f05 !important;
+    }
+    body.light-mode .dock-tab.active {
+      background: var(--theme-primary, #925424) !important;
+      color: #ffffff !important;
+      border-color: var(--theme-border) !important;
+    }
+    body.light-mode .dock-tab.secret-tab {
+      color: #8b1e1e !important;
+    }
+    body.light-mode .version-badge {
+      background: rgba(255, 255, 255, 0.88);
+      color: #5c3915;
+      border-color: var(--theme-border, #b38e50);
+      box-shadow: 0 2px 6px rgba(90, 60, 20, 0.14);
+    }
+    body.light-mode .back-home-link,
+    body.light-mode .settings-btn {
+      background: rgba(255, 255, 255, 0.85);
+      color: #3b230f;
+      border-color: var(--theme-border, #b38e50);
+      box-shadow: 0 2px 6px rgba(90, 60, 20, 0.12);
+    }
+    body.light-mode .back-home-link:hover,
+    body.light-mode .settings-btn:hover {
+      background: var(--theme-accent-bg);
+      color: var(--theme-primary);
+    }
+
+    /* Parchment Board & Inner Frame */
+    body.light-mode .parchment-board {
+      background:
+        radial-gradient(circle at 85% 80%, rgba(215, 180, 120, 0.2) 0%, transparent 22%),
+        radial-gradient(circle at 15% 15%, rgba(200, 165, 110, 0.16) 0%, transparent 18%),
+        radial-gradient(circle at 50% 50%, #fffdf8 0%, #faedd3 70%, #ebd7af 100%) !important;
+      border: 3.5px solid #6a421f !important;
+      box-shadow: 0 16px 45px rgba(80, 50, 20, 0.2), inset 0 0 35px rgba(180, 140, 70, 0.25) !important;
+    }
+    body.light-mode .celtic-frame {
+      border: 3px double #4a2d14 !important;
+    }
+    body.light-mode .celtic-frame::before,
+    body.light-mode .celtic-frame::after {
+      color: #7b4e22 !important;
+    }
+
+    /* Cards, Panels & Modals */
+    body.light-mode .glass-card,
+    body.light-mode .modal-scroll,
+    body.light-mode .crew-setup-dialog {
+      background: rgba(255, 253, 248, 0.94) !important;
+      border-color: var(--theme-border, #cca972) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 0 14px 34px rgba(70, 45, 20, 0.18), 0 0 20px var(--theme-glow, rgba(0,0,0,0)) !important;
+      color: #241609 !important;
+    }
+    body.light-mode .glass-panel,
+    body.light-mode .setup-step-box {
+      background: rgba(252, 245, 233, 0.85) !important;
+      border: 1.5px solid var(--theme-border, #d8c39e) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
+      color: #241609 !important;
+      box-shadow: 0 4px 12px rgba(80, 50, 20, 0.08) !important;
+    }
+    body.light-mode .glass-panel strong,
+    body.light-mode .setup-step-box strong {
+      color: #241609 !important;
+    }
+    body.light-mode .glass-input {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: var(--theme-border, #b5925a) !important;
+      color: #1a0f05 !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    }
+    body.light-mode .glass-input:focus {
+      border-color: var(--theme-primary) !important;
+      box-shadow: 0 0 14px var(--theme-glow), inset 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    }
+    body.light-mode .modal-title {
+      color: var(--theme-primary, #6b3f15) !important;
+      text-shadow: none !important;
+    }
+    body.light-mode .modal-body {
+      color: #4a341e !important;
+    }
+    body.light-mode .turn-status-banner {
+      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(255, 250, 242, 0.92) 100%) !important;
+      color: #241609 !important;
+      border-color: var(--theme-border) !important;
+    }
+    body.light-mode .turn-status-team strong {
+      color: #241609 !important;
+    }
+    body.light-mode .pub-ticker {
+      background: rgba(255, 250, 240, 0.88) !important;
+      color: #241609 !important;
+    }
+    body.light-mode .turn-ticker-box {
+      background: #fffcf5 !important;
+      color: #4a2e12 !important;
+      border-color: var(--theme-border, #b38e50) !important;
+    }
+    body.light-mode .admin-header-card {
+      background: linear-gradient(135deg, var(--theme-primary) 0%, #2f1708 100%) !important;
+      color: #fff !important;
+    }
+    body.light-mode .admin-card {
+      background: rgba(255, 253, 248, 0.94) !important;
+      border-color: var(--theme-border, #cca972) !important;
+    }
+    body.light-mode .podium-leaderboard-box {
+      background: rgba(255, 254, 250, 0.95) !important;
+      border-color: var(--theme-border, var(--ink)) !important;
+    }
+    body.light-mode .modal-btn.secondary {
+      background: rgba(240, 230, 212, 0.9) !important;
+      color: #3b2410 !important;
+      border-color: #ba9965 !important;
+    }
+    body.light-mode .modal-btn.secondary:hover {
+      background: rgba(230, 218, 192, 1) !important;
+    }
+    body.light-mode .btn-stop-check {
+      background: rgba(240, 230, 210, 0.85);
+      color: #3a220e;
+      border-color: #ba9965;
+    }
+    body.light-mode .btn-title-chip {
+      background: rgba(240, 230, 210, 0.85);
+      color: #422812;
+      border-color: #ba9965;
+    }
+
+    /* Appearance Mode Switcher Buttons */
+    .appearance-opt-btn.active {
+      background: var(--theme-primary, #925424) !important;
+      color: #ffffff !important;
+      border-color: var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 12px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
   </style>
 </head>
@@ -3634,6 +3890,27 @@
         </p>
       </div>
 
+      <!-- APPEARANCE: LIGHT / DARK / SYSTEM (AUTO) -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div>
+            <strong style="color: inherit; font-size: 0.98rem; display: block;">🌓 Appearance Theme</strong>
+            <span style="font-size: 0.74rem; color: var(--ink-faded);" id="appearanceStatusTxt">Following device settings (Auto)</span>
+          </div>
+        </div>
+        <div class="appearance-switcher" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px;">
+          <button type="button" class="appearance-opt-btn modal-btn" id="appearanceAutoBtn" data-mode="system" style="padding: 8px 4px; font-size: 0.78rem; text-align: center; white-space: nowrap;">
+            📱 System
+          </button>
+          <button type="button" class="appearance-opt-btn modal-btn secondary" id="appearanceDarkBtn" data-mode="dark" style="padding: 8px 4px; font-size: 0.78rem; text-align: center; white-space: nowrap;">
+            🌙 Dark
+          </button>
+          <button type="button" class="appearance-opt-btn modal-btn secondary" id="appearanceLightBtn" data-mode="light" style="padding: 8px 4px; font-size: 0.78rem; text-align: center; white-space: nowrap;">
+            ☀️ Light
+          </button>
+        </div>
+      </div>
+
       <!-- SOUND TOGGLE -->
       <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
         <div>
@@ -4340,6 +4617,132 @@
       let curC3 = [...THEME_SHADERS.RED.c3];
       let curSpec = [...THEME_SHADERS.RED.spec];
 
+      // =======================================================================
+      // APPEARANCE ENGINE (SYSTEM / DARK / LIGHT MODE)
+      // =======================================================================
+      const APPEARANCE_STORAGE_KEY = "drunk_uno_appearance_mode"; // 'system' | 'dark' | 'light'
+
+      function getAppearanceSetting() {
+        try {
+          return localStorage.getItem(APPEARANCE_STORAGE_KEY) || "system";
+        } catch (e) {
+          return "system";
+        }
+      }
+
+      function setAppearanceSetting(mode) {
+        try {
+          localStorage.setItem(APPEARANCE_STORAGE_KEY, mode);
+        } catch (e) {}
+        applyAppearanceMode();
+      }
+
+      function isSystemLightMode() {
+        return window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      }
+
+      function updateThemeColorMeta() {
+        const isLight = document.body ? document.body.classList.contains("light-mode") : isSystemLightMode();
+        const team = (state.teams && state.teams[state.myTeamIdx]) || (state.teams && state.teams[0]) || { colorClass: "red" };
+        const colorClass = team.colorClass || "red";
+
+        let titleBarHex = "#190e0e";
+        if (isLight) {
+          if (colorClass === "blue") titleBarHex = "#e8f1fc";
+          else if (colorClass === "green") titleBarHex = "#e8f7ee";
+          else if (colorClass === "yellow") titleBarHex = "#fbf5e6";
+          else titleBarHex = "#fbe8e8";
+        } else {
+          if (colorClass === "blue") titleBarHex = "#0a121e";
+          else if (colorClass === "green") titleBarHex = "#0b170e";
+          else if (colorClass === "yellow") titleBarHex = "#18130a";
+          else titleBarHex = "#190e0e";
+        }
+
+        document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
+
+        const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+        if (appleMeta) {
+          appleMeta.setAttribute("content", isLight ? "default" : "black-translucent");
+        }
+      }
+
+      function applyAppearanceMode() {
+        const setting = getAppearanceSetting();
+        let effectiveLight = false;
+        if (setting === "light") {
+          effectiveLight = true;
+        } else if (setting === "dark") {
+          effectiveLight = false;
+        } else {
+          effectiveLight = isSystemLightMode();
+        }
+
+        if (document.body) {
+          if (effectiveLight) {
+            document.body.classList.add("light-mode");
+          } else {
+            document.body.classList.remove("light-mode");
+          }
+        }
+        if (document.documentElement) {
+          if (effectiveLight) {
+            document.documentElement.classList.add("light-mode");
+          } else {
+            document.documentElement.classList.remove("light-mode");
+          }
+        }
+
+        updateThemeColorMeta();
+        updateAppearanceSettingsUI();
+      }
+
+      function updateAppearanceSettingsUI() {
+        const setting = getAppearanceSetting();
+        const sysLight = isSystemLightMode();
+
+        const statusTxt = document.getElementById("appearanceStatusTxt");
+        if (statusTxt) {
+          if (setting === "system") {
+            statusTxt.textContent = `Following device (${sysLight ? "☀️ Light" : "🌙 Dark"})`;
+          } else if (setting === "dark") {
+            statusTxt.textContent = "Forced Dark Mode 🌙";
+          } else {
+            statusTxt.textContent = "Forced Light Mode ☀️";
+          }
+        }
+
+        const autoBtn = document.getElementById("appearanceAutoBtn");
+        const darkBtn = document.getElementById("appearanceDarkBtn");
+        const lightBtn = document.getElementById("appearanceLightBtn");
+
+        if (autoBtn && darkBtn && lightBtn) {
+          [autoBtn, darkBtn, lightBtn].forEach(btn => {
+            btn.classList.remove("active");
+            btn.classList.add("secondary");
+          });
+          if (setting === "system") {
+            autoBtn.classList.remove("secondary");
+            autoBtn.classList.add("active");
+          } else if (setting === "dark") {
+            darkBtn.classList.remove("secondary");
+            darkBtn.classList.add("active");
+          } else if (setting === "light") {
+            lightBtn.classList.remove("secondary");
+            lightBtn.classList.add("active");
+          }
+        }
+      }
+
+      // Live responsive listener for device OS scheme change
+      if (window.matchMedia) {
+        window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+          if (getAppearanceSetting() === "system") {
+            applyAppearanceMode();
+          }
+        });
+      }
+
       function applyTeamTheme(teamIdx) {
         const team = state.teams[teamIdx] || state.teams[0];
         const colorKey = team.key || "RED";
@@ -4350,17 +4753,7 @@
         document.body.classList.add(`theme-${team.colorClass}`);
 
         // Update mobile browser chrome bar & iOS Safari / Android status bar
-        let titleBarHex = "#190e0e";
-        if (team.colorClass === "blue") titleBarHex = "#0a121e";
-        else if (team.colorClass === "green") titleBarHex = "#0b170e";
-        else if (team.colorClass === "yellow") titleBarHex = "#18130a";
-
-        // Update all meta theme-color tags (including iOS & Android titlebar matching)
-        document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
-
-        // Update apple mobile status bar style
-        const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-        if (appleMeta) appleMeta.setAttribute("content", "black-translucent");
+        updateThemeColorMeta();
       }
 
       function initRubberFluid() {
@@ -6041,6 +6434,8 @@
           if (soundBtn) {
             soundBtn.textContent = state.sound ? "🔊 Sound: ON" : "🔇 Sound: MUTED";
           }
+          // Refresh appearance mode buttons & status
+          updateAppearanceSettingsUI();
           // Populate device info
           const devInfo = document.getElementById("settingsDeviceInfoTxt");
           if (devInfo) {
@@ -6052,6 +6447,33 @@
           }
           settingsModal.classList.add("open");
           playTick(600);
+        };
+      }
+
+      // Appearance switcher button actions
+      const appAutoBtn = document.getElementById("appearanceAutoBtn");
+      const appDarkBtn = document.getElementById("appearanceDarkBtn");
+      const appLightBtn = document.getElementById("appearanceLightBtn");
+
+      if (appAutoBtn) {
+        appAutoBtn.onclick = () => {
+          setAppearanceSetting("system");
+          playTick(700);
+          showToast("🌓 Theme: Auto (Following Device)");
+        };
+      }
+      if (appDarkBtn) {
+        appDarkBtn.onclick = () => {
+          setAppearanceSetting("dark");
+          playTick(700);
+          showToast("🌙 Theme: Dark Mode");
+        };
+      }
+      if (appLightBtn) {
+        appLightBtn.onclick = () => {
+          setAppearanceSetting("light");
+          playTick(700);
+          showToast("☀️ Theme: Light Mode");
         };
       }
 
@@ -6404,6 +6826,7 @@
 
       // --- 14. INITIAL BOOTSTRAP ---
       loadGameState();
+      applyAppearanceMode();
       applyTeamTheme(state.myTeamIdx || 0);
       renderCrewBar();
       renderScoringTab();
