@@ -696,23 +696,23 @@
     }
 
     .wheel-pointer {
-      width: 54px;
-      height: 68px;
+      width: 46px;
+      height: 58px;
       position: absolute;
-      top: -24px;
-      left: calc(50% - 27px);
+      top: -16px;
+      left: calc(50% - 23px);
       z-index: 25;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.85));
-      transform-origin: 50% 23.7%;
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.85));
+      transform-origin: 50% 12px;
       pointer-events: none;
     }
 
     .wheel-wrapper {
       position: relative;
-      width: min(88vw, 420px);
-      height: min(88vw, 420px);
+      width: min(84vw, 400px);
+      height: min(84vw, 400px);
       margin: 10px auto 6px;
-      filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.85));
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75));
       touch-action: none;
       user-select: none;
     }
@@ -725,9 +725,7 @@
       will-change: transform;
       user-select: none;
       -webkit-user-drag: none;
-      pointer-events: auto;
       cursor: grab;
-      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6));
     }
     #doomWheelSvg:active {
       cursor: grabbing;
@@ -738,14 +736,14 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 86px;
-      height: 86px;
+      width: 94px;
+      height: 94px;
       border-radius: 50%;
-      background: radial-gradient(circle at 45% 38%, #a05a20 0%, #522709 60%, #1a0a03 100%);
-      border: 3.5px solid var(--gold);
+      background: radial-gradient(circle, #c91818 0%, #7d0d0d 70%, #3d0505 100%);
+      border: 4px solid var(--gold);
       color: var(--gold-bright);
       font-family: 'Pirata One', cursive;
-      font-size: 1.55rem;
+      font-size: 1.6rem;
       letter-spacing: 0.1em;
       cursor: pointer;
       display: flex;
@@ -753,34 +751,27 @@
       align-items: center;
       justify-content: center;
       box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.9),
-        inset 0 2px 4px rgba(255, 235, 150, 0.5),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.8);
+        0 6px 18px rgba(0, 0, 0, 0.8),
+        inset 0 2px 4px rgba(255, 235, 150, 0.6);
       z-index: 15;
-      transition: transform 0.12s ease, filter 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.1s ease;
       touch-action: manipulation;
     }
     .center-spin-btn:hover {
       filter: brightness(1.1);
       box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.95),
+        0 8px 24px rgba(0, 0, 0, 0.9),
         0 0 16px rgba(223, 183, 76, 0.5),
-        inset 0 2px 5px rgba(255, 255, 200, 0.7);
+        inset 0 2px 4px rgba(255, 235, 150, 0.8);
     }
     .center-spin-btn:active {
       transform: translate(-50%, -50%) scale(0.92);
-      filter: brightness(0.95);
     }
     .center-spin-btn small {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.54rem;
-      font-weight: 800;
+      font-size: 0.58rem;
       letter-spacing: 0.5px;
-      color: #ffd885;
-      margin-top: 2px;
-    }
-      letter-spacing: 0.05em;
-      color: #ffd699;
+      opacity: 0.85;
       margin-top: -2px;
     }
 
@@ -1550,10 +1541,16 @@
     .map-uno-card {
       cursor: pointer;
       pointer-events: auto;
-      transition: filter 0.2s ease;
     }
-    .map-uno-card:hover .card-body {
-      filter: drop-shadow(0 0 12px #ffea85) brightness(1.2);
+    .map-uno-card * {
+      pointer-events: none;
+    }
+    .map-uno-card .card-hitbox {
+      pointer-events: all;
+    }
+    .map-uno-card:hover .card-body rect {
+      stroke: #ffe066;
+      stroke-width: 2.5;
     }
     .map-uno-card:hover .card-halo {
       stroke: #ffe066;
@@ -2390,122 +2387,122 @@
     /* =========================================================================
        DYNAMIC TEAM COLOR CASCADES (ENTIRE WEBSITE ADAPTS TO SELECTED CREW)
        ========================================================================= */
-    body[class*="theme-"] .parchment-board {
+    body:not(.light-mode)[class*="theme-"] .parchment-board {
       background: var(--theme-board-bg) !important;
       border: 3.5px solid var(--theme-board-border) !important;
       box-shadow: 0 0 55px var(--theme-glow), var(--shadow-heavy) !important;
     }
-    body[class*="theme-"] .celtic-frame {
+    body:not(.light-mode)[class*="theme-"] .celtic-frame {
       border: 3px double var(--theme-border) !important;
       box-shadow: 0 0 28px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .celtic-frame::before,
-    body[class*="theme-"] .celtic-frame::after {
+    body:not(.light-mode)[class*="theme-"] .celtic-frame::before,
+    body:not(.light-mode)[class*="theme-"] .celtic-frame::after {
       color: var(--theme-celtic-accent) !important;
     }
-    body[class*="theme-"] .ribbon-banner {
+    body:not(.light-mode)[class*="theme-"] .ribbon-banner {
       background: var(--theme-ribbon-bg) !important;
       border: 2.5px solid var(--theme-border) !important;
       color: #ffffff !important;
       box-shadow: 0 6px 24px var(--theme-glow), inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
     }
-    body[class*="theme-"] .ribbon-banner svg circle {
+    body:not(.light-mode)[class*="theme-"] .ribbon-banner svg circle {
       fill: var(--theme-primary) !important;
       stroke: rgba(0, 0, 0, 0.5) !important;
     }
-    body[class*="theme-"] .ribbon-banner svg path {
+    body:not(.light-mode)[class*="theme-"] .ribbon-banner svg path {
       stroke: #ffffff !important;
     }
-    body[class*="theme-"] .top-bar {
+    body:not(.light-mode)[class*="theme-"] .top-bar {
       background: var(--theme-topbar-bg) !important;
       border: 1.5px solid var(--theme-border) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 20px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .pub-ticker {
+    body:not(.light-mode)[class*="theme-"] .pub-ticker {
       background: var(--theme-accent-bg) !important;
       border-top: 1.5px dashed var(--theme-border) !important;
       border-bottom: 1.5px dashed var(--theme-border) !important;
       color: #fce8cc !important;
     }
-    body[class*="theme-"] .turn-ticker-box {
+    body:not(.light-mode)[class*="theme-"] .turn-ticker-box {
       background: rgba(0, 0, 0, 0.65) !important;
       border: 1.5px solid var(--theme-border) !important;
       color: #ffd885 !important;
       box-shadow: 0 0 14px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .btn-quick-turn-pass {
+    body:not(.light-mode)[class*="theme-"] .btn-quick-turn-pass {
       background: var(--theme-primary) !important;
       color: #ffffff !important;
       box-shadow: 0 0 10px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .mobile-bottom-dock {
+    body:not(.light-mode)[class*="theme-"] .mobile-bottom-dock {
       border: 1.5px solid var(--theme-border) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
       box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 26px var(--theme-glow), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
     }
-    body[class*="theme-"] .admin-header-card {
+    body:not(.light-mode)[class*="theme-"] .admin-header-card {
       background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.88) 100%) !important;
       border-color: var(--theme-border) !important;
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 22px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .admin-card {
+    body:not(.light-mode)[class*="theme-"] .admin-card {
       background: var(--glass-card-bg) !important;
       border-color: var(--theme-border) !important;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 18px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .podium-leaderboard-box {
+    body:not(.light-mode)[class*="theme-"] .podium-leaderboard-box {
       background: var(--glass-card-bg) !important;
       border: 2px solid var(--theme-border) !important;
       box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45), 0 0 28px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .podium-main-title {
+    body:not(.light-mode)[class*="theme-"] .podium-main-title {
       color: #ffd885 !important;
       text-shadow: 0 0 16px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .podium-subtitle {
+    body:not(.light-mode)[class*="theme-"] .podium-subtitle {
       color: #f0deb8 !important;
     }
-    body[class*="theme-"] .btn-edit-crew {
+    body:not(.light-mode)[class*="theme-"] .btn-edit-crew {
       background: var(--theme-accent-bg) !important;
       border: 1.5px solid var(--theme-border) !important;
       color: #ffffff !important;
       box-shadow: 0 0 12px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .turn-status-banner {
+    body:not(.light-mode)[class*="theme-"] .turn-status-banner {
       background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.88) 100%) !important;
       border: 1.5px solid var(--theme-border) !important;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 18px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .scoring-stepper-card {
+    body:not(.light-mode)[class*="theme-"] .scoring-stepper-card {
       background: var(--glass-card-bg) !important;
       border: 1.5px solid var(--theme-border) !important;
       box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4), 0 0 18px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .crew-pill.active-my-team {
+    body:not(.light-mode)[class*="theme-"] .crew-pill.active-my-team {
       border: 2px solid var(--theme-border) !important;
       background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(0,0,0,0.4) 100%) !important;
       box-shadow: 0 0 20px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .wheel-wrapper {
+    body:not(.light-mode)[class*="theme-"] .wheel-wrapper {
       filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 26px var(--theme-glow));
     }
-    body[class*="theme-"] .btn-pick-team.selected {
+    body:not(.light-mode)[class*="theme-"] .btn-pick-team.selected {
       border-color: var(--theme-border) !important;
       box-shadow: 0 0 14px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .standings-table-wrap {
+    body:not(.light-mode)[class*="theme-"] .standings-table-wrap {
       background: var(--glass-card-bg) !important;
       border: 1.5px solid var(--theme-border) !important;
       box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4), 0 0 18px var(--theme-glow) !important;
       color: #ffffff !important;
     }
-    body[class*="theme-"] .standings-table th {
+    body:not(.light-mode)[class*="theme-"] .standings-table th {
       background: var(--theme-primary-dark) !important;
       color: #ffffff !important;
       border-color: var(--theme-border) !important;
     }
-    body[class*="theme-"] .standings-table td {
+    body:not(.light-mode)[class*="theme-"] .standings-table td {
       border-color: rgba(255, 255, 255, 0.12) !important;
       color: #f7eedc !important;
     }
@@ -2654,14 +2651,15 @@
 
     /* Navigation & Dock in Light Mode */
     body.light-mode .top-bar {
-      background: rgba(255, 252, 245, 0.92) !important;
+      background: rgba(255, 252, 245, 0.94) !important;
       border: 1px solid var(--theme-border, #c2a26c) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
       box-shadow: 0 4px 18px rgba(100, 70, 30, 0.14), 0 0 16px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
     body.light-mode .mobile-bottom-dock {
       background: rgba(255, 252, 245, 0.95) !important;
-      border-top: 1.5px solid var(--theme-border, #c2a26c) !important;
+      border: 1.5px solid var(--theme-border, #c2a26c) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
       box-shadow: 0 -8px 26px rgba(100, 70, 30, 0.14), 0 0 20px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
     body.light-mode .dock-tab {
@@ -2719,7 +2717,7 @@
     body.light-mode .glass-card,
     body.light-mode .modal-scroll,
     body.light-mode .crew-setup-dialog {
-      background: rgba(255, 253, 248, 0.94) !important;
+      background: rgba(255, 253, 248, 0.96) !important;
       border-color: var(--theme-border, #cca972) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
       box-shadow: 0 14px 34px rgba(70, 45, 20, 0.18), 0 0 20px var(--theme-glow, rgba(0,0,0,0)) !important;
@@ -2727,7 +2725,7 @@
     }
     body.light-mode .glass-panel,
     body.light-mode .setup-step-box {
-      background: rgba(252, 245, 233, 0.85) !important;
+      background: rgba(252, 245, 233, 0.92) !important;
       border: 1.5px solid var(--theme-border, #d8c39e) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
       color: #241609 !important;
@@ -2737,8 +2735,12 @@
     body.light-mode .setup-step-box strong {
       color: #241609 !important;
     }
+    body.light-mode .glass-panel span,
+    body.light-mode .setup-step-box p {
+      color: #4a341e !important;
+    }
     body.light-mode .glass-input {
-      background: rgba(255, 255, 255, 0.95) !important;
+      background: rgba(255, 255, 255, 0.98) !important;
       border-color: var(--theme-border, #b5925a) !important;
       color: #1a0f05 !important;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08) !important;
@@ -2754,34 +2756,199 @@
     body.light-mode .modal-body {
       color: #4a341e !important;
     }
-    body.light-mode .turn-status-banner {
-      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(255, 250, 242, 0.92) 100%) !important;
+
+    /* Standings Table in Light Mode */
+    body.light-mode .standings-table-wrap {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+      box-shadow: 0 6px 20px rgba(100, 70, 30, 0.12) !important;
       color: #241609 !important;
-      border-color: var(--theme-border) !important;
+    }
+    body.light-mode .standings-table th {
+      background: var(--theme-primary, #925424) !important;
+      color: #ffffff !important;
+      border-color: var(--theme-border, #cca972) !important;
+    }
+    body.light-mode .standings-table td {
+      border-color: rgba(100, 70, 30, 0.15) !important;
+      color: #1a0e05 !important;
+    }
+    body.light-mode .standings-table tr:hover td {
+      background: rgba(220, 180, 120, 0.18) !important;
+    }
+
+    /* Scoring Stepper Card in Light Mode */
+    body.light-mode .scoring-stepper-card {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+      color: #241609 !important;
+      box-shadow: 0 6px 20px rgba(100, 70, 30, 0.12) !important;
+    }
+    body.light-mode .scoring-stepper-title {
+      color: #241609 !important;
+    }
+    body.light-mode .scoring-stepper-sub {
+      color: #5a3d1f !important;
+    }
+
+    /* Podium Leaderboard in Light Mode */
+    body.light-mode .podium-leaderboard-box {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 2px solid var(--theme-border, #cca972) !important;
+      box-shadow: 0 8px 24px rgba(100, 70, 30, 0.12) !important;
+    }
+    body.light-mode .podium-main-title {
+      color: #2b1807 !important;
+      text-shadow: none !important;
+    }
+    body.light-mode .podium-subtitle {
+      color: #5a3d1f !important;
+    }
+    body.light-mode .podium-card {
+      background: rgba(255, 252, 245, 0.95) !important;
+      border-color: var(--theme-border, #cca972) !important;
+      color: #241609 !important;
+    }
+    body.light-mode .podium-card.podium-gold {
+      background: linear-gradient(135deg, rgba(255, 243, 205, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+      border-color: #d4a017 !important;
+    }
+    body.light-mode .podium-team-name {
+      color: #241609 !important;
+    }
+    body.light-mode .podium-pts-val {
+      color: #241609 !important;
+    }
+
+    /* Status Banners & Tickers in Light Mode */
+    body.light-mode .turn-status-banner {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(200, 150, 80, 0.15)) 0%, rgba(255, 252, 245, 0.96) 100%) !important;
+      color: #241609 !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+      box-shadow: 0 4px 14px rgba(100, 70, 30, 0.1) !important;
     }
     body.light-mode .turn-status-team strong {
       color: #241609 !important;
     }
+    body.light-mode .turn-status-label,
+    body.light-mode .turn-status-next {
+      color: #5a3d1f !important;
+    }
     body.light-mode .pub-ticker {
-      background: rgba(255, 250, 240, 0.88) !important;
+      background: rgba(255, 250, 240, 0.92) !important;
+      border-top: 1.5px dashed var(--theme-border, #cca972) !important;
+      border-bottom: 1.5px dashed var(--theme-border, #cca972) !important;
       color: #241609 !important;
     }
-    body.light-mode .turn-ticker-box {
-      background: #fffcf5 !important;
-      color: #4a2e12 !important;
-      border-color: var(--theme-border, #b38e50) !important;
+    body.light-mode .pub-ticker b {
+      color: var(--theme-primary-dark, #8b1e1e) !important;
     }
+    body.light-mode .pub-ticker span {
+      color: #4a341e !important;
+    }
+    body.light-mode .turn-ticker-box {
+      background: rgba(255, 255, 255, 0.95) !important;
+      color: #241609 !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+      box-shadow: 0 2px 8px rgba(100, 70, 30, 0.12) !important;
+    }
+    body.light-mode .btn-quick-turn-pass {
+      background: var(--theme-primary, #925424) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(100, 70, 30, 0.15) !important;
+    }
+    body.light-mode .btn-edit-crew {
+      background: var(--theme-primary, #925424) !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(100, 70, 30, 0.15) !important;
+    }
+
+    /* Admin Cards in Light Mode */
     body.light-mode .admin-header-card {
-      background: linear-gradient(135deg, var(--theme-primary) 0%, #2f1708 100%) !important;
-      color: #fff !important;
+      background: linear-gradient(135deg, var(--theme-primary, #925424) 0%, #3a200b 100%) !important;
+      border-color: var(--theme-border, #cca972) !important;
+      color: #ffffff !important;
     }
     body.light-mode .admin-card {
-      background: rgba(255, 253, 248, 0.94) !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: var(--theme-border, #cca972) !important;
+      color: #241609 !important;
+    }
+    body.light-mode .admin-card strong {
+      color: #241609 !important;
+    }
+
+    /* Crew Pills & Rules in Light Mode */
+    body.light-mode .crew-pill {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #241609 !important;
+      border: 1.5px solid rgba(120, 80, 40, 0.3) !important;
+    }
+    body.light-mode .crew-pill.active-my-team {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(200, 150, 80, 0.15)) 0%, #ffffff 100%) !important;
+      border: 2px solid var(--theme-border, #cca972) !important;
+      box-shadow: 0 0 16px var(--theme-glow, rgba(100, 70, 30, 0.2)) !important;
+    }
+    body.light-mode .crew-score {
+      color: #1a0e05 !important;
+    }
+    body.light-mode .rule-card-mini {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #241609 !important;
+      border: 1.5px solid var(--theme-border, #d8c39e) !important;
+    }
+    body.light-mode .rule-card-mini p {
+      color: #4a341e !important;
+    }
+    body.light-mode .codex-card {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #241609 !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+    }
+    body.light-mode .codex-card .codex-title {
+      color: #241609 !important;
+    }
+    body.light-mode .codex-card .codex-desc {
+      color: #4a341e !important;
+    }
+    body.light-mode .codex-card .codex-drink {
+      color: #7a3212 !important;
+    }
+    body.light-mode .stop-card {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #241609 !important;
       border-color: var(--theme-border, #cca972) !important;
     }
-    body.light-mode .podium-leaderboard-box {
-      background: rgba(255, 254, 250, 0.95) !important;
-      border-color: var(--theme-border, var(--ink)) !important;
+    body.light-mode .stop-title {
+      color: #241609 !important;
+    }
+    body.light-mode .stop-rule-text {
+      color: #4a341e !important;
+    }
+    body.light-mode .bingo-tile {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #241609 !important;
+      border: 1.5px solid var(--theme-border, #d8c39e) !important;
+    }
+    body.light-mode .bingo-tile.claimed {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(200, 150, 80, 0.2)) 0%, rgba(255, 255, 255, 0.96) 100%) !important;
+      border: 2px solid var(--theme-border, #cca972) !important;
+    }
+    body.light-mode .log-list li {
+      background: rgba(255, 255, 255, 0.88) !important;
+      color: #241609 !important;
+      border-color: rgba(120, 80, 40, 0.2) !important;
+    }
+    body.light-mode .btn-pick-team {
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #241609 !important;
+      border: 1.5px solid #d8c39e !important;
+    }
+    body.light-mode .btn-pick-team.selected {
+      border-color: var(--theme-border, #cca972) !important;
+      box-shadow: 0 0 14px var(--theme-glow, rgba(100, 70, 30, 0.2)) !important;
+      background: #ffffff !important;
     }
     body.light-mode .modal-btn.secondary {
       background: rgba(240, 230, 212, 0.9) !important;
@@ -2829,7 +2996,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.5.0</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.6</span>
             <a href="../../index.html" class="back-home-link" title="Portfolio Back Link">
               <span>← LP-EE</span>
             </a>
@@ -2892,8 +3059,16 @@
         <section id="tab-wheel" class="tab-panel">
           <div class="wheel-view-grid">
 
-            <!-- Left Rules Column (Yellow & Green: Top-Left & Bottom-Left) -->
+            <!-- Left Rules Column -->
             <div class="wheel-rules-col">
+              <div class="rule-card-mini" id="card-RED">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot red"></span>
+                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
+                </div>
+                <p>Swap your current drink with another team's drink of your choice!</p>
+              </div>
+
               <div class="rule-card-mini" id="card-YELLOW">
                 <div class="rule-card-mini-head">
                   <span class="crew-dot yellow"></span>
@@ -2901,496 +3076,85 @@
                 </div>
                 <p>Stops all drinking penalties for that targeted team until their next turn!</p>
               </div>
-
-              <div class="rule-card-mini" id="card-GREEN">
-                <div class="rule-card-mini-head">
-                  <span class="crew-dot green"></span>
-                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
-                </div>
-                <p>5-second head-to-head chug race vs attacker! (+6 pts winner / -6 pts loser).</p>
-              </div>
             </div>
 
             <!-- Center Stage: The Physics Wheel with Needle Bounce -->
             <div class="wheel-stage">
-              <svg class="wheel-pointer" id="wheelPointer" viewBox="0 0 60 76">
-                <defs>
-                  <filter id="ptrShadow" x="-25%" y="-25%" width="150%" height="150%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.85"/>
-                  </filter>
-                  <linearGradient id="ptrBronzeL" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#fff1a8"/>
-                    <stop offset="50%" stop-color="#dfb74c"/>
-                    <stop offset="100%" stop-color="#996a15"/>
-                  </linearGradient>
-                  <linearGradient id="ptrBronzeR" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#7a4e08"/>
-                    <stop offset="50%" stop-color="#462702"/>
-                    <stop offset="100%" stop-color="#231003"/>
-                  </linearGradient>
-                  <radialGradient id="ptrRuby" cx="35%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#ff8585"/>
-                    <stop offset="40%" stop-color="#d90429"/>
-                    <stop offset="85%" stop-color="#59000c"/>
-                    <stop offset="100%" stop-color="#2b0005"/>
-                  </radialGradient>
-                </defs>
-                <g filter="url(#ptrShadow)">
-                  <!-- Dagger Blade Left Bevel -->
-                  <polygon points="30,72 16,22 30,22" fill="url(#ptrBronzeL)" stroke="#1a0c04" stroke-width="1.5" stroke-linejoin="round"/>
-                  <!-- Dagger Blade Right Bevel -->
-                  <polygon points="30,72 44,22 30,22" fill="url(#ptrBronzeR)" stroke="#1a0c04" stroke-width="1.5" stroke-linejoin="round"/>
-                  <!-- Center Spine Line -->
-                  <line x1="30" y1="22" x2="30" y2="70" stroke="#ffd700" stroke-width="1.2"/>
-                  <!-- Crossguard Studs -->
-                  <circle cx="16" cy="22" r="3.5" fill="#ffd700" stroke="#1a0c04" stroke-width="1"/>
-                  <circle cx="44" cy="22" r="3.5" fill="#996a15" stroke="#1a0c04" stroke-width="1"/>
-                  <!-- Pivot Medallion Outer Brass Ring -->
-                  <circle cx="30" cy="18" r="14" fill="url(#ptrBronzeL)" stroke="#1a0c04" stroke-width="2"/>
-                  <circle cx="30" cy="18" r="11" fill="#1a0c04"/>
-                  <!-- Faceted Ruby Pivot Jewel in Center -->
-                  <circle cx="30" cy="18" r="9" fill="url(#ptrRuby)" stroke="#ffd700" stroke-width="1.5"/>
-                  <circle cx="27.5" cy="15.5" r="2" fill="#ffffff" opacity="0.8"/>
-                </g>
+              <svg class="wheel-pointer" id="wheelPointer" viewBox="0 0 50 64">
+                <polygon points="25,62 10,14 40,14" fill="#9e1b1b" stroke="#23170b" stroke-width="3"/>
+                <circle cx="25" cy="14" r="11" fill="#dfb74c" stroke="#23170b" stroke-width="3"/>
+                <circle cx="25" cy="14" r="4" fill="#23170b"/>
               </svg>
 
               <div class="wheel-wrapper" id="wheelWrapper">
-                <!-- Authentic Pirate Helm Wheel with Uno Quadrants & Art from Official Crawl Design -->
-                <svg id="doomWheelSvg" viewBox="0 0 600 600" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Drop Shadows -->
-    <filter id="woodShadow" x="-15%" y="-15%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.65"/>
-    </filter>
-    <filter id="pegShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.8"/>
-    </filter>
-    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffd700" flood-opacity="0.5"/>
-    </filter>
+                <svg id="doomWheelSvg" viewBox="0 0 500 500">
+                  <!-- Outer Wooden Rim with Depth Shading -->
+                  <circle cx="250" cy="250" r="244" fill="#592f11" stroke="#23170b" stroke-width="6"/>
+                  <circle cx="250" cy="250" r="224" fill="#3c1e08" stroke="#1a0c03" stroke-width="4"/>
 
-    <!-- Wood Textures & Gradients -->
-    <radialGradient id="helmWoodGrad" cx="45%" cy="40%" r="65%">
-      <stop offset="0%" stop-color="#9a5725"/>
-      <stop offset="45%" stop-color="#643312"/>
-      <stop offset="85%" stop-color="#3b1b06"/>
-      <stop offset="100%" stop-color="#231003"/>
-    </radialGradient>
-    <radialGradient id="outerRimWoodGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="78%" stop-color="#3d1d08"/>
-      <stop offset="84%" stop-color="#80441a"/>
-      <stop offset="90%" stop-color="#55270c"/>
-      <stop offset="96%" stop-color="#281103"/>
-      <stop offset="100%" stop-color="#120601"/>
-    </radialGradient>
+                  <!-- 4 UNO Color Quadrants (Red, Blue, Green, Yellow) -->
+                  <g id="quadrants">
+                    <!-- RED (Top) -->
+                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4.5"/>
+                    <!-- BLUE (Right) -->
+                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4.5"/>
+                    <!-- GREEN (Bottom) -->
+                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4.5"/>
+                    <!-- YELLOW (Left) -->
+                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4.5"/>
+                  </g>
 
-    <!-- Metallic Brass / Gold Gradients -->
-    <linearGradient id="brassBevelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff1a8"/>
-      <stop offset="25%" stop-color="#dfb74c"/>
-      <stop offset="55%" stop-color="#996a15"/>
-      <stop offset="80%" stop-color="#d4a838"/>
-      <stop offset="100%" stop-color="#5a3805"/>
-    </linearGradient>
-    <radialGradient id="brassPegGrad" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fff7c2"/>
-      <stop offset="35%" stop-color="#e6bf53"/>
-      <stop offset="75%" stop-color="#91600c"/>
-      <stop offset="100%" stop-color="#462702"/>
-    </radialGradient>
+                  <!-- 24 Brass Metallic Pegs -->
+                  <g fill="#dfb74c" stroke="#23170b" stroke-width="1.5">
+                    <circle cx="250" cy="48" r="5"/><circle cx="302" cy="55" r="5"/><circle cx="351" cy="75" r="5"/>
+                    <circle cx="393" cy="107" r="5"/><circle cx="425" cy="149" r="5"/><circle cx="445" cy="198" r="5"/>
+                    <circle cx="452" cy="250" r="5"/><circle cx="445" cy="302" r="5"/><circle cx="425" cy="351" r="5"/>
+                    <circle cx="393" cy="393" r="5"/><circle cx="351" cy="425" r="5"/><circle cx="302" cy="445" r="5"/>
+                    <circle cx="250" cy="452" r="5"/><circle cx="198" cy="445" r="5"/><circle cx="149" cy="425" r="5"/>
+                    <circle cx="107" cy="393" r="5"/><circle cx="75" cy="351" r="5"/><circle cx="55" cy="302" r="5"/>
+                    <circle cx="48" cy="250" r="5"/><circle cx="55" cy="198" r="5"/><circle cx="75" cy="149" r="5"/>
+                    <circle cx="107" cy="107" r="5"/><circle cx="149" cy="75" r="5"/><circle cx="198" cy="55" r="5"/>
+                  </g>
 
-    <!-- 4 Uno Quadrant Gradients -->
-    <!-- Red (Drink Swapper) -->
-    <radialGradient id="gradRed" cx="50%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#ff4d4d"/>
-      <stop offset="45%" stop-color="#c9182b"/>
-      <stop offset="80%" stop-color="#800a15"/>
-      <stop offset="100%" stop-color="#4a040b"/>
-    </radialGradient>
-    <!-- Blue (Shot Roulette) -->
-    <radialGradient id="gradBlue" cx="50%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#3a88e9"/>
-      <stop offset="45%" stop-color="#165bb6"/>
-      <stop offset="80%" stop-color="#0d3570"/>
-      <stop offset="100%" stop-color="#051938"/>
-    </radialGradient>
-    <!-- Green (Chug Challenge) -->
-    <radialGradient id="gradGreen" cx="50%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#48cb66"/>
-      <stop offset="45%" stop-color="#20873c"/>
-      <stop offset="80%" stop-color="#114f21"/>
-      <stop offset="100%" stop-color="#06260e"/>
-    </radialGradient>
-    <!-- Yellow (Drinker's Freeze) -->
-    <radialGradient id="gradYellow" cx="50%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#ffea78"/>
-      <stop offset="45%" stop-color="#e5a108"/>
-      <stop offset="80%" stop-color="#996302"/>
-      <stop offset="100%" stop-color="#523201"/>
-    </radialGradient>
+                  <!-- Quadrant Illustrations (From Reference Slide) -->
+                  <!-- Red: Drink Swap -->
+                  <g transform="translate(250, 95)" stroke="#23170b" stroke-width="2.5" fill="none">
+                    <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
+                    <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
+                    <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
+                    <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#23170b"/>
+                  </g>
+                  <!-- Blue: Shot Roulette -->
+                  <g transform="translate(402, 250)" stroke="#23170b" stroke-width="2.5">
+                    <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
+                    <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
+                    <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
+                  </g>
+                  <!-- Green: Chug Tankard -->
+                  <g transform="translate(250, 402)" stroke="#23170b" stroke-width="2.5">
+                    <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
+                    <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
+                    <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
+                  </g>
+                  <!-- Yellow: Ice Snowflake -->
+                  <g transform="translate(96, 250)" stroke="#23170b" stroke-width="2.5">
+                    <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
+                    <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
+                  </g>
 
-    <!-- Shared Paths -->
-    <path id="masterWedge" d="M 179.44 177.32 A 172 172 0 0 1 420.56 177.32 L 353.27 245.79 A 76 76 0 0 0 246.73 245.79 Z"/>
-    <path id="masterRibbon" d="M 210.11 184.95 A 146 146 0 0 1 389.89 184.95"/>
-    <path id="masterTextArc" d="M 218.36 178.96 A 146 146 0 0 1 381.64 178.96"/>
-  </defs>
-
-  <!-- 1. SHIP HELM HANDLES (8 Carved Wooden Spoke Grips) -->
-  <g id="helmHandlesGroup">
-    
-      <g>
-        <path d="M 286.9 86.4 L 291.2 70.2 Q 281.3 45.7 288.1 27.3 Q 300.0 12.0 311.9 27.3 Q 318.7 45.7 308.8 70.2 L 313.1 86.4 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="300.0" cy="78.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="300.0" cy="17.0" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 441.8 139.7 L 456.3 131.2 Q 466.6 107.0 484.4 98.7 Q 503.6 96.4 501.3 115.6 Q 493.0 133.4 468.8 143.7 L 460.3 158.2 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="457.0" cy="143.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="500.1" cy="99.9" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 513.6 286.9 L 529.8 291.2 Q 554.3 281.3 572.7 288.1 Q 588.0 300.0 572.7 311.9 Q 554.3 318.7 529.8 308.8 L 513.6 313.1 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="522.0" cy="300.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="583.0" cy="300.0" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 460.3 441.8 L 468.8 456.3 Q 493.0 466.6 501.3 484.4 Q 503.6 503.6 484.4 501.3 Q 466.6 493.0 456.3 468.8 L 441.8 460.3 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="457.0" cy="457.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="500.1" cy="500.1" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 313.1 513.6 L 308.8 529.8 Q 318.7 554.3 311.9 572.7 Q 300.0 588.0 288.1 572.7 Q 281.3 554.3 291.2 529.8 L 286.9 513.6 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="300.0" cy="522.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="300.0" cy="583.0" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 158.2 460.3 L 143.7 468.8 Q 133.4 493.0 115.6 501.3 Q 96.4 503.6 98.7 484.4 Q 107.0 466.6 131.2 456.3 L 139.7 441.8 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="143.0" cy="457.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="99.9" cy="500.1" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 86.4 313.1 L 70.2 308.8 Q 45.7 318.7 27.3 311.9 Q 12.0 300.0 27.3 288.1 Q 45.7 281.3 70.2 291.2 L 86.4 286.9 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="78.0" cy="300.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="17.0" cy="300.0" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <path d="M 139.7 158.2 L 131.2 143.7 Q 107.0 133.4 98.7 115.6 Q 96.4 96.4 115.6 98.7 Q 133.4 107.0 143.7 131.2 L 158.2 139.7 Z" fill="url(#helmWoodGrad)" stroke="#1a0c04" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="143.0" cy="143.0" r="6.5" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="99.9" cy="99.9" r="4" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-  </g>
-
-  <!-- 2. MAIN WHEEL DISK -->
-  <!-- Outer Wooden Rim Ring -->
-  <circle cx="300" cy="300" r="214" fill="url(#outerRimWoodGrad)" stroke="#1a0c04" stroke-width="3"/>
-  <circle cx="300" cy="300" r="211" fill="none" stroke="#683410" stroke-width="1.5" opacity="0.6"/>
-  <circle cx="300" cy="300" r="195" fill="none" stroke="#251003" stroke-width="1.5"/>
-
-  <!-- Heavy Outer Brass Rim (Band holding the pegs) -->
-  <circle cx="300" cy="300" r="192" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="2.5"/>
-  <circle cx="300" cy="300" r="174" fill="none" stroke="#462702" stroke-width="2"/>
-  <circle cx="300" cy="300" r="172" fill="#1a0c04"/>
-
-  <!-- 3. THE 4 UNO QUADRANTS (Decorated with Themed Art & Curved Banners) -->
-
-  <!-- QUADRANT 1: RED (Drink Swapper, Rotated 45 deg) -->
-  <g id="quadrantRed" transform="rotate(45, 300, 300)">
-    <use href="#masterWedge" fill="url(#gradRed)" stroke="#1a0c04" stroke-width="2"/>
-    <path d="M 185.42 177.13 A 168 168 0 0 1 414.58 177.13 L 354.56 241.49 A 80 80 0 0 0 245.44 241.49 Z" fill="none" stroke="#ffa3a3" stroke-width="1" opacity="0.35"/>
-    
-    <!-- Curved Title Banner Ribbon -->
-    <use href="#masterRibbon" fill="none" stroke="#1a0c04" stroke-width="22" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="url(#brassBevelGrad)" stroke-width="18" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="#50070c" stroke-width="14" stroke-linecap="round"/>
-    <text font-family="'Pirata One', cursive, fantasy" font-size="14.5" font-weight="900" fill="#fffef2" stroke="#1a0c04" stroke-width="0.75" letter-spacing="1.8px">
-      <textPath href="#masterTextArc" startOffset="50%" text-anchor="middle">DRINK SWAPPER</textPath>
-    </text>
-
-    <!-- Quadrant Art: Pirate Rum Bottle & Overflowing Beer Tankard -->
-    <g transform="translate(300, 206) scale(0.92)">
-      <!-- Pirate Rum Bottle -->
-      <path d="M -16 6 L -16 -8 Q -16 -16 -8 -19 L -8 -26 L -3 -26 L -3 -28 L 3 -28 L 3 -26 L 8 -26 L 8 -19 Q 16 -16 16 -8 L 16 6 Q 16 10 0 10 Q -16 10 -16 6 Z"
-            fill="#381d09" stroke="#120601" stroke-width="1.8"/>
-      <rect x="-7" y="-12" width="14" height="15" rx="2" fill="#e8d3a7" stroke="#251003" stroke-width="1"/>
-      <circle cx="0" cy="-6" r="3.2" fill="#1a0c04"/>
-      <path d="M -4 -1 L 4 -9 M -4 -9 L 4 -1" stroke="#1a0c04" stroke-width="1.2"/>
-
-      <!-- Foaming Grog Tankard (Right) -->
-      <path d="M 6 4 L 7 18 Q 7 21 16 21 Q 25 21 25 18 L 26 4 Z" fill="#8c5828" stroke="#1a0c04" stroke-width="1.8"/>
-      <path d="M 25 8 Q 33 8 33 13 Q 33 18 25 18" fill="none" stroke="#1a0c04" stroke-width="2.5"/>
-      <path d="M 25 8 Q 31 8 31 13 Q 31 18 25 18" fill="none" stroke="#dfb74c" stroke-width="1.5"/>
-      <path d="M 5 4 Q 8 -2 13 3 Q 17 -4 22 2 Q 27 0 27 5 Z" fill="#fffdf0" stroke="#1a0c04" stroke-width="1.5"/>
-    </g>
-
-    <!-- Miniature Uno Card [ 1 ] Badge -->
-    <g transform="translate(300, 252) scale(0.7)">
-      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#d62828" stroke="#ffffff" stroke-width="2.5" filter="url(#woodShadow)"/>
-      <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-      <text x="0" y="5" font-family="'Pirata One', sans-serif" font-weight="900" font-size="16" fill="#d62828" text-anchor="middle">1</text>
-    </g>
-  </g>
-
-  <!-- QUADRANT 2: BLUE (Shot Roulette, Rotated 135 deg) -->
-  <g id="quadrantBlue" transform="rotate(135, 300, 300)">
-    <use href="#masterWedge" fill="url(#gradBlue)" stroke="#1a0c04" stroke-width="2"/>
-    <path d="M 185.42 177.13 A 168 168 0 0 1 414.58 177.13 L 354.56 241.49 A 80 80 0 0 0 245.44 241.49 Z" fill="none" stroke="#a3caff" stroke-width="1" opacity="0.35"/>
-
-    <!-- Curved Title Banner Ribbon -->
-    <use href="#masterRibbon" fill="none" stroke="#1a0c04" stroke-width="22" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="url(#brassBevelGrad)" stroke-width="18" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="#082247" stroke-width="14" stroke-linecap="round"/>
-    <text font-family="'Pirata One', cursive, fantasy" font-size="14.5" font-weight="900" fill="#fffef2" stroke="#1a0c04" stroke-width="0.75" letter-spacing="1.8px">
-      <textPath href="#masterTextArc" startOffset="50%" text-anchor="middle">SHOT ROULETTE</textPath>
-    </text>
-
-    <!-- Quadrant Art: Alchemy Potion Flask & Tavern Shot Glass -->
-    <g transform="translate(300, 206) scale(0.92)">
-      <circle cx="-5" cy="0" r="16" fill="#1b6ca8" stroke="#0a192f" stroke-width="2"/>
-      <path d="M -9 -14 L -9 -24 L -1 -24 L -1 -14 Z" fill="#1b6ca8" stroke="#0a192f" stroke-width="1.8"/>
-      <rect x="-10" y="-28" width="10" height="5" rx="1.5" fill="#a46830" stroke="#1a0c04" stroke-width="1.2"/>
-      <path d="M -20 1 Q -5 9 10 1 Q 11 16 -5 16 Q -21 16 -20 1 Z" fill="#64b5f6" opacity="0.8"/>
-      <circle cx="-9" cy="6" r="2" fill="#ffffff" opacity="0.8"/>
-      <circle cx="-1" cy="2" r="1.5" fill="#ffffff" opacity="0.8"/>
-
-      <polygon points="12,-4 26,-4 23,17 15,17" fill="#e0f2fe" opacity="0.85" stroke="#0c2540" stroke-width="1.8"/>
-      <polygon points="13,3 25,3 22,15 16,15" fill="#38bdf8"/>
-      <circle cx="19" cy="8" r="2.2" fill="#0c2540"/>
-    </g>
-
-    <!-- Miniature Uno Card [ 2 ] Badge -->
-    <g transform="translate(300, 252) scale(0.7)">
-      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#1d63b8" stroke="#ffffff" stroke-width="2.5" filter="url(#woodShadow)"/>
-      <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-      <text x="0" y="5" font-family="'Pirata One', sans-serif" font-weight="900" font-size="16" fill="#1d63b8" text-anchor="middle">2</text>
-    </g>
-  </g>
-
-  <!-- QUADRANT 3: GREEN (Chug Challenge, Rotated 225 deg) -->
-  <g id="quadrantGreen" transform="rotate(225, 300, 300)">
-    <use href="#masterWedge" fill="url(#gradGreen)" stroke="#1a0c04" stroke-width="2"/>
-    <path d="M 185.42 177.13 A 168 168 0 0 1 414.58 177.13 L 354.56 241.49 A 80 80 0 0 0 245.44 241.49 Z" fill="none" stroke="#a8f5ba" stroke-width="1" opacity="0.35"/>
-
-    <!-- Curved Title Banner Ribbon -->
-    <use href="#masterRibbon" fill="none" stroke="#1a0c04" stroke-width="22" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="url(#brassBevelGrad)" stroke-width="18" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="#093614" stroke-width="14" stroke-linecap="round"/>
-    <text font-family="'Pirata One', cursive, fantasy" font-size="14.5" font-weight="900" fill="#fffef2" stroke="#1a0c04" stroke-width="0.75" letter-spacing="1.8px">
-      <textPath href="#masterTextArc" startOffset="50%" text-anchor="middle">CHUG CHALLENGE</textPath>
-    </text>
-
-    <!-- Quadrant Art: Speeding Giant Beer Stein with Lightning Bolts -->
-    <g transform="translate(300, 206) scale(0.92)">
-      <polygon points="-24,-12 -16,-12 -20,-2 -13,-2 -26,14 -20,3 -26,3" fill="#ffe259" stroke="#1a0c04" stroke-width="1.2"/>
-      <polygon points="24,-12 16,-12 20,-2 13,-2 26,14 20,3 26,3" fill="#ffe259" stroke="#1a0c04" stroke-width="1.2"/>
-
-      <path d="M -10 -4 L -8 16 Q -8 19 0 19 Q 8 19 8 16 L 10 -4 Z" fill="#eab308" stroke="#1a0c04" stroke-width="2"/>
-      <line x1="-3" y1="-2" x2="-2" y2="16" stroke="#ca8a04" stroke-width="1.5"/>
-      <line x1="3" y1="-2" x2="2" y2="16" stroke="#fef08a" stroke-width="1.5"/>
-      <path d="M 9 0 Q 18 0 18 7 Q 18 14 8 14" fill="none" stroke="#1a0c04" stroke-width="2.6"/>
-      <path d="M 9 0 Q 16 0 16 7 Q 16 14 8 14" fill="none" stroke="#fef08a" stroke-width="1.5"/>
-      <path d="M -13 -4 Q -10 -14 0 -13 Q 10 -14 13 -4 Q 15 2 11 4 Q 8 2 6 0 Q -3 2 -6 0 Q -9 3 -13 -4 Z"
-            fill="#ffffff" stroke="#1a0c04" stroke-width="1.6"/>
-    </g>
-
-    <!-- Miniature Uno Card [ 3 ] Badge -->
-    <g transform="translate(300, 252) scale(0.7)">
-      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#2b9348" stroke="#ffffff" stroke-width="2.5" filter="url(#woodShadow)"/>
-      <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-      <text x="0" y="5" font-family="'Pirata One', sans-serif" font-weight="900" font-size="16" fill="#2b9348" text-anchor="middle">3</text>
-    </g>
-  </g>
-
-  <!-- QUADRANT 4: YELLOW (Drinker's Freeze, Rotated 315 deg) -->
-  <g id="quadrantYellow" transform="rotate(315, 300, 300)">
-    <use href="#masterWedge" fill="url(#gradYellow)" stroke="#1a0c04" stroke-width="2"/>
-    <path d="M 185.42 177.13 A 168 168 0 0 1 414.58 177.13 L 354.56 241.49 A 80 80 0 0 0 245.44 241.49 Z" fill="none" stroke="#fff1a8" stroke-width="1" opacity="0.35"/>
-
-    <!-- Curved Title Banner Ribbon -->
-    <use href="#masterRibbon" fill="none" stroke="#1a0c04" stroke-width="22" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="url(#brassBevelGrad)" stroke-width="18" stroke-linecap="round"/>
-    <use href="#masterRibbon" fill="none" stroke="#5c3801" stroke-width="14" stroke-linecap="round"/>
-    <text font-family="'Pirata One', cursive, fantasy" font-size="14.5" font-weight="900" fill="#fffef2" stroke="#1a0c04" stroke-width="0.75" letter-spacing="1.8px">
-      <textPath href="#masterTextArc" startOffset="50%" text-anchor="middle">DRINKER'S FREEZE</textPath>
-    </text>
-
-    <!-- Quadrant Art: Frozen Frosted Mug with Ice Cubes & Snowflakes -->
-    <g transform="translate(300, 206) scale(0.92)">
-      <g transform="translate(-18, -4) scale(0.8)">
-        <line x1="-7" y1="0" x2="7" y2="0" stroke="#e0f2fe" stroke-width="1.8"/>
-        <line x1="0" y1="-7" x2="0" y2="7" stroke="#e0f2fe" stroke-width="1.8"/>
-        <line x1="-5" y1="-5" x2="5" y2="5" stroke="#e0f2fe" stroke-width="1.4"/>
-        <line x1="-5" y1="5" x2="5" y2="-5" stroke="#e0f2fe" stroke-width="1.4"/>
-        <circle cx="0" cy="0" r="1.5" fill="#ffffff"/>
-      </g>
-      <g transform="translate(20, -2) scale(0.7)">
-        <line x1="-6" y1="0" x2="6" y2="0" stroke="#e0f2fe" stroke-width="1.8"/>
-        <line x1="0" y1="-6" x2="0" y2="6" stroke="#e0f2fe" stroke-width="1.8"/>
-        <line x1="-4" y1="-4" x2="4" y2="4" stroke="#e0f2fe" stroke-width="1.4"/>
-        <line x1="-4" y1="4" x2="4" y2="-4" stroke="#e0f2fe" stroke-width="1.4"/>
-        <circle cx="0" cy="0" r="1.2" fill="#ffffff"/>
-      </g>
-
-      <path d="M -9 -2 L -7 16 Q -7 19 0 19 Q 7 19 7 16 L 9 -2 Z" fill="#bae6fd" stroke="#0369a1" stroke-width="2"/>
-      <polygon points="-9,-2 -6,5 -4,-2" fill="#ffffff"/>
-      <polygon points="-4,-2 -1,7 1,-2" fill="#ffffff"/>
-      <polygon points="1,-2 4,6 7,-2" fill="#ffffff"/>
-      <polygon points="5,-2 7,4 9,-2" fill="#ffffff"/>
-      <rect x="-4" y="2" width="7" height="7" rx="1.5" fill="#ffffff" opacity="0.85" stroke="#38bdf8" stroke-width="1"/>
-      <path d="M 8 1 Q 16 1 16 8 Q 16 15 7 15" fill="none" stroke="#0369a1" stroke-width="2.6"/>
-      <path d="M 8 1 Q 14 1 14 8 Q 14 15 7 15" fill="none" stroke="#e0f2fe" stroke-width="1.5"/>
-    </g>
-
-    <!-- Miniature Uno Card [ 4 ] Badge -->
-    <g transform="translate(300, 252) scale(0.7)">
-      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#f7b801" stroke="#ffffff" stroke-width="2.5" filter="url(#woodShadow)"/>
-      <ellipse cx="0" cy="0" rx="9" ry="14" fill="#ffffff" transform="rotate(-25)"/>
-      <text x="0" y="5" font-family="'Pirata One', sans-serif" font-weight="900" font-size="16" fill="#f7b801" text-anchor="middle">4</text>
-    </g>
-  </g>
-
-  <!-- 4. QUADRANT DIVIDER SPOKES (Brass & Iron Inlay) -->
-  <g id="dividerSpokesGroup">
-    
-      <g>
-        <polygon points="296.8,226.1 292.4,126.2 307.6,126.2 303.2,226.1" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.5"/>
-        <circle cx="300.0" cy="175.0" r="3.2" fill="#ffe28a" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <polygon points="373.9,296.8 473.8,292.4 473.8,307.6 373.9,303.2" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.5"/>
-        <circle cx="425.0" cy="300.0" r="3.2" fill="#ffe28a" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <polygon points="303.2,373.9 307.6,473.8 292.4,473.8 296.8,373.9" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.5"/>
-        <circle cx="300.0" cy="425.0" r="3.2" fill="#ffe28a" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-      <g>
-        <polygon points="226.1,303.2 126.2,307.6 126.2,292.4 226.1,296.8" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1.5"/>
-        <circle cx="175.0" cy="300.0" r="3.2" fill="#ffe28a" stroke="#1a0c04" stroke-width="1"/>
-      </g>
-  </g>
-
-  <!-- 5. PEGS RING (24 Gleaming Brass Pins along r=180) -->
-  <g id="pegsGroup">
-    
-      <g>
-        <circle cx="300.0" cy="120.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="298.8" cy="118.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="346.6" cy="126.1" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="345.4" cy="124.9" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="390.0" cy="144.1" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="388.8" cy="142.9" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="427.3" cy="172.7" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="426.1" cy="171.5" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="455.9" cy="210.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="454.7" cy="208.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="473.9" cy="253.4" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="472.7" cy="252.2" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="480.0" cy="300.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="478.8" cy="298.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="473.9" cy="346.6" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="472.7" cy="345.4" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="455.9" cy="390.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="454.7" cy="388.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="427.3" cy="427.3" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="426.1" cy="426.1" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="390.0" cy="455.9" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="388.8" cy="454.7" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="346.6" cy="473.9" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="345.4" cy="472.7" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="300.0" cy="480.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="298.8" cy="478.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="253.4" cy="473.9" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="252.2" cy="472.7" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="210.0" cy="455.9" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="208.8" cy="454.7" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="172.7" cy="427.3" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="171.5" cy="426.1" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="144.1" cy="390.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="142.9" cy="388.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="126.1" cy="346.6" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="124.9" cy="345.4" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="120.0" cy="300.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="118.8" cy="298.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="126.1" cy="253.4" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="124.9" cy="252.2" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="144.1" cy="210.0" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="142.9" cy="208.8" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="172.7" cy="172.7" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="171.5" cy="171.5" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="210.0" cy="144.1" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="208.8" cy="142.9" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-      <g>
-        <circle cx="253.4" cy="126.1" r="4.6" fill="url(#brassPegGrad)" stroke="#1a0c04" stroke-width="1.2"/>
-        <circle cx="252.2" cy="124.9" r="1.4" fill="#fffef0" opacity="0.85"/>
-      </g>
-  </g>
-
-  <!-- 6. ORNATE NAUTICAL COMPASS CENTER HUB -->
-  <!-- Outer Beaded Brass Ring -->
-  <circle cx="300" cy="300" r="77" fill="url(#outerRimWoodGrad)" stroke="#1a0c04" stroke-width="2.5"/>
-  <circle cx="300" cy="300" r="73" fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="2"/>
-  
-  <!-- Compass Rose 8-Point Star in Brass Hub Base -->
-  <g fill="url(#brassBevelGrad)" stroke="#1a0c04" stroke-width="1">
-    <polygon points="300,230 306,294 300,300 294,294"/>
-    <polygon points="300,370 306,306 300,300 294,306"/>
-    <polygon points="230,300 294,306 300,300 294,294"/>
-    <polygon points="370,300 306,306 300,300 306,294"/>
-    <polygon points="250,250 297,294 300,300 294,297" fill="#dfb74c"/>
-    <polygon points="350,250 303,294 300,300 306,297" fill="#dfb74c"/>
-    <polygon points="250,350 297,306 300,300 294,303" fill="#dfb74c"/>
-    <polygon points="350,350 303,306 300,300 306,303" fill="#dfb74c"/>
-  </g>
-
-  <!-- Center Hub Socket (Where HTML .center-spin-btn docks seamlessly) -->
-  <circle cx="300" cy="300" r="48" fill="#150a03" stroke="#dfb74c" stroke-width="2.5"/>
-  <circle cx="300" cy="300" r="46" fill="none" stroke="#1a0c04" stroke-width="1.5"/>
-</svg>
+                  <!-- Inner Helm & Hub -->
+                  <circle cx="250" cy="250" r="134" fill="#23170b"/>
+                  <circle cx="250" cy="250" r="128" fill="none" stroke="#d62828" stroke-width="14" stroke-dasharray="16 16"/>
+                  <circle cx="250" cy="250" r="118" fill="#6b3e19" stroke="#23170b" stroke-width="5"/>
+                  <g stroke="#23170b" stroke-width="3.5" fill="#c6934b">
+                    <line x1="250" y1="150" x2="250" y2="350" stroke="#23170b" stroke-width="8"/>
+                    <line x1="150" y1="250" x2="350" y2="250" stroke="#23170b" stroke-width="8"/>
+                    <line x1="179" y1="179" x2="321" y2="321" stroke="#23170b" stroke-width="8"/>
+                    <line x1="321" y1="179" x2="179" y2="321" stroke="#23170b" stroke-width="8"/>
+                    <circle cx="250" cy="250" r="64" fill="none" stroke="#c6934b" stroke-width="12"/>
+                    <circle cx="250" cy="250" r="64" fill="none" stroke="#23170b" stroke-width="3"/>
+                  </g>
+                </svg>
 
                 <button type="button" class="center-spin-btn" id="spinBtn" aria-label="Spin Wheel of Doom">
                   <span>SPIN</span>
@@ -3405,28 +3169,27 @@
               <p class="spin-hint">Flick wheel with finger or hold <strong>SPIN</strong> to charge!</p>
             </div>
 
-            <!-- Right Rules Column (Red & Blue: Top-Right & Bottom-Right) -->
+            <!-- Right Rules Column -->
             <div class="wheel-rules-col">
-              <div class="rule-card-mini" id="card-RED">
-                <div class="rule-card-mini-head">
-                  <span class="crew-dot red"></span>
-                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
-                </div>
-                <p>Swap your current drink with any rival team's drink of your choice!</p>
-              </div>
-
               <div class="rule-card-mini" id="card-BLUE">
                 <div class="rule-card-mini-head">
                   <span class="crew-dot blue"></span>
                   <span style="color: var(--blue-quad);">BLUE — Shot Roulette</span>
                 </div>
-                <p>Nominate 1 rival player to take a mystery sip or shot!</p>
+                <p>Nominate 1 rival player to take a mystery sip/shot!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-GREEN">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot green"></span>
+                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
+                </div>
+                <p>5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss).</p>
               </div>
             </div>
 
           </div>
         </section>
-
 
         <!-- ===================================================================
              TAB 2: STEP-BY-STEP DYNAMIC SCORES (CHOOSE YOUR TEAM -> TARGET)
@@ -3535,112 +3298,112 @@
                 <!-- SVG Overlay Pins: Flashing UNO Cards for all 10 Pubs -->
                 <svg class="map-pins-svg" viewBox="0 0 1024 572" preserveAspectRatio="none">
                   <!-- Stop 1: The Station (Card 1 - Red) -->
-                  <g class="map-uno-card" data-pin="0" transform="translate(256, 458)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">1</text>
+                  <g class="map-uno-card" data-pin="0" transform="translate(171, 457)">
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">1</text>
                     </g>
                   </g>
 
                   <!-- Stop 2: All Hopes No Promises (Card 2 - Blue) -->
                   <g class="map-uno-card" data-pin="1" transform="translate(433, 446)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">2</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">2</text>
                     </g>
                   </g>
 
                   <!-- Stop 3: Wings & Beer Co (Card 3 - Yellow) -->
                   <g class="map-uno-card" data-pin="2" transform="translate(652, 411)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">3</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">3</text>
                     </g>
                   </g>
 
                   <!-- Stop 4: Hogarths (Card 4 - Green) -->
                   <g class="map-uno-card" data-pin="3" transform="translate(860, 386)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">4</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">4</text>
                     </g>
                   </g>
 
                   <!-- Stop 5: The Twelve Tellers (Card 5 - Red) -->
                   <g class="map-uno-card" data-pin="4" transform="translate(918, 287)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">5</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">5</text>
                     </g>
                   </g>
 
                   <!-- Stop 6: Kuckoo (Card 6 - Blue) -->
                   <g class="map-uno-card" data-pin="5" transform="translate(641, 316)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">6</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#1d63b8" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">6</text>
                     </g>
                   </g>
 
                   <!-- Stop 7: Molly O'Malleys (Card 7 - Yellow) -->
                   <g class="map-uno-card" data-pin="6" transform="translate(403, 276)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">7</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#f7b801" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">7</text>
                     </g>
                   </g>
 
                   <!-- Stop 8: The Adelphi (Card 8 - Green) -->
                   <g class="map-uno-card" data-pin="7" transform="translate(576, 177)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">8</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#2b9348" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">8</text>
                     </g>
                   </g>
 
                   <!-- Stop 9: The Ferret (Card 9 - Red) -->
                   <g class="map-uno-card" data-pin="8" transform="translate(471, 72)">
-                    <rect x="-18" y="-26" width="36" height="52" fill="transparent"/>
-                    <rect class="card-halo" x="-16" y="-23" width="32" height="46" rx="6"/>
-                    <g class="card-body">
-                      <rect x="-13" y="-19" width="26" height="38" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
-                      <ellipse cx="0" cy="0" rx="7.5" ry="12" fill="#ffffff" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#150903" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="14" text-anchor="middle" dominant-baseline="central">9</text>
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-17" y="-24" width="34" height="48" rx="6" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-14" y="-20" width="28" height="40" rx="4" fill="#d62828" stroke="#150903" stroke-width="2"/>
+                      <ellipse cx="0" cy="0" rx="8" ry="12.5" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" text-anchor="middle" dominant-baseline="central">9</text>
                     </g>
                   </g>
 
-                  <!-- Stop 10: Ships & Giggles / Popworld (Card 10 - Gold Wild) -->
-                  <g class="map-uno-card" data-pin="9" transform="translate(346, 142)">
-                    <rect x="-20" y="-28" width="40" height="56" fill="transparent"/>
-                    <rect class="card-halo" x="-18" y="-25" width="36" height="50" rx="7"/>
-                    <g class="card-body">
-                      <rect x="-15" y="-21" width="30" height="42" rx="5" fill="#dfb74c" stroke="#150903" stroke-width="2.5"/>
-                      <ellipse cx="0" cy="0" rx="8.5" ry="13" fill="#150903" transform="rotate(-25)"/>
-                      <text x="0" y="5" fill="#ffea85" font-family="'Cinzel Decorative', 'Arial Black', sans-serif" font-weight="900" font-size="13" text-anchor="middle" dominant-baseline="central">10</text>
+                  <!-- Stop 10: Ships & Giggles / Popworld (Card 10 - Wild Gold/Black) -->
+                  <g class="map-uno-card" data-pin="9" transform="translate(334, 172)">
+                    <rect class="card-hitbox" x="-20" y="-28" width="40" height="56" fill="transparent" pointer-events="all"/>
+                    <rect class="card-halo" x="-18" y="-25" width="36" height="50" rx="7" pointer-events="none"/>
+                    <g class="card-body" pointer-events="none">
+                      <rect x="-15" y="-21" width="30" height="42" rx="5" fill="#181818" stroke="#dfb74c" stroke-width="2.5"/>
+                      <ellipse cx="0" cy="0" rx="8.5" ry="13" fill="#ffffff" transform="rotate(-25)"/>
+                      <text x="0" y="0.5" fill="#111111" font-family="'JetBrains Mono', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="12" text-anchor="middle" dominant-baseline="central">10</text>
                     </g>
                   </g>
                 </svg>
@@ -3868,10 +3631,6 @@
     <button type="button" class="dock-tab" data-tab="bingo" title="Secret Pub Crawl Bingo">
       <span class="dock-icon">🎯</span>
       <span class="dock-label">Bingo</span>
-    </button>
-    <button type="button" class="dock-tab secret-tab" id="openAdminTabBtn" data-tab="admin" title="Master Admin Console">
-      <span class="dock-icon">🔒</span>
-      <span class="dock-label">Admin</span>
     </button>
   </nav>
 
@@ -4115,6 +3874,19 @@
         <div style="margin-top: 8px;">
           <button type="button" class="modal-btn secondary" id="settingsCopyRoomLinkBtn" style="font-size: 0.85rem; padding: 6px 12px; width: 100%;">
             📋 Copy Invite Link & Room Code
+          </button>
+        </div>
+      </div>
+
+      <!-- MASTER ADMIN CONSOLE (PIN PROTECTED: 22140711) -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 4px; border: 1.5px solid rgba(223, 183, 76, 0.5); background: linear-gradient(135deg, rgba(35, 23, 11, 0.9) 0%, rgba(20, 10, 5, 0.95) 100%);">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+          <div>
+            <strong style="color: var(--gold-bright); font-size: 0.98rem; display: block;">🔒 Master Admin Console</strong>
+            <span style="font-size: 0.74rem; color: var(--ink-faded);">Host controls, live pub sync & reset devices</span>
+          </div>
+          <button type="button" class="modal-btn" id="settingsOpenAdminBtn" style="padding: 8px 14px; font-size: 0.88rem; width: auto; flex-shrink: 0; background: linear-gradient(135deg, #c91818 0%, #7d0d0d 100%); border-color: var(--gold); color: #fff;">
+            ⚔️ Open Admin
           </button>
         </div>
       </div>
@@ -5794,10 +5566,10 @@
       function resolveWheelOutcome(angle) {
         const normalized = ((360 - (angle % 360)) % 360 + 360) % 360;
         let quadrantIdx = 0;
-        if (normalized >= 0 && normalized < 90) quadrantIdx = 0; // Red (Drink Swapper, Top-Right)
-        else if (normalized >= 90 && normalized < 180) quadrantIdx = 1; // Blue (Shot Roulette, Bottom-Right)
-        else if (normalized >= 180 && normalized < 270) quadrantIdx = 2; // Green (Chug Challenge, Bottom-Left)
-        else quadrantIdx = 3; // Yellow (Drinker's Freeze, Top-Left)
+        if (normalized >= 45 && normalized < 135) quadrantIdx = 1; // Blue
+        else if (normalized >= 135 && normalized < 225) quadrantIdx = 2; // Green
+        else if (normalized >= 225 && normalized < 315) quadrantIdx = 3; // Yellow
+        else quadrantIdx = 0; // Red
 
         const outcome = QUADRANTS[quadrantIdx];
         openWheelOutcomeModal(outcome);
@@ -6141,18 +5913,27 @@
       let adminSelectedPubIdx = 0;
 
       const openAdminBtn = document.getElementById("openAdminTabBtn");
+      const settingsOpenAdminBtn = document.getElementById("settingsOpenAdminBtn");
       const passcodeModal = document.getElementById("passcodeModal");
       const passcodeInput = document.getElementById("passcodeInput");
 
+      function triggerAdminAccess() {
+        if (state.adminUnlocked) {
+          switchToTab("admin");
+        } else {
+          passcodeInput.value = "";
+          passcodeModal.classList.add("open");
+          passcodeInput.focus();
+        }
+      }
+
       if (openAdminBtn) {
-        openAdminBtn.onclick = () => {
-          if (state.adminUnlocked) {
-            switchToTab("admin");
-          } else {
-            passcodeInput.value = "";
-            passcodeModal.classList.add("open");
-            passcodeInput.focus();
-          }
+        openAdminBtn.onclick = triggerAdminAccess;
+      }
+      if (settingsOpenAdminBtn) {
+        settingsOpenAdminBtn.onclick = () => {
+          document.getElementById("settingsModal").classList.remove("open");
+          triggerAdminAccess();
         };
       }
 
