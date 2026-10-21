@@ -98,8 +98,8 @@
     }
 
     html {
-      background-color: #190e0e;
-      background-color: var(--theme-bg, #190e0e);
+      background-color: #2b110b;
+      background-color: var(--theme-bg, #2b110b);
       min-height: 100%;
       width: 100% !important;
       max-width: 100vw !important;
@@ -114,10 +114,10 @@
     body {
       width: 100% !important;
       max-width: 100vw !important;
-      background: #140804;
-      background-color: var(--theme-bg, #140804);
+      background: #2b110b;
+      background-color: var(--theme-bg, #2b110b);
       background-image:
-        radial-gradient(circle at 50% 15%, var(--theme-glow, rgba(255, 185, 80, 0.35)) 0%, rgba(16, 7, 3, 0.96) 80%),
+        radial-gradient(circle at 50% 15%, var(--theme-glow, rgba(255, 185, 80, 0.35)) 0%, rgba(35, 14, 8, 0.92) 80%),
         radial-gradient(circle at 85% 85%, var(--theme-glow, rgba(255, 185, 80, 0.2)) 0%, transparent 60%),
         repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.4) 0 2px, transparent 2px 8px);
       font-family: 'IM Fell English', Georgia, serif;
@@ -410,24 +410,39 @@
       touch-action: manipulation;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @media (max-width: 600px), (display-mode: standalone) {
+    @media (max-width: 600px) {
       .mobile-bottom-dock {
         position: fixed !important;
+        bottom: calc(10px + var(--sab)) !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: calc(100vw - 20px) !important;
+        max-width: 440px !important;
+        border-radius: 28px !important;
+        border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
+        border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+        background: rgba(32, 16, 10, 0.65) !important;
+        backdrop-filter: blur(28px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+        padding: 5px 6px !important;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.55), 0 0 18px var(--theme-glow, rgba(0,0,0,0)) !important;
+        z-index: 9999 !important;
+      }
+    }
+    @media (display-mode: standalone) {
+      .mobile-bottom-dock {
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
         max-width: 100vw !important;
         transform: none !important;
-        border-radius: 20px 20px 0 0 !important;
+        border-radius: 22px 22px 0 0 !important;
         border: none !important;
-        border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.22)) !important;
-        background: rgba(16, 9, 5, 0.94) !important;
-        backdrop-filter: blur(28px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+        border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
+        background: rgba(30, 15, 8, 0.72) !important;
         padding: 6px 4px calc(max(10px, var(--sab)) + 2px) 4px !important;
-        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.75), 0 0 20px var(--theme-glow, rgba(0,0,0,0)) !important;
-        z-index: 9999 !important;
       }
     }
 
@@ -2248,12 +2263,17 @@
        ========================================================================= */
     .rubber-fluid-canvas {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      height: 100lvh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.40;
+      opacity: 0.65;
       transition: opacity 0.6s ease;
     }
 
@@ -5968,17 +5988,17 @@
         const team = (state.teams && state.teams[state.myTeamIdx]) || (state.teams && state.teams[0]) || { colorClass: "red" };
         const colorClass = team.colorClass || "red";
 
-        let titleBarHex = "#3d1217";
+        let titleBarHex = "#54191f";
         if (isLight) {
           if (colorClass === "blue") titleBarHex = "#dbe8f8";
           else if (colorClass === "green") titleBarHex = "#dbeef0";
           else if (colorClass === "yellow") titleBarHex = "#fcecd2";
           else titleBarHex = "#fbdcde";
         } else {
-          if (colorClass === "blue") titleBarHex = "#10263f";
-          else if (colorClass === "green") titleBarHex = "#112e1a";
-          else if (colorClass === "yellow") titleBarHex = "#38270e";
-          else titleBarHex = "#3d1217";
+          if (colorClass === "blue") titleBarHex = "#1a3a60";
+          else if (colorClass === "green") titleBarHex = "#1b4426";
+          else if (colorClass === "yellow") titleBarHex = "#4d3614";
+          else titleBarHex = "#54191f";
         }
 
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
@@ -6210,12 +6230,15 @@
         function resizeRubberFluid() {
           if (!rfCanvas || !rfGl) return;
           const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-          rfCanvas.width = window.innerWidth * dpr;
-          rfCanvas.height = window.innerHeight * dpr;
+          const w = Math.max(window.innerWidth, screen.width || 0);
+          const h = Math.max(window.innerHeight, screen.height || 0);
+          rfCanvas.width = w * dpr;
+          rfCanvas.height = h * dpr;
           rfGl.viewport(0, 0, rfCanvas.width, rfCanvas.height);
         }
         resizeRubberFluid();
         window.addEventListener("resize", resizeRubberFluid);
+        window.addEventListener("orientationchange", resizeRubberFluid);
 
         function renderRubberFluid() {
           if (!rfGl || !rfProgram) return;
