@@ -2273,7 +2273,8 @@
     /* Glossy Glass Buttons */
     .modal-btn {
       position: relative;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%), var(--theme-primary, #925424) !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%), var(--theme-primary, #925424);
+      color: #ffffff;
       backdrop-filter: blur(14px) saturate(160%);
       -webkit-backdrop-filter: blur(14px) saturate(160%);
       border: 1.5px solid var(--theme-border, var(--gold)) !important;
@@ -2871,6 +2872,146 @@
       color: #fcd34d !important;
     }
 
+    /* Bingo Card Tiles in Dark Mode */
+    body:not(.light-mode) .bingo-card-tile {
+      background: rgba(28, 16, 12, 0.9) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #f7eedc !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    }
+    body:not(.light-mode) .bingo-tile-title {
+      color: #f7eedc !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .bingo-tile-pts {
+      background: rgba(220, 38, 38, 0.28) !important;
+      color: #fca5a5 !important;
+      border: 1px solid rgba(239, 68, 68, 0.5) !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .bingo-card-tile.is-bonus {
+      background: rgba(16, 40, 24, 0.9) !important;
+      border-color: rgba(34, 197, 94, 0.5) !important;
+    }
+    body:not(.light-mode) .bingo-card-tile.is-bonus .bingo-tile-pts {
+      background: rgba(34, 197, 94, 0.25) !important;
+      color: #86efac !important;
+      border: 1px solid rgba(34, 197, 94, 0.5) !important;
+    }
+    body:not(.light-mode) .bingo-card-tile.claimed {
+      background: rgba(45, 20, 15, 0.95) !important;
+      border-color: var(--theme-border, #d87a80) !important;
+      box-shadow: 0 0 14px var(--theme-glow, rgba(0,0,0,0)) !important;
+    }
+    body:not(.light-mode) .bingo-card-tile.claimed::after {
+      color: #ffd885 !important;
+      border-color: #ffd885 !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    /* Admin Pub Grid in Dark Mode */
+    body:not(.light-mode) .btn-admin-pub-select {
+      background: rgba(24, 14, 10, 0.88) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    body:not(.light-mode) .btn-admin-pub-select span {
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .btn-admin-pub-select small {
+      color: #ffd885 !important;
+      font-weight: 500 !important;
+    }
+    body:not(.light-mode) .btn-admin-pub-select:hover {
+      background: rgba(40, 24, 16, 0.95) !important;
+      border-color: var(--theme-border, var(--gold)) !important;
+    }
+    body:not(.light-mode) .btn-admin-pub-select.selected {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.25)) 0%, rgba(36, 18, 14, 0.95) 100%) !important;
+      border: 2px solid var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* Admin Card Headings, Badges & High-Contrast Action Buttons */
+    body:not(.light-mode) .admin-card-head h3 {
+      color: #ffd885 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .admin-card-head .admin-badge {
+      background: rgba(0, 0, 0, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #ffd885 !important;
+    }
+    body:not(.light-mode) #adminBroadcastPubBtn {
+      background: linear-gradient(135deg, #15803d 0%, #166534 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid #4ade80 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminAdvanceTurnBtn {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid #60a5fa !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminResetScoresBtn {
+      background: linear-gradient(135deg, #b45309 0%, #78350f 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid #f59e0b !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminResetAllDevicesBtn {
+      background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid #ef4444 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminRedirectPortfolioBtn {
+      background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid #a78bfa !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminRefreshDevicesBtn {
+      background: #1e3a8a !important;
+      color: #ffffff !important;
+      border: 1.5px solid #3b82f6 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminRegisterCurrentDeviceBtn {
+      background: #14532d !important;
+      color: #ffffff !important;
+      border: 1.5px solid #22c55e !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) #adminPingAllBtn {
+      background: #78350f !important;
+      color: #ffffff !important;
+      border: 1.5px solid #f59e0b !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .setup-player-input-row input {
+      background: rgba(20, 12, 8, 0.85) !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    body:not(.light-mode) .setup-captain-select {
+      background: rgba(20, 12, 8, 0.85) !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    body:not(.light-mode) .impact-pill.danger {
+      background: rgba(185, 28, 28, 0.3) !important;
+      color: #fca5a5 !important;
+      border: 1px solid rgba(239, 68, 68, 0.5) !important;
+    }
+    body:not(.light-mode) .impact-pill.special {
+      background: rgba(180, 83, 9, 0.3) !important;
+      color: #fde047 !important;
+      border: 1px solid rgba(234, 179, 8, 0.5) !important;
+    }
+
     /* =========================================================================
        DESKTOP EXPANSIVE LAYOUT & CONTAINER INTEGRITY (FIX FOR SQUISHED BOXES)
        ========================================================================= */
@@ -3403,7 +3544,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.1</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.2</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
