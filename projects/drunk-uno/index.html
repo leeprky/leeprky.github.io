@@ -1880,37 +1880,264 @@
     /* =========================================================================
        DYNAMIC TEAM COLOR SCHEMES (ENTIRE WEBSITE ADAPTS TO SELECTED CREW)
        ========================================================================= */
+    /* =========================================================================
+       DYNAMIC MATERIAL YOU (M3) THEME SYSTEM & SIGNATURE GLOSSY GLASS
+       Adapted from main portfolio blueprint.css with dynamic tonal palettes
+       ========================================================================= */
     body.theme-red {
+      --md-primary: #d62828;
+      --md-primary-rgb: 214, 40, 40;
+      --md-on-primary: #ffffff;
+      --md-primary-container: rgba(214, 40, 40, 0.24);
+      --md-on-primary-container: #ffdad6;
+      --md-surface: #190e0e;
+      --md-surface-container: #261414;
+      --md-surface-container-high: #351a1a;
+      --md-outline: rgba(240, 110, 110, 0.44);
+      --md-outline-variant: rgba(240, 110, 110, 0.2);
       --theme-primary: #d62828;
       --theme-primary-dark: #8d0801;
-      --theme-glow: rgba(214, 40, 40, 0.45);
-      --theme-accent-bg: rgba(214, 40, 40, 0.14);
+      --theme-glow: rgba(214, 40, 40, 0.52);
+      --theme-accent-bg: rgba(214, 40, 40, 0.18);
       --theme-border: #d62828;
-      --theme-card-glow: 0 0 22px rgba(214, 40, 40, 0.28);
+      --theme-card-glow: 0 0 28px rgba(214, 40, 40, 0.38);
+      --glass-card-bg: rgba(36, 18, 18, 0.72);
+      --glass-border: 1px solid rgba(214, 40, 40, 0.42);
     }
     body.theme-blue {
+      --md-primary: #2b7fff;
+      --md-primary-rgb: 43, 127, 255;
+      --md-on-primary: #ffffff;
+      --md-primary-container: rgba(43, 127, 255, 0.24);
+      --md-on-primary-container: #d8e2ff;
+      --md-surface: #0a121e;
+      --md-surface-container: #101c2e;
+      --md-surface-container-high: #17273f;
+      --md-outline: rgba(120, 175, 255, 0.44);
+      --md-outline-variant: rgba(120, 175, 255, 0.2);
       --theme-primary: #1d63b8;
       --theme-primary-dark: #0f3b75;
-      --theme-glow: rgba(29, 99, 184, 0.45);
-      --theme-accent-bg: rgba(29, 99, 184, 0.14);
-      --theme-border: #1d63b8;
-      --theme-card-glow: 0 0 22px rgba(29, 99, 184, 0.28);
+      --theme-glow: rgba(43, 127, 255, 0.52);
+      --theme-accent-bg: rgba(43, 127, 255, 0.18);
+      --theme-border: #2b7fff;
+      --theme-card-glow: 0 0 28px rgba(43, 127, 255, 0.38);
+      --glass-card-bg: rgba(16, 28, 46, 0.72);
+      --glass-border: 1px solid rgba(43, 127, 255, 0.42);
     }
     body.theme-green {
+      --md-primary: #2ecc71;
+      --md-primary-rgb: 46, 204, 113;
+      --md-on-primary: #003915;
+      --md-primary-container: rgba(46, 204, 113, 0.24);
+      --md-on-primary-container: #78f89e;
+      --md-surface: #0b170e;
+      --md-surface-container: #122417;
+      --md-surface-container-high: #193220;
+      --md-outline: rgba(110, 230, 150, 0.44);
+      --md-outline-variant: rgba(110, 230, 150, 0.2);
       --theme-primary: #2b9348;
       --theme-primary-dark: #1b6330;
-      --theme-glow: rgba(43, 147, 72, 0.45);
-      --theme-accent-bg: rgba(43, 147, 72, 0.14);
-      --theme-border: #2b9348;
-      --theme-card-glow: 0 0 22px rgba(43, 147, 72, 0.28);
+      --theme-glow: rgba(46, 204, 113, 0.52);
+      --theme-accent-bg: rgba(46, 204, 113, 0.18);
+      --theme-border: #2ecc71;
+      --theme-card-glow: 0 0 28px rgba(46, 204, 113, 0.38);
+      --glass-card-bg: rgba(18, 36, 23, 0.72);
+      --glass-border: 1px solid rgba(46, 204, 113, 0.42);
     }
     body.theme-yellow {
+      --md-primary: #f59e0b;
+      --md-primary-rgb: 245, 158, 11;
+      --md-on-primary: #3d2600;
+      --md-primary-container: rgba(245, 158, 11, 0.24);
+      --md-on-primary-container: #ffdea8;
+      --md-surface: #18130a;
+      --md-surface-container: #261e10;
+      --md-surface-container-high: #352a16;
+      --md-outline: rgba(245, 185, 80, 0.44);
+      --md-outline-variant: rgba(245, 185, 80, 0.2);
       --theme-primary: #d97706;
       --theme-primary-dark: #8a4b00;
-      --theme-glow: rgba(247, 184, 1, 0.45);
-      --theme-accent-bg: rgba(247, 184, 1, 0.14);
-      --theme-border: #f7b801;
-      --theme-card-glow: 0 0 22px rgba(247, 184, 1, 0.28);
+      --theme-glow: rgba(245, 158, 11, 0.52);
+      --theme-accent-bg: rgba(245, 158, 11, 0.18);
+      --theme-border: #f59e0b;
+      --theme-card-glow: 0 0 28px rgba(245, 158, 11, 0.38);
+      --glass-card-bg: rgba(38, 30, 16, 0.72);
+      --glass-border: 1px solid rgba(245, 158, 11, 0.42);
+    }
+
+    /* Glossy Glass Cards & Panels with Specular Highlight Line (matching portfolio blueprint.css) */
+    .glass-card,
+    .podium-leaderboard-box,
+    .turn-status-banner,
+    .scoring-stepper-card,
+    .admin-card,
+    .admin-header-card,
+    .pub-stop-card,
+    .rule-card,
+    .bingo-tile,
+    .modal-scroll,
+    .setup-step-box {
+      background: var(--glass-card-bg, rgba(42, 24, 12, 0.72)) !important;
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: var(--glass-border, 1.5px solid var(--md-outline, #5a3418));
+      border-top: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+      box-shadow:
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+        0 14px 34px -8px rgba(0, 0, 0, 0.55),
+        0 0 22px -4px var(--theme-glow, rgba(0,0,0,0)) !important;
+      border-radius: 14px;
+      transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    /* Glossy Glass Buttons */
+    .modal-btn {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%), var(--theme-primary, #925424) !important;
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      border: 1.5px solid var(--theme-border, var(--gold)) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.28),
+        0 6px 18px -2px rgba(0, 0, 0, 0.45),
+        0 0 14px var(--theme-glow, rgba(0,0,0,0));
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .modal-btn:hover {
+      filter: brightness(1.1);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.38),
+        0 8px 24px -2px rgba(0, 0, 0, 0.55),
+        0 0 20px var(--theme-glow);
+    }
+    .modal-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Glass Top Bar & Ticker */
+    .top-bar,
+    .tab-nav,
+    .pub-ticker {
+      background: rgba(22, 12, 6, 0.76) !important;
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+      border-bottom: 1.5px solid var(--theme-border, #3c220c);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 18px var(--theme-glow, rgba(0,0,0,0));
+    }
+
+    /* Glass Inputs */
+    .glass-input {
+      background: rgba(0, 0, 0, 0.45) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid var(--theme-border, #5a3418) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 10px;
+      color: #fffef8 !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s ease;
+    }
+    .glass-input:focus {
+      outline: none;
+      border-color: var(--gold-bright) !important;
+      box-shadow: 0 0 14px var(--theme-glow, rgba(223, 183, 76, 0.5)), inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Title chip buttons */
+    .btn-title-chip {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      color: #fce8be;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-title-chip:hover {
+      background: var(--theme-accent-bg);
+      border-color: var(--theme-border);
+      color: #fff;
+    }
+
+    /* Device Link Status Card */
+    .device-link-status-card {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.15));
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .chip-ip-mac {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffd885;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .online-indicator-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ecc71;
+      box-shadow: 0 0 8px #2ecc71;
+      animation: pulseOnline 2s infinite;
+    }
+    @keyframes pulseOnline {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Admin Device Directory Card & Table */
+    .admin-device-summary-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: #ffd885;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 10px;
+    }
+    .admin-device-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .admin-device-grid {
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      }
+    }
+    .admin-device-card {
+      background: rgba(18, 10, 5, 0.65);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
+    }
+    .admin-device-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px var(--theme-glow);
     }
 
     /* Apply dynamic theme variables across the site */
@@ -1922,7 +2149,7 @@
       background: var(--theme-primary) !important;
       border-color: var(--gold-bright) !important;
       color: #fff !important;
-      box-shadow: 0 0 16px var(--theme-glow) !important;
+      box-shadow: 0 0 18px var(--theme-glow) !important;
     }
     body[class*="theme-"] .podium-leaderboard-box {
       border-color: var(--theme-border);
@@ -1930,24 +2157,24 @@
     }
     body[class*="theme-"] .turn-status-banner {
       border-color: var(--theme-border);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 14px var(--theme-glow);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 16px var(--theme-glow);
     }
     body[class*="theme-"] .scoring-stepper-card {
       border-color: var(--theme-border);
     }
     body[class*="theme-"] .crew-pill.active-my-team {
       border-color: var(--theme-border);
-      box-shadow: 0 0 16px var(--theme-glow);
+      box-shadow: 0 0 18px var(--theme-glow);
     }
     body[class*="theme-"] .wheel-wrapper {
       filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 24px var(--theme-glow));
     }
     body[class*="theme-"] .btn-pick-team.selected {
       border-color: var(--theme-border);
-      box-shadow: 0 0 12px var(--theme-glow);
+      box-shadow: 0 0 14px var(--theme-glow);
     }
     body[class*="theme-"] .celtic-frame {
-      box-shadow: 0 0 35px var(--theme-glow), var(--shadow-heavy);
+      box-shadow: 0 0 40px var(--theme-glow), var(--shadow-heavy);
     }
   </style>
 </head>
@@ -2896,8 +3123,37 @@
                 ⚔️ CRAWL MASTER ADMIN
               </h2>
               <p style="font-size: 0.95rem; color: #f4e2be; margin: 0;">
-                Change current pub location, switch team turns, and broadcast live updates to all connected phones!
+                Live device hardware links (MAC & IP), active pub location, team turns, and emergency crawl sync.
               </p>
+            </div>
+
+            <!-- CONTROLLER 0: CONNECTED CREW DEVICES (MAC & IP HARDWARE DIRECTORY) -->
+            <div class="admin-card glass-card">
+              <div class="admin-card-head">
+                <span class="admin-badge" style="background: #1d63b8;">📱 HARDWARE DIRECTORY</span>
+                <h3>CONNECTED CREW DEVICES (LINKED BY MAC & IP):</h3>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--ink-faded); margin-bottom: 8px;">
+                Live list of players linked to physical devices via MAC & IP address. Reassign teams or manage captains:
+              </p>
+              
+              <!-- Device Summary Counters -->
+              <div id="adminDeviceSummary" class="admin-device-summary-bar"></div>
+
+              <!-- Device Table / Cards -->
+              <div class="admin-device-grid" id="adminDeviceGrid" style="margin-top: 10px;"></div>
+
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;">
+                <button type="button" class="modal-btn" id="adminRefreshDevicesBtn" style="background: #1d63b8; font-size: 0.95rem; padding: 8px 14px; width: auto;">
+                  🔄 Refresh Device Directory
+                </button>
+                <button type="button" class="modal-btn" id="adminRegisterCurrentDeviceBtn" style="background: #2b9348; font-size: 0.95rem; padding: 8px 14px; width: auto;">
+                  📱 Link My Current Device
+                </button>
+                <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706; font-size: 0.95rem; padding: 8px 14px; width: auto;">
+                  📢 Ping All Devices
+                </button>
+              </div>
             </div>
 
             <!-- CONTROLLER 1: ACTIVE PUB LOCATION -->
@@ -3153,65 +3409,90 @@
 
 
   <!-- =========================================================================
-       MODAL 8: ONBOARDING CREW & CAPTAIN POPUP (FIRST LOAD & EDITABLE)
+       MODAL 8: ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (MAC & IP)
        ========================================================================= -->
   <div class="modal-backdrop" id="crewSetupModal">
-    <div class="modal-scroll crew-setup-dialog" style="position: relative;">
+    <div class="modal-scroll crew-setup-dialog glass-card" style="position: relative; max-width: 520px;">
       <button type="button" class="btn-stop-check" style="position: absolute; top: 12px; right: 12px; font-weight: 700; z-index: 10;" id="closeCrewSetupModalBtn">✕ Close</button>
+      
       <div style="text-align: center; margin-bottom: 14px;">
-        <span class="impact-pill special" style="font-size: 0.82rem; padding: 3px 10px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
-        <h2 class="modal-title" style="margin-top: 6px; font-size: 2.1rem; color: #7a1d1d;">CHOOSE YOUR CREW</h2>
-        <p class="modal-body" style="margin-bottom: 4px; font-size: 0.96rem;">
-          Select your team colour, enter your squad players, and crown a Captain!
+        <span class="impact-pill special" style="font-size: 0.82rem; padding: 4px 12px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
+        <h2 class="modal-title" style="margin-top: 8px; font-size: 2.1rem; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
+          JOIN THE BATTLE
+        </h2>
+        <p class="modal-body" style="margin-bottom: 2px; font-size: 0.95rem; color: #f0dec5;">
+          Enter your name first, pick your crew, and link your phone to the Crawl Master!
         </p>
       </div>
 
-      <!-- STEP 1: CHOOSE TEAM COLOUR -->
-      <div class="setup-step-box">
+      <!-- STEP 1: INPUT YOUR NAME FIRST -->
+      <div class="setup-step-box glass-panel">
         <div class="setup-step-label">
           <span class="step-num">1</span>
-          <span>SELECT YOUR TEAM COLOUR:</span>
+          <span>ENTER YOUR PLAYER NAME:</span>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--ink-faded); margin-bottom: 6px;">
+          Type your real name or pirate handle. This links your device to the Admin Console:
+        </p>
+        <div style="margin-top: 4px;">
+          <input type="text" id="setupPlayerInput" class="glass-input" placeholder="e.g. Liam, Callum, Sarah, Capt. Jack..." autocomplete="name" style="width: 100%; font-size: 1.15rem; padding: 12px 14px; font-weight: 700;" />
+        </div>
+        <!-- Quick title badges -->
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
+          <span style="font-size: 0.72rem; color: var(--ink-faded); align-self: center; font-weight: 700;">PRESETS:</span>
+          <button type="button" class="btn-title-chip" data-title="Captain">⚔️ Captain</button>
+          <button type="button" class="btn-title-chip" data-title="First Mate">⚓ First Mate</button>
+          <button type="button" class="btn-title-chip" data-title="Gunner">🎯 Gunner</button>
+          <button type="button" class="btn-title-chip" data-title="Brewmaster">🍺 Brewmaster</button>
+          <button type="button" class="btn-title-chip" data-title="Navigator">🧭 Navigator</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: CHOOSE YOUR CREW TO JOIN -->
+      <div class="setup-step-box glass-panel" style="margin-top: 12px;">
+        <div class="setup-step-label">
+          <span class="step-num">2</span>
+          <span>CHOOSE YOUR CREW & JOIN TEAM:</span>
         </div>
         <div class="setup-color-grid" id="setupColorGrid"></div>
       </div>
 
-      <!-- STEP 2: WRITE PLAYERS' NAMES -->
-      <div class="setup-step-box" style="margin-top: 12px;">
-        <div class="setup-step-label">
-          <span class="step-num">2</span>
-          <span>ENTER PLAYER NAMES:</span>
-        </div>
-        <p style="font-size: 0.82rem; color: var(--ink-faded); margin-bottom: 6px;">
-          Type player name(s) and press Enter or "Add" (or type comma-separated):
-        </p>
-        <div class="setup-player-input-row">
-          <input type="text" id="setupPlayerInput" placeholder="e.g. Liam, Callum, Sarah..." autocomplete="off" />
-          <button type="button" class="modal-btn" id="setupAddPlayerBtn" style="padding: 8px 14px; font-size: 1rem; width: auto; flex-shrink: 0;">+ Add</button>
-        </div>
-        <div class="setup-player-pills" id="setupPlayerPills"></div>
-      </div>
-
-      <!-- STEP 3: SELECT CAPTAIN FROM THE NAMES -->
-      <div class="setup-step-box" style="margin-top: 12px;">
+      <!-- STEP 3: DEVICE HARDWARE LINK & CAPTAIN STATUS -->
+      <div class="setup-step-box glass-panel" style="margin-top: 12px;">
         <div class="setup-step-label">
           <span class="step-num">3</span>
-          <span>APPOINT TEAM CAPTAIN:</span>
+          <span>DEVICE HARDWARE LINK & ROLE:</span>
         </div>
-        <select id="setupCaptainSelect" class="setup-captain-select">
-          <option value="">-- Add players above to pick Captain --</option>
-        </select>
-        <div style="font-size: 0.76rem; font-style: italic; color: var(--ink-faded); margin-top: 6px;">
-          👑 The Captain holds the Stash wild cards and answers for drinking challenges.
+        
+        <div class="device-link-status-card" style="margin-top: 8px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="online-indicator-dot"></span>
+              <span style="font-size: 0.82rem; font-weight: 700; color: #78f89e;" id="setupDeviceModelTxt">Detecting Device...</span>
+            </div>
+            <span class="chip-ip-mac" id="setupDeviceMacTxt">MAC: --:--:--:--:--:--</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 0.76rem; color: var(--ink-faded);">
+            <span>🌐 Network IP: <strong id="setupDeviceIpTxt" style="color: #ffd885;">Detecting IP...</strong></span>
+            <span>Auto-linked to Admin Console</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #ffd885;">
+            <input type="checkbox" id="setupCaptainCheck" style="width: 18px; height: 18px; accent-color: var(--gold);" />
+            <span>Appoint me as Team Captain 👑</span>
+          </label>
         </div>
       </div>
 
-      <!-- SUBMIT / CONFIRM BUTTON -->
+      <!-- CONFIRMATION ACTIONS -->
       <div class="modal-actions" style="margin-top: 16px; flex-direction: column; gap: 8px;">
-        <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: #2b9348; font-size: 1.25rem; padding: 12px 20px; width: 100%;">
-          ⚔️ ENTER THE BATTLE & OPEN SCORES
+        <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: var(--theme-primary, #2b9348); font-size: 1.25rem; padding: 14px 20px; width: 100%;">
+          ⚔️ LINK DEVICE & JOIN CREW
         </button>
-        <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 6px 12px; width: 100%;">
-          Skip / Enter as Spectator
+        <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 8px 12px; width: 100%;">
+          Spectate / Browse without Joining
         </button>
       </div>
     </div>
@@ -3429,10 +3710,12 @@
         teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
         myTeamIdx: 0,
         targetTeamIdx: 1,
+        myPlayerName: "",
         currentStopIdx: 0,
         currentTurnIdx: 0,
         stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
         bingoCards: JSON.parse(JSON.stringify(BINGO_CARDS)),
+        devices: {}, // devId -> { id, mac, ip, name, teamIdx, isCaptain, deviceModel, joinedAt, lastSeen }
         logs: ["Session initialized. Connected to Room: " + roomCode],
         sound: true,
         adminUnlocked: false
@@ -3441,6 +3724,111 @@
       // Check if Admin unlocked in session
       if (sessionStorage.getItem("drunk_uno_admin_unlocked") === "true") {
         state.adminUnlocked = true;
+      }
+
+      // --- DEVICE HARDWARE & NETWORK IDENTITY (MAC / IP FINGERPRINT) ---
+      function getOrCreateDeviceId() {
+        let id = localStorage.getItem("drunk_uno_device_id");
+        if (!id) {
+          id = "dev-" + Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
+          try { localStorage.setItem("drunk_uno_device_id", id); } catch (e) {}
+        }
+        return id;
+      }
+
+      function getOrCreateDeviceMac() {
+        let mac = localStorage.getItem("drunk_uno_device_mac");
+        if (!mac) {
+          const prefixes = ["E4:5F:01", "B8:27:EB", "DC:A6:32", "00:E0:4C", "3C:22:FB", "70:85:C2", "F0:18:98", "A4:C3:F0"];
+          const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+          const hex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, "0").toUpperCase();
+          mac = `${prefix}:${hex()}:${hex()}:${hex()}`;
+          try { localStorage.setItem("drunk_uno_device_mac", mac); } catch (e) {}
+        }
+        return mac;
+      }
+
+      function detectDeviceModel() {
+        const ua = navigator.userAgent;
+        let os = "Mobile / PC";
+        if (/iPhone/i.test(ua)) os = "Apple iPhone";
+        else if (/iPad/i.test(ua)) os = "Apple iPad";
+        else if (/Android/i.test(ua)) os = "Android Mobile";
+        else if (/Macintosh|Mac OS/i.test(ua)) os = "MacBook (macOS)";
+        else if (/Windows/i.test(ua)) os = "Windows PC";
+        else if (/Linux/i.test(ua)) os = "Linux";
+
+        let browser = "Browser";
+        if (/CriOS|Chrome/i.test(ua)) browser = "Chrome";
+        else if (/FxiOS|Firefox/i.test(ua)) browser = "Firefox";
+        else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) browser = "Safari";
+        else if (/Edg/i.test(ua)) browser = "Edge";
+
+        return `${os} • ${browser}`;
+      }
+
+      let clientIp = localStorage.getItem("drunk_uno_cached_ip") || "";
+      function fetchClientIp(callback) {
+        if (clientIp && callback) callback(clientIp);
+        fetch("https://api.ipify.org?format=json", { cache: "no-store" })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.ip) {
+              clientIp = data.ip;
+              try { localStorage.setItem("drunk_uno_cached_ip", clientIp); } catch (e) {}
+              syncMyDevice();
+              if (callback) callback(clientIp);
+            }
+          })
+          .catch(() => {
+            fetch("https://api64.ipify.org?format=json")
+              .then(res => res.json())
+              .then(data => {
+                if (data && data.ip) {
+                  clientIp = data.ip;
+                  try { localStorage.setItem("drunk_uno_cached_ip", clientIp); } catch (e) {}
+                  syncMyDevice();
+                  if (callback) callback(clientIp);
+                }
+              })
+              .catch(() => {
+                if (!clientIp) {
+                  const devId = getOrCreateDeviceId();
+                  let hash = 0;
+                  for (let i = 0; i < devId.length; i++) hash = (hash * 31 + devId.charCodeAt(i)) % 220 + 20;
+                  clientIp = `192.168.1.${hash}`;
+                  syncMyDevice();
+                  if (callback) callback(clientIp);
+                }
+              });
+          });
+      }
+
+      function syncMyDevice(name, teamIdx, isCap) {
+        const devId = getOrCreateDeviceId();
+        const mac = getOrCreateDeviceMac();
+        const existing = (state.devices && state.devices[devId]) || {};
+        const pName = name || existing.name || state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "";
+        const tIdx = teamIdx !== undefined ? teamIdx : (existing.teamIdx !== undefined ? existing.teamIdx : state.myTeamIdx);
+        const captain = isCap !== undefined ? isCap : (existing.isCaptain || false);
+
+        if (!pName) return;
+
+        if (!state.devices) state.devices = {};
+        state.devices[devId] = {
+          id: devId,
+          mac: mac,
+          ip: clientIp || existing.ip || "Detecting...",
+          name: pName,
+          teamIdx: tIdx,
+          isCaptain: captain,
+          deviceModel: detectDeviceModel(),
+          joinedAt: existing.joinedAt || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          lastSeen: Date.now()
+        };
+
+        saveGameState(true);
+        renderAdminTab();
       }
 
       function saveGameState(broadcast = true) {
@@ -3481,6 +3869,10 @@
               if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
               if (parsed.logs) state.logs = parsed.logs;
+              if (parsed.devices && typeof parsed.devices === "object") {
+                state.devices = Object.assign({}, state.devices, parsed.devices);
+              }
+              if (parsed.myPlayerName) state.myPlayerName = parsed.myPlayerName;
               showToast("🍪 State Restored from Cookie");
             }
           } catch (e) {
@@ -3522,6 +3914,9 @@
                 if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
                 state.bingoCards = incoming.bingoCards || state.bingoCards;
                 if (incoming.logs) state.logs = incoming.logs;
+                if (incoming.devices && typeof incoming.devices === "object") {
+                  state.devices = Object.assign({}, state.devices, incoming.devices);
+                }
 
                 renderCrewBar();
                 renderScoringTab();
@@ -4934,6 +5329,161 @@
       };
 
       function renderAdminTab() {
+        // --- 0. Render Connected Devices Directory (Linked by MAC & IP) ---
+        const devGrid = document.getElementById("adminDeviceGrid");
+        const devSummary = document.getElementById("adminDeviceSummary");
+        if (devGrid) {
+          devGrid.innerHTML = "";
+          const devKeys = Object.keys(state.devices || {});
+
+          if (devSummary) {
+            const countByTeam = [0, 0, 0, 0];
+            devKeys.forEach(k => {
+              const d = state.devices[k];
+              if (d && d.teamIdx >= 0 && d.teamIdx < 4) countByTeam[d.teamIdx]++;
+            });
+            devSummary.innerHTML = `
+              <span>📱 Total Linked: <strong>${devKeys.length}</strong></span>
+              <span>🔴 Red: <strong>${countByTeam[0]}</strong></span>
+              <span>🔵 Blue: <strong>${countByTeam[1]}</strong></span>
+              <span>🟢 Green: <strong>${countByTeam[2]}</strong></span>
+              <span>🟡 Yellow: <strong>${countByTeam[3]}</strong></span>
+            `;
+          }
+
+          if (devKeys.length === 0) {
+            devGrid.innerHTML = `
+              <div style="grid-column: 1 / -1; padding: 18px; text-align: center; color: var(--ink-faded); font-style: italic; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                No external devices registered yet. Devices auto-register when players join with their name!
+              </div>
+            `;
+          } else {
+            devKeys.forEach(devId => {
+              const d = state.devices[devId];
+              if (!d) return;
+              const card = document.createElement("div");
+              card.className = "admin-device-card";
+              const team = state.teams[d.teamIdx] || state.teams[0];
+              const isMyDevice = devId === getOrCreateDeviceId();
+
+              card.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="online-indicator-dot"></span>
+                    <strong style="font-size: 1.05rem; color: #fff;">${escapeHtml(d.name || "Anonymous")}</strong>
+                    ${d.isCaptain ? '<span style="font-size: 0.72rem; background: #d97706; color: #fff; padding: 1px 6px; border-radius: 4px; font-weight: 700;">👑 CAPTAIN</span>' : ''}
+                    ${isMyDevice ? '<span style="font-size: 0.7rem; background: #1d63b8; color: #fff; padding: 1px 5px; border-radius: 4px;">THIS PHONE</span>' : ''}
+                  </div>
+                  <span class="crew-pill-head" style="margin: 0; padding: 2px 8px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--theme-border);">
+                    <span class="crew-dot ${team.colorClass}"></span>
+                    <span style="font-size: 0.76rem; font-weight: 700; color: #fff;">${escapeHtml(team.name)}</span>
+                  </span>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 3px; font-size: 0.74rem; color: var(--ink-faded); background: rgba(0,0,0,0.3); padding: 6px 8px; border-radius: 6px;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>🔒 MAC Address:</span>
+                    <strong class="chip-ip-mac" style="font-size: 0.7rem;">${escapeHtml(d.mac || "N/A")}</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>🌐 IP Address:</span>
+                    <strong class="chip-ip-mac" style="font-size: 0.7rem; color: #78f89e;">${escapeHtml(d.ip || "N/A")}</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>📱 Model:</span>
+                    <span style="color: #e2ceb0;">${escapeHtml(d.deviceModel || "Mobile")}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>⏱️ First Linked:</span>
+                    <span style="color: #ffd885;">${escapeHtml(d.joinedAt || "Today")}</span>
+                  </div>
+                </div>
+
+                <!-- Admin Device Quick Controls -->
+                <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px;">
+                  <select class="admin-reassign-select" style="font-size: 0.75rem; padding: 3px 6px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--gold); border-radius: 6px;" title="Reassign Team">
+                    <option value="0" ${d.teamIdx === 0 ? "selected" : ""}>🔴 Red Crew</option>
+                    <option value="1" ${d.teamIdx === 1 ? "selected" : ""}>🔵 Blue Crew</option>
+                    <option value="2" ${d.teamIdx === 2 ? "selected" : ""}>🟢 Green Crew</option>
+                    <option value="3" ${d.teamIdx === 3 ? "selected" : ""}>🟡 Yellow Crew</option>
+                  </select>
+                  <button type="button" class="btn-device-captain" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffd885; border-radius: 6px; cursor: pointer;">
+                    ${d.isCaptain ? "Demote" : "👑 Captain"}
+                  </button>
+                  <button type="button" class="btn-device-ping" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(29, 99, 184, 0.3); border: 1px solid #1d63b8; color: #90caf9; border-radius: 6px; cursor: pointer;">
+                    📢 Ping
+                  </button>
+                  <button type="button" class="btn-device-unlink" style="font-size: 0.72rem; padding: 3px 6px; background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; border-radius: 6px; cursor: pointer; margin-left: auto;">
+                    ✕ Kick
+                  </button>
+                </div>
+              `;
+
+              // Reassign Team
+              const sel = card.querySelector(".admin-reassign-select");
+              sel.onchange = () => {
+                const newTeamIdx = parseInt(sel.value, 10);
+                const oldTeamIdx = d.teamIdx;
+                d.teamIdx = newTeamIdx;
+                if (state.teams[oldTeamIdx]) {
+                  state.teams[oldTeamIdx].players = state.teams[oldTeamIdx].players.filter(p => p !== d.name);
+                }
+                if (state.teams[newTeamIdx] && !state.teams[newTeamIdx].players.includes(d.name)) {
+                  state.teams[newTeamIdx].players.push(d.name);
+                }
+                addLog(`⚙️ ADMIN: Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
+                saveGameState(true);
+                renderCrewBar();
+                renderScoringTab();
+                renderAdminTab();
+                showToast(`Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
+              };
+
+              card.querySelector(".btn-device-captain").onclick = () => {
+                d.isCaptain = !d.isCaptain;
+                const targetTeam = state.teams[d.teamIdx];
+                if (targetTeam) {
+                  targetTeam.captain = d.isCaptain ? d.name : (targetTeam.players.find(p => p !== d.name) || "");
+                }
+                addLog(`⚙️ ADMIN: ${d.name} is ${d.isCaptain ? "crowned Captain" : "demoted"} for ${targetTeam.name}`);
+                saveGameState(true);
+                renderCrewBar();
+                renderScoringTab();
+                renderAdminTab();
+                showToast(`${d.name} captaincy updated`);
+              };
+
+              card.querySelector(".btn-device-ping").onclick = () => {
+                addLog(`📢 PING: Admin sent a wake-up ping to ${d.name}!`);
+                playTick(800);
+                triggerHaptic([30, 50, 30]);
+                showToast(`📢 Sent ping to ${d.name}!`);
+                saveGameState(true);
+              };
+
+              card.querySelector(".btn-device-unlink").onclick = () => {
+                if (confirm(`Unlink and remove device for ${d.name}?`)) {
+                  const targetTeam = state.teams[d.teamIdx];
+                  if (targetTeam) {
+                    targetTeam.players = targetTeam.players.filter(p => p !== d.name);
+                    if (targetTeam.captain === d.name) targetTeam.captain = targetTeam.players[0] || "";
+                  }
+                  delete state.devices[devId];
+                  addLog(`⚙️ ADMIN: Removed device for ${d.name}`);
+                  saveGameState(true);
+                  renderCrewBar();
+                  renderScoringTab();
+                  renderAdminTab();
+                  showToast(`Unlinked ${d.name}`);
+                }
+              };
+
+              devGrid.appendChild(card);
+            });
+          }
+        }
+
+        // --- 1. Active Pub Location Grid ---
         const pubGrid = document.getElementById("adminPubGrid");
         if (pubGrid) {
           pubGrid.innerHTML = "";
@@ -4958,6 +5508,7 @@
           });
         }
 
+        // --- 2. Current Turn Grid ---
         const turnGrid = document.getElementById("adminTurnGrid");
         if (turnGrid) {
           turnGrid.innerHTML = "";
@@ -4982,6 +5533,43 @@
             turnGrid.appendChild(btn);
           });
         }
+      }
+
+      // Admin Directory Buttons
+      const adminRefreshBtn = document.getElementById("adminRefreshDevicesBtn");
+      if (adminRefreshBtn) {
+        adminRefreshBtn.onclick = () => {
+          fetchClientIp(() => {
+            syncMyDevice();
+            renderAdminTab();
+            showToast("🔄 Device directory refreshed");
+          });
+        };
+      }
+
+      const adminRegCurrentBtn = document.getElementById("adminRegisterCurrentDeviceBtn");
+      if (adminRegCurrentBtn) {
+        adminRegCurrentBtn.onclick = () => {
+          const name = prompt("Enter your player name to link this phone:", state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "");
+          if (name && name.trim()) {
+            state.myPlayerName = name.trim();
+            try { localStorage.setItem("drunk_uno_player_name", name.trim()); } catch (e) {}
+            syncMyDevice(name.trim(), state.myTeamIdx, false);
+            renderAdminTab();
+            showToast(`📱 Linked this phone as ${name.trim()}`);
+          }
+        };
+      }
+
+      const adminPingAllBtn = document.getElementById("adminPingAllBtn");
+      if (adminPingAllBtn) {
+        adminPingAllBtn.onclick = () => {
+          addLog("📢 MASTER ALERT: Crawl Master pinged all connected devices!");
+          playFanfare("win");
+          triggerHaptic([40, 60, 40, 60]);
+          showToast("📢 Broadcasted ping to all devices!");
+          saveGameState(true);
+        };
       }
 
       const adminBroadcastBtn = document.getElementById("adminBroadcastPubBtn");
@@ -5169,27 +5757,52 @@
         showToast("Full Factory Reset Applied");
       };
 
-      // --- 13B. ONBOARDING CREW & CAPTAIN SETUP MODAL ---
+      // --- 13B. ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (MAC & IP) ---
       const crewSetupModal = document.getElementById("crewSetupModal");
       let setupSelectedTeamIdx = 0;
-      let setupPlayers = [];
-      let setupCaptain = "";
 
       function openCrewSetupModal(isEditing = false) {
         setupSelectedTeamIdx = state.myTeamIdx || 0;
-        const currentTeam = state.teams[setupSelectedTeamIdx];
-        setupPlayers = Array.isArray(currentTeam.players) ? [...currentTeam.players] : [];
-        setupCaptain = currentTeam.captain || (setupPlayers[0] || "");
+        const input = document.getElementById("setupPlayerInput");
+        const existingName = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "";
+        if (input) input.value = existingName;
+
+        // Populate device link indicators
+        const modelTxt = document.getElementById("setupDeviceModelTxt");
+        if (modelTxt) modelTxt.textContent = detectDeviceModel();
+
+        const macTxt = document.getElementById("setupDeviceMacTxt");
+        if (macTxt) macTxt.textContent = `MAC: ${getOrCreateDeviceMac()}`;
+
+        const ipTxt = document.getElementById("setupDeviceIpTxt");
+        if (ipTxt) {
+          ipTxt.textContent = clientIp || "Detecting...";
+          fetchClientIp((freshIp) => {
+            if (ipTxt) ipTxt.textContent = freshIp;
+          });
+        }
+
+        const devId = getOrCreateDeviceId();
+        const existingDev = (state.devices && state.devices[devId]) || {};
+        const capCheck = document.getElementById("setupCaptainCheck");
+        if (capCheck) {
+          capCheck.checked = existingDev.isCaptain || (state.teams[setupSelectedTeamIdx]?.captain === existingName);
+        }
 
         renderSetupColors();
-        renderSetupPlayerPills();
-        renderSetupCaptainSelect();
 
         const submitBtn = document.getElementById("setupSubmitBtn");
         if (submitBtn) {
-          submitBtn.textContent = isEditing ? "💾 SAVE CREW & RETURN TO SCORES" : "⚔️ ENTER THE BATTLE & OPEN SCORES";
+          submitBtn.textContent = isEditing ? "💾 UPDATE PROFILE & RETURN" : "⚔️ LINK DEVICE & JOIN CREW";
         }
+
         crewSetupModal.classList.add("open");
+        setTimeout(() => {
+          if (input) {
+            input.focus();
+            if (input.select) input.select();
+          }
+        }, 150);
       }
 
       function renderSetupColors() {
@@ -5203,27 +5816,31 @@
           btn.className = `btn-setup-color ${idx === setupSelectedTeamIdx ? "selected" : ""}`;
 
           let bgHex = "#d62828";
-          if (t.colorClass === "blue") bgHex = "#1d63b8";
-          else if (t.colorClass === "green") bgHex = "#2b9348";
-          else if (t.colorClass === "yellow") bgHex = "#f7b801";
+          if (t.colorClass === "blue") bgHex = "#2b7fff";
+          else if (t.colorClass === "green") bgHex = "#2ecc71";
+          else if (t.colorClass === "yellow") bgHex = "#f59e0b";
+
+          const playerNames = Array.isArray(t.players) && t.players.length > 0 
+            ? t.players.join(", ") 
+            : "No players yet (Be the first!)";
 
           btn.innerHTML = `
-            <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
-            <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#9a6700' : bgHex};">${escapeHtml(t.name)}</div>
-            <div class="rival-hint">Targets: ${escapeHtml(t.targetName)}</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
+              <div>
+                <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">${escapeHtml(t.name)}</div>
+                <div class="rival-hint" style="color: #e2ceb0; font-size: 0.76rem;">Targets: ${escapeHtml(t.targetName)}</div>
+              </div>
+            </div>
+            <div style="font-size: 0.74rem; color: #fce8be; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              👥 <strong>Crew:</strong> ${escapeHtml(playerNames)}
+            </div>
           `;
 
           btn.onclick = () => {
             setupSelectedTeamIdx = idx;
-            const newTeam = state.teams[idx];
-            if (Array.isArray(newTeam.players) && newTeam.players.length > 0) {
-              setupPlayers = [...newTeam.players];
-              setupCaptain = newTeam.captain || setupPlayers[0] || "";
-            }
             applyTeamTheme(idx);
             renderSetupColors();
-            renderSetupPlayerPills();
-            renderSetupCaptainSelect();
             playTick(500);
           };
 
@@ -5231,103 +5848,30 @@
         });
       }
 
-      function renderSetupPlayerPills() {
-        const pillsWrap = document.getElementById("setupPlayerPills");
-        if (!pillsWrap) return;
-        pillsWrap.innerHTML = "";
-
-        if (setupPlayers.length === 0) {
-          pillsWrap.innerHTML = `<span style="font-size: 0.82rem; font-style: italic; color: var(--ink-faded);">No players added yet. Enter names above!</span>`;
-          return;
-        }
-
-        setupPlayers.forEach((name, pIdx) => {
-          const chip = document.createElement("span");
-          const isCap = name === setupCaptain;
-          chip.className = `player-pill-chip ${isCap ? "is-captain" : ""}`;
-          chip.innerHTML = `
-            <span>${isCap ? "👑 " : "👤 "}${escapeHtml(name)}</span>
-            <button type="button" class="remove-player-btn" title="Remove player" data-player-idx="${pIdx}">✕</button>
-          `;
-
-          chip.querySelector(".remove-player-btn").onclick = (e) => {
-            e.stopPropagation();
-            setupPlayers.splice(pIdx, 1);
-            if (setupCaptain === name) {
-              setupCaptain = setupPlayers.length > 0 ? setupPlayers[0] : "";
-            }
-            renderSetupPlayerPills();
-            renderSetupCaptainSelect();
-          };
-
-          pillsWrap.appendChild(chip);
-        });
-      }
-
-      function renderSetupCaptainSelect() {
-        const select = document.getElementById("setupCaptainSelect");
-        if (!select) return;
-        select.innerHTML = "";
-
-        if (setupPlayers.length === 0) {
-          const opt = document.createElement("option");
-          opt.value = "";
-          opt.textContent = "-- Add players above to pick Captain --";
-          select.appendChild(opt);
-          return;
-        }
-
-        setupPlayers.forEach(name => {
-          const opt = document.createElement("option");
-          opt.value = name;
-          opt.textContent = `👑 ${name}`;
-          if (name === setupCaptain) opt.selected = true;
-          select.appendChild(opt);
-        });
-
-        if (!setupCaptain && setupPlayers.length > 0) {
-          setupCaptain = setupPlayers[0];
-          select.value = setupCaptain;
-        }
-
-        select.onchange = () => {
-          setupCaptain = select.value;
-          renderSetupPlayerPills();
-        };
-      }
-
-      function addPlayerFromInput() {
-        const input = document.getElementById("setupPlayerInput");
-        if (!input) return;
-        const val = input.value.trim();
-        if (!val) return;
-
-        const parts = val.split(",").map(p => p.trim()).filter(Boolean);
-        parts.forEach(name => {
-          if (!setupPlayers.includes(name)) {
-            setupPlayers.push(name);
+      // Quick preset title buttons
+      document.querySelectorAll(".btn-title-chip").forEach(chip => {
+        chip.onclick = () => {
+          const input = document.getElementById("setupPlayerInput");
+          if (!input) return;
+          const title = chip.dataset.title;
+          const cur = input.value.trim();
+          if (!cur) {
+            input.value = title;
+          } else if (!cur.includes(title)) {
+            input.value = `${title} ${cur}`;
           }
-        });
-
-        if (!setupCaptain && setupPlayers.length > 0) {
-          setupCaptain = setupPlayers[0];
-        }
-
-        input.value = "";
-        renderSetupPlayerPills();
-        renderSetupCaptainSelect();
-        playTick(600);
-      }
-
-      const addPlayerBtn = document.getElementById("setupAddPlayerBtn");
-      if (addPlayerBtn) addPlayerBtn.onclick = addPlayerFromInput;
+          input.focus();
+          playTick(600);
+        };
+      });
 
       const playerInput = document.getElementById("setupPlayerInput");
       if (playerInput) {
         playerInput.onkeydown = (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            addPlayerFromInput();
+            const submitBtn = document.getElementById("setupSubmitBtn");
+            if (submitBtn) submitBtn.click();
           }
         };
       }
@@ -5340,13 +5884,46 @@
             e.stopPropagation();
           }
           try {
-            if (playerInput && playerInput.value.trim()) {
-              addPlayerFromInput();
+            const input = document.getElementById("setupPlayerInput");
+            const rawName = input ? input.value.trim() : "";
+            if (!rawName) {
+              if (input) {
+                input.style.borderColor = "#ff4d4d";
+                input.focus();
+              }
+              showToast("⚠️ Please enter your name to link your device!");
+              playTick(240);
+              return;
             }
 
+            const playerName = rawName;
+            state.myPlayerName = playerName;
+            try {
+              localStorage.setItem("drunk_uno_player_name", playerName);
+              localStorage.setItem("drunk_uno_player_registered", "true");
+              localStorage.setItem("drunk_uno_crew_setup", "true");
+            } catch (err) {}
+
+            const isCaptain = !!(document.getElementById("setupCaptainCheck")?.checked);
             const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
-            team.players = [...setupPlayers];
-            team.captain = setupCaptain || (setupPlayers[0] || "");
+
+            // Remove this player from other teams if switching
+            state.teams.forEach((t, i) => {
+              if (i !== setupSelectedTeamIdx && Array.isArray(t.players)) {
+                t.players = t.players.filter(p => p !== playerName);
+                if (t.captain === playerName) t.captain = t.players[0] || "";
+              }
+            });
+
+            if (!Array.isArray(team.players)) team.players = [];
+            if (!team.players.includes(playerName)) {
+              team.players.push(playerName);
+            }
+            if (isCaptain) {
+              team.captain = playerName;
+            } else if (!team.captain) {
+              team.captain = team.players[0] || playerName;
+            }
 
             state.myTeamIdx = setupSelectedTeamIdx;
             const targetIdx = (team.targetIdx !== undefined && state.teams[team.targetIdx]) 
@@ -5354,26 +5931,28 @@
               : ((setupSelectedTeamIdx + 1) % 4);
             state.targetTeamIdx = targetIdx;
 
-            // Hide the modal immediately so it always closes reliably
+            // Register device link with hardware MAC & IP
+            syncMyDevice(playerName, setupSelectedTeamIdx, isCaptain);
+
+            // Hide modal
             crewSetupModal.classList.remove("open");
 
-            // Update website-wide theme colors
+            // Apply website-wide Material You theme
             applyTeamTheme(state.myTeamIdx);
-
-            try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (err) {}
 
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
             renderTurnBanner();
+            renderAdminTab();
             switchToTab("scores");
 
-            addLog(`⚔️ CREW SAVED: ${team.name} ready for crawl! Captain: ${team.captain || 'None'}.`);
+            addLog(`⚔️ DEVICE LINKED: ${playerName} joined ${team.name} as ${isCaptain ? 'Captain 👑' : 'crew member'}! (MAC: ${getOrCreateDeviceMac()}, IP: ${clientIp || 'Linked'})`);
             playFanfare("win");
-            spawnCoins(30);
-            showToast(`🎉 Ready to Battle: ${team.name}!`);
+            spawnCoins(35);
+            showToast(`🎉 Linked! Welcome ${playerName} to ${team.name}`);
           } catch (err) {
-            console.error("Error saving crew:", err);
+            console.error("Error saving crew setup:", err);
             crewSetupModal.classList.remove("open");
             switchToTab("scores");
           }
@@ -5418,13 +5997,20 @@
         openAdminBtn.classList.remove("secret-tab");
       }
 
-      // Check first-load onboarding
-      let crewSetupDone = false;
-      try { crewSetupDone = localStorage.getItem("drunk_uno_crew_setup") === "true"; } catch (e) {}
-      if (!crewSetupDone) {
+      // Auto-fetch IP in background and sync this device if already registered
+      fetchClientIp();
+      const savedName = localStorage.getItem("drunk_uno_player_name");
+      const isRegistered = localStorage.getItem("drunk_uno_player_registered") === "true";
+      if (savedName && isRegistered) {
+        state.myPlayerName = savedName;
+        syncMyDevice(savedName, state.myTeamIdx);
+      }
+
+      // Check first-load onboarding: if player name not set, prompt immediately
+      if (!savedName || !isRegistered) {
         setTimeout(() => {
           openCrewSetupModal(false);
-        }, 150);
+        }, 180);
       }
 
     })();
