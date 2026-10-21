@@ -14,6 +14,11 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
 
+  <!-- Drunk Uno Custom Game Branding & Favicons -->
+  <link rel="icon" type="image/svg+xml" href="assets/drunk-uno-logo.svg" />
+  <link rel="apple-touch-icon" href="assets/drunk-uno-logo.svg" />
+  <link rel="shortcut icon" href="assets/drunk-uno-logo.svg" />
+
   <!-- Google Fonts: Pirate Display, Antique Serif & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,16 +101,25 @@
       background-color: #190e0e;
       background-color: var(--theme-bg, #190e0e);
       min-height: 100%;
+      width: 100% !important;
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+      position: relative;
       -webkit-text-size-adjust: 100%;
       overscroll-behavior-y: none;
+      touch-action: pan-y pinch-zoom;
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
-      background: #0d0602;
-      background-color: var(--theme-bg, #0d0602);
+      width: 100% !important;
+      max-width: 100vw !important;
+      background: #140804;
+      background-color: var(--theme-bg, #140804);
       background-image:
-        radial-gradient(circle at 50% 15%, rgba(255, 185, 80, 0.18) 0%, rgba(8, 4, 1, 0.98) 85%),
-        repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.5) 0 2px, transparent 2px 8px);
+        radial-gradient(circle at 50% 15%, var(--theme-glow, rgba(255, 185, 80, 0.35)) 0%, rgba(16, 7, 3, 0.96) 80%),
+        radial-gradient(circle at 85% 85%, var(--theme-glow, rgba(255, 185, 80, 0.2)) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.4) 0 2px, transparent 2px 8px);
       font-family: 'IM Fell English', Georgia, serif;
       color: var(--ink);
       min-height: 100dvh;
@@ -113,8 +127,12 @@
       flex-direction: column;
       align-items: center;
       padding: max(8px, var(--sat)) max(8px, var(--sar)) max(40px, calc(var(--sab) + 32px)) max(8px, var(--sal));
-      overflow-x: hidden;
+      overflow-x: hidden !important;
+      position: relative;
+      touch-action: pan-y pinch-zoom;
+      -webkit-overflow-scrolling: touch;
       -webkit-font-smoothing: antialiased;
+      box-sizing: border-box;
     }
 
     /* Prevent iOS Safari from auto-zooming inputs on focus (must be >= 16px) */
@@ -149,13 +167,13 @@
       color: #2ecc71;
     }
 
-    /* Satin Ridges Dynamic Background Canvas */
+    /* Satin Ridges Dynamic Background Canvas (Vibrant & Apparent Tavern Glow) */
     #satinCanvas {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.28;
+      opacity: 0.52;
     }
 
     /* Confetti Particle Canvas */
@@ -170,8 +188,11 @@
     .app-container {
       position: relative;
       z-index: 10;
-      width: 100%;
-      max-width: 1240px;
+      width: 100% !important;
+      max-width: min(100vw, 1240px) !important;
+      margin: 0 auto;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -180,7 +201,10 @@
     /* Main Parchment Board */
     .parchment-board {
       position: relative;
-      width: 100%;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
       background:
         radial-gradient(circle at 85% 80%, rgba(139, 90, 43, 0.28) 0%, transparent 22%),
         radial-gradient(circle at 15% 15%, rgba(120, 72, 25, 0.22) 0%, transparent 18%),
@@ -196,6 +220,10 @@
       border-radius: 10px;
       padding: 12px 10px;
       position: relative;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
     }
     .celtic-frame::before, .celtic-frame::after {
       content: "✦";
@@ -292,6 +320,30 @@
     }
     .settings-btn:active {
       transform: scale(0.95);
+    }
+
+    @media (max-width: 480px) {
+      .top-bar {
+        padding: 6px 8px;
+        gap: 6px;
+      }
+      .top-bar-left, .top-bar-right {
+        gap: 5px;
+      }
+      .user-profile-badge {
+        max-width: 95px;
+        font-size: 0.70rem;
+        padding: 3px 6px;
+      }
+      .sync-status-pill {
+        font-size: 0.68rem;
+        padding: 4px 6px;
+        max-width: 140px;
+      }
+      .settings-btn {
+        font-size: 0.70rem;
+        padding: 4px 6px;
+      }
     }
 
     /* Floating iOS Glass Dock for Tab Navigation */
@@ -1514,15 +1566,21 @@
       cursor: pointer;
     }
 
-    /* Leaderboard Standings Table */
+    /* Leaderboard Standings Table (Scrollable within its card, never breaks page width) */
     .standings-table-wrap {
       background: rgba(255, 248, 230, 0.9);
       border: 2px solid var(--ink);
       border-radius: 10px;
       padding: 12px;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box !important;
     }
     .standings-table {
       width: 100%;
+      min-width: 540px;
       border-collapse: collapse;
       font-size: 0.92rem;
     }
@@ -3125,19 +3183,80 @@
       50% { box-shadow: 0 0 55px rgba(239, 68, 68, 0.9); }
     }
 
+    /* Lockout Overlay for Frozen Phone (Targeted Freeze) */
+    .frozen-lockout-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999998;
+      background: rgba(4, 18, 36, 0.97);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .frozen-card {
+      max-width: 440px;
+      width: 100%;
+      background: rgba(8, 28, 56, 0.95);
+      border: 2.5px solid #38bdf8;
+      border-radius: 16px;
+      box-shadow: 0 0 45px rgba(56, 189, 248, 0.6), inset 0 0 20px rgba(56, 189, 248, 0.25);
+      padding: 24px 20px;
+      text-align: center;
+      animation: frozenPulse 2.5s infinite ease-in-out;
+    }
+    @keyframes frozenPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.45); }
+      50% { box-shadow: 0 0 60px rgba(56, 189, 248, 0.85); }
+    }
+
+    /* Lockout Overlay for All Phones Locked (Global Transition) */
+    .game-locked-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999997;
+      background: rgba(24, 14, 4, 0.97);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .locked-crawl-card {
+      max-width: 440px;
+      width: 100%;
+      background: rgba(38, 22, 6, 0.95);
+      border: 2.5px solid #eab308;
+      border-radius: 16px;
+      box-shadow: 0 0 45px rgba(234, 179, 8, 0.6), inset 0 0 20px rgba(234, 179, 8, 0.25);
+      padding: 24px 20px;
+      text-align: center;
+      animation: lockedPulse 3s infinite ease-in-out;
+    }
+    @keyframes lockedPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.45); }
+      50% { box-shadow: 0 0 60px rgba(234, 179, 8, 0.85); }
+    }
+
     /* =========================================================================
-       DESKTOP EXPANSIVE LAYOUT & CONTAINER INTEGRITY (FIX FOR SQUISHED BOXES)
+       DESKTOP EXPANSIVE LAYOUT & CONTAINER INTEGRITY (FIX FOR SQUISHED BOXES & MOBILE SIZING)
        ========================================================================= */
     .app-container {
-      width: 100%;
-      max-width: 1240px;
+      width: 100% !important;
+      max-width: min(100vw, 1240px) !important;
       margin: 0 auto;
-      box-sizing: border-box;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
       padding-bottom: calc(96px + var(--sab));
     }
     .parchment-board {
-      width: 100%;
-      box-sizing: border-box;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
     }
     .scores-section-wrap,
     .tab-panel {
@@ -3657,7 +3776,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.3</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.4</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -3681,15 +3800,9 @@
         <!-- Main Header & Active Pub Banner -->
         <header class="header-area">
           <div class="ribbon-banner">
-            <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
-              <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
-            </svg>
+            <img src="assets/drunk-uno-logo.svg" alt="Drunk Uno Logo" style="width: 28px; height: 28px; vertical-align: middle; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));" />
             <h1>DRUNK UNO</h1>
-            <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="20" stroke="#23170b" stroke-width="4" fill="#c6934b"/>
-              <path d="M32 4V60M4 32H60M12 12L52 52M52 12L12 52" stroke="#23170b" stroke-width="4" stroke-linecap="round"/>
-            </svg>
+            <img src="assets/drunk-uno-logo.svg" alt="Drunk Uno Logo" style="width: 28px; height: 28px; vertical-align: middle; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));" />
           </div>
           <div class="header-subtext">
             Preston Route // 10 Stops · Live Scoreboard across all phones · Tap your crew pill to select
@@ -4190,6 +4303,9 @@
                 </button>
                 <button type="button" class="modal-btn" id="adminTestConnectionBtn" style="background: #0284c7; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #38bdf8; color: #fff;" title="Broadcast an instant visual & audio test alert popup to all connected phones">
                   🔔 TEST CONNECTION (POPUP TO ALL DEVICES)
+                </button>
+                <button type="button" class="modal-btn" id="adminLockGameBtn" style="background: #0369a1; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #38bdf8; color: #fff;" title="Lock all phones with an uncloseable pub transition pause screen">
+                  ❄️ FREEZE ALL PHONES / LOCK GAME
                 </button>
                 <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   📢 Ping All Devices
@@ -4711,6 +4827,109 @@
 
 
   <!-- =========================================================================
+       MODAL 10: ADD TO HOMESCREEN ONBOARDING PROMPT
+       ========================================================================= -->
+  <div class="modal-backdrop" id="homescreenInstallModal">
+    <div class="modal-scroll glass-card" style="max-width: 440px; text-align: center; border: 2.5px solid var(--theme-border, #ffd166); box-shadow: 0 0 35px rgba(255, 209, 102, 0.45); animation: modalIn 0.25s ease-out;">
+      <div style="font-size: 3.2rem; margin-bottom: 4px;">📲</div>
+      <h2 style="font-family: 'Pirata One', cursive; font-size: 2.1rem; color: #ffd166; margin-bottom: 4px; letter-spacing: 0.5px;">INSTALL TO HOME SCREEN</h2>
+      <p style="font-size: 0.94rem; color: #f4e2be; margin-bottom: 14px; line-height: 1.45;">
+        For the ultimate full-screen crawl experience on mobile with no address bar lag:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; text-align: left; background: rgba(0,0,0,0.45); padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 16px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="font-size: 1.5rem;">🍎</span>
+          <div style="font-size: 0.86rem; color: #fff; line-height: 1.4;">
+            <strong style="color: #38bdf8;">iPhone (Safari):</strong><br/>
+            Tap <strong>Share [ ⎋ ]</strong> at the bottom of Safari, scroll down and tap <strong style="color: #ffd166;">"Add to Home Screen" ➕</strong>.
+          </div>
+        </div>
+        <div style="border-top: 1px dashed rgba(255,255,255,0.15); margin: 2px 0;"></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="font-size: 1.5rem;">🤖</span>
+          <div style="font-size: 0.86rem; color: #fff; line-height: 1.4;">
+            <strong style="color: #4ade80;">Android (Chrome):</strong><br/>
+            Tap <strong>Menu [ ⋮ ]</strong> at top right and tap <strong style="color: #ffd166;">"Install app"</strong> or <strong style="color: #ffd166;">"Add to Home screen"</strong>.
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="modal-btn" id="homescreenDismissBtn" style="width: 100%; font-size: 1.15rem; padding: 12px 18px; background: linear-gradient(135deg, #2b9348 0%, #1e6b34 100%); border: 1.5px solid #4ade80; color: #fff;">
+        🚀 GOT IT! LET'S PLAY
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       MODAL 11: DIRECT POPUP ALERT FROM CRAWL MASTER (TARGETED TO THIS PHONE)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="targetedAlertModal">
+    <div class="modal-scroll glass-card" style="max-width: 420px; text-align: center; border: 2.5px solid #f59e0b; box-shadow: 0 0 40px rgba(245, 158, 11, 0.65); animation: modalIn 0.25s ease-out;">
+      <div style="font-size: 3.4rem; margin-bottom: 6px;">👑💬</div>
+      <h2 style="font-family: 'Pirata One', cursive; font-size: 2.1rem; color: #fcd34d; margin-bottom: 6px; letter-spacing: 0.5px;">CRAWL MASTER ALERT</h2>
+      <p style="font-size: 0.82rem; color: #fde68a; font-family: 'JetBrains Mono', monospace; margin-bottom: 12px;" id="targetedAlertSender">
+        Direct Dispatch from Crawl Master
+      </p>
+      <div style="font-size: 1.05rem; color: #fff; background: rgba(0,0,0,0.5); padding: 14px 16px; border-radius: 10px; border: 1.5px solid rgba(245, 158, 11, 0.5); margin-bottom: 18px; line-height: 1.5; font-weight: 600;" id="targetedAlertMessage">
+        Attention Crawler!
+      </div>
+      <button type="button" class="modal-btn" id="targetedAlertDismissBtn" style="width: 100%; font-size: 1.15rem; padding: 12px 18px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border: 1.5px solid #f59e0b; color: #fff;">
+        ⚓ ACKNOWLEDGE & CLOSE
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FULLSCREEN OVERLAY: PHONE FROZEN BY CRAWL MASTER (TARGETED FREEZE)
+       ========================================================================= -->
+  <div id="phoneFrozenOverlay" class="frozen-lockout-overlay" style="display: none;">
+    <div class="frozen-card">
+      <div style="font-size: 3.8rem; margin-bottom: 8px;">❄️📱❄️</div>
+      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #7dd3fc; margin-bottom: 8px; letter-spacing: 1px;">
+        PHONE FROZEN BY CRAWL MASTER
+      </h1>
+      <p style="font-size: 1.05rem; color: #e0f2fe; margin-bottom: 14px; line-height: 1.45;">
+        Your device has been frozen by the Crawl Master!
+      </p>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: rgba(3, 105, 161, 0.35); border: 1px solid #38bdf8; padding: 10px 14px; border-radius: 8px; color: #bae6fd; margin-bottom: 16px;">
+        🧊 Pay attention to the game & pub rules! Your phone will automatically unfreeze the moment the Crawl Master releases you.
+      </div>
+      <div style="font-size: 0.78rem; color: #94a3b8; font-style: italic;">
+        All actions locked • Live sync listening for release signal
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FULLSCREEN OVERLAY: ALL PHONES FROZEN / GAME LOCKED (PUB TRANSITION)
+       ========================================================================= -->
+  <div id="gameLockedOverlay" class="game-locked-overlay" style="display: none;">
+    <div class="locked-crawl-card">
+      <div style="font-size: 4rem; margin-bottom: 8px;">🔒🍺</div>
+      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #fde047; margin-bottom: 8px; letter-spacing: 1px;">
+        PUB TRANSITION // GAME LOCKED
+      </h1>
+      <p style="font-size: 1.05rem; color: #fef08a; margin-bottom: 14px; line-height: 1.45;">
+        The Crawl Master has locked all phones while the crawl moves to the next pub stop or round!
+      </p>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; background: rgba(180, 83, 9, 0.4); border: 1.5px solid #facc15; padding: 10px 14px; border-radius: 8px; color: #fef9c3; margin-bottom: 18px;">
+        🍺 Put your phones away, finish your pints, and follow your Captain to the next tavern!
+      </div>
+      <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 12px;">
+        Game will instantly unlock for all players when the Crawl Master resumes the session.
+      </p>
+      <button type="button" id="gameLockedAdminUnlockBtn" style="background: transparent; border: 1px dashed rgba(255,255,255,0.3); color: #94a3b8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+        🔑 Crawl Master Admin Unlock
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
        05. MAIN ENGINE SCRIPT (REAL-TIME MQTT SYNC, COOKIES, WHEEL & BINGO)
        ========================================================================= -->
   <script>
@@ -5206,6 +5425,113 @@
         };
       }
 
+      function showTargetedAlertPopup(data) {
+        const modal = document.getElementById("targetedAlertModal");
+        if (!modal) return;
+        const msgEl = document.getElementById("targetedAlertMessage");
+        const senderEl = document.getElementById("targetedAlertSender");
+        if (msgEl) msgEl.textContent = data.message || "Direct alert from Crawl Master!";
+        if (senderEl) {
+          const s = data.sender || "Crawl Master";
+          const time = new Date(data.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          senderEl.textContent = `Direct Dispatch from ${s} • ${time}`;
+        }
+        modal.classList.add("open");
+        playAirhorn();
+        playFanfare("win");
+        triggerHaptic([100, 60, 100, 60, 180]);
+      }
+
+      const targetedDismissBtn = document.getElementById("targetedAlertDismissBtn");
+      if (targetedDismissBtn) {
+        targetedDismissBtn.onclick = () => {
+          document.getElementById("targetedAlertModal")?.classList.remove("open");
+          playTick(600);
+        };
+      }
+
+      function checkGameLockedStatus() {
+        const overlay = document.getElementById("gameLockedOverlay");
+        if (!overlay) return;
+        const activeTabEl = document.querySelector(".tab-panel.active");
+        const isAdmin = activeTabEl && activeTabEl.id === "tab-admin";
+        overlay.style.display = (state.isGameLocked && !isAdmin) ? "flex" : "none";
+      }
+
+      function checkFrozenStatus() {
+        const overlay = document.getElementById("phoneFrozenOverlay");
+        if (!overlay) return;
+        const myDevId = getOrCreateDeviceId();
+        const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
+        let isFrozen = false;
+        if (state.frozenDevices && state.frozenDevices[myDevId]) {
+          isFrozen = true;
+        }
+        if (!isFrozen && state.frozenDevices && state.devices) {
+          for (const fId in state.frozenDevices) {
+            if (state.frozenDevices[fId] && state.devices[fId] && state.devices[fId].name && state.devices[fId].name.toLowerCase().trim() === myName) {
+              isFrozen = true;
+              break;
+            }
+          }
+        }
+        overlay.style.display = isFrozen ? "flex" : "none";
+      }
+
+      function checkHomescreenPrompt() {
+        const isStandalone = (window.navigator && window.navigator.standalone === true) || 
+                             (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+        if (isStandalone) return;
+        const alreadySeen = localStorage.getItem("drunk_uno_homescreen_prompt_seen") === "true";
+        if (!alreadySeen) {
+          const modal = document.getElementById("homescreenInstallModal");
+          if (modal) {
+            setTimeout(() => {
+              modal.classList.add("open");
+            }, 850);
+          }
+        }
+      }
+
+      const hsDismissBtn = document.getElementById("homescreenDismissBtn");
+      if (hsDismissBtn) {
+        hsDismissBtn.onclick = () => {
+          try { localStorage.setItem("drunk_uno_homescreen_prompt_seen", "true"); } catch (e) {}
+          document.getElementById("homescreenInstallModal")?.classList.remove("open");
+          playTick(600);
+        };
+      }
+
+      const lockAdminBtn = document.getElementById("gameLockedAdminUnlockBtn");
+      if (lockAdminBtn) {
+        lockAdminBtn.onclick = () => {
+          const code = prompt("Enter Crawl Master Passcode to unlock:", "");
+          if (code === "22140711") {
+            state.isGameLocked = false;
+            saveGameState(true);
+            checkGameLockedStatus();
+            if (mqttClient && mqttClient.isConnected()) {
+              try {
+                const payload = JSON.stringify({
+                  action: "TOGGLE_GAME_LOCK",
+                  isGameLocked: false,
+                  sender: "Crawl Master",
+                  timestamp: Date.now(),
+                  state: state
+                });
+                const m = new Paho.MQTT.Message(payload);
+                m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                m.retained = false;
+                mqttClient.send(m);
+              } catch (e) {}
+            }
+            showToast("🔓 Game Unlocked by Crawl Master!");
+          } else if (code !== null) {
+            alert("❌ Incorrect Passcode!");
+          }
+        };
+      }
+
       // --- 02. REAL-TIME MULTI-PHONE MQTT WEBSOCKET SYNCHRONIZATION ---
       let mqttClient = null;
       const syncBtn = document.getElementById("syncRoomBtn");
@@ -5233,6 +5559,62 @@
               if (incoming && incoming.action === "TEST_CONNECTION_POPUP") {
                 showTestAlertPopup(incoming);
                 return;
+              }
+
+              // Targeted Direct Alert to Specific Player's Phone
+              if (incoming && incoming.action === "TARGETED_POPUP") {
+                const myDevId = getOrCreateDeviceId();
+                const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
+                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                                 (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
+                if (isTarget) {
+                  showTargetedAlertPopup(incoming);
+                }
+                return;
+              }
+
+              // Freeze or Unfreeze Specific Player's Phone
+              if (incoming && incoming.action === "SET_DEVICE_FROZEN") {
+                if (!state.frozenDevices) state.frozenDevices = {};
+                if (incoming.frozenDevices) {
+                  state.frozenDevices = incoming.frozenDevices;
+                } else if (incoming.targetDeviceId) {
+                  if (incoming.frozen) state.frozenDevices[incoming.targetDeviceId] = true;
+                  else delete state.frozenDevices[incoming.targetDeviceId];
+                }
+                checkFrozenStatus();
+                renderAdminTab();
+                return;
+              }
+
+              // Freeze All Phones / Lock Game (Pub Transition Pause)
+              if (incoming && incoming.action === "TOGGLE_GAME_LOCK") {
+                state.isGameLocked = !!incoming.isGameLocked;
+                checkGameLockedStatus();
+                playFanfare(state.isGameLocked ? "freeze" : "win");
+                showToast(state.isGameLocked ? "❄️ All phones frozen by Crawl Master!" : "🔓 Game unlocked for all players!");
+                return;
+              }
+
+              // Reassign Player to Another Team by Admin
+              if (incoming && incoming.action === "REASSIGN_PLAYER_TEAM") {
+                const myDevId = getOrCreateDeviceId();
+                const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
+                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                                 (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
+                if (isTarget && typeof incoming.newTeamIdx === "number") {
+                  state.myTeamIdx = incoming.newTeamIdx;
+                  try {
+                    localStorage.setItem("drunk_uno_crew_setup", "true");
+                    localStorage.setItem("drunk_uno_player_registered", "true");
+                  } catch (e) {}
+                  applyTeamTheme(incoming.newTeamIdx);
+                  renderCrewBar();
+                  renderScoringTab();
+                  updateTopUserName();
+                  playFanfare("win");
+                  showToast(`👑 Crawl Master reassigned you to ${state.teams[incoming.newTeamIdx].name}!`);
+                }
               }
 
               // Emergency Crawl Master Remote Redirect to Portfolio
@@ -5281,7 +5663,13 @@
                 }
                 if (incoming.bannedList) state.bannedList = incoming.bannedList;
                 if (incoming.resetEpoch) state.resetEpoch = incoming.resetEpoch;
+                if (incoming.isGameLocked !== undefined) state.isGameLocked = incoming.isGameLocked;
+                if (incoming.frozenDevices && typeof incoming.frozenDevices === "object") {
+                  state.frozenDevices = incoming.frozenDevices;
+                }
                 checkBannedStatus();
+                checkGameLockedStatus();
+                checkFrozenStatus();
                 updateTopUserName();
 
                 renderCrewBar();
@@ -5516,17 +5904,17 @@
         const team = (state.teams && state.teams[state.myTeamIdx]) || (state.teams && state.teams[0]) || { colorClass: "red" };
         const colorClass = team.colorClass || "red";
 
-        let titleBarHex = "#190e0e";
+        let titleBarHex = "#3d1217";
         if (isLight) {
-          if (colorClass === "blue") titleBarHex = "#e8f1fc";
-          else if (colorClass === "green") titleBarHex = "#e8f7ee";
-          else if (colorClass === "yellow") titleBarHex = "#fbf5e6";
-          else titleBarHex = "#fbe8e8";
+          if (colorClass === "blue") titleBarHex = "#dbe8f8";
+          else if (colorClass === "green") titleBarHex = "#dbeef0";
+          else if (colorClass === "yellow") titleBarHex = "#fcecd2";
+          else titleBarHex = "#fbdcde";
         } else {
-          if (colorClass === "blue") titleBarHex = "#0a121e";
-          else if (colorClass === "green") titleBarHex = "#0b170e";
-          else if (colorClass === "yellow") titleBarHex = "#18130a";
-          else titleBarHex = "#190e0e";
+          if (colorClass === "blue") titleBarHex = "#10263f";
+          else if (colorClass === "green") titleBarHex = "#112e1a";
+          else if (colorClass === "yellow") titleBarHex = "#38270e";
+          else titleBarHex = "#3d1217";
         }
 
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
@@ -7014,6 +7402,12 @@
                   <button type="button" class="btn-device-captain" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffd885; border-radius: 6px; cursor: pointer;">
                     ${d.isCaptain ? "Demote" : "👑 Captain"}
                   </button>
+                  <button type="button" class="btn-device-msg" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(217, 119, 6, 0.35); border: 1px solid #d97706; color: #fde68a; border-radius: 6px; cursor: pointer;" title="Send custom popup alert to this phone">
+                    💬 Msg
+                  </button>
+                  <button type="button" class="btn-device-freeze" style="font-size: 0.72rem; padding: 3px 8px; background: ${state.frozenDevices && state.frozenDevices[devId] ? 'rgba(34, 197, 94, 0.35)' : 'rgba(2, 132, 199, 0.35)'}; border: 1px solid ${state.frozenDevices && state.frozenDevices[devId] ? '#4ade80' : '#38bdf8'}; color: ${state.frozenDevices && state.frozenDevices[devId] ? '#86efac' : '#7dd3fc'}; border-radius: 6px; cursor: pointer;" title="Freeze or unfreeze this phone">
+                    ${state.frozenDevices && state.frozenDevices[devId] ? '🔓 Unfreeze' : '❄️ Freeze'}
+                  </button>
                   <button type="button" class="btn-device-ping" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(29, 99, 184, 0.3); border: 1px solid #1d63b8; color: #90caf9; border-radius: 6px; cursor: pointer;">
                     📢 Ping
                   </button>
@@ -7026,7 +7420,7 @@
                 </div>
               `;
 
-              // Reassign Team
+              // Reassign Team & Broadcast to update target player's phone
               const sel = card.querySelector(".admin-reassign-select");
               sel.onchange = () => {
                 const newTeamIdx = parseInt(sel.value, 10);
@@ -7039,11 +7433,88 @@
                   state.teams[newTeamIdx].players.push(d.name);
                 }
                 addLog(`⚙️ ADMIN: Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
+
+                if (mqttClient && mqttClient.isConnected()) {
+                  try {
+                    const p = JSON.stringify({
+                      action: "REASSIGN_PLAYER_TEAM",
+                      targetDeviceId: devId,
+                      targetPlayerName: d.name,
+                      newTeamIdx: newTeamIdx,
+                      state: state
+                    });
+                    const m = new Paho.MQTT.Message(p);
+                    m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                    m.retained = false;
+                    mqttClient.send(m);
+                  } catch (e) {}
+                }
+
                 saveGameState(true);
                 renderCrewBar();
                 renderScoringTab();
                 renderAdminTab();
                 showToast(`Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
+              };
+
+              // Targeted Message to Single Phone
+              card.querySelector(".btn-device-msg").onclick = () => {
+                const customMsg = prompt(`Enter custom popup message to send directly to ${d.name}'s phone:`, "Crawl Master needs you at the bar!");
+                if (customMsg && customMsg.trim()) {
+                  const payload = JSON.stringify({
+                    action: "TARGETED_POPUP",
+                    targetDeviceId: devId,
+                    targetPlayerName: d.name,
+                    message: customMsg.trim(),
+                    sender: state.myPlayerName || "Crawl Master",
+                    timestamp: Date.now()
+                  });
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const m = new Paho.MQTT.Message(payload);
+                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.retained = false;
+                      mqttClient.send(m);
+                    } catch (e) {}
+                  }
+                  addLog(`💬 ADMIN: Sent custom alert to ${d.name}: "${customMsg.trim()}"`);
+                  playTick(600);
+                  showToast(`💬 Alert sent to ${d.name}`);
+                }
+              };
+
+              // Freeze / Unfreeze Single Phone
+              card.querySelector(".btn-device-freeze").onclick = () => {
+                if (!state.frozenDevices) state.frozenDevices = {};
+                const willFreeze = !state.frozenDevices[devId];
+                if (willFreeze) {
+                  state.frozenDevices[devId] = true;
+                } else {
+                  delete state.frozenDevices[devId];
+                }
+                const payload = JSON.stringify({
+                  action: "SET_DEVICE_FROZEN",
+                  targetDeviceId: devId,
+                  targetPlayerName: d.name,
+                  frozen: willFreeze,
+                  frozenDevices: state.frozenDevices,
+                  sender: state.myPlayerName || "Crawl Master",
+                  state: state
+                });
+                if (mqttClient && mqttClient.isConnected()) {
+                  try {
+                    const m = new Paho.MQTT.Message(payload);
+                    m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                    m.retained = false;
+                    mqttClient.send(m);
+                  } catch (e) {}
+                }
+                addLog(`❄️ ADMIN: ${willFreeze ? "FROZE" : "UNFROZE"} phone for ${d.name}`);
+                saveGameState(true);
+                renderAdminTab();
+                checkFrozenStatus();
+                playFanfare(willFreeze ? "freeze" : "win");
+                showToast(`${willFreeze ? "❄️ Froze" : "🔓 Unfroze"} phone for ${d.name}`);
               };
 
               card.querySelector(".btn-device-captain").onclick = () => {
@@ -7312,6 +7783,48 @@
         };
       }
 
+      const adminLockGameBtn = document.getElementById("adminLockGameBtn");
+      if (adminLockGameBtn) {
+        function updateLockBtnText() {
+          if (state.isGameLocked) {
+            adminLockGameBtn.innerHTML = "🔓 UNLOCK GAME (RELEASE PHONES)";
+            adminLockGameBtn.style.background = "#15803d";
+            adminLockGameBtn.style.borderColor = "#4ade80";
+          } else {
+            adminLockGameBtn.innerHTML = "❄️ FREEZE ALL PHONES / LOCK GAME";
+            adminLockGameBtn.style.background = "#0369a1";
+            adminLockGameBtn.style.borderColor = "#38bdf8";
+          }
+        }
+        updateLockBtnText();
+
+        adminLockGameBtn.onclick = () => {
+          state.isGameLocked = !state.isGameLocked;
+          updateLockBtnText();
+          addLog(`🔒 CRAWL MASTER: ${state.isGameLocked ? "LOCKED all phones (Pub Transition Pause)" : "UNLOCKED game for all players"}!`);
+
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const payload = JSON.stringify({
+                action: "TOGGLE_GAME_LOCK",
+                isGameLocked: state.isGameLocked,
+                sender: state.myPlayerName || "Crawl Master",
+                timestamp: Date.now(),
+                state: state
+              });
+              const m = new Paho.MQTT.Message(payload);
+              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.retained = false;
+              mqttClient.send(m);
+            } catch (e) {}
+          }
+          saveGameState(true);
+          checkGameLockedStatus();
+          playFanfare(state.isGameLocked ? "freeze" : "win");
+          showToast(state.isGameLocked ? "❄️ All phones frozen & game locked!" : "🔓 Game unlocked for all players!");
+        };
+      }
+
       const adminBanInput = document.getElementById("adminBanInput");
       const adminBanSubmitBtn = document.getElementById("adminBanSubmitBtn");
       if (adminBanSubmitBtn && adminBanInput) {
@@ -7503,6 +8016,7 @@
           adminSelectedPubIdx = state.currentStopIdx;
           renderAdminTab();
         }
+        checkGameLockedStatus();
       }
 
       document.querySelectorAll(".dock-tab[data-tab], .tab-btn[data-tab]").forEach(btn => {
@@ -7756,27 +8270,58 @@
         if (!grid) return;
         grid.innerHTML = "";
 
+        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
+        const lockedTeamIdx = (state.myTeamIdx !== null && state.myTeamIdx !== undefined) ? state.myTeamIdx : null;
+
+        // If locked to a team, show crew lock warning
+        let lockedBanner = document.getElementById("setupLockedCrewBanner");
+        if (isRegistered && lockedTeamIdx !== null) {
+          if (!lockedBanner) {
+            lockedBanner = document.createElement("div");
+            lockedBanner.id = "setupLockedCrewBanner";
+            lockedBanner.style.cssText = "grid-column: 1 / -1; background: rgba(220, 38, 38, 0.25); border: 1.5px solid #ef4444; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; color: #fee2e2; margin-bottom: 8px; text-align: center;";
+            grid.parentNode.insertBefore(lockedBanner, grid);
+          }
+          lockedBanner.style.display = "block";
+          lockedBanner.innerHTML = `🔒 <strong>CREW LOCKED:</strong> You are locked to <strong>${state.teams[lockedTeamIdx]?.name || 'your crew'}</strong>. Only the Crawl Master can transfer you from the Admin Console.`;
+        } else if (lockedBanner) {
+          lockedBanner.style.display = "none";
+        }
+
         state.teams.forEach((t, idx) => {
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = `btn-setup-color ${idx === setupSelectedTeamIdx ? "selected" : ""}`;
+          const isSelected = idx === setupSelectedTeamIdx;
+          const isOtherTeamLocked = isRegistered && lockedTeamIdx !== null && idx !== lockedTeamIdx;
+
+          btn.className = `btn-setup-color ${isSelected ? "selected" : ""}`;
 
           let bgHex = "#d62828";
           if (t.colorClass === "blue") bgHex = "#2b7fff";
           else if (t.colorClass === "green") bgHex = "#2ecc71";
           else if (t.colorClass === "yellow") bgHex = "#f59e0b";
 
+          if (isOtherTeamLocked) {
+            btn.style.opacity = "0.42";
+            btn.style.filter = "grayscale(40%)";
+            btn.style.cursor = "not-allowed";
+          }
+
           const playerNames = Array.isArray(t.players) && t.players.length > 0 
             ? t.players.join(", ") 
             : "No players yet (Be the first!)";
 
           btn.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
-              <div>
-                <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">${escapeHtml(t.name)}</div>
-                <div class="rival-hint" style="color: #e2ceb0; font-size: 0.76rem;">Targets: ${escapeHtml(t.targetName)}</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
+                <div>
+                  <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">${escapeHtml(t.name)}</div>
+                  <div class="rival-hint" style="color: #e2ceb0; font-size: 0.76rem;">Targets: ${escapeHtml(t.targetName)}</div>
+                </div>
               </div>
+              ${isOtherTeamLocked ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #fca5a5; padding: 2px 6px; border-radius: 4px; border: 1px solid #ef4444;">🔒 Locked</span>' : ''}
+              ${isSelected ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #86efac; padding: 2px 6px; border-radius: 4px; border: 1px solid #22c55e;">✓ Active Crew</span>' : ''}
             </div>
             <div style="font-size: 0.74rem; color: #fce8be; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               👥 <strong>Crew:</strong> ${escapeHtml(playerNames)}
@@ -7784,6 +8329,11 @@
           `;
 
           btn.onclick = () => {
+            if (isOtherTeamLocked) {
+              playTick(240);
+              showToast(`🔒 Team locked! Only the Crawl Master can move you from ${state.teams[lockedTeamIdx].name}.`);
+              return;
+            }
             setupSelectedTeamIdx = idx;
             applyTeamTheme(idx);
             renderSetupColors();
@@ -7850,6 +8400,11 @@
               localStorage.setItem("drunk_uno_crew_setup", "true");
             } catch (err) {}
 
+            const isRegisteredUser = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
+            if (isRegisteredUser && state.myTeamIdx !== null && state.myTeamIdx !== undefined) {
+              setupSelectedTeamIdx = state.myTeamIdx;
+            }
+
             const isCaptain = !!(document.getElementById("setupCaptainCheck")?.checked);
             const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
 
@@ -7898,6 +8453,11 @@
             playFanfare("win");
             spawnCoins(35);
             showToast(`🎉 Linked! Welcome ${playerName} to ${team.name}`);
+
+            // First-join onboarding: recommend installing to homescreen for optimal mobile experience
+            setTimeout(() => {
+              checkHomescreenPrompt();
+            }, 900);
           } catch (err) {
             console.error("Error saving crew setup:", err);
             crewSetupModal.classList.remove("open");
@@ -7969,7 +8529,11 @@
         state.myPlayerName = savedName;
         updateTopUserName();
         syncMyDevice(savedName, state.myTeamIdx);
+        checkHomescreenPrompt();
       }
+
+      checkGameLockedStatus();
+      checkFrozenStatus();
 
       // Check first-load onboarding: if player name not set, prompt immediately
       if (!savedName || !isRegistered) {
