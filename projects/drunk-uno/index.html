@@ -510,20 +510,26 @@
 
     .wheel-wrapper {
       position: relative;
-      width: min(84vw, 400px);
-      height: min(84vw, 400px);
+      width: min(88vw, 420px);
+      height: min(88vw, 420px);
       margin: 10px auto 6px;
       filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75));
       touch-action: none;
       user-select: none;
     }
 
-    #doomWheelSvg {
+    #doomWheelSvg,
+    .doom-wheel-disc-img {
       width: 100%;
       height: 100%;
       display: block;
+      object-fit: contain;
       transform-origin: 50% 50%;
       will-change: transform;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+      filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.5));
     }
 
     .center-spin-btn {
@@ -531,14 +537,14 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 94px;
-      height: 94px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      background: radial-gradient(circle, #c91818 0%, #7d0d0d 70%, #3d0505 100%);
-      border: 4px solid var(--gold);
+      background: radial-gradient(circle at 40% 35%, #925424 0%, #4a2208 65%, #251003 100%);
+      border: 3.5px solid var(--gold);
       color: var(--gold-bright);
       font-family: 'Pirata One', cursive;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       letter-spacing: 0.08em;
       cursor: pointer;
       display: flex;
@@ -557,7 +563,12 @@
     }
     .center-spin-btn small {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.54rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffd885;
+      margin-top: 2px;
+    }
       letter-spacing: 0.05em;
       color: #ffd699;
       margin-top: -2px;
@@ -1839,12 +1850,99 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* =========================================================================
+       RUBBER FLUID CANVAS (GLOSSY FOLDS DRIFTING SLOWLY, DIMMED & THEMED)
+       ========================================================================= */
+    .rubber-fluid-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.38;
+      transition: opacity 0.5s ease;
+    }
+
+    /* =========================================================================
+       DYNAMIC TEAM COLOR SCHEMES (ENTIRE WEBSITE ADAPTS TO SELECTED CREW)
+       ========================================================================= */
+    body.theme-red {
+      --theme-primary: #d62828;
+      --theme-primary-dark: #8d0801;
+      --theme-glow: rgba(214, 40, 40, 0.45);
+      --theme-accent-bg: rgba(214, 40, 40, 0.14);
+      --theme-border: #d62828;
+      --theme-card-glow: 0 0 22px rgba(214, 40, 40, 0.28);
+    }
+    body.theme-blue {
+      --theme-primary: #1d63b8;
+      --theme-primary-dark: #0f3b75;
+      --theme-glow: rgba(29, 99, 184, 0.45);
+      --theme-accent-bg: rgba(29, 99, 184, 0.14);
+      --theme-border: #1d63b8;
+      --theme-card-glow: 0 0 22px rgba(29, 99, 184, 0.28);
+    }
+    body.theme-green {
+      --theme-primary: #2b9348;
+      --theme-primary-dark: #1b6330;
+      --theme-glow: rgba(43, 147, 72, 0.45);
+      --theme-accent-bg: rgba(43, 147, 72, 0.14);
+      --theme-border: #2b9348;
+      --theme-card-glow: 0 0 22px rgba(43, 147, 72, 0.28);
+    }
+    body.theme-yellow {
+      --theme-primary: #d97706;
+      --theme-primary-dark: #8a4b00;
+      --theme-glow: rgba(247, 184, 1, 0.45);
+      --theme-accent-bg: rgba(247, 184, 1, 0.14);
+      --theme-border: #f7b801;
+      --theme-card-glow: 0 0 22px rgba(247, 184, 1, 0.28);
+    }
+
+    /* Apply dynamic theme variables across the site */
+    body[class*="theme-"] .pub-ticker {
+      border-color: var(--theme-border);
+      box-shadow: 0 4px 18px var(--theme-glow);
+    }
+    body[class*="theme-"] .tab-btn.active {
+      background: var(--theme-primary) !important;
+      border-color: var(--gold-bright) !important;
+      color: #fff !important;
+      box-shadow: 0 0 16px var(--theme-glow) !important;
+    }
+    body[class*="theme-"] .podium-leaderboard-box {
+      border-color: var(--theme-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16), var(--theme-card-glow);
+    }
+    body[class*="theme-"] .turn-status-banner {
+      border-color: var(--theme-border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 14px var(--theme-glow);
+    }
+    body[class*="theme-"] .scoring-stepper-card {
+      border-color: var(--theme-border);
+    }
+    body[class*="theme-"] .crew-pill.active-my-team {
+      border-color: var(--theme-border);
+      box-shadow: 0 0 16px var(--theme-glow);
+    }
+    body[class*="theme-"] .wheel-wrapper {
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 24px var(--theme-glow));
+    }
+    body[class*="theme-"] .btn-pick-team.selected {
+      border-color: var(--theme-border);
+      box-shadow: 0 0 12px var(--theme-glow);
+    }
+    body[class*="theme-"] .celtic-frame {
+      box-shadow: 0 0 35px var(--theme-glow), var(--shadow-heavy);
+    }
   </style>
 </head>
 
 <body>
-  <!-- Satin Ridges Canvas Background -->
-  <canvas id="satinCanvas"></canvas>
+  <!-- Rubber Fluid WebGL Shader Canvas Background (Glossy Folds Drifting Slowly) -->
+  <canvas id="rubberFluidCanvas" class="rubber-fluid-canvas"></canvas>
 
   <!-- Particle Confetti Canvas -->
   <canvas id="fxCanvas"></canvas>
@@ -1942,22 +2040,22 @@
         <section id="tab-wheel" class="tab-panel">
           <div class="wheel-view-grid">
 
-            <!-- Left Rules Column -->
+            <!-- Left Rules Column (Yellow & Green: Top-Left & Bottom-Left) -->
             <div class="wheel-rules-col">
-              <div class="rule-card-mini" id="card-RED">
-                <div class="rule-card-mini-head">
-                  <span class="crew-dot red"></span>
-                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
-                </div>
-                <p>Swap your current drink with another team's drink of your choice!</p>
-              </div>
-
               <div class="rule-card-mini" id="card-YELLOW">
                 <div class="rule-card-mini-head">
                   <span class="crew-dot yellow"></span>
                   <span style="color: #b58500;">YELLOW — Drinker's Freeze</span>
                 </div>
                 <p>Stops all drinking penalties for that targeted team until their next turn!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-GREEN">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot green"></span>
+                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
+                </div>
+                <p>5-second head-to-head chug race vs attacker! (+6 pts winner / -6 pts loser).</p>
               </div>
             </div>
 
@@ -1970,74 +2068,8 @@
               </svg>
 
               <div class="wheel-wrapper" id="wheelWrapper">
-                <svg id="doomWheelSvg" viewBox="0 0 500 500">
-                  <!-- Outer Wooden Rim with Depth Shading -->
-                  <circle cx="250" cy="250" r="244" fill="#592f11" stroke="#23170b" stroke-width="6"/>
-                  <circle cx="250" cy="250" r="224" fill="#3c1e08" stroke="#1a0c03" stroke-width="4"/>
-
-                  <!-- 4 UNO Color Quadrants (Red, Blue, Green, Yellow) -->
-                  <g id="quadrants">
-                    <!-- RED (Top) -->
-                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#23170b" stroke-width="4.5"/>
-                    <!-- BLUE (Right) -->
-                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#23170b" stroke-width="4.5"/>
-                    <!-- GREEN (Bottom) -->
-                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#23170b" stroke-width="4.5"/>
-                    <!-- YELLOW (Left) -->
-                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#23170b" stroke-width="4.5"/>
-                  </g>
-
-                  <!-- 24 Brass Metallic Pegs -->
-                  <g fill="#dfb74c" stroke="#23170b" stroke-width="1.5">
-                    <circle cx="250" cy="48" r="5"/><circle cx="302" cy="55" r="5"/><circle cx="351" cy="75" r="5"/>
-                    <circle cx="393" cy="107" r="5"/><circle cx="425" cy="149" r="5"/><circle cx="445" cy="198" r="5"/>
-                    <circle cx="452" cy="250" r="5"/><circle cx="445" cy="302" r="5"/><circle cx="425" cy="351" r="5"/>
-                    <circle cx="393" cy="393" r="5"/><circle cx="351" cy="425" r="5"/><circle cx="302" cy="445" r="5"/>
-                    <circle cx="250" cy="452" r="5"/><circle cx="198" cy="445" r="5"/><circle cx="149" cy="425" r="5"/>
-                    <circle cx="107" cy="393" r="5"/><circle cx="75" cy="351" r="5"/><circle cx="55" cy="302" r="5"/>
-                    <circle cx="48" cy="250" r="5"/><circle cx="55" cy="198" r="5"/><circle cx="75" cy="149" r="5"/>
-                    <circle cx="107" cy="107" r="5"/><circle cx="149" cy="75" r="5"/><circle cx="198" cy="55" r="5"/>
-                  </g>
-
-                  <!-- Quadrant Illustrations (From Reference Slide) -->
-                  <!-- Red: Drink Swap -->
-                  <g transform="translate(250, 95)" stroke="#23170b" stroke-width="2.5" fill="none">
-                    <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
-                    <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
-                    <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
-                    <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#23170b"/>
-                  </g>
-                  <!-- Blue: Shot Roulette -->
-                  <g transform="translate(402, 250)" stroke="#23170b" stroke-width="2.5">
-                    <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
-                    <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
-                    <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
-                  </g>
-                  <!-- Green: Chug Tankard -->
-                  <g transform="translate(250, 402)" stroke="#23170b" stroke-width="2.5">
-                    <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
-                    <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
-                    <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
-                  </g>
-                  <!-- Yellow: Ice Snowflake -->
-                  <g transform="translate(96, 250)" stroke="#23170b" stroke-width="2.5">
-                    <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
-                    <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
-                  </g>
-
-                  <!-- Inner Helm & Hub -->
-                  <circle cx="250" cy="250" r="134" fill="#23170b"/>
-                  <circle cx="250" cy="250" r="128" fill="none" stroke="#d62828" stroke-width="14" stroke-dasharray="16 16"/>
-                  <circle cx="250" cy="250" r="118" fill="#6b3e19" stroke="#23170b" stroke-width="5"/>
-                  <g stroke="#23170b" stroke-width="3.5" fill="#c6934b">
-                    <line x1="250" y1="150" x2="250" y2="350" stroke="#23170b" stroke-width="8"/>
-                    <line x1="150" y1="250" x2="350" y2="250" stroke="#23170b" stroke-width="8"/>
-                    <line x1="179" y1="179" x2="321" y2="321" stroke="#23170b" stroke-width="8"/>
-                    <line x1="321" y1="179" x2="179" y2="321" stroke="#23170b" stroke-width="8"/>
-                    <circle cx="250" cy="250" r="64" fill="none" stroke="#c6934b" stroke-width="12"/>
-                    <circle cx="250" cy="250" r="64" fill="none" stroke="#23170b" stroke-width="3"/>
-                  </g>
-                </svg>
+                <!-- Authentic Pirate Helm Wheel with Uno Quadrants & Art from Official Crawl Design -->
+                <img src="assets/wheel-disc.png" alt="Drunk Uno Wheel of Doom" id="doomWheelSvg" class="doom-wheel-disc-img" draggable="false" />
 
                 <button type="button" class="center-spin-btn" id="spinBtn" aria-label="Spin Wheel of Doom">
                   <span>SPIN</span>
@@ -2052,22 +2084,22 @@
               <p class="spin-hint">Flick wheel with finger or hold <strong>SPIN</strong> to charge!</p>
             </div>
 
-            <!-- Right Rules Column -->
+            <!-- Right Rules Column (Red & Blue: Top-Right & Bottom-Right) -->
             <div class="wheel-rules-col">
+              <div class="rule-card-mini" id="card-RED">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot red"></span>
+                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
+                </div>
+                <p>Swap your current drink with any rival team's drink of your choice!</p>
+              </div>
+
               <div class="rule-card-mini" id="card-BLUE">
                 <div class="rule-card-mini-head">
                   <span class="crew-dot blue"></span>
                   <span style="color: var(--blue-quad);">BLUE — Shot Roulette</span>
                 </div>
-                <p>Nominate 1 rival player to take a mystery sip/shot!</p>
-              </div>
-
-              <div class="rule-card-mini" id="card-GREEN">
-                <div class="rule-card-mini-head">
-                  <span class="crew-dot green"></span>
-                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
-                </div>
-                <p>5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss).</p>
+                <p>Nominate 1 rival player to take a mystery sip or shot!</p>
               </div>
             </div>
 
@@ -2643,7 +2675,8 @@
        MODAL 8: ONBOARDING CREW & CAPTAIN POPUP (FIRST LOAD & EDITABLE)
        ========================================================================= -->
   <div class="modal-backdrop" id="crewSetupModal">
-    <div class="modal-scroll crew-setup-dialog">
+    <div class="modal-scroll crew-setup-dialog" style="position: relative;">
+      <button type="button" class="btn-stop-check" style="position: absolute; top: 12px; right: 12px; font-weight: 700; z-index: 10;" id="closeCrewSetupModalBtn">✕ Close</button>
       <div style="text-align: center; margin-bottom: 14px;">
         <span class="impact-pill special" style="font-size: 0.82rem; padding: 3px 10px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
         <h2 class="modal-title" style="margin-top: 6px; font-size: 2.1rem; color: #7a1d1d;">CHOOSE YOUR CREW</h2>
@@ -2963,6 +2996,8 @@
               if (parsed.stops) state.stops = parsed.stops;
               if (parsed.currentStopIdx !== undefined) state.currentStopIdx = parsed.currentStopIdx;
               if (parsed.currentTurnIdx !== undefined) state.currentTurnIdx = parsed.currentTurnIdx;
+              if (parsed.myTeamIdx !== undefined) state.myTeamIdx = parsed.myTeamIdx;
+              if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
               if (parsed.logs) state.logs = parsed.logs;
               showToast("🍪 State Restored from Cookie");
@@ -3091,42 +3126,273 @@
         });
       }
 
-      // --- 04. SATIN RIDGES DYNAMIC CANVAS (FROM MAIN PORTFOLIO) ---
-      const satinCanvas = document.getElementById("satinCanvas");
-      const satinCtx = satinCanvas.getContext("2d");
-      let satinTime = 0;
+      // --- 04. RUBBER FLUID SHADER CANVAS (GLOSSY FOLDS DRIFTING SLOWLY) ---
+      // Adapted from React Bits Pro Rubber Fluid component, dimmed & themed to current crew
+      const rfCanvas = document.getElementById("rubberFluidCanvas");
+      let rfGl = null;
+      let rfProgram = null;
+      let rfUniforms = {};
+      let rfTime = 0;
+      let rfMouse = [window.innerWidth / 2, window.innerHeight / 2];
 
-      function resizeSatin() {
-        satinCanvas.width = window.innerWidth;
-        satinCanvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resizeSatin);
-      resizeSatin();
-
-      function stepSatin() {
-        satinCtx.clearRect(0, 0, satinCanvas.width, satinCanvas.height);
-        satinTime += 0.008;
-
-        const w = satinCanvas.width;
-        const h = satinCanvas.height;
-
-        // Draw graceful flowing satin waves
-        for (let i = 0; i < 4; i++) {
-          satinCtx.beginPath();
-          satinCtx.moveTo(0, h * 0.4 + i * 80);
-          for (let x = 0; x < w; x += 30) {
-            const y = (h * 0.4 + i * 80) + Math.sin(x * 0.003 + satinTime + i) * 60 + Math.cos(x * 0.006 - satinTime) * 35;
-            satinCtx.lineTo(x, y);
-          }
-          satinCtx.lineTo(w, h);
-          satinCtx.lineTo(0, h);
-          satinCtx.closePath();
-          satinCtx.fillStyle = `rgba(223, 183, 76, ${0.02 + i * 0.01})`;
-          satinCtx.fill();
+      const THEME_SHADERS = {
+        RED: {
+          c1: [0.72, 0.12, 0.14], // Crimson glossy rubber
+          c2: [0.35, 0.04, 0.05], // Deep wine shadow
+          c3: [0.95, 0.28, 0.32], // Rose highlight
+          spec: [1.0, 0.88, 0.88]  // Glossy sheen
+        },
+        BLUE: {
+          c1: [0.10, 0.35, 0.75], // Royal azure rubber
+          c2: [0.04, 0.14, 0.38], // Deep navy shadow
+          c3: [0.35, 0.68, 0.98], // Cyan crest
+          spec: [0.85, 0.95, 1.0]  // Glossy ice sheen
+        },
+        GREEN: {
+          c1: [0.15, 0.58, 0.28], // Emerald rubber
+          c2: [0.05, 0.26, 0.12], // Deep forest shadow
+          c3: [0.32, 0.85, 0.48], // Mint crest
+          spec: [0.88, 1.0, 0.88]  // Glossy lime sheen
+        },
+        YELLOW: {
+          c1: [0.85, 0.62, 0.08], // Golden amber rubber
+          c2: [0.45, 0.22, 0.02], // Dark rum shadow
+          c3: [0.98, 0.84, 0.25], // Sunlit gold crest
+          spec: [1.0, 0.98, 0.85]  // Glossy gold sheen
         }
-        requestAnimationFrame(stepSatin);
+      };
+
+      let currentThemeKey = "RED";
+      let curC1 = [...THEME_SHADERS.RED.c1];
+      let curC2 = [...THEME_SHADERS.RED.c2];
+      let curC3 = [...THEME_SHADERS.RED.c3];
+      let curSpec = [...THEME_SHADERS.RED.spec];
+
+      function applyTeamTheme(teamIdx) {
+        const team = state.teams[teamIdx] || state.teams[0];
+        const colorKey = team.key || "RED";
+        currentThemeKey = colorKey;
+
+        // Apply theme class to document.body so the whole website updates
+        document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow");
+        document.body.classList.add(`theme-${team.colorClass}`);
+
+        // Update mobile browser chrome bar
+        let hex = "#d62828";
+        if (team.colorClass === "blue") hex = "#1d63b8";
+        else if (team.colorClass === "green") hex = "#2b9348";
+        else if (team.colorClass === "yellow") hex = "#d97706";
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", hex);
       }
-      requestAnimationFrame(stepSatin);
+
+      function initRubberFluid() {
+        if (!rfCanvas) return;
+        rfGl = rfCanvas.getContext("webgl") || rfCanvas.getContext("experimental-webgl");
+        if (!rfGl) {
+          initFallback2DRubber();
+          return;
+        }
+
+        const vsSource = `
+          attribute vec2 position;
+          void main() {
+            gl_Position = vec4(position, 0.0, 1.0);
+          }
+        `;
+
+        const fsSource = `
+          precision highp float;
+          uniform vec2 u_resolution;
+          uniform float u_time;
+          uniform vec2 u_mouse;
+          uniform vec3 u_color1;
+          uniform vec3 u_color2;
+          uniform vec3 u_color3;
+          uniform vec3 u_specular;
+          uniform float u_dimness;
+
+          float wave(vec2 p) {
+            float t = u_time * 0.32;
+            float z = 0.0;
+            z += sin(p.x * 1.8 + t * 0.7) * cos(p.y * 1.6 - t * 0.5);
+            z += sin(p.x * 2.6 - p.y * 2.0 + t * 0.95) * 0.52;
+            z += cos(length(p) * 2.4 - t * 1.2) * 0.32;
+            z += sin((p.x + p.y) * 3.2 + t * 0.8) * 0.18;
+            return z;
+          }
+
+          void main() {
+            vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+            
+            // Subtle interactive mouse bend
+            vec2 m = (u_mouse - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
+            float d = length(uv - m);
+            uv += normalize(uv - m + 0.001) * exp(-d * 3.8) * 0.06;
+
+            // Domain warping for fluid rubber folds
+            vec2 q = vec2(wave(uv + vec2(0.0, 0.0)), wave(uv + vec2(4.8, 1.9)));
+            vec2 r = vec2(wave(uv + 2.4 * q + vec2(1.7, 8.2)), wave(uv + 2.4 * q + vec2(6.9, 2.3)));
+            float f = wave(uv + 3.0 * r);
+
+            // Normal estimation for glossy rubber specular highlights
+            float eps = 0.016;
+            float hL = wave(uv + 3.0 * r - vec2(eps, 0.0));
+            float hR = wave(uv + 3.0 * r + vec2(eps, 0.0));
+            float hD = wave(uv + 3.0 * r - vec2(0.0, eps));
+            float hU = wave(uv + 3.0 * r + vec2(0.0, eps));
+            vec3 normal = normalize(vec3(hL - hR, hD - hU, 0.28));
+
+            // Light & specular reflections
+            vec3 lightDir = normalize(vec3(0.45, 0.75, 1.15));
+            float diff = max(dot(normal, lightDir), 0.0);
+            vec3 viewDir = vec3(0.0, 0.0, 1.0);
+            vec3 halfDir = normalize(lightDir + viewDir);
+            float spec = pow(max(dot(normal, halfDir), 0.0), 26.0);
+
+            // Color gradient across viscous rubber folds
+            float b1 = smoothstep(-1.1, 0.85, f);
+            float b2 = smoothstep(-0.35, 1.1, r.x * r.y);
+            vec3 col = mix(u_color1, u_color2, b1);
+            col = mix(col, u_color3, b2);
+
+            col = col * (0.38 + 0.62 * diff) + u_specular * spec * 0.55;
+
+            gl_FragColor = vec4(col, u_dimness);
+          }
+        `;
+
+        function createShader(gl, type, source) {
+          const s = gl.createShader(type);
+          gl.shaderSource(s, source);
+          gl.compileShader(s);
+          if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            console.warn(gl.getShaderInfoLog(s));
+            gl.deleteShader(s);
+            return null;
+          }
+          return s;
+        }
+
+        const vs = createShader(rfGl, rfGl.VERTEX_SHADER, vsSource);
+        const fs = createShader(rfGl, rfGl.FRAGMENT_SHADER, fsSource);
+        if (!vs || !fs) {
+          initFallback2DRubber();
+          return;
+        }
+
+        rfProgram = rfGl.createProgram();
+        rfGl.attachShader(rfProgram, vs);
+        rfGl.attachShader(rfProgram, fs);
+        rfGl.linkProgram(rfProgram);
+        if (!rfGl.getProgramParameter(rfProgram, rfGl.LINK_STATUS)) {
+          console.warn(rfGl.getProgramInfoLog(rfProgram));
+          initFallback2DRubber();
+          return;
+        }
+
+        const buf = rfGl.createBuffer();
+        rfGl.bindBuffer(rfGl.ARRAY_BUFFER, buf);
+        rfGl.bufferData(rfGl.ARRAY_BUFFER, new Float32Array([
+          -1, -1,  1, -1, -1,  1,
+          -1,  1,  1, -1,  1,  1
+        ]), rfGl.STATIC_DRAW);
+
+        const posLoc = rfGl.getAttribLocation(rfProgram, "position");
+        rfGl.enableVertexAttribArray(posLoc);
+        rfGl.vertexAttribPointer(posLoc, 2, rfGl.FLOAT, false, 0, 0);
+
+        rfUniforms = {
+          res: rfGl.getUniformLocation(rfProgram, "u_resolution"),
+          time: rfGl.getUniformLocation(rfProgram, "u_time"),
+          mouse: rfGl.getUniformLocation(rfProgram, "u_mouse"),
+          c1: rfGl.getUniformLocation(rfProgram, "u_color1"),
+          c2: rfGl.getUniformLocation(rfProgram, "u_color2"),
+          c3: rfGl.getUniformLocation(rfProgram, "u_color3"),
+          spec: rfGl.getUniformLocation(rfProgram, "u_specular"),
+          dim: rfGl.getUniformLocation(rfProgram, "u_dimness")
+        };
+
+        function resizeRubberFluid() {
+          if (!rfCanvas || !rfGl) return;
+          const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+          rfCanvas.width = window.innerWidth * dpr;
+          rfCanvas.height = window.innerHeight * dpr;
+          rfGl.viewport(0, 0, rfCanvas.width, rfCanvas.height);
+        }
+        resizeRubberFluid();
+        window.addEventListener("resize", resizeRubberFluid);
+
+        window.addEventListener("pointermove", (e) => {
+          rfMouse[0] = e.clientX * (window.devicePixelRatio || 1);
+          rfMouse[1] = (window.innerHeight - e.clientY) * (window.devicePixelRatio || 1);
+        });
+
+        function renderRubberFluid() {
+          if (!rfGl || !rfProgram) return;
+          rfTime += 0.016;
+
+          // Smooth color transition towards selected team theme
+          const target = THEME_SHADERS[currentThemeKey] || THEME_SHADERS.RED;
+          for (let i = 0; i < 3; i++) {
+            curC1[i] += (target.c1[i] - curC1[i]) * 0.05;
+            curC2[i] += (target.c2[i] - curC2[i]) * 0.05;
+            curC3[i] += (target.c3[i] - curC3[i]) * 0.05;
+            curSpec[i] += (target.spec[i] - curSpec[i]) * 0.05;
+          }
+
+          rfGl.useProgram(rfProgram);
+          rfGl.uniform2f(rfUniforms.res, rfCanvas.width, rfCanvas.height);
+          rfGl.uniform1f(rfUniforms.time, rfTime);
+          rfGl.uniform2f(rfUniforms.mouse, rfMouse[0], rfMouse[1]);
+          rfGl.uniform3f(rfUniforms.c1, curC1[0], curC1[1], curC1[2]);
+          rfGl.uniform3f(rfUniforms.c2, curC2[0], curC2[1], curC2[2]);
+          rfGl.uniform3f(rfUniforms.c3, curC3[0], curC3[1], curC3[2]);
+          rfGl.uniform3f(rfUniforms.spec, curSpec[0], curSpec[1], curSpec[2]);
+          rfGl.uniform1f(rfUniforms.dim, 0.32); // Dimmed elegant rubber folds
+
+          rfGl.drawArrays(rfGl.TRIANGLES, 0, 6);
+          requestAnimationFrame(renderRubberFluid);
+        }
+        requestAnimationFrame(renderRubberFluid);
+      }
+
+      function initFallback2DRubber() {
+        if (!rfCanvas) return;
+        const ctx = rfCanvas.getContext("2d");
+        if (!ctx) return;
+        function resize2D() {
+          rfCanvas.width = window.innerWidth;
+          rfCanvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize2D);
+        resize2D();
+
+        function draw2D() {
+          ctx.clearRect(0, 0, rfCanvas.width, rfCanvas.height);
+          rfTime += 0.01;
+          const target = THEME_SHADERS[currentThemeKey] || THEME_SHADERS.RED;
+          const w = rfCanvas.width;
+          const h = rfCanvas.height;
+          for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.35 + i * 85);
+            for (let x = 0; x < w; x += 25) {
+              const y = (h * 0.35 + i * 85) + Math.sin(x * 0.003 + rfTime + i) * 65 + Math.cos(x * 0.006 - rfTime) * 40;
+              ctx.lineTo(x, y);
+            }
+            ctx.lineTo(w, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fillStyle = `rgba(${Math.round(target.c1[0]*255)}, ${Math.round(target.c1[1]*255)}, ${Math.round(target.c1[2]*255)}, ${0.035 + i * 0.015})`;
+            ctx.fill();
+          }
+          requestAnimationFrame(draw2D);
+        }
+        requestAnimationFrame(draw2D);
+      }
+
+      initRubberFluid();
 
       // Gold Coin Confetti Particles
       const fxCanvas = document.getElementById("fxCanvas");
@@ -3258,7 +3524,8 @@
           pill.className = `crew-pill ${idx === state.myTeamIdx ? "active-my-team" : ""}`;
           pill.onclick = () => {
             state.myTeamIdx = idx;
-            state.targetTeamIdx = team.targetIdx;
+            state.targetTeamIdx = (team.targetIdx !== undefined && state.teams[team.targetIdx]) ? team.targetIdx : ((idx + 1) % 4);
+            applyTeamTheme(state.myTeamIdx);
             saveGameState(false);
             renderCrewBar();
             renderScoringTab();
@@ -3285,6 +3552,10 @@
 
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (CHOOSE YOUR TEAM -> TARGET) ---
       function renderScoringTab() {
+        // Ensure myTeamIdx and targetTeamIdx are valid
+        if (state.myTeamIdx === undefined || !state.teams[state.myTeamIdx]) state.myTeamIdx = 0;
+        if (state.targetTeamIdx === undefined || !state.teams[state.targetTeamIdx]) state.targetTeamIdx = (state.myTeamIdx + 1) % 4;
+
         // Step 0: Render Big Podium Leaderboard Box at Top & Active Turn Banner
         renderPodiumBox();
         renderTurnBanner();
@@ -3303,7 +3574,8 @@
           `;
           btn.onclick = () => {
             state.myTeamIdx = idx;
-            state.targetTeamIdx = t.targetIdx;
+            state.targetTeamIdx = (t.targetIdx !== undefined && state.teams[t.targetIdx]) ? t.targetIdx : ((idx + 1) % 4);
+            applyTeamTheme(state.myTeamIdx);
             saveGameState(false);
             renderCrewBar();
             renderScoringTab();
@@ -3334,8 +3606,8 @@
 
         // Step 3: Render Active Scoring Console
         const consoleEl = document.getElementById("scoringConsole");
-        const myTeam = state.teams[state.myTeamIdx];
-        const targetTeam = state.teams[state.targetTeamIdx];
+        const myTeam = state.teams[state.myTeamIdx] || state.teams[0];
+        const targetTeam = state.teams[state.targetTeamIdx] || state.teams[1];
         const targetCaptain = targetTeam.captain ? ` • 👑 Captain: ${escapeHtml(targetTeam.captain)}` : "";
 
         consoleEl.innerHTML = `
@@ -4467,6 +4739,7 @@
               setupPlayers = [...newTeam.players];
               setupCaptain = newTeam.captain || setupPlayers[0] || "";
             }
+            applyTeamTheme(idx);
             renderSetupColors();
             renderSetupPlayerPills();
             renderSetupCaptainSelect();
@@ -4578,31 +4851,60 @@
         };
       }
 
-      document.getElementById("setupSubmitBtn").onclick = () => {
-        if (playerInput && playerInput.value.trim()) {
-          addPlayerFromInput();
-        }
+      const setupSubmitBtn = document.getElementById("setupSubmitBtn");
+      if (setupSubmitBtn) {
+        setupSubmitBtn.onclick = (e) => {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          try {
+            if (playerInput && playerInput.value.trim()) {
+              addPlayerFromInput();
+            }
 
-        const team = state.teams[setupSelectedTeamIdx];
-        team.players = [...setupPlayers];
-        team.captain = setupCaptain || (setupPlayers[0] || "");
+            const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
+            team.players = [...setupPlayers];
+            team.captain = setupCaptain || (setupPlayers[0] || "");
 
-        state.myTeamIdx = setupSelectedTeamIdx;
-        state.targetTeamIdx = team.targetIdx;
+            state.myTeamIdx = setupSelectedTeamIdx;
+            const targetIdx = (team.targetIdx !== undefined && state.teams[team.targetIdx]) 
+              ? team.targetIdx 
+              : ((setupSelectedTeamIdx + 1) % 4);
+            state.targetTeamIdx = targetIdx;
 
-        try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
+            // Hide the modal immediately so it always closes reliably
+            crewSetupModal.classList.remove("open");
 
-        saveGameState(true);
-        renderCrewBar();
-        renderScoringTab();
-        switchToTab("scores");
-        crewSetupModal.classList.remove("open");
+            // Update website-wide theme colors
+            applyTeamTheme(state.myTeamIdx);
 
-        addLog(`⚔️ CREW SAVED: ${team.name} ready for crawl! Captain: ${team.captain || 'None'}.`);
-        playFanfare("win");
-        spawnCoins(30);
-        showToast(`🎉 Ready to Battle: ${team.name}!`);
-      };
+            try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (err) {}
+
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+            renderTurnBanner();
+            switchToTab("scores");
+
+            addLog(`⚔️ CREW SAVED: ${team.name} ready for crawl! Captain: ${team.captain || 'None'}.`);
+            playFanfare("win");
+            spawnCoins(30);
+            showToast(`🎉 Ready to Battle: ${team.name}!`);
+          } catch (err) {
+            console.error("Error saving crew:", err);
+            crewSetupModal.classList.remove("open");
+            switchToTab("scores");
+          }
+        };
+      }
+
+      const closeCrewBtn = document.getElementById("closeCrewSetupModalBtn");
+      if (closeCrewBtn) {
+        closeCrewBtn.onclick = () => {
+          crewSetupModal.classList.remove("open");
+        };
+      }
 
       document.getElementById("setupDismissBtn").onclick = () => {
         try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
@@ -4619,6 +4921,7 @@
 
       // --- 14. INITIAL BOOTSTRAP ---
       loadGameState();
+      applyTeamTheme(state.myTeamIdx || 0);
       renderCrewBar();
       renderScoringTab();
       renderTurnBanner();
