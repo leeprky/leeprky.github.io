@@ -92,8 +92,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      background-color: #190e0e;
+      background-color: var(--theme-bg, #190e0e);
+      min-height: 100%;
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior-y: none;
+    }
+
     body {
       background: #0d0602;
+      background-color: var(--theme-bg, #0d0602);
       background-image:
         radial-gradient(circle at 50% 15%, rgba(255, 185, 80, 0.18) 0%, rgba(8, 4, 1, 0.98) 85%),
         repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.5) 0 2px, transparent 2px 8px);
@@ -103,7 +112,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(36px, calc(var(--sab) + 24px)) max(8px, var(--sal));
+      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(40px, calc(var(--sab) + 32px)) max(8px, var(--sal));
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
@@ -1320,24 +1329,19 @@
        ONBOARDING POPUP: CHOOSE YOUR CREW (FIRST LOAD & EDITABLE)
        ========================================================================= */
     .crew-setup-dialog {
-      max-width: 520px !important;
-      background: radial-gradient(circle at 50% 50%, #fffef8 0%, #faecd0 85%, #f2dcaf 100%) !important;
-      border: 3.5px double var(--ink) !important;
-    }
-
-    .crew-setup-dialog {
       width: min(94vw, 440px) !important;
       max-width: 440px !important;
       box-sizing: border-box !important;
       overflow-x: hidden !important;
       padding: 16px 14px !important;
+      border-radius: 14px !important;
     }
     .setup-step-box {
-      background: rgba(255, 255, 255, 0.85);
-      border: 1.5px solid var(--wood-mid);
+      background: rgba(24, 14, 10, 0.82);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
       border-radius: 10px;
       padding: 12px 14px;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
     }
 
     .setup-step-label {
@@ -1346,14 +1350,14 @@
       gap: 8px;
       font-family: 'Pirata One', cursive;
       font-size: 1.35rem;
-      color: #7a1d1d;
+      color: #ffd885;
       margin-bottom: 8px;
     }
     .setup-step-label .step-num {
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: #7a1d1d;
+      background: var(--theme-primary, #925424);
       color: #fff;
       display: inline-flex;
       align-items: center;
@@ -1377,9 +1381,9 @@
     }
 
     .btn-setup-color {
-      background: rgba(18, 10, 6, 0.75);
+      background: rgba(24, 14, 10, 0.85);
       border: 1.5px solid var(--theme-border, #5a3418);
-      border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.22);
       border-radius: 10px;
       padding: 8px 10px;
       cursor: pointer;
@@ -1395,15 +1399,18 @@
       min-width: 0;
       box-sizing: border-box;
       overflow: hidden;
+      color: #f7eedc;
     }
     .btn-setup-color:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      background: rgba(40, 24, 16, 0.95);
     }
     .btn-setup-color.selected {
-      border-color: #23170b;
-      box-shadow: 0 0 0 3px var(--gold), 0 6px 16px rgba(0,0,0,0.25);
-      background: #fffdf5;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold), 0 6px 16px rgba(0,0,0,0.45);
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.28)) 0%, rgba(38, 20, 14, 0.96) 100%);
+      color: #ffffff;
     }
     .btn-setup-color .color-badge {
       width: 34px;
@@ -2124,7 +2131,7 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.14;
+      opacity: 0.40;
       transition: opacity 0.6s ease;
     }
 
@@ -2136,6 +2143,7 @@
        Adapted from main portfolio blueprint.css with dynamic tonal palettes
        ========================================================================= */
     body.theme-red {
+      --theme-bg: #190e0e;
       --md-primary: #d87a80;
       --md-primary-rgb: 216, 122, 128;
       --md-on-primary: #ffffff;
@@ -2161,6 +2169,7 @@
       --theme-topbar-bg: linear-gradient(135deg, rgba(216, 122, 128, 0.22) 0%, rgba(26, 14, 16, 0.94) 100%);
     }
     body.theme-blue {
+      --theme-bg: #0a121e;
       --md-primary: #7aafe6;
       --md-primary-rgb: 122, 175, 230;
       --md-on-primary: #ffffff;
@@ -2186,6 +2195,7 @@
       --theme-topbar-bg: linear-gradient(135deg, rgba(122, 175, 230, 0.22) 0%, rgba(12, 18, 28, 0.94) 100%);
     }
     body.theme-green {
+      --theme-bg: #0b170e;
       --md-primary: #80c692;
       --md-primary-rgb: 128, 198, 146;
       --md-on-primary: #052610;
@@ -2211,6 +2221,7 @@
       --theme-topbar-bg: linear-gradient(135deg, rgba(128, 198, 146, 0.22) 0%, rgba(12, 24, 16, 0.94) 100%);
     }
     body.theme-yellow {
+      --theme-bg: #18130a;
       --md-primary: #e5b768;
       --md-primary-rgb: 229, 183, 104;
       --md-on-primary: #2d1d03;
@@ -2738,6 +2749,15 @@
       color: #f7eedc !important;
       border: 1.5px solid rgba(220, 180, 120, 0.22) !important;
     }
+    body:not(.light-mode) .stop-card.is-current {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.28)) 0%, rgba(38, 20, 14, 0.96) 100%) !important;
+      border: 2px solid var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 18px var(--theme-glow, rgba(0,0,0,0)), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .stop-card.is-current .stop-title {
+      color: #ffffff !important;
+    }
     body:not(.light-mode) .stop-title {
       color: #ffd885 !important;
     }
@@ -3001,6 +3021,70 @@
       color: #ffffff !important;
       border-color: rgba(255, 255, 255, 0.2) !important;
     }
+    body:not(.light-mode) .crew-setup-dialog {
+      background: var(--glass-card-bg, rgba(28, 16, 12, 0.96)) !important;
+      border: 1.5px solid var(--theme-border, #ffd885) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+      color: #f7eedc !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 24px var(--theme-glow, rgba(0,0,0,0)) !important;
+    }
+    body:not(.light-mode) .setup-step-box {
+      background: rgba(18, 10, 6, 0.85) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #f7eedc !important;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+    }
+    body:not(.light-mode) .setup-step-label {
+      color: var(--theme-celtic-accent, #ffd885) !important;
+    }
+    body:not(.light-mode) .setup-step-label .step-num {
+      background: var(--theme-primary, #925424) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .btn-setup-color {
+      background: rgba(24, 14, 10, 0.85) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #f7eedc !important;
+    }
+    body:not(.light-mode) .btn-setup-color:hover {
+      background: rgba(42, 26, 18, 0.95) !important;
+      border-color: var(--theme-border, var(--gold)) !important;
+    }
+    body:not(.light-mode) .btn-setup-color.selected {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.96) 100%) !important;
+      border: 2px solid var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .btn-setup-color .team-label {
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .btn-setup-color .rival-hint {
+      color: #cbd5e1 !important;
+    }
+    body:not(.light-mode) .btn-setup-color.selected::after {
+      background: var(--theme-primary-dark, #2b1810) !important;
+      color: #ffd885 !important;
+      border: 1px solid var(--gold) !important;
+    }
+    body:not(.light-mode) .btn-admin-turn-select {
+      background: rgba(24, 14, 10, 0.88) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    }
+    body:not(.light-mode) .btn-admin-turn-select.selected {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.25)) 0%, rgba(36, 18, 14, 0.95) 100%) !important;
+      border: 2px solid var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) #adminTestConnectionBtn {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+      border: 1.5px solid #38bdf8 !important;
+      color: #ffffff !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
     body:not(.light-mode) .impact-pill.danger {
       background: rgba(185, 28, 28, 0.3) !important;
       color: #fca5a5 !important;
@@ -3010,6 +3094,35 @@
       background: rgba(180, 83, 9, 0.3) !important;
       color: #fde047 !important;
       border: 1px solid rgba(234, 179, 8, 0.5) !important;
+    }
+
+    /* Lockout Overlay for Banned Devices */
+    .banned-lockout-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: rgba(10, 2, 2, 0.96);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .banned-card {
+      max-width: 440px;
+      width: 100%;
+      background: rgba(30, 8, 8, 0.95);
+      border: 2px solid #ef4444;
+      border-radius: 16px;
+      box-shadow: 0 0 35px rgba(239, 68, 68, 0.55), inset 0 0 15px rgba(239, 68, 68, 0.2);
+      padding: 24px 20px;
+      text-align: center;
+      animation: alertPulse 2s infinite ease-in-out;
+    }
+    @keyframes alertPulse {
+      0%, 100% { box-shadow: 0 0 28px rgba(239, 68, 68, 0.45); }
+      50% { box-shadow: 0 0 55px rgba(239, 68, 68, 0.9); }
     }
 
     /* =========================================================================
@@ -3544,7 +3657,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.2</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.3</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4075,6 +4188,9 @@
                 <button type="button" class="modal-btn" id="adminRegisterCurrentDeviceBtn" style="background: #2b9348; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   📱 Link My Current Device
                 </button>
+                <button type="button" class="modal-btn" id="adminTestConnectionBtn" style="background: #0284c7; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #38bdf8; color: #fff;" title="Broadcast an instant visual & audio test alert popup to all connected phones">
+                  🔔 TEST CONNECTION (POPUP TO ALL DEVICES)
+                </button>
                 <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   📢 Ping All Devices
                 </button>
@@ -4084,6 +4200,23 @@
                 <button type="button" class="modal-btn" id="adminResetAllDevicesBtn" style="background: #8b1e1e; font-size: 0.95rem; padding: 8px 14px; width: auto; border-color: #ff4d4d; color: #fff;">
                   🚨 RESET ALL DEVICES SETTINGS
                 </button>
+              </div>
+
+              <!-- BANNED PLAYERS & BLACKLISTED HARDWARE (MAC / IP) -->
+              <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <span style="font-family: 'Pirata One', cursive; font-size: 1.25rem; color: #ef4444; letter-spacing: 0.5px;">
+                    🚫 BANNED PLAYERS & HARDWARE BLACKLIST (MAC / IP):
+                  </span>
+                  <span style="font-size: 0.72rem; color: #fca5a5;">Locks screen & disables scoring</span>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+                  <input type="text" id="adminBanInput" class="glass-input" placeholder="Enter IP (e.g. 192.168.1.45) or MAC (e.g. 3C:5A:...)" style="flex: 1; min-width: 220px; font-size: 0.88rem; padding: 8px 12px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;" />
+                  <button type="button" class="modal-btn" id="adminBanSubmitBtn" style="background: #991b1b; font-size: 0.9rem; padding: 8px 14px; border: 1.5px solid #ef4444; color: #fff;">
+                    🚫 Ban Address
+                  </button>
+                </div>
+                <div id="adminBannedListGrid" style="display: flex; flex-direction: column; gap: 6px;"></div>
               </div>
             </div>
 
@@ -4538,6 +4671,46 @@
 
 
   <!-- =========================================================================
+       MODAL 9: REAL-TIME CONNECTION TEST POPUP
+       ========================================================================= -->
+  <div class="modal-backdrop" id="testAlertModal">
+    <div class="modal-scroll glass-card" style="max-width: 400px; text-align: center; border: 2px solid #38bdf8; box-shadow: 0 0 30px rgba(56, 189, 248, 0.45); animation: modalIn 0.25s ease-out;">
+      <div style="font-size: 3.2rem; margin-bottom: 6px;">🔔</div>
+      <h2 style="font-family: 'Pirata One', cursive; font-size: 2rem; color: #38bdf8; margin-bottom: 6px; letter-spacing: 0.5px;">CONNECTION TEST</h2>
+      <p style="font-size: 0.95rem; color: #f1f5f9; margin-bottom: 12px; line-height: 1.4;" id="testAlertMessage">
+        Real-time sync test signal received loud and clear from Crawl Master!
+      </p>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; background: rgba(0,0,0,0.45); padding: 8px 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.18); color: #7dd3fc;" id="testAlertLatencyInfo">
+        MQTT Broker: Connected • Ping: ~22ms
+      </div>
+      <button type="button" class="modal-btn" id="testAlertDismissBtn" style="width: 100%; font-size: 1.15rem; padding: 12px 18px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: 1.5px solid #38bdf8; color: #fff;">
+        👍 GOT IT!
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FULLSCREEN LOCKOUT OVERLAY FOR BANNED DEVICES (MAC / IP BLACKLIST)
+       ========================================================================= -->
+  <div id="bannedLockoutOverlay" class="banned-lockout-overlay" style="display: none;">
+    <div class="banned-card">
+      <div style="font-size: 3.6rem; margin-bottom: 8px;">☠️</div>
+      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px;">ACCESS DENIED // BANNED</h1>
+      <p style="font-size: 1.02rem; color: #fca5a5; margin-bottom: 14px; line-height: 1.4;">
+        Your device has been banned from this Drunk Uno session by the Crawl Master.
+      </p>
+      <div id="bannedDetailChip" style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; background: rgba(0,0,0,0.65); border: 1px solid #dc2626; padding: 8px 12px; border-radius: 6px; color: #fee2e2; margin-bottom: 16px; word-break: break-all;">
+        Blacklisted Identifier: MAC / IP
+      </div>
+      <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.35;">
+        All game actions and scoring are disabled. Please contact your referee or crawl host to request reinstatement.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
        05. MAIN ENGINE SCRIPT (REAL-TIME MQTT SYNC, COOKIES, WHEEL & BINGO)
        ========================================================================= -->
   <script>
@@ -4754,6 +4927,8 @@
         stops: JSON.parse(JSON.stringify(DEFAULT_STOPS)),
         bingoCards: JSON.parse(JSON.stringify(BINGO_CARDS)),
         devices: {}, // devId -> { id, mac, ip, name, teamIdx, isCaptain, deviceModel, joinedAt, lastSeen }
+        bannedList: [], // [ { id, mac, ip, name, bannedAt, reason } ]
+        resetEpoch: 0,
         logs: ["Session initialized. Connected to Room: " + roomCode],
         sound: true,
         adminUnlocked: false
@@ -4913,12 +5088,122 @@
                 state.devices = Object.assign({}, state.devices, parsed.devices);
               }
               if (parsed.myPlayerName) state.myPlayerName = parsed.myPlayerName;
+              if (Array.isArray(parsed.bannedList)) state.bannedList = parsed.bannedList;
+              if (parsed.resetEpoch) {
+                state.resetEpoch = parsed.resetEpoch;
+                const localHandledEpoch = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
+                if (parsed.resetEpoch > localHandledEpoch) {
+                  executeDeviceReset(parsed.resetEpoch);
+                }
+              }
+              checkBannedStatus();
               showToast("🍪 State Restored from Cookie");
             }
           } catch (e) {
             console.error("Parse state error:", e);
           }
         }
+      }
+
+      function isCurrentDeviceBanned() {
+        if (!state.bannedList || !state.bannedList.length) return false;
+        const myDevId = getOrCreateDeviceId();
+        const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
+        const myName = (state.myPlayerName || "").trim().toLowerCase();
+        const myIp = (clientIp || "").trim();
+
+        return state.bannedList.some(b => {
+          if (b.id && b.id === myDevId) return true;
+          if (b.mac && myMac && b.mac.trim().toLowerCase() === myMac) return true;
+          if (b.ip && myIp && myIp !== "Detecting..." && b.ip.trim() === myIp) return true;
+          if (b.name && myName && b.name.trim().toLowerCase() === myName) return true;
+          return false;
+        });
+      }
+
+      function checkBannedStatus() {
+        const overlay = document.getElementById("bannedLockoutOverlay");
+        const isBanned = isCurrentDeviceBanned();
+        if (isBanned) {
+          if (overlay) {
+            overlay.style.display = "flex";
+            const chip = document.getElementById("bannedDetailChip");
+            if (chip) {
+              chip.textContent = `Blacklisted ID: ${getOrCreateDeviceId()} • MAC: ${getOrCreateDeviceMac()} • IP: ${clientIp || "Detected"}`;
+            }
+          }
+          try {
+            localStorage.removeItem("drunk_uno_player_registered");
+            localStorage.removeItem("drunk_uno_player_name");
+            localStorage.removeItem("drunk_uno_crew_setup");
+          } catch (e) {}
+          state.myPlayerName = "";
+          updateTopUserName();
+          playBuzzer();
+        } else {
+          if (overlay) overlay.style.display = "none";
+        }
+      }
+
+      function executeDeviceReset(incomingEpoch) {
+        state.devices = {};
+        state.teams.forEach(t => {
+          t.players = [];
+          t.captain = "";
+        });
+        state.myPlayerName = "";
+        try {
+          localStorage.removeItem("drunk_uno_player_registered");
+          localStorage.removeItem("drunk_uno_player_name");
+          localStorage.removeItem("drunk_uno_crew_setup");
+          if (incomingEpoch) {
+            localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(incomingEpoch));
+          }
+        } catch (e) {}
+        updateTopUserName();
+        renderCrewBar();
+        renderScoringTab();
+        renderAdminTab();
+        showToast("⚠️ Crawl Master has reset all device connections!");
+        playFanfare("freeze");
+        setTimeout(() => {
+          openCrewSetupModal(false);
+        }, 350);
+      }
+
+      function showTestAlertPopup(data) {
+        const modal = document.getElementById("testAlertModal");
+        if (!modal) return;
+        const msgEl = document.getElementById("testAlertMessage");
+        const latEl = document.getElementById("testAlertLatencyInfo");
+        const sender = (data && data.sender) || "Crawl Master";
+        const sentTime = (data && data.timestamp) || Date.now();
+        const latency = Math.max(1, Date.now() - sentTime);
+
+        if (msgEl) {
+          msgEl.innerHTML = `Real-time sync alert from <strong>${escapeHtml(sender)}</strong>! Your phone is actively synced with room <strong>${escapeHtml(roomCode)}</strong>.`;
+        }
+        if (latEl) {
+          latEl.textContent = `⚡ MQTT Latency: ~${latency}ms • Real-Time Channel Active • Devices Online: ${Object.keys(state.devices || {}).length || 1}`;
+        }
+
+        modal.classList.add("open");
+        playAirhorn();
+        triggerHaptic([80, 50, 80, 50, 150]);
+
+        clearTimeout(window._testAlertTimer);
+        window._testAlertTimer = setTimeout(() => {
+          modal.classList.remove("open");
+        }, 8000);
+      }
+
+      const dismissTestBtn = document.getElementById("testAlertDismissBtn");
+      if (dismissTestBtn) {
+        dismissTestBtn.onclick = () => {
+          clearTimeout(window._testAlertTimer);
+          document.getElementById("testAlertModal")?.classList.remove("open");
+          playTick(600);
+        };
       }
 
       // --- 02. REAL-TIME MULTI-PHONE MQTT WEBSOCKET SYNCHRONIZATION ---
@@ -4944,6 +5229,12 @@
             try {
               const incoming = JSON.parse(message.payloadString);
 
+              // Real-Time Connection Test Popup
+              if (incoming && incoming.action === "TEST_CONNECTION_POPUP") {
+                showTestAlertPopup(incoming);
+                return;
+              }
+
               // Emergency Crawl Master Remote Redirect to Portfolio
               if (incoming && incoming.action === "FORCE_REDIRECT_PORTFOLIO") {
                 showToast("🚀 Crawl Master is redirecting everyone to the portfolio...");
@@ -4955,30 +5246,25 @@
                 return;
               }
 
-              // Emergency Crawl Master Remote Reset
-              if (incoming && incoming.action === "RESET_ALL_DEVICES") {
-                state.devices = {};
-                state.teams.forEach(t => {
-                  t.players = [];
-                  t.captain = "";
-                });
-                state.myPlayerName = "";
-                try {
-                  localStorage.removeItem("drunk_uno_player_registered");
-                  localStorage.removeItem("drunk_uno_player_name");
-                  localStorage.removeItem("drunk_uno_crew_setup");
-                } catch (e) {}
-                updateTopUserName();
-                renderCrewBar();
-                renderScoringTab();
-                renderAdminTab();
-                showToast("⚠️ Crawl Master has reset all device connections!");
-                playFanfare("freeze");
-                setTimeout(() => {
-                  openCrewSetupModal(false);
-                }, 350);
+              // Emergency Crawl Master Remote Reset (Epoch Synchronized)
+              const incomingResetEpoch = incoming.resetEpoch || (incoming.state && incoming.state.resetEpoch);
+              const localHandledEpoch = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
+              if (incoming && (incoming.action === "RESET_ALL_DEVICES" || (incomingResetEpoch && incomingResetEpoch > localHandledEpoch))) {
+                if (incomingResetEpoch) {
+                  state.resetEpoch = incomingResetEpoch;
+                }
+                executeDeviceReset(incomingResetEpoch);
                 return;
               }
+
+              // Banned Device / Player Updates
+              if (incoming && (incoming.action === "BAN_DEVICE" || incoming.bannedList)) {
+                if (incoming.bannedList) {
+                  state.bannedList = incoming.bannedList;
+                }
+                checkBannedStatus();
+              }
+
               if (incoming && Array.isArray(incoming.teams)) {
                 state.teams = incoming.teams;
                 state.teams.forEach(t => {
@@ -4993,6 +5279,9 @@
                 if (incoming.devices && typeof incoming.devices === "object") {
                   state.devices = Object.assign({}, state.devices, incoming.devices);
                 }
+                if (incoming.bannedList) state.bannedList = incoming.bannedList;
+                if (incoming.resetEpoch) state.resetEpoch = incoming.resetEpoch;
+                checkBannedStatus();
                 updateTopUserName();
 
                 renderCrewBar();
@@ -5079,6 +5368,83 @@
         });
       }
 
+      function playCoinDing() {
+        triggerHaptic([25, 35]);
+        if (!state.sound || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        [987.77, 1318.51].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.24, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.36);
+        });
+      }
+
+      function playBuzzer() {
+        triggerHaptic([120, 80, 120]);
+        if (!state.sound || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.type = "sawtooth";
+        osc2.type = "square";
+        osc1.frequency.setValueAtTime(130, now);
+        osc1.frequency.linearRampToValueAtTime(95, now + 0.28);
+        osc2.frequency.setValueAtTime(138.5, now);
+        osc2.frequency.linearRampToValueAtTime(102, now + 0.28);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.31);
+        osc2.stop(now + 0.31);
+      }
+
+      function playAirhorn() {
+        triggerHaptic([80, 40, 80, 40, 160]);
+        if (!state.sound || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const freqs = [311.13, 370.00, 466.16];
+        freqs.forEach(freq => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.46);
+        });
+      }
+
+      function playWhoosh() {
+        if (!state.sound || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(620, now + 0.12);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+
       // --- 04. RUBBER FLUID SHADER CANVAS (GLOSSY FOLDS DRIFTING SLOWLY) ---
       // Adapted from React Bits Pro Rubber Fluid component, dimmed & themed to current crew
       const rfCanvas = document.getElementById("rubberFluidCanvas");
@@ -5090,28 +5456,28 @@
 
       const THEME_SHADERS = {
         RED: {
-          c1: [0.55, 0.28, 0.30], // Soft pastel rose rubber
-          c2: [0.24, 0.10, 0.12], // Muted wine shadow
-          c3: [0.78, 0.46, 0.48], // Soft rose crest
-          spec: [0.95, 0.82, 0.84]  // Gentle sheen
+          c1: [0.88, 0.18, 0.24], // Rich vibrant Uno crimson
+          c2: [0.38, 0.05, 0.08], // Deep wine shadow
+          c3: [1.00, 0.35, 0.38], // Bright scarlet crest
+          spec: [1.00, 0.88, 0.90]  // Glossy sheen
         },
         BLUE: {
-          c1: [0.28, 0.42, 0.62], // Soft periwinkle rubber
-          c2: [0.10, 0.16, 0.28], // Muted slate shadow
-          c3: [0.52, 0.68, 0.88], // Pastel sky crest
-          spec: [0.85, 0.90, 0.98]  // Gentle ice sheen
+          c1: [0.15, 0.45, 0.95], // Rich vibrant Uno cobalt
+          c2: [0.04, 0.12, 0.35], // Deep abyss shadow
+          c3: [0.35, 0.72, 1.00], // Electric azure crest
+          spec: [0.90, 0.96, 1.00]  // Ice gloss sheen
         },
         GREEN: {
-          c1: [0.28, 0.50, 0.34], // Soft sage mint rubber
-          c2: [0.10, 0.22, 0.14], // Muted pine shadow
-          c3: [0.54, 0.76, 0.60], // Pastel seafoam crest
-          spec: [0.86, 0.96, 0.88]  // Gentle mint sheen
+          c1: [0.12, 0.75, 0.32], // Rich vibrant Uno emerald
+          c2: [0.03, 0.28, 0.10], // Deep forest shadow
+          c3: [0.38, 0.95, 0.52], // Bright jade crest
+          spec: [0.90, 1.00, 0.92]  // Emerald sheen
         },
         YELLOW: {
-          c1: [0.58, 0.46, 0.24], // Soft butter honey rubber
-          c2: [0.26, 0.18, 0.08], // Muted amber shadow
-          c3: [0.82, 0.70, 0.42], // Pastel buttermilk crest
-          spec: [0.98, 0.94, 0.85]  // Gentle gold sheen
+          c1: [0.95, 0.70, 0.08], // Rich vibrant Uno gold/amber
+          c2: [0.42, 0.24, 0.02], // Deep molasses shadow
+          c3: [1.00, 0.88, 0.28], // Radiant gold crest
+          spec: [1.00, 0.98, 0.90]  // Bright gold sheen
         }
       };
 
@@ -5164,6 +5530,13 @@
         }
 
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
+        if (document.documentElement) {
+          document.documentElement.style.backgroundColor = titleBarHex;
+          document.documentElement.style.setProperty('--theme-bg', titleBarHex);
+        }
+        if (document.body) {
+          document.body.style.backgroundColor = titleBarHex;
+        }
 
         const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
         if (appleMeta) {
@@ -5423,7 +5796,7 @@
           rfGl.uniform3f(rfUniforms.c2, curC2[0], curC2[1], curC2[2]);
           rfGl.uniform3f(rfUniforms.c3, curC3[0], curC3[1], curC3[2]);
           rfGl.uniform3f(rfUniforms.spec, curSpec[0], curSpec[1], curSpec[2]);
-          rfGl.uniform1f(rfUniforms.dim, 0.16); // Dimmed elegant rubber folds
+          rfGl.uniform1f(rfUniforms.dim, 0.75); // Vivid glossy fluid rubber folds
 
           rfGl.drawArrays(rfGl.TRIANGLES, 0, 6);
           requestAnimationFrame(renderRubberFluid);
@@ -5458,7 +5831,7 @@
             ctx.lineTo(w, h);
             ctx.lineTo(0, h);
             ctx.closePath();
-            ctx.fillStyle = `rgba(${Math.round(target.c1[0]*255)}, ${Math.round(target.c1[1]*255)}, ${Math.round(target.c1[2]*255)}, ${0.018 + i * 0.008})`;
+            ctx.fillStyle = `rgba(${Math.round(target.c1[0]*255)}, ${Math.round(target.c1[1]*255)}, ${Math.round(target.c1[2]*255)}, ${0.08 + i * 0.02})`;
             ctx.fill();
           }
           requestAnimationFrame(draw2D);
@@ -5798,31 +6171,41 @@
               targetTeam.score -= 1;
               targetTeam.sips += 1;
               addLog(`🚫 SKIP: ${myTeam.name} skipped ${targetTeam.name} (-1 pt, 1 sip).`);
+              playBuzzer();
             } else if (act === "draw2") {
               targetTeam.score -= 2;
               targetTeam.sips += 2;
               addLog(`+2 DRAW: ${myTeam.name} hit ${targetTeam.name} with Draw 2 (-2 pts, 2 sips).`);
+              playBuzzer();
             } else if (act === "stack4") {
               targetTeam.score -= 4;
               targetTeam.sips += 4;
               addLog(`+4 STACK: ${targetTeam.name} hit with stacked +4 (-4 pts, 4 sips).`);
+              playBuzzer();
             } else if (act === "spew") {
               targetTeam.score -= 5;
               addLog(`🤮 SPEW: ${targetTeam.name} suffered a spewing penalty! (-5 pts).`);
+              playBuzzer();
             } else if (act === "reverse") {
               targetTeam.score += 4;
               myTeam.score -= 4;
               addLog(`🔄 REVERSE: ${targetTeam.name} reversed attack! (+4 to defender, -4 to attacker).`);
+              playCoinDing();
+              spawnCoins(20);
             } else if (act === "wheelwin") {
               targetTeam.score += 6;
               addLog(`🎡 WHEEL VICTORY: ${targetTeam.name} awarded +6 points.`);
+              playCoinDing();
+              spawnCoins(25);
             } else if (act === "wheelloss") {
               targetTeam.score -= 6;
               addLog(`🎡 WHEEL DEFEAT: ${targetTeam.name} docked -6 points.`);
+              playBuzzer();
             } else if (act === "rulebreak") {
               targetTeam.score -= 1;
               targetTeam.sips += 1;
               addLog(`⚠️ RULE BREAK: ${targetTeam.name} violated house rule (-1 pt, 1 sip).`);
+              playBuzzer();
             }
             saveGameState(true);
             renderCrewBar();
@@ -5836,6 +6219,12 @@
             const delta = parseInt(btn.dataset.pointAdj, 10);
             targetTeam.score += delta;
             addLog(`⚖️ MANUAL ADJUST: ${targetTeam.name} adjusted by ${delta > 0 ? '+' + delta : delta} points.`);
+            if (delta > 0) {
+              playCoinDing();
+              spawnCoins(15);
+            } else {
+              playBuzzer();
+            }
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
@@ -5847,6 +6236,7 @@
             const count = parseInt(btn.dataset.sipAdd, 10);
             targetTeam.sips += count;
             addLog(`🍺 ${targetTeam.name} logged ${count} drink/sip(s) by ${myTeam.name}.`);
+            playBuzzer();
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
@@ -5856,6 +6246,7 @@
         consoleEl.querySelector("[data-freeze-toggle]").onclick = () => {
           targetTeam.frozen = !targetTeam.frozen;
           addLog(targetTeam.frozen ? `❄️ Drinker's Freeze activated on ${targetTeam.name}!` : `☀️ Freeze lifted from ${targetTeam.name}.`);
+          playFanfare("freeze");
           saveGameState(true);
           renderCrewBar();
           renderScoringTab();
@@ -6163,16 +6554,19 @@
             btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
             if (idx === chosenVictimIdx) {
               btn.style.border = "2px solid var(--gold)";
-              btn.style.background = "#fffdf5";
+              btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+              btn.style.color = "#ffffff";
             }
             btn.onclick = () => {
               chosenVictimIdx = idx;
               targetList.querySelectorAll("button").forEach(b => {
-                b.style.border = "1.5px solid var(--ink)";
-                b.style.background = "rgba(58, 34, 12, 0.14)";
+                b.style.border = "1.5px solid rgba(255,255,255,0.18)";
+                b.style.background = "rgba(24, 14, 10, 0.85)";
+                b.style.color = "#f7eedc";
               });
               btn.style.border = "2px solid var(--gold)";
-              btn.style.background = "#fffdf5";
+              btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+              btn.style.color = "#ffffff";
             };
             targetList.appendChild(btn);
           }
@@ -6393,16 +6787,19 @@
           btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${escapeHtml(t.name)}`;
           if (idx === selectedBingoTargetTeamIdx) {
             btn.style.border = "2px solid var(--gold)";
-            btn.style.background = "#fffdf5";
+            btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+            btn.style.color = "#ffffff";
           }
           btn.onclick = () => {
             selectedBingoTargetTeamIdx = idx;
             list.querySelectorAll("button").forEach(b => {
-              b.style.border = "1.5px solid var(--ink)";
-              b.style.background = "rgba(58, 34, 12, 0.14)";
+              b.style.border = "1.5px solid rgba(255,255,255,0.18)";
+              b.style.background = "rgba(24, 14, 10, 0.85)";
+              b.style.color = "#f7eedc";
             });
             btn.style.border = "2px solid var(--gold)";
-            btn.style.background = "#fffdf5";
+            btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+            btn.style.color = "#ffffff";
           };
           list.appendChild(btn);
         });
@@ -6620,7 +7017,10 @@
                   <button type="button" class="btn-device-ping" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(29, 99, 184, 0.3); border: 1px solid #1d63b8; color: #90caf9; border-radius: 6px; cursor: pointer;">
                     📢 Ping
                   </button>
-                  <button type="button" class="btn-device-unlink" style="font-size: 0.72rem; padding: 3px 6px; background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; border-radius: 6px; cursor: pointer; margin-left: auto;">
+                  <button type="button" class="btn-device-ban" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(185, 28, 28, 0.4); border: 1px solid #ef4444; color: #fca5a5; border-radius: 6px; cursor: pointer; margin-left: auto;">
+                    🚫 Ban
+                  </button>
+                  <button type="button" class="btn-device-unlink" style="font-size: 0.72rem; padding: 3px 6px; background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; border-radius: 6px; cursor: pointer;">
                     ✕ Kick
                   </button>
                 </div>
@@ -6668,6 +7068,51 @@
                 saveGameState(true);
               };
 
+              card.querySelector(".btn-device-ban").onclick = () => {
+                if (confirm(`🚨 BAN PLAYER & LOCK OUT DEVICE?\n\nPlayer: ${d.name}\nMAC: ${d.mac || 'N/A'}\nIP: ${d.ip || 'N/A'}\n\nThis device will be immediately locked out with an uncloseable ban screen.`)) {
+                  if (!state.bannedList) state.bannedList = [];
+                  state.bannedList.push({
+                    id: devId,
+                    mac: d.mac || "",
+                    ip: d.ip || "",
+                    name: d.name || "",
+                    bannedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    reason: "Banned by Crawl Master"
+                  });
+                  const targetTeam = state.teams[d.teamIdx];
+                  if (targetTeam) {
+                    targetTeam.players = targetTeam.players.filter(p => p !== d.name);
+                    if (targetTeam.captain === d.name) targetTeam.captain = targetTeam.players[0] || "";
+                  }
+                  delete state.devices[devId];
+                  addLog(`🚫 ADMIN BAN: Locked out player ${d.name} (MAC: ${d.mac || 'N/A'}, IP: ${d.ip || 'N/A'})`);
+
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const p = JSON.stringify({
+                        action: "BAN_DEVICE",
+                        bannedList: state.bannedList,
+                        bannedId: devId,
+                        bannedMac: d.mac,
+                        bannedIp: d.ip,
+                        state: state
+                      });
+                      const m = new Paho.MQTT.Message(p);
+                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.retained = false;
+                      mqttClient.send(m);
+                    } catch (e) {}
+                  }
+
+                  saveGameState(true);
+                  renderCrewBar();
+                  renderScoringTab();
+                  renderAdminTab();
+                  checkBannedStatus();
+                  showToast(`🚫 Player ${d.name} has been banned!`);
+                }
+              };
+
               card.querySelector(".btn-device-unlink").onclick = () => {
                 if (confirm(`Unlink and remove device for ${d.name}?`)) {
                   const targetTeam = state.teams[d.teamIdx];
@@ -6686,6 +7131,38 @@
               };
 
               devGrid.appendChild(card);
+            });
+          }
+        }
+
+        // --- 0B. Render Banned Hardware & Players Directory ---
+        const bannedGrid = document.getElementById("adminBannedListGrid");
+        if (bannedGrid) {
+          bannedGrid.innerHTML = "";
+          if (!state.bannedList || state.bannedList.length === 0) {
+            bannedGrid.innerHTML = `<div style="padding: 8px 12px; color: var(--ink-faded); font-style: italic; font-size: 0.82rem; background: rgba(0,0,0,0.25); border-radius: 6px;">No players or devices currently blacklisted.</div>`;
+          } else {
+            state.bannedList.forEach((b, bIdx) => {
+              const item = document.createElement("div");
+              item.style.cssText = "display: flex; align-items: center; justify-content: space-between; gap: 8px; background: rgba(185, 28, 28, 0.22); border: 1px solid rgba(239, 68, 68, 0.45); border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;";
+              item.innerHTML = `
+                <div>
+                  <span style="color: #fca5a5; font-weight: 700;">🚫 ${escapeHtml(b.name || b.ip || b.mac || "Banned Device")}</span>
+                  <span style="color: #e2ceb0; font-size: 0.72rem; margin-left: 6px;">(${escapeHtml([b.ip, b.mac].filter(Boolean).join(" • ") || "ID Lock")})</span>
+                </div>
+                <button type="button" class="modal-btn secondary" style="font-size: 0.72rem; padding: 2px 8px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.25); color: #86efac; cursor: pointer;">
+                  ✓ Unban
+                </button>
+              `;
+              item.querySelector("button").onclick = () => {
+                const removed = state.bannedList.splice(bIdx, 1)[0];
+                addLog(`✅ ADMIN: Unbanned ${removed.name || removed.ip || removed.mac}`);
+                saveGameState(true);
+                renderAdminTab();
+                checkBannedStatus();
+                showToast(`Unbanned ${removed.name || removed.ip || removed.mac}`);
+              };
+              bannedGrid.appendChild(item);
             });
           }
         }
@@ -6812,12 +7289,80 @@
         };
       }
 
+      const adminTestConnBtn = document.getElementById("adminTestConnectionBtn");
+      if (adminTestConnBtn) {
+        adminTestConnBtn.onclick = () => {
+          const payload = JSON.stringify({
+            action: "TEST_CONNECTION_POPUP",
+            sender: state.myPlayerName || "Crawl Master",
+            timestamp: Date.now()
+          });
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const msg = new Paho.MQTT.Message(payload);
+              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.retained = false;
+              mqttClient.send(msg);
+            } catch (e) {
+              console.warn("MQTT test alert error:", e);
+            }
+          }
+          showTestAlertPopup({ sender: state.myPlayerName || "Crawl Master", timestamp: Date.now() });
+          showToast("🔔 Test connection alert sent to all phones!");
+        };
+      }
+
+      const adminBanInput = document.getElementById("adminBanInput");
+      const adminBanSubmitBtn = document.getElementById("adminBanSubmitBtn");
+      if (adminBanSubmitBtn && adminBanInput) {
+        adminBanSubmitBtn.onclick = () => {
+          const val = adminBanInput.value.trim();
+          if (!val) {
+            alert("Please enter an IP address, MAC address, or Player Name to ban.");
+            return;
+          }
+          if (!state.bannedList) state.bannedList = [];
+          const isIp = /^[0-9.]+$/.test(val);
+          const isMac = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/.test(val) || val.includes(":");
+          state.bannedList.push({
+            id: "manual-" + Math.random().toString(36).substring(2, 7),
+            mac: isMac ? val : "",
+            ip: isIp ? val : "",
+            name: (!isIp && !isMac) ? val : "",
+            bannedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            reason: "Manual admin blacklist"
+          });
+          adminBanInput.value = "";
+          addLog(`🚫 ADMIN: Added blacklist entry for "${val}"`);
+
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const p = JSON.stringify({
+                action: "BAN_DEVICE",
+                bannedList: state.bannedList,
+                state: state
+              });
+              const m = new Paho.MQTT.Message(p);
+              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.retained = false;
+              mqttClient.send(m);
+            } catch (e) {}
+          }
+          saveGameState(true);
+          renderAdminTab();
+          checkBannedStatus();
+          showToast(`Blacklisted: ${val}`);
+        };
+      }
+
       const adminResetDevicesBtn = document.getElementById("adminResetAllDevicesBtn");
       if (adminResetDevicesBtn) {
         adminResetDevicesBtn.onclick = () => {
           const answer = confirm("🚨 DANGER: RESET ALL DEVICES SETTINGS?\n\nThis will instantly unlink and disconnect every phone across the crawl, wipe all player names, and force all devices to re-register on their screens.\n\nAre you sure you want to proceed?");
           if (!answer) return;
 
+          const newEpoch = Date.now();
+          state.resetEpoch = newEpoch;
           state.devices = {};
           state.teams.forEach(t => {
             t.players = [];
@@ -6829,25 +7374,33 @@
             localStorage.removeItem("drunk_uno_player_registered");
             localStorage.removeItem("drunk_uno_player_name");
             localStorage.removeItem("drunk_uno_crew_setup");
+            localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(newEpoch));
           } catch (e) {}
 
           updateTopUserName();
           addLog("🚨 CRAWL MASTER: Full reset of all device settings and phone links broadcasted!");
 
-          // Broadcast special reset command over MQTT to all phones
-          if (mqttClient && mqttClient.isConnected()) {
-            try {
-              const payload = JSON.stringify({
-                action: "RESET_ALL_DEVICES",
-                timestamp: Date.now(),
-                state: state
-              });
-              const msg = new Paho.MQTT.Message(payload);
-              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
-              msg.retained = false;
-              mqttClient.send(msg);
-            } catch (e) { console.warn("MQTT send error:", e); }
+          // 3-burst transmission over MQTT to guarantee delivery on lossy cellular networks
+          function sendResetBurst(count) {
+            if (mqttClient && mqttClient.isConnected()) {
+              try {
+                const payload = JSON.stringify({
+                  action: "RESET_ALL_DEVICES",
+                  resetEpoch: newEpoch,
+                  timestamp: Date.now(),
+                  state: state
+                });
+                const msg = new Paho.MQTT.Message(payload);
+                msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+                msg.retained = false;
+                mqttClient.send(msg);
+              } catch (e) { console.warn("MQTT send error:", e); }
+            }
+            if (count > 1) {
+              setTimeout(() => sendResetBurst(count - 1), 150);
+            }
           }
+          sendResetBurst(3);
 
           saveGameState(true);
           renderCrewBar();
@@ -6965,6 +7518,7 @@
           } else {
             switchToTab(btn.dataset.tab);
           }
+          playWhoosh();
           playTick(600);
         };
       });
