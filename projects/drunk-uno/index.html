@@ -123,10 +123,11 @@
       font-family: 'IM Fell English', Georgia, serif;
       color: var(--ink);
       min-height: 100dvh;
+      min-height: -webkit-fill-available;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(40px, calc(var(--sab) + 32px)) max(8px, var(--sal));
+      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(20px, var(--sab)) max(8px, var(--sal));
       overflow-x: hidden !important;
       position: relative;
       touch-action: pan-y pinch-zoom;
@@ -346,7 +347,7 @@
       }
     }
 
-    /* Floating iOS Glass Dock for Tab Navigation */
+    /* Floating iOS Glass Dock for Tab Navigation (Translucent to show content scrolling behind) */
     .mobile-bottom-dock {
       position: fixed;
       bottom: calc(14px + var(--sab));
@@ -360,14 +361,14 @@
       padding: 6px 14px;
       width: auto;
       max-width: min(94vw, 560px);
-      background: rgba(18, 10, 6, 0.85);
+      background: rgba(18, 10, 6, 0.68);
       backdrop-filter: blur(28px) saturate(200%);
       -webkit-backdrop-filter: blur(28px) saturate(200%);
       border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.22));
       border-top: 1.5px solid rgba(255, 255, 255, 0.45);
       border-radius: 30px;
       box-shadow:
-        0 14px 40px rgba(0, 0, 0, 0.7),
+        0 14px 40px rgba(0, 0, 0, 0.6),
         0 0 24px -2px var(--theme-glow, rgba(0,0,0,0)),
         inset 0 1px 1px rgba(255, 255, 255, 0.25);
       touch-action: manipulation;
@@ -6060,12 +6061,7 @@
           void main() {
             vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
             
-            // Subtle interactive mouse bend
-            vec2 m = (u_mouse - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
-            float d = length(uv - m);
-            uv += normalize(uv - m + 0.001) * exp(-d * 3.8) * 0.06;
-
-            // Domain warping for fluid rubber folds
+            // Domain warping for autonomous silky fluid rubber folds (cursor following disabled)
             vec2 q = vec2(wave(uv + vec2(0.0, 0.0)), wave(uv + vec2(4.8, 1.9)));
             vec2 r = vec2(wave(uv + 2.4 * q + vec2(1.7, 8.2)), wave(uv + 2.4 * q + vec2(6.9, 2.3)));
             float f = wave(uv + 3.0 * r);
@@ -6157,11 +6153,6 @@
         }
         resizeRubberFluid();
         window.addEventListener("resize", resizeRubberFluid);
-
-        window.addEventListener("pointermove", (e) => {
-          rfMouse[0] = e.clientX * (window.devicePixelRatio || 1);
-          rfMouse[1] = (window.innerHeight - e.clientY) * (window.devicePixelRatio || 1);
-        });
 
         function renderRubberFluid() {
           if (!rfGl || !rfProgram) return;
