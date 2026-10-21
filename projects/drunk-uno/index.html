@@ -98,15 +98,13 @@
     }
 
     html {
-      background-color: #2b110b;
-      background-color: var(--theme-bg, #2b110b);
+      background-color: #1a0b08;
+      background-color: var(--theme-bg, #1a0b08);
       min-height: 100%;
       width: 100% !important;
       max-width: 100vw !important;
-      overflow-x: hidden !important;
       position: relative;
       -webkit-text-size-adjust: 100%;
-      overscroll-behavior-y: none;
       touch-action: pan-y pinch-zoom;
       -webkit-overflow-scrolling: touch;
     }
@@ -114,20 +112,13 @@
     body {
       width: 100% !important;
       max-width: 100vw !important;
-      background: #2b110b;
-      background-color: var(--theme-bg, #2b110b);
-      background-image:
-        radial-gradient(circle at 50% 15%, var(--theme-glow, rgba(255, 185, 80, 0.35)) 0%, rgba(35, 14, 8, 0.92) 80%),
-        radial-gradient(circle at 85% 85%, var(--theme-glow, rgba(255, 185, 80, 0.2)) 0%, transparent 60%),
-        repeating-linear-gradient(45deg, rgba(30, 15, 5, 0.4) 0 2px, transparent 2px 8px);
-      font-family: 'IM Fell English', Georgia, serif;
+      background: transparent;
       color: var(--ink);
       min-height: 100dvh;
-      min-height: -webkit-fill-available;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(20px, var(--sab)) max(8px, var(--sal));
+      padding: max(8px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
       overflow-x: hidden !important;
       position: relative;
       touch-action: pan-y pinch-zoom;
@@ -2173,6 +2164,27 @@
       padding: 2px 6px;
       border-radius: 4px;
     }
+    .admin-filter-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2ceb0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .admin-filter-pill:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .admin-filter-pill.active {
+      background: #b91c1c !important;
+      border-color: #ef4444 !important;
+      color: #fff !important;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
     .admin-pub-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -2262,18 +2274,31 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(12, 6, 2, 0.88);
-      backdrop-filter: blur(5px);
-      z-index: 1000;
+      background: rgba(18, 9, 5, 0.78) !important;
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      z-index: 100000 !important;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      box-sizing: border-box;
     }
-    .modal-backdrop.open { display: flex; animation: modalIn 0.2s ease-out; }
+    .modal-backdrop.open {
+      display: flex;
+      animation: modalIn 0.2s ease-out;
+    }
     @keyframes modalIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Automatically hide floating bottom dock when any popup modal is open so it never overlaps or blocks Safari dock */
+    body:has(.modal-backdrop.open) .mobile-bottom-dock {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateX(-50%) translateY(30px) !important;
+      transition: opacity 0.2s ease, transform 0.2s ease !important;
     }
 
     .modal-scroll {
@@ -2284,10 +2309,12 @@
       padding: 20px 18px;
       max-width: 480px;
       width: 100%;
-      max-height: 90vh;
+      max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 36px);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
       position: relative;
+      box-sizing: border-box;
     }
     .modal-title {
       font-family: 'Pirata One', cursive;
@@ -4498,21 +4525,58 @@
                 </button>
               </div>
 
-              <!-- BANNED PLAYERS & BLACKLISTED HARDWARE (MAC / IP) -->
-              <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
+              <!-- BANNED PLAYERS & ALL CONNECTED IPs MANAGER -->
+              <div class="admin-ban-control-box" style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
-                  <span style="font-family: 'Pirata One', cursive; font-size: 1.25rem; color: #ef4444; letter-spacing: 0.5px;">
-                    🚫 BANNED PLAYERS & HARDWARE BLACKLIST (MAC / IP):
-                  </span>
-                  <span style="font-size: 0.72rem; color: #fca5a5;">Locks screen & disables scoring</span>
+                  <div>
+                    <span style="font-family: 'Pirata One', cursive; font-size: 1.35rem; color: #ef4444; letter-spacing: 0.5px;">
+                      🚫 BANNED PLAYERS & CONNECTED IP MANAGER:
+                    </span>
+                    <p style="font-size: 0.76rem; color: #e2ceb0; margin: 2px 0 0 0;">
+                      Lists all connected IPs (including guests/lurkers without a username or team). 1-click Quick Ban or Kick:
+                    </p>
+                  </div>
+                  <!-- Filter Pill Buttons -->
+                  <div style="display: flex; gap: 4px; flex-wrap: wrap;" id="adminIpFilterBar">
+                    <button type="button" class="admin-filter-pill active" id="btnFilterAllIps">📡 All IPs (<span id="countConnectedIps">0</span>)</button>
+                    <button type="button" class="admin-filter-pill" id="btnFilterGuestIps">⚠️ Guests / Lurkers (<span id="countGuestIps">0</span>)</button>
+                    <button type="button" class="admin-filter-pill" id="btnFilterBlacklist">🚫 Blacklist (<span id="countBannedIps">0</span>)</button>
+                  </div>
                 </div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
-                  <input type="text" id="adminBanInput" class="glass-input" placeholder="Enter IP (e.g. 192.168.1.45) or MAC (e.g. 3C:5A:...)" style="flex: 1; min-width: 220px; font-size: 0.88rem; padding: 8px 12px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;" />
-                  <button type="button" class="modal-btn" id="adminBanSubmitBtn" style="background: #991b1b; font-size: 0.9rem; padding: 8px 14px; border: 1.5px solid #ef4444; color: #fff;">
-                    🚫 Ban Address
-                  </button>
+
+                <!-- 1. LIVE CONNECTED IPs DIRECTORY (WITH QUICK BAN & KICK) -->
+                <div id="adminConnectedIpsWrap" style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; padding: 8px; margin-bottom: 12px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed rgba(255, 255, 255, 0.15);">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #ffd885; font-weight: 700;">
+                      ⚡ LIVE PHONES & IPs IN ROOM (1-CLICK QUICK ACTION):
+                    </span>
+                    <button type="button" id="adminRefreshIpsBtn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #86efac; border-radius: 4px; padding: 2px 8px; font-size: 0.7rem; cursor: pointer;">
+                      🔄 Refresh
+                    </button>
+                  </div>
+                  <div id="adminConnectedIpsGrid" style="display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto;"></div>
                 </div>
-                <div id="adminBannedListGrid" style="display: flex; flex-direction: column; gap: 6px;"></div>
+
+                <!-- 2. MANUAL IP / MAC / NAME BAN INPUT -->
+                <div style="margin-top: 10px;">
+                  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: #fca5a5; font-weight: 700; margin-bottom: 6px;">
+                    ✍️ MANUAL IP / MAC / NAME BAN:
+                  </div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <input type="text" id="adminBanInput" class="glass-input" placeholder="Enter IP (e.g. 192.168.1.45), MAC, or Player Name..." style="flex: 1; min-width: 200px; font-size: 0.88rem; padding: 8px 12px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;" />
+                    <button type="button" class="modal-btn" id="adminBanSubmitBtn" style="background: #991b1b; font-size: 0.88rem; padding: 8px 14px; border: 1.5px solid #ef4444; color: #fff;">
+                      🚫 Blacklist
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 3. CURRENTLY BLACKLISTED ADDRESSES & DEVICES -->
+                <div id="adminBlacklistSection" style="margin-top: 10px;">
+                  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: #f87171; font-weight: 700; margin-bottom: 6px;">
+                    🔒 CURRENTLY BLACKLISTED ADDRESSES & DEVICES:
+                  </div>
+                  <div id="adminBannedListGrid" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
               </div>
             </div>
 
@@ -5424,18 +5488,21 @@
         const tIdx = teamIdx !== undefined ? teamIdx : (existing.teamIdx !== undefined ? existing.teamIdx : state.myTeamIdx);
         const captain = isCap !== undefined ? isCap : (existing.isCaptain || false);
 
-        if (!pName) return;
-        state.myPlayerName = pName;
-        if (typeof updateTopUserName === "function") updateTopUserName();
+        const isRegistered = Boolean(pName && pName.trim() && pName !== "(Lurker / Unregistered)");
+        if (isRegistered) {
+          state.myPlayerName = pName.trim();
+          if (typeof updateTopUserName === "function") updateTopUserName();
+        }
 
         if (!state.devices) state.devices = {};
         state.devices[devId] = {
           id: devId,
           mac: mac,
           ip: clientIp || existing.ip || "Detecting...",
-          name: pName,
-          teamIdx: tIdx,
-          isCaptain: captain,
+          name: isRegistered ? pName.trim() : "(Lurker / Unregistered)",
+          hasJoined: isRegistered,
+          teamIdx: isRegistered ? tIdx : -1,
+          isCaptain: isRegistered ? captain : false,
           deviceModel: detectDeviceModel(),
           joinedAt: existing.joinedAt || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           lastSeen: Date.now()
@@ -5819,6 +5886,25 @@
                 return;
               }
 
+              // Kick Device Signal
+              if (incoming && incoming.action === "KICK_DEVICE") {
+                const myDevId = getOrCreateDeviceId();
+                const myIp = (clientIp || "").trim();
+                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                                 (incoming.targetIp && myIp && myIp !== "Detecting..." && incoming.targetIp === myIp);
+                if (isTarget) {
+                  try {
+                    localStorage.removeItem("drunk_uno_player_name");
+                    localStorage.removeItem("drunk_uno_crew_setup");
+                    localStorage.removeItem("drunk_uno_player_registered");
+                  } catch (e) {}
+                  state.myPlayerName = "";
+                  alert("⚠️ You have been kicked from this room session by the Crawl Master.");
+                  window.location.reload();
+                  return;
+                }
+              }
+
               // Banned Device / Player Updates
               if (incoming && (incoming.action === "BAN_DEVICE" || incoming.bannedList)) {
                 if (incoming.bannedList) {
@@ -6099,11 +6185,7 @@
 
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
         if (document.documentElement) {
-          document.documentElement.style.backgroundColor = titleBarHex;
           document.documentElement.style.setProperty('--theme-bg', titleBarHex);
-        }
-        if (document.body) {
-          document.body.style.backgroundColor = titleBarHex;
         }
 
         const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
@@ -7742,14 +7824,30 @@
               };
 
               card.querySelector(".btn-device-unlink").onclick = () => {
-                if (confirm(`Unlink and remove device for ${d.name}?`)) {
+                if (confirm(`Unlink and kick device for ${d.name}?`)) {
                   const targetTeam = state.teams[d.teamIdx];
                   if (targetTeam) {
                     targetTeam.players = targetTeam.players.filter(p => p !== d.name);
                     if (targetTeam.captain === d.name) targetTeam.captain = targetTeam.players[0] || "";
                   }
                   delete state.devices[devId];
-                  addLog(`⚙️ ADMIN: Removed device for ${d.name}`);
+                  addLog(`⚙️ ADMIN: Kicked device for ${d.name}`);
+
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const p = JSON.stringify({
+                        action: "KICK_DEVICE",
+                        targetDeviceId: devId,
+                        targetIp: d.ip,
+                        state: state
+                      });
+                      const m = new Paho.MQTT.Message(p);
+                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.retained = false;
+                      mqttClient.send(m);
+                    } catch (e) {}
+                  }
+
                   saveGameState(true);
                   renderCrewBar();
                   renderScoringTab();
@@ -7791,6 +7889,166 @@
                 showToast(`Unbanned ${removed.name || removed.ip || removed.mac}`);
               };
               bannedGrid.appendChild(item);
+            });
+          }
+        }
+
+        // --- 0C. Render Live Connected IPs Directory with Quick Ban & Kick ---
+        const connIpsGrid = document.getElementById("adminConnectedIpsGrid");
+        const countConnectedIpsEl = document.getElementById("countConnectedIps");
+        const countGuestIpsEl = document.getElementById("countGuestIps");
+        const countBannedIpsEl = document.getElementById("countBannedIps");
+
+        const devicesArr = Object.entries(state.devices || {});
+        const totalDevCount = devicesArr.length;
+        const guestDevCount = devicesArr.filter(([_, d]) => !d.hasJoined || d.teamIdx === -1 || d.name === "(Lurker / Unregistered)").length;
+        const bannedCount = state.bannedList ? state.bannedList.length : 0;
+
+        if (countConnectedIpsEl) countConnectedIpsEl.textContent = totalDevCount;
+        if (countGuestIpsEl) countGuestIpsEl.textContent = guestDevCount;
+        if (countBannedIpsEl) countBannedIpsEl.textContent = bannedCount;
+
+        if (connIpsGrid) {
+          connIpsGrid.innerHTML = "";
+
+          let filtered = devicesArr;
+          if (adminIpFilterMode === "guests") {
+            filtered = devicesArr.filter(([_, d]) => !d.hasJoined || d.teamIdx === -1 || d.name === "(Lurker / Unregistered)");
+          }
+
+          const wrap = document.getElementById("adminConnectedIpsWrap");
+          const blSec = document.getElementById("adminBlacklistSection");
+          if (adminIpFilterMode === "blacklist") {
+            if (wrap) wrap.style.display = "none";
+            if (blSec) blSec.style.display = "block";
+          } else {
+            if (wrap) wrap.style.display = "block";
+          }
+
+          if (filtered.length === 0) {
+            connIpsGrid.innerHTML = `<div style="padding: 10px 12px; color: var(--ink-faded); font-style: italic; font-size: 0.8rem; background: rgba(0,0,0,0.25); border-radius: 6px; text-align: center;">No ${adminIpFilterMode === 'guests' ? 'guests/lurkers' : 'connected devices'} detected in room yet.</div>`;
+          } else {
+            filtered.forEach(([devId, d]) => {
+              const isGuest = !d.hasJoined || d.teamIdx === -1 || d.name === "(Lurker / Unregistered)";
+              const team = state.teams && state.teams[d.teamIdx];
+              const teamName = team ? team.name : "Unassigned";
+
+              const item = document.createElement("div");
+              item.style.cssText = `display: flex; align-items: center; justify-content: space-between; gap: 8px; background: rgba(0,0,0,0.45); border: 1px solid ${isGuest ? 'rgba(234, 179, 8, 0.4)' : 'rgba(255,255,255,0.15)'}; border-radius: 6px; padding: 6px 10px; font-size: 0.8rem; flex-wrap: wrap;`;
+
+              item.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #ffd885; background: rgba(0,0,0,0.6); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(255,216,133,0.3); font-size: 0.78rem;">
+                      🌐 ${escapeHtml(d.ip || "Detecting...")}
+                    </span>
+                    ${isGuest 
+                      ? `<span style="background: rgba(234, 179, 8, 0.25); color: #fde047; font-weight: 700; font-size: 0.7rem; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(234, 179, 8, 0.5);">⚠️ GUEST (No Team / Username)</span>`
+                      : `<span style="background: rgba(34, 197, 94, 0.25); color: #86efac; font-weight: 700; font-size: 0.7rem; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(34, 197, 94, 0.5);">🟢 ${escapeHtml(teamName)} • ${escapeHtml(d.name)}${d.isCaptain ? " 👑" : ""}</span>`
+                    }
+                  </div>
+                  <div style="font-size: 0.72rem; color: #cbd5e1; font-family: 'JetBrains Mono', monospace;">
+                    <span>${escapeHtml(d.deviceModel || "Mobile")}</span>
+                    <span> • #${devId.substring(0, 5)}</span>
+                    ${d.mac ? `<span> • MAC: ${escapeHtml(d.mac)}</span>` : ""}
+                    <span> • Seen: ${escapeHtml(d.joinedAt || "Now")}</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 4px; align-items: center; margin-left: auto;">
+                  <button type="button" class="btn-quick-ban-ip" style="background: #991b1b; border: 1px solid #ef4444; color: #fff; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-weight: 700;">
+                    🚫 Ban IP
+                  </button>
+                  <button type="button" class="btn-quick-kick-ip" style="background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-weight: 700;">
+                    ⚡ Kick
+                  </button>
+                </div>
+              `;
+
+              // Quick Ban Handler
+              item.querySelector(".btn-quick-ban-ip").onclick = () => {
+                const targetIp = (d.ip && d.ip !== "Detecting...") ? d.ip : "";
+                if (confirm(`🚨 QUICK BAN IP & PERMANENTLY LOCK PHONE?\n\nIP: ${targetIp || 'N/A'}\nPlayer: ${d.name}\nDevice: ${d.deviceModel || 'Mobile'}\n\nThis IP and device ID will be immediately blacklisted and locked with an uncloseable ban screen.`)) {
+                  if (!state.bannedList) state.bannedList = [];
+                  state.bannedList.push({
+                    id: devId,
+                    mac: d.mac || "",
+                    ip: targetIp,
+                    name: d.name || "",
+                    bannedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    reason: "Quick-banned by Crawl Master"
+                  });
+                  if (d.teamIdx !== undefined && state.teams[d.teamIdx]) {
+                    state.teams[d.teamIdx].players = state.teams[d.teamIdx].players.filter(p => p !== d.name);
+                    if (state.teams[d.teamIdx].captain === d.name) {
+                      state.teams[d.teamIdx].captain = state.teams[d.teamIdx].players[0] || "";
+                    }
+                  }
+                  delete state.devices[devId];
+                  addLog(`🚫 ADMIN QUICK BAN: Blacklisted IP ${targetIp || devId} (${d.name})`);
+
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const p = JSON.stringify({
+                        action: "BAN_DEVICE",
+                        bannedList: state.bannedList,
+                        bannedId: devId,
+                        bannedMac: d.mac,
+                        bannedIp: targetIp,
+                        state: state
+                      });
+                      const m = new Paho.MQTT.Message(p);
+                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.retained = false;
+                      mqttClient.send(m);
+                    } catch (e) {}
+                  }
+
+                  saveGameState(true);
+                  renderCrewBar();
+                  renderScoringTab();
+                  renderAdminTab();
+                  checkBannedStatus();
+                  showToast(`🚫 Banned IP: ${targetIp || d.name}`);
+                }
+              };
+
+              // Quick Kick Handler
+              item.querySelector(".btn-quick-kick-ip").onclick = () => {
+                if (confirm(`⚡ QUICK KICK THIS DEVICE FROM SESSION?\n\nIP: ${d.ip || 'N/A'}\nPlayer: ${d.name}`)) {
+                  if (d.teamIdx !== undefined && state.teams[d.teamIdx]) {
+                    state.teams[d.teamIdx].players = state.teams[d.teamIdx].players.filter(p => p !== d.name);
+                    if (state.teams[d.teamIdx].captain === d.name) {
+                      state.teams[d.teamIdx].captain = state.teams[d.teamIdx].players[0] || "";
+                    }
+                  }
+                  delete state.devices[devId];
+                  addLog(`⚡ ADMIN KICK: Removed device ${d.name || d.ip}`);
+
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const p = JSON.stringify({
+                        action: "KICK_DEVICE",
+                        targetDeviceId: devId,
+                        targetIp: d.ip,
+                        state: state
+                      });
+                      const m = new Paho.MQTT.Message(p);
+                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.retained = false;
+                      mqttClient.send(m);
+                    } catch (e) {}
+                  }
+
+                  saveGameState(true);
+                  renderCrewBar();
+                  renderScoringTab();
+                  renderAdminTab();
+                  showToast(`⚡ Kicked device ${d.name || d.ip}`);
+                }
+              };
+
+              connIpsGrid.appendChild(item);
             });
           }
         }
@@ -8022,6 +8280,46 @@
           renderAdminTab();
           checkBannedStatus();
           showToast(`Blacklisted: ${val}`);
+        };
+      }
+
+      // Filter state & listeners for Connected IPs Directory
+      let adminIpFilterMode = "all";
+      const btnAllIps = document.getElementById("btnFilterAllIps");
+      const btnGuestIps = document.getElementById("btnFilterGuestIps");
+      const btnBlacklist = document.getElementById("btnFilterBlacklist");
+      const btnRefreshIps = document.getElementById("adminRefreshIpsBtn");
+
+      if (btnAllIps) {
+        btnAllIps.onclick = () => {
+          adminIpFilterMode = "all";
+          [btnAllIps, btnGuestIps, btnBlacklist].forEach(b => b && b.classList.remove("active"));
+          btnAllIps.classList.add("active");
+          renderAdminTab();
+        };
+      }
+      if (btnGuestIps) {
+        btnGuestIps.onclick = () => {
+          adminIpFilterMode = "guests";
+          [btnAllIps, btnGuestIps, btnBlacklist].forEach(b => b && b.classList.remove("active"));
+          btnGuestIps.classList.add("active");
+          renderAdminTab();
+        };
+      }
+      if (btnBlacklist) {
+        btnBlacklist.onclick = () => {
+          adminIpFilterMode = "blacklist";
+          [btnAllIps, btnGuestIps, btnBlacklist].forEach(b => b && b.classList.remove("active"));
+          btnBlacklist.classList.add("active");
+          renderAdminTab();
+        };
+      }
+      if (btnRefreshIps) {
+        btnRefreshIps.onclick = () => {
+          fetchClientIp(() => {
+            renderAdminTab();
+            showToast("IP directory refreshed");
+          });
         };
       }
 
@@ -8414,12 +8712,14 @@
         }
 
         crewSetupModal.classList.add("open");
-        setTimeout(() => {
-          if (input) {
-            input.focus();
-            if (input.select) input.select();
-          }
-        }, 150);
+        if (isEditing) {
+          setTimeout(() => {
+            if (input) {
+              input.focus();
+              if (input.select) input.select();
+            }
+          }, 150);
+        }
       }
 
       function renderSetupColors() {
@@ -8678,8 +8978,11 @@
         openAdminBtn.classList.remove("secret-tab");
       }
 
-      // Auto-fetch IP in background and sync this device if already registered
-      fetchClientIp();
+      // Sync this device immediately (whether registered or guest lurker) and fetch IP
+      syncMyDevice();
+      fetchClientIp(() => {
+        syncMyDevice();
+      });
       const savedName = localStorage.getItem("drunk_uno_player_name");
       const isRegistered = localStorage.getItem("drunk_uno_player_registered") === "true";
       if (savedName && isRegistered) {
