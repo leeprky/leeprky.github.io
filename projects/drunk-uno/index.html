@@ -188,33 +188,152 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      padding: 8px 10px;
       margin-bottom: 12px;
+      border-radius: 12px;
+      background: rgba(18, 10, 6, 0.78);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.15));
+      border-top: 1.5px solid rgba(255, 255, 255, 0.32);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 16px var(--theme-glow, rgba(0,0,0,0));
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .top-bar-left,
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .back-home-link {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-family: 'Pirata One', cursive;
-      font-size: 0.95rem;
-      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #ffd885;
       text-decoration: none;
-      padding: 5px 10px;
-      border: 1.5px solid var(--ink);
+      padding: 4px 8px;
+      border: 1px solid var(--theme-border, var(--gold));
       border-radius: 6px;
-      background: rgba(58, 34, 12, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       transition: background 0.15s;
+      white-space: nowrap;
     }
     .back-home-link:hover {
-      background: rgba(58, 34, 12, 0.22);
+      background: var(--theme-accent-bg);
+      color: #fff;
     }
 
-    .nav-tabs {
+    .settings-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #ffd885;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--theme-border, var(--gold));
+      border-top: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-radius: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      white-space: nowrap;
+    }
+    .settings-btn:hover {
+      background: var(--theme-accent-bg);
+      color: #fff;
+    }
+    .settings-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Fixed Mobile Bottom Dock for Tab Navigation */
+    .mobile-bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 990;
       display: flex;
       align-items: center;
-      gap: 5px;
-      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 4px;
+      padding: 6px 10px calc(6px + var(--sab));
+      background: rgba(18, 10, 6, 0.90);
+      backdrop-filter: blur(20px) saturate(190%);
+      -webkit-backdrop-filter: blur(20px) saturate(190%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+      border-bottom: none;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.8), 0 0 24px -2px var(--theme-glow, rgba(0,0,0,0));
+      touch-action: manipulation;
+    }
+
+    .dock-tab {
+      flex: 1;
+      max-width: 80px;
+      min-height: 48px;
+      padding: 4px 2px;
+      background: transparent;
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #dfd0b5;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .dock-tab .dock-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+
+    .dock-tab:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .dock-tab:active {
+      transform: scale(0.92);
+    }
+
+    .dock-tab.active {
+      background: var(--theme-primary, #925424) !important;
+      border: 1.5px solid var(--theme-border, var(--gold)) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+      color: #fff !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 4px 16px rgba(0, 0, 0, 0.5),
+        0 0 16px var(--theme-glow) !important;
+    }
+
+    .dock-tab.active .dock-icon {
+      transform: scale(1.15) translateY(-1px);
+    }
+
+    .dock-tab.secret-tab {
+      color: #ffd8d8;
     }
 
     .tab-btn {
@@ -1142,6 +1261,13 @@
       border: 3.5px double var(--ink) !important;
     }
 
+    .crew-setup-dialog {
+      width: min(94vw, 440px) !important;
+      max-width: 440px !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      padding: 16px 14px !important;
+    }
     .setup-step-box {
       background: rgba(255, 255, 255, 0.85);
       border: 1.5px solid var(--wood-mid);
@@ -1175,23 +1301,36 @@
 
     .setup-color-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    @media (max-width: 480px) {
+      .setup-color-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .btn-setup-color {
-      background: #fff;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
-      padding: 10px 8px;
+      background: rgba(18, 10, 6, 0.75);
+      border: 1.5px solid var(--theme-border, #5a3418);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 8px 10px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      text-align: center;
+      align-items: stretch;
+      gap: 3px;
+      text-align: left;
       transition: all 0.15s ease;
       position: relative;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .btn-setup-color:hover {
       transform: translateY(-2px);
@@ -2018,6 +2157,13 @@
     .rule-card,
     .bingo-tile,
     .modal-scroll,
+    .crew-setup-dialog {
+      width: min(94vw, 440px) !important;
+      max-width: 440px !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+      padding: 16px 14px !important;
+    }
     .setup-step-box {
       background: var(--glass-card-bg, rgba(42, 24, 12, 0.72)) !important;
       backdrop-filter: blur(16px) saturate(180%);
@@ -2182,41 +2328,65 @@
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px var(--theme-glow);
     }
 
-    /* Apply dynamic theme variables across the site */
-    body[class*="theme-"] .pub-ticker {
-      border-color: var(--theme-border);
-      box-shadow: 0 4px 18px var(--theme-glow);
+    /* Apply dynamic theme variables across the entire site */
+    body[class*="theme-"] .top-bar {
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 18px var(--theme-glow) !important;
     }
-    body[class*="theme-"] .tab-btn.active {
-      background: var(--theme-primary) !important;
-      border-color: var(--gold-bright) !important;
-      color: #fff !important;
-      box-shadow: 0 0 18px var(--theme-glow) !important;
+    body[class*="theme-"] .ribbon-banner {
+      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.88) 100%) !important;
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 22px var(--theme-glow) !important;
+    }
+    body[class*="theme-"] .pub-ticker {
+      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.82) 100%) !important;
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 4px 18px var(--theme-glow) !important;
+    }
+    body[class*="theme-"] .mobile-bottom-dock {
+      border-top-color: var(--theme-border) !important;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.75), 0 0 25px var(--theme-glow) !important;
+    }
+    body[class*="theme-"] .admin-header-card {
+      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.85) 100%) !important;
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 22px var(--theme-glow) !important;
+    }
+    body[class*="theme-"] .admin-card {
+      background: var(--glass-card-bg) !important;
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 18px var(--theme-glow) !important;
     }
     body[class*="theme-"] .podium-leaderboard-box {
-      border-color: var(--theme-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16), var(--theme-card-glow);
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), var(--theme-card-glow) !important;
     }
     body[class*="theme-"] .turn-status-banner {
-      border-color: var(--theme-border);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 16px var(--theme-glow);
+      background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.88) 100%) !important;
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 18px var(--theme-glow) !important;
     }
     body[class*="theme-"] .scoring-stepper-card {
-      border-color: var(--theme-border);
+      border-color: var(--theme-border) !important;
     }
     body[class*="theme-"] .crew-pill.active-my-team {
-      border-color: var(--theme-border);
-      box-shadow: 0 0 18px var(--theme-glow);
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 0 20px var(--theme-glow) !important;
     }
     body[class*="theme-"] .wheel-wrapper {
-      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 24px var(--theme-glow));
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 26px var(--theme-glow));
     }
     body[class*="theme-"] .btn-pick-team.selected {
-      border-color: var(--theme-border);
-      box-shadow: 0 0 14px var(--theme-glow);
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 0 14px var(--theme-glow) !important;
     }
     body[class*="theme-"] .celtic-frame {
-      box-shadow: 0 0 40px var(--theme-glow), var(--shadow-heavy);
+      border-color: var(--theme-border) !important;
+      box-shadow: 0 0 42px var(--theme-glow), var(--shadow-heavy) !important;
+    }
+    body[class*="theme-"] .parchment-board {
+      border-color: var(--theme-border) !important;
+      box-shadow: var(--shadow-heavy), 0 0 50px var(--theme-glow) !important;
     }
   </style>
 </head>
@@ -2235,48 +2405,25 @@
     <main class="parchment-board">
       <div class="celtic-frame">
 
-        <!-- Top Navigation & Room Sync Bar (Version Badge in Top Left) -->
+        <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Web Engine">v2.5.0</span>
-            <a href="../../index.html" class="back-home-link">
+          <div class="top-bar-left">
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.5.0</span>
+            <a href="../../index.html" class="back-home-link" title="Portfolio Back Link">
               <span>← LP-EE</span>
             </a>
           </div>
 
-          <div class="nav-tabs">
-            <button type="button" class="tab-btn" data-tab="wheel">
-              <span>🎡 WHEEL</span>
-            </button>
-            <button type="button" class="tab-btn active" data-tab="scores">
-              <span>🏆 SCORES</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="map">
-              <span>🗺️ ROUTE</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="rules">
-              <span>📜 RULES</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="bingo">
-              <span>🎯 BINGO</span>
-            </button>
-            <button type="button" class="tab-btn secret-tab" id="openAdminTabBtn">
-              <span>🔒 ADMIN</span>
-            </button>
-          </div>
-
-          <div class="top-actions">
+          <div class="top-bar-right">
             <!-- Dynamic Room Status Pill -->
             <button type="button" class="sync-status-pill" id="syncRoomBtn" title="Tap to view Room Code & Invite Friends">
               <span class="sync-dot"></span>
-              <span id="syncRoomLabel">SYNC: PRESTON-2026</span>
+              <span id="syncRoomLabel">ROOM: PRESTON-2026 🟢</span>
             </button>
 
-            <button type="button" class="tab-btn" id="soundToggleBtn" style="padding: 4px 8px; font-size: 0.95rem;">
-              🔊 Sound
-            </button>
-            <button type="button" class="tab-btn" id="resetBtn" style="padding: 4px 8px; font-size: 0.95rem; color: #8d0801;">
-              🔄 Reset
+            <!-- Settings Button (Shows Sound & Reset Cookies Modal) -->
+            <button type="button" class="settings-btn" id="openSettingsBtn" title="Game Settings & Reset">
+              <span>⚙️ Settings</span>
             </button>
           </div>
         </nav>
@@ -3277,6 +3424,36 @@
     </main>
   </div>
 
+  <!-- =========================================================================
+       MOBILE APP BOTTOM DOCK (FIXED AT SCREEN BOTTOM FOR ONE-THUMB USABILITY)
+       ========================================================================= -->
+  <nav class="mobile-bottom-dock" id="bottomDock">
+    <button type="button" class="dock-tab active" data-tab="scores" title="Live Scores & Leaderboard">
+      <span class="dock-icon">🏆</span>
+      <span class="dock-label">Scores</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="wheel" title="Wheel of Doom">
+      <span class="dock-icon">🎡</span>
+      <span class="dock-label">Wheel</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="map" title="Pub Route & Map">
+      <span class="dock-icon">🗺️</span>
+      <span class="dock-label">Route</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="rules" title="Uno Codex & Rules">
+      <span class="dock-icon">📜</span>
+      <span class="dock-label">Rules</span>
+    </button>
+    <button type="button" class="dock-tab" data-tab="bingo" title="Secret Pub Crawl Bingo">
+      <span class="dock-icon">🎯</span>
+      <span class="dock-label">Bingo</span>
+    </button>
+    <button type="button" class="dock-tab secret-tab" id="openAdminTabBtn" data-tab="admin" title="Master Admin Console">
+      <span class="dock-icon">🔒</span>
+      <span class="dock-label">Admin</span>
+    </button>
+  </nav>
+
 
   <!-- =========================================================================
        MODAL 1: WHEEL OUTCOME RESOLUTION (CHOOSE WHICH TEAM TO TARGET)
@@ -3441,16 +3618,63 @@
 
 
   <!-- =========================================================================
-       MODAL 7: RESET CONFIRMATION
+       MODAL 7: GAME SETTINGS & PREFERENCES (SOUND, RESET COOKIES, ROOM LINK)
        ========================================================================= -->
-  <div class="modal-backdrop" id="resetModal">
-    <div class="modal-scroll">
-      <h2 class="modal-title" style="color: #9e1b1b;">⚠️ RESET GAME STATE</h2>
-      <p class="modal-body">Choose reset level. Synced to all connected phones:</p>
-      <div class="modal-actions">
-        <button type="button" class="modal-btn" id="confirmResetScoresBtn">Reset Scores to 12 pts Only</button>
-        <button type="button" class="modal-btn" style="background: #8b1e1e;" id="confirmFactoryResetBtn">Full Factory Reset (Clean Slate)</button>
-        <button type="button" class="modal-btn secondary" id="cancelResetBtn">Cancel</button>
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-scroll glass-card" style="max-width: 440px; width: min(94vw, 440px); position: relative;">
+      <button type="button" class="btn-stop-check" style="position: absolute; top: 12px; right: 12px; font-weight: 700; z-index: 10;" id="closeSettingsModalBtn">✕ Close</button>
+      
+      <div style="text-align: center; margin-bottom: 14px;">
+        <span class="impact-pill special" style="font-size: 0.8rem; padding: 3px 10px;">⚙️ GAME SETTINGS</span>
+        <h2 class="modal-title" style="margin-top: 6px; font-size: 1.85rem; color: var(--gold-bright);">
+          PREFERENCES & CONTROLS
+        </h2>
+        <p class="modal-body" style="font-size: 0.86rem; color: #f0dec5; margin: 0;">
+          Audio preferences, cookie resets, and phone device settings:
+        </p>
+      </div>
+
+      <!-- SOUND TOGGLE -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+        <div>
+          <strong style="color: #fff; font-size: 0.98rem; display: block;">🔊 Sound FX & Haptics</strong>
+          <span style="font-size: 0.74rem; color: var(--ink-faded);">Wheel ticks, fanfares & vibrations</span>
+        </div>
+        <button type="button" class="modal-btn" id="soundToggleBtn" style="padding: 8px 14px; font-size: 0.92rem; width: auto; flex-shrink: 0;">
+          🔊 Sound: ON
+        </button>
+      </div>
+
+      <!-- COOKIE & GAME RESET -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+        <strong style="color: #fff; font-size: 0.98rem; display: block; margin-bottom: 4px;">🍪 Cookie & Score Reset</strong>
+        <p style="font-size: 0.76rem; color: var(--ink-faded); margin-bottom: 8px;">
+          Choose how much state to clear across local cookies and phone:
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <button type="button" class="modal-btn secondary" id="confirmResetScoresBtn" style="font-size: 0.88rem; padding: 8px 12px;">
+            🔄 Reset Scores to 12 pts Only
+          </button>
+          <button type="button" class="modal-btn" id="confirmFactoryResetBtn" style="background: #8b1e1e; border-color: #ff4d4d; font-size: 0.88rem; padding: 8px 12px;">
+            🚨 Full Factory Reset (Wipe All Cookies & State)
+          </button>
+        </div>
+      </div>
+
+      <!-- MY DEVICE PROFILE & ROOM LINK -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <strong style="color: #fff; font-size: 0.92rem;">📱 Linked Device Profile</strong>
+          <button type="button" class="btn-stop-check" id="settingsEditProfileBtn" style="font-size: 0.75rem; padding: 3px 8px;">Edit Profile</button>
+        </div>
+        <div style="font-size: 0.76rem; color: #ffd885; font-family: 'JetBrains Mono', monospace;" id="settingsDeviceInfoTxt">
+          Checking device...
+        </div>
+        <div style="margin-top: 8px;">
+          <button type="button" class="modal-btn secondary" id="settingsCopyRoomLinkBtn" style="font-size: 0.85rem; padding: 6px 12px; width: 100%;">
+            📋 Copy Invite Link & Room Code
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -5386,7 +5610,7 @@
           sessionStorage.setItem("drunk_uno_admin_unlocked", "true");
           passcodeModal.classList.remove("open");
           if (openAdminBtn) {
-            openAdminBtn.innerHTML = "<span>🔒 ADMIN ✓</span>";
+            openAdminBtn.innerHTML = '<span class="dock-icon">🔓</span><span class="dock-label">Admin ✓</span>';
             openAdminBtn.classList.remove("secret-tab");
           }
           switchToTab("admin");
@@ -5765,11 +5989,10 @@
         };
       }
 
-      // --- 12. TAB SWITCHING SYSTEM ---
+      // --- 12. TAB SWITCHING SYSTEM (SUPPORTS BOTTOM DOCK & DESKTOP TABS) ---
       function switchToTab(tabId) {
-        document.querySelectorAll(".tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
-        const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-        if (activeBtn) activeBtn.classList.add("active");
+        document.querySelectorAll(".dock-tab[data-tab], .tab-btn[data-tab]").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(`.dock-tab[data-tab="${tabId}"], .tab-btn[data-tab="${tabId}"]`).forEach(b => b.classList.add("active"));
 
         if (openAdminBtn) {
           if (tabId === "admin") openAdminBtn.classList.add("active");
@@ -5778,7 +6001,10 @@
 
         document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
         const target = document.getElementById(`tab-${tabId}`);
-        if (target) target.classList.add("active");
+        if (target) {
+          target.classList.add("active");
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         if (tabId === "admin") {
           adminSelectedPubIdx = state.currentStopIdx;
@@ -5786,9 +6012,78 @@
         }
       }
 
-      document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
-        btn.onclick = () => { switchToTab(btn.dataset.tab); };
+      document.querySelectorAll(".dock-tab[data-tab], .tab-btn[data-tab]").forEach(btn => {
+        btn.onclick = () => {
+          if (btn.id === "openAdminTabBtn") {
+            if (state.adminUnlocked) {
+              switchToTab("admin");
+            } else {
+              passcodeInput.value = "";
+              passcodeModal.classList.add("open");
+              passcodeInput.focus();
+            }
+          } else {
+            switchToTab(btn.dataset.tab);
+          }
+          playTick(600);
+        };
       });
+
+      // --- SETTINGS MODAL & PREFERENCES CONTROLLER ---
+      const settingsModal = document.getElementById("settingsModal");
+      const openSettingsBtn = document.getElementById("openSettingsBtn");
+      const closeSettingsBtn = document.getElementById("closeSettingsModalBtn");
+
+      if (openSettingsBtn && settingsModal) {
+        openSettingsBtn.onclick = () => {
+          // Refresh sound button text
+          const soundBtn = document.getElementById("soundToggleBtn");
+          if (soundBtn) {
+            soundBtn.textContent = state.sound ? "🔊 Sound: ON" : "🔇 Sound: MUTED";
+          }
+          // Populate device info
+          const devInfo = document.getElementById("settingsDeviceInfoTxt");
+          if (devInfo) {
+            const devId = getOrCreateDeviceId();
+            const dev = (state.devices && state.devices[devId]) || {};
+            const pName = state.myPlayerName || dev.name || "Guest";
+            const team = state.teams[state.myTeamIdx] || state.teams[0];
+            devInfo.innerHTML = `👤 <strong>${escapeHtml(pName)}</strong> (${escapeHtml(team.name)})<br/>🔒 MAC: ${escapeHtml(getOrCreateDeviceMac())}<br/>🌐 IP: ${escapeHtml(clientIp || "Detecting...")}<br/>📱 ${escapeHtml(detectDeviceModel())}`;
+          }
+          settingsModal.classList.add("open");
+          playTick(600);
+        };
+      }
+
+      if (closeSettingsBtn && settingsModal) {
+        closeSettingsBtn.onclick = () => {
+          settingsModal.classList.remove("open");
+        };
+      }
+
+      const settingsEditProfileBtn = document.getElementById("settingsEditProfileBtn");
+      if (settingsEditProfileBtn) {
+        settingsEditProfileBtn.onclick = () => {
+          if (settingsModal) settingsModal.classList.remove("open");
+          openCrewSetupModal(true);
+        };
+      }
+
+      const settingsCopyLinkBtn = document.getElementById("settingsCopyRoomLinkBtn");
+      if (settingsCopyLinkBtn) {
+        settingsCopyLinkBtn.onclick = () => {
+          const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}`;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+              showToast("📋 Share Link Copied to Clipboard!");
+            }).catch(() => {
+              prompt("Room Link:", shareUrl);
+            });
+          } else {
+            prompt("Room Link:", shareUrl);
+          }
+        };
+      }
 
       // --- 13. ROOM SYNC MODAL & SHARING ---
       document.getElementById("syncRoomBtn").onclick = () => {
@@ -5844,10 +6139,11 @@
         saveGameState(true);
       };
 
-      // Reset Modal
-      const resetModal = document.getElementById("resetModal");
-      document.getElementById("resetBtn").onclick = () => { resetModal.classList.add("open"); };
-      document.getElementById("cancelResetBtn").onclick = () => { resetModal.classList.remove("open"); };
+      // Settings Modal Close Helpers
+      const cancelResetBtn = document.getElementById("cancelResetBtn");
+      if (cancelResetBtn && settingsModal) {
+        cancelResetBtn.onclick = () => { settingsModal.classList.remove("open"); };
+      }
 
       document.getElementById("confirmResetScoresBtn").onclick = () => {
         state.teams.forEach(t => {
@@ -5862,7 +6158,7 @@
         renderCrewBar();
         renderScoringTab();
         renderBingoGrid();
-        resetModal.classList.remove("open");
+        if (settingsModal) settingsModal.classList.remove("open");
         showToast("Scores reset to 12 pts");
       };
 
@@ -5880,7 +6176,7 @@
         renderStops();
         renderBingoGrid();
         renderLogs();
-        resetModal.classList.remove("open");
+        if (settingsModal) settingsModal.classList.remove("open");
         showToast("Full Factory Reset Applied");
       };
 
