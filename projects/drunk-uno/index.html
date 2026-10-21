@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>The Ultimate UNO Team Crawl — Preston Route // Drunk Uno Tavern Referee</title>
 
-  <!-- Open Graph & Meta -->
+  <!-- Open Graph & Mobile App Meta (Optimized for iOS Safari & Android Chrome) -->
   <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
-  <meta name="theme-color" content="#120b05" />
+  <meta name="theme-color" id="themeColorMeta" content="#190e0e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Drunk Uno" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
 
   <!-- Google Fonts: Pirate Display, Antique Serif & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +35,10 @@
        01. PALETTE & DESIGN TOKENS (Tavern Parchment + Portfolio Tools)
        ========================================================================= */
     :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
       --parchment-light: #efe0bb;
       --parchment-mid: #d8bc86;
       --parchment-dark: #b38e50;
@@ -76,8 +85,41 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 8px 8px 36px;
+      padding: max(8px, var(--sat)) max(8px, var(--sar)) max(36px, calc(var(--sab) + 24px)) max(8px, var(--sal));
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Prevent iOS Safari from auto-zooming inputs on focus (must be >= 16px) */
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+
+    /* Version Badge in Top Left */
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: #ffd885;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 3px 8px;
+      border: 1px solid var(--theme-border, var(--gold));
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .version-badge::before {
+      content: "●";
+      font-size: 0.55rem;
+      color: #2ecc71;
     }
 
     /* Satin Ridges Dynamic Background Canvas */
@@ -2193,11 +2235,14 @@
     <main class="parchment-board">
       <div class="celtic-frame">
 
-        <!-- Top Navigation & Room Sync Bar -->
+        <!-- Top Navigation & Room Sync Bar (Version Badge in Top Left) -->
         <nav class="top-bar">
-          <a href="../../index.html" class="back-home-link">
-            <span>← LP-EE PORTFOLIO</span>
-          </a>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Web Engine">v2.5.0</span>
+            <a href="../../index.html" class="back-home-link">
+              <span>← LP-EE</span>
+            </a>
+          </div>
 
           <div class="nav-tabs">
             <button type="button" class="tab-btn" data-tab="wheel">
@@ -3153,6 +3198,9 @@
                 <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   📢 Ping All Devices
                 </button>
+                <button type="button" class="modal-btn" id="adminResetAllDevicesBtn" style="background: #8b1e1e; font-size: 0.95rem; padding: 8px 14px; width: auto; border-color: #ff4d4d; color: #fff;">
+                  🚨 RESET ALL DEVICES SETTINGS
+                </button>
               </div>
             </div>
 
@@ -3903,6 +3951,30 @@
           mqttClient.onMessageArrived = (message) => {
             try {
               const incoming = JSON.parse(message.payloadString);
+
+              // Emergency Crawl Master Remote Reset
+              if (incoming && incoming.action === "RESET_ALL_DEVICES") {
+                state.devices = {};
+                state.teams.forEach(t => {
+                  t.players = [];
+                  t.captain = "";
+                });
+                state.myPlayerName = "";
+                try {
+                  localStorage.removeItem("drunk_uno_player_registered");
+                  localStorage.removeItem("drunk_uno_player_name");
+                  localStorage.removeItem("drunk_uno_crew_setup");
+                } catch (e) {}
+                renderCrewBar();
+                renderScoringTab();
+                renderAdminTab();
+                showToast("⚠️ Crawl Master has reset all device connections!");
+                playFanfare("freeze");
+                setTimeout(() => {
+                  openCrewSetupModal(false);
+                }, 350);
+                return;
+              }
               if (incoming && Array.isArray(incoming.teams)) {
                 state.teams = incoming.teams;
                 state.teams.forEach(t => {
@@ -4053,13 +4125,18 @@
         document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow");
         document.body.classList.add(`theme-${team.colorClass}`);
 
-        // Update mobile browser chrome bar
-        let hex = "#d62828";
-        if (team.colorClass === "blue") hex = "#1d63b8";
-        else if (team.colorClass === "green") hex = "#2b9348";
-        else if (team.colorClass === "yellow") hex = "#d97706";
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", hex);
+        // Update mobile browser chrome bar & iOS Safari / Android status bar
+        let titleBarHex = "#190e0e";
+        if (team.colorClass === "blue") titleBarHex = "#0a121e";
+        else if (team.colorClass === "green") titleBarHex = "#0b170e";
+        else if (team.colorClass === "yellow") titleBarHex = "#18130a";
+
+        // Update all meta theme-color tags (including iOS & Android titlebar matching)
+        document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
+
+        // Update apple mobile status bar style
+        const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+        if (appleMeta) appleMeta.setAttribute("content", "black-translucent");
       }
 
       function initRubberFluid() {
@@ -5569,6 +5646,56 @@
           triggerHaptic([40, 60, 40, 60]);
           showToast("📢 Broadcasted ping to all devices!");
           saveGameState(true);
+        };
+      }
+
+      const adminResetDevicesBtn = document.getElementById("adminResetAllDevicesBtn");
+      if (adminResetDevicesBtn) {
+        adminResetDevicesBtn.onclick = () => {
+          const answer = confirm("🚨 DANGER: RESET ALL DEVICES SETTINGS?\n\nThis will instantly unlink and disconnect every phone across the crawl, wipe all player names, and force all devices to re-register on their screens.\n\nAre you sure you want to proceed?");
+          if (!answer) return;
+
+          state.devices = {};
+          state.teams.forEach(t => {
+            t.players = [];
+            t.captain = "";
+          });
+          state.myPlayerName = "";
+
+          try {
+            localStorage.removeItem("drunk_uno_player_registered");
+            localStorage.removeItem("drunk_uno_player_name");
+            localStorage.removeItem("drunk_uno_crew_setup");
+          } catch (e) {}
+
+          addLog("🚨 CRAWL MASTER: Full reset of all device settings and phone links broadcasted!");
+
+          // Broadcast special reset command over MQTT to all phones
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const payload = JSON.stringify({
+                action: "RESET_ALL_DEVICES",
+                timestamp: Date.now(),
+                state: state
+              });
+              const msg = new Paho.MQTT.Message(payload);
+              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.retained = false;
+              mqttClient.send(msg);
+            } catch (e) { console.warn("MQTT send error:", e); }
+          }
+
+          saveGameState(true);
+          renderCrewBar();
+          renderScoringTab();
+          renderAdminTab();
+          playFanfare("freeze");
+          triggerHaptic([50, 100, 50, 100]);
+          showToast("🚨 All device settings have been reset!");
+
+          setTimeout(() => {
+            openCrewSetupModal(false);
+          }, 500);
         };
       }
 
