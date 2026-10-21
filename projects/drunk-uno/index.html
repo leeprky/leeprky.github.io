@@ -429,9 +429,9 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       font-weight: 700;
-      color: #1e4620;
-      background: rgba(43, 147, 72, 0.22);
-      border: 1.5px solid rgba(43, 147, 72, 0.6);
+      color: #86efac;
+      background: rgba(16, 45, 24, 0.85);
+      border: 1.5px solid rgba(74, 222, 128, 0.55);
       border-radius: 20px;
       padding: 4px 10px;
       display: inline-flex;
@@ -439,6 +439,7 @@
       gap: 6px;
       cursor: pointer;
       transition: background 0.15s;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     }
     .sync-status-pill .sync-dot {
       width: 7px;
@@ -496,14 +497,16 @@
     .header-subtext {
       font-style: italic;
       font-size: clamp(0.85rem, 2vw, 1.02rem);
-      color: var(--ink-faded);
+      color: #f0deb8;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      margin-top: 4px;
     }
 
     .pub-ticker {
       margin-top: 8px;
-      background: rgba(40, 20, 5, 0.12);
-      border-top: 1px dashed var(--ink-muted);
-      border-bottom: 1px dashed var(--ink-muted);
+      background: rgba(0, 0, 0, 0.45);
+      border-top: 1px dashed var(--theme-border, rgba(255, 215, 133, 0.4));
+      border-bottom: 1px dashed var(--theme-border, rgba(255, 215, 133, 0.4));
       padding: 6px 12px;
       display: flex;
       align-items: center;
@@ -511,6 +514,7 @@
       gap: 10px;
       font-size: 0.92rem;
       font-weight: 600;
+      color: #ffffff;
       flex-wrap: wrap;
     }
     .pub-ticker-info {
@@ -518,10 +522,16 @@
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
+      color: #ffffff;
+    }
+    .pub-ticker-info span {
+      color: #f5e4c6;
     }
     .pub-ticker b {
-      color: #8b1e1e;
+      color: #ffd885;
       font-family: 'Cinzel Decorative', Georgia, serif;
+      font-weight: 800;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
     }
     .turn-ticker-box {
       display: inline-flex;
@@ -2397,6 +2407,52 @@
     /* =========================================================================
        DYNAMIC TEAM COLOR CASCADES (ENTIRE WEBSITE ADAPTS TO SELECTED CREW)
        ========================================================================= */
+    body:not(.light-mode) {
+      --ink: #fdf6ec !important;
+      --ink-faded: #f0deb8 !important;
+      --ink-muted: #ffd885 !important;
+      color: #fdf6ec !important;
+    }
+    body:not(.light-mode) .header-subtext {
+      color: #f0deb8 !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+      font-weight: 500 !important;
+    }
+    body:not(.light-mode) .sync-status-pill {
+      color: #86efac !important;
+      background: rgba(16, 45, 24, 0.9) !important;
+      border: 1.5px solid rgba(74, 222, 128, 0.55) !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .pub-ticker {
+      background: rgba(0, 0, 0, 0.55) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .pub-ticker-info {
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .pub-ticker-info span {
+      color: #f5e4c6 !important;
+    }
+    body:not(.light-mode) .pub-ticker b {
+      color: #ffd885 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
+      font-weight: 800 !important;
+    }
+    body:not(.light-mode) .turn-ticker-box {
+      background: rgba(0, 0, 0, 0.85) !important;
+      border: 1.5px solid var(--theme-border, #ffd885) !important;
+      color: #ffffff !important;
+    }
+    body:not(.light-mode) .turn-ticker-box span {
+      color: #ffd885 !important;
+    }
+    body:not(.light-mode) .btn-quick-turn-pass {
+      background: var(--theme-primary, #b8860b) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      font-weight: 800 !important;
+    }
     body:not(.light-mode)[class*="theme-"] .parchment-board {
       background: var(--theme-board-bg) !important;
       border: 3.5px solid var(--theme-board-border) !important;
@@ -2433,10 +2489,10 @@
       background: var(--theme-accent-bg) !important;
       border-top: 1.5px dashed var(--theme-border) !important;
       border-bottom: 1.5px dashed var(--theme-border) !important;
-      color: #fce8cc !important;
+      color: #ffffff !important;
     }
     body:not(.light-mode)[class*="theme-"] .turn-ticker-box {
-      background: rgba(0, 0, 0, 0.72) !important;
+      background: rgba(0, 0, 0, 0.85) !important;
       border: 1.5px solid var(--theme-border) !important;
       color: #ffd885 !important;
       box-shadow: 0 0 12px var(--theme-glow) !important;
@@ -2760,11 +2816,25 @@
        LIGHT / DARK THEME SYSTEM (FOLLOWS DEVICE PREFERENCE + USER OVERRIDE)
        ========================================================================= */
     body.light-mode {
+      --ink: #241609 !important;
+      --ink-faded: #5c3915 !important;
+      --ink-muted: #8b5321 !important;
       background: #f6efe2;
       background-image:
         radial-gradient(circle at 50% 12%, rgba(255, 240, 205, 0.95) 0%, rgba(246, 236, 218, 0.95) 60%, #e6d3ad 100%),
         repeating-linear-gradient(45deg, rgba(160, 115, 60, 0.06) 0 2px, transparent 2px 8px);
       color: #241609;
+    }
+    body.light-mode .header-subtext {
+      color: #5c3915 !important;
+      text-shadow: none !important;
+      font-weight: 600 !important;
+    }
+    body.light-mode .sync-status-pill {
+      color: #14532d !important;
+      background: rgba(220, 252, 231, 0.95) !important;
+      border: 1.5px solid rgba(34, 197, 94, 0.55) !important;
+      text-shadow: none !important;
     }
     body.light-mode #satinCanvas,
     body.light-mode .rubber-fluid-canvas {
@@ -3203,7 +3273,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.7</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.8</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
