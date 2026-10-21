@@ -625,6 +625,24 @@
       margin-top: 4px;
     }
 
+    @media (max-width: 600px) {
+      .header-area {
+        margin-bottom: 6px;
+      }
+      .ribbon-banner {
+        padding: 4px 12px;
+        margin-bottom: 2px;
+      }
+      .ribbon-banner h1 {
+        font-size: 1.35rem;
+      }
+      .header-subtext {
+        font-size: 0.72rem;
+        margin-top: 1px;
+        line-height: 1.15;
+      }
+    }
+
     .pub-ticker {
       margin-top: 8px;
       background: rgba(0, 0, 0, 0.45);
@@ -694,6 +712,24 @@
     @media (max-width: 680px) {
       .crew-bar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 6px;
+        gap: 5px;
+      }
+      .crew-pill {
+        padding: 5px 6px;
+        gap: 1px;
+      }
+      .crew-name-label {
+        font-size: 0.98rem;
+      }
+      .crew-score-big {
+        font-size: 1.18rem;
+      }
+      .crew-rival-tag {
+        font-size: 0.65rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
@@ -974,20 +1010,23 @@
       padding-bottom: 10px;
     }
     @media (max-width: 600px) {
+      .podium-leaderboard-box {
+        padding: 10px 8px 8px 8px !important;
+      }
       .podium-header-row {
         gap: 6px;
-        margin-bottom: 8px;
-        padding-bottom: 6px;
+        margin-bottom: 4px;
+        padding-bottom: 4px;
       }
       .podium-main-title {
-        font-size: 1.4rem !important;
+        font-size: 1.25rem !important;
       }
       .podium-subtitle {
-        font-size: 0.72rem !important;
+        display: none !important;
       }
       .btn-edit-crew {
-        padding: 4px 10px !important;
-        font-size: 0.92rem !important;
+        padding: 3px 8px !important;
+        font-size: 0.88rem !important;
       }
     }
 
@@ -1028,73 +1067,113 @@
       transform: translateY(-1px);
     }
 
+    /* =========================================================================
+       HORIZONTAL OLYMPIC PODIUM PEDESTALS (1ST, 2ND, 3RD, 4TH SIDE-BY-SIDE)
+       ========================================================================= */
     .podium-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 960px) {
-      .podium-cards-grid { grid-template-columns: repeat(2, 1fr); }
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 14px 2px 2px 2px !important;
+      border-bottom: 3px solid rgba(0, 0, 0, 0.25) !important;
+      margin-top: 6px !important;
     }
     @media (max-width: 540px) {
-      .podium-cards-grid { grid-template-columns: 1fr; }
+      .podium-cards-grid {
+        gap: 5px !important;
+        padding: 10px 1px 1px 1px !important;
+      }
     }
 
     .podium-card {
-      border-radius: 12px;
-      padding: 14px 12px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      border-radius: 8px 8px 0 0 !important;
+      padding: 8px 4px 6px 4px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      justify-content: flex-end !important;
+      position: relative !important;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
-      border: 2.5px solid transparent;
+      border: 2px solid transparent !important;
+      box-sizing: border-box !important;
     }
     .podium-card:hover {
       transform: translateY(-2px);
     }
 
-    /* 1ST PLACE (GOLD PODIUM) */
+    /* Stepped heights & flex orders: 2nd (Silver, left), 1st (Gold, center-left / tallest), 3rd (Bronze, right), 4th (Anchor, far right) */
     .podium-card.rank-1 {
-      background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 60%, #fde68a 100%);
-      border-color: #b45309;
-      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.28), inset 0 0 14px rgba(251, 191, 36, 0.35);
+      min-height: 168px !important;
+      height: 168px !important;
+      order: 2 !important;
+      background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 40%, #fde68a 100%) !important;
+      border-color: #b45309 !important;
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.32), inset 0 0 12px rgba(251, 191, 36, 0.35) !important;
+      z-index: 2;
     }
-
-    /* 2ND PLACE (SILVER PODIUM) */
     .podium-card.rank-2 {
-      background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 60%, #e2e8f0 100%);
-      border-color: #64748b;
-      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.2);
+      min-height: 140px !important;
+      height: 140px !important;
+      order: 1 !important;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%) !important;
+      border-color: #64748b !important;
+      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.22) !important;
+      z-index: 1;
     }
-
-    /* 3RD PLACE (BRONZE PODIUM) */
     .podium-card.rank-3 {
-      background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%);
-      border-color: #9a3412;
-      box-shadow: 0 4px 14px rgba(194, 65, 12, 0.2);
+      min-height: 118px !important;
+      height: 118px !important;
+      order: 3 !important;
+      background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 40%, #fed7aa 100%) !important;
+      border-color: #9a3412 !important;
+      box-shadow: 0 4px 14px rgba(194, 65, 12, 0.22) !important;
+      z-index: 1;
+    }
+    .podium-card.rank-4 {
+      min-height: 98px !important;
+      height: 98px !important;
+      order: 4 !important;
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 40%, #d1d5db 100%) !important;
+      border-color: #4b5563 !important;
+      box-shadow: 0 3px 10px rgba(75, 85, 99, 0.16) !important;
+      z-index: 0;
     }
 
-    /* 4TH PLACE (WOODEN SPOON / ANCHOR) */
-    .podium-card.rank-4 {
-      background: linear-gradient(145deg, #f3f4f6 0%, #e5e7eb 60%, #d1d5db 100%);
-      border-color: #4b5563;
-      box-shadow: 0 3px 10px rgba(75, 85, 99, 0.15);
+    @media (max-width: 540px) {
+      .podium-card.rank-1 { min-height: 150px !important; height: 150px !important; }
+      .podium-card.rank-2 { min-height: 126px !important; height: 126px !important; }
+      .podium-card.rank-3 { min-height: 106px !important; height: 106px !important; }
+      .podium-card.rank-4 { min-height: 88px !important; height: 88px !important; }
     }
 
     .podium-rank-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 3px;
       font-family: 'Pirata One', cursive;
-      font-size: 1.25rem;
-      padding: 4px 8px;
-      border-radius: 6px;
+      font-size: 0.95rem;
+      padding: 2px 6px;
+      border-radius: 4px;
       font-weight: 700;
-      margin-bottom: 8px;
-      width: 100%;
+      margin-bottom: 4px;
+      width: 92%;
       text-align: center;
       letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+    @media (max-width: 540px) {
+      .podium-rank-badge {
+        font-size: 0.82rem;
+        padding: 1px 4px;
+        margin-bottom: 2px;
+      }
     }
     .rank-1 .podium-rank-badge {
       background: #b45309;
@@ -1117,94 +1196,110 @@
     .podium-team-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 2px;
+      width: 100%;
+      overflow: hidden;
     }
     .podium-team-name {
       font-family: 'Pirata One', cursive;
-      font-size: 1.45rem;
+      font-size: 1.05rem;
       color: var(--ink);
       line-height: 1.1;
-      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 82%;
+    }
+    @media (max-width: 540px) {
+      .podium-team-name {
+        font-size: 0.88rem;
+      }
     }
 
     .podium-score-row {
       display: flex;
       align-items: baseline;
-      gap: 6px;
-      margin: 4px 0 8px 0;
-      padding: 6px 0;
-      border-top: 1px dashed rgba(0,0,0,0.15);
-      border-bottom: 1px dashed rgba(0,0,0,0.15);
+      justify-content: center;
+      gap: 3px;
+      margin: 2px 0 4px 0;
+      padding: 2px 0;
+      border-top: 1px dashed rgba(0,0,0,0.14);
+      border-bottom: 1px dashed rgba(0,0,0,0.14);
+      width: 100%;
     }
     .podium-score-number {
       font-family: 'Cinzel Decorative', Georgia, serif;
-      font-size: 2.4rem;
+      font-size: 1.55rem;
       font-weight: 900;
       line-height: 1;
       color: var(--ink);
     }
     .podium-score-unit {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
+      font-size: 0.65rem;
       font-weight: 800;
       color: var(--ink-muted);
     }
-
-    .podium-meta-line {
-      font-size: 0.88rem;
-      color: var(--ink);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .podium-meta-line strong {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-    }
-
-    .podium-roster {
-      font-size: 0.82rem;
-      font-style: italic;
-      color: var(--ink-faded);
-      margin-bottom: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    @media (max-width: 540px) {
+      .podium-score-number { font-size: 1.35rem; }
+      .podium-score-unit { font-size: 0.6rem; }
     }
 
     .podium-stats-chips {
       display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
       margin-top: auto;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
+      font-size: 0.68rem;
       font-weight: 700;
+      width: 100%;
     }
     .podium-chip {
-      background: rgba(0, 0, 0, 0.07);
-      padding: 2px 6px;
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.08);
+      padding: 1px 4px;
+      border-radius: 3px;
       border: 1px solid rgba(0, 0, 0, 0.12);
+      white-space: nowrap;
+      font-size: 0.65rem;
     }
+
     .podium-card.is-my-crew {
-      outline: 3px solid #23170b;
+      outline: 2.5px solid #23170b;
       outline-offset: 1px;
     }
     .podium-my-crew-tag {
       position: absolute;
       top: -9px;
-      right: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       background: #23170b;
       color: #dfb74c;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 800;
-      padding: 2px 7px;
+      padding: 1px 5px;
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      border: 1px solid #dfb74c;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+      z-index: 3;
+    }
+
+    .scoring-as-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      background: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      padding: 2px 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--ink);
     }
 
     /* Active Turn Status Banner on Scores tab */
@@ -2766,29 +2861,30 @@
     }
 
     /* Podium cards in Dark Mode */
+    body:not(.light-mode) .podium-cards-grid {
+      border-bottom-color: rgba(255, 255, 255, 0.18) !important;
+    }
     body:not(.light-mode) .podium-card {
-      background: rgba(24, 15, 10, 0.85) !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
       color: #f7eedc !important;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
     }
     body:not(.light-mode) .podium-card.rank-1 {
-      background: linear-gradient(145deg, rgba(46, 34, 14, 0.88) 0%, rgba(26, 18, 8, 0.92) 100%) !important;
+      background: linear-gradient(180deg, rgba(64, 46, 16, 0.95) 0%, rgba(36, 24, 10, 0.98) 100%) !important;
       border-color: #d4af37 !important;
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2), inset 0 0 12px rgba(212, 175, 55, 0.1) !important;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25), inset 0 0 12px rgba(212, 175, 55, 0.12) !important;
     }
     body:not(.light-mode) .podium-card.rank-2 {
-      background: linear-gradient(145deg, rgba(32, 38, 48, 0.88) 0%, rgba(18, 22, 28, 0.92) 100%) !important;
+      background: linear-gradient(180deg, rgba(45, 52, 64, 0.95) 0%, rgba(24, 28, 36, 0.98) 100%) !important;
       border-color: #94a3b8 !important;
-      box-shadow: 0 6px 20px rgba(148, 163, 184, 0.15) !important;
+      box-shadow: 0 6px 20px rgba(148, 163, 184, 0.18) !important;
     }
     body:not(.light-mode) .podium-card.rank-3 {
-      background: linear-gradient(145deg, rgba(44, 28, 18, 0.88) 0%, rgba(24, 14, 9, 0.92) 100%) !important;
+      background: linear-gradient(180deg, rgba(58, 36, 24, 0.95) 0%, rgba(32, 18, 12, 0.98) 100%) !important;
       border-color: #cd7f32 !important;
-      box-shadow: 0 6px 20px rgba(205, 127, 50, 0.15) !important;
+      box-shadow: 0 6px 20px rgba(205, 127, 50, 0.18) !important;
     }
     body:not(.light-mode) .podium-card.rank-4 {
-      background: linear-gradient(145deg, rgba(28, 22, 20, 0.88) 0%, rgba(16, 12, 10, 0.92) 100%) !important;
+      background: linear-gradient(180deg, rgba(38, 32, 28, 0.95) 0%, rgba(20, 16, 14, 0.98) 100%) !important;
       border-color: #71717a !important;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
     }
@@ -2799,19 +2895,30 @@
     body:not(.light-mode) .podium-team-name {
       color: #ffffff !important;
     }
-    body:not(.light-mode) .podium-pts-val {
+    body:not(.light-mode) .podium-score-row {
+      border-top-color: rgba(255, 255, 255, 0.14) !important;
+      border-bottom-color: rgba(255, 255, 255, 0.14) !important;
+    }
+    body:not(.light-mode) .podium-score-number {
       color: #ffffff !important;
     }
-    body:not(.light-mode) .podium-pts-label {
+    body:not(.light-mode) .podium-score-unit {
       color: #cbd5e1 !important;
     }
-    body:not(.light-mode) .podium-meta-line {
-      color: #cbd5e1 !important;
-    }
-    body:not(.light-mode) .podium-meta-badge {
-      background: rgba(0, 0, 0, 0.45) !important;
+    body:not(.light-mode) .podium-chip {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.14) !important;
       color: #f1f5f9 !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    body:not(.light-mode) .podium-my-crew-tag {
+      background: #ffd885 !important;
+      color: #1a0f05 !important;
+      border-color: #ffd885 !important;
+    }
+    body:not(.light-mode) .scoring-as-pill {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      color: #f1f5f9 !important;
     }
 
     /* Team Pickers in Dark Mode */
@@ -3359,17 +3466,11 @@
       box-sizing: border-box !important;
     }
     .podium-cards-grid {
-      display: grid !important;
-      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-      gap: 12px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    @media (max-width: 960px) {
-      .podium-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-    }
-    @media (max-width: 540px) {
-      .podium-cards-grid { grid-template-columns: 1fr !important; }
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: center !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     /* =========================================================================
@@ -4092,15 +4193,10 @@
             </div>
 
             <div class="scoring-stepper-card">
-              <!-- STEP 1: CHOOSE YOUR TEAM -->
-              <div class="step-title">
-                <span>1️⃣ YOUR TEAM (WHO YOU ARE):</span>
-              </div>
-              <div class="team-picker-grid" id="myTeamPicker"></div>
-
-              <!-- STEP 2: CHOOSE WHO YOU ARE SCORING -->
-              <div class="step-title" style="margin-top: 10px;">
-                <span>2️⃣ TARGET TEAM (WHO YOU ARE SCORING / ATTACKING):</span>
+              <!-- CHOOSE TARGET CREW TO ATTACK / SCORE -->
+              <div class="step-title" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                <span>🎯 TARGET TEAM (ATTACK / SCORE):</span>
+                <span id="scoringAsBadge" class="scoring-as-pill">Scoring as: <strong>Your Crew</strong></span>
               </div>
               <div class="team-picker-grid" id="targetTeamPicker"></div>
 
@@ -6362,7 +6458,7 @@
         });
       }
 
-      // --- 06. RENDER PODIUM BOX & CREW BAR ---
+      // --- 06. RENDER PODIUM BOX & CREW BAR (HORIZONTAL OLYMPIC PEDESTALS) ---
       function renderPodiumBox() {
         const grid = document.getElementById("podiumCardsGrid");
         if (!grid) return;
@@ -6374,11 +6470,12 @@
           return a.sips - b.sips;
         });
 
+        // Stepped Olympic Layout: 2nd Place on Left (order 1), 1st Place Tallest in Center-Left (order 2), 3rd Place on Right (order 3), 4th Place (order 4)
         const ranks = [
-          { rank: 1, class: "rank-1", badge: "👑 1ST PLACE" },
-          { rank: 2, class: "rank-2", badge: "🥈 2ND PLACE" },
-          { rank: 3, class: "rank-3", badge: "🥉 3RD PLACE" },
-          { rank: 4, class: "rank-4", badge: "⚓ 4TH PLACE" }
+          { rank: 1, class: "rank-1", badge: "👑 1ST", order: 2 },
+          { rank: 2, class: "rank-2", badge: "🥈 2ND", order: 1 },
+          { rank: 3, class: "rank-3", badge: "🥉 3RD", order: 3 },
+          { rank: 4, class: "rank-4", badge: "⚓ 4TH", order: 4 }
         ];
 
         sorted.forEach((team, idx) => {
@@ -6386,20 +6483,23 @@
           const isMyCrew = team.id === state.myTeamIdx;
           const card = document.createElement("div");
           card.className = `podium-card ${r.class} ${isMyCrew ? "is-my-crew" : ""}`;
+          card.style.order = r.order;
 
           const playerListStr = team.players && team.players.length ? team.players.join(", ") : "No crew listed";
           const captainStr = team.captain ? team.captain : "Unassigned";
 
+          card.title = `${team.name} • Captain: ${captainStr} • Crew: ${playerListStr} • ${team.sips} sips`;
+
           card.innerHTML = `
-            ${isMyCrew ? `<div class="podium-my-crew-tag">★ YOUR CREW</div>` : ""}
+            ${isMyCrew ? `<div class="podium-my-crew-tag">★ YOU</div>` : ""}
+            ${team.frozen ? `<div class="frozen-banner" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 0.62rem; padding: 1px 5px; white-space: nowrap;">❄️ FROZEN</div>` : ""}
             <div class="podium-rank-badge">
               <span>${r.badge}</span>
             </div>
 
             <div class="podium-team-header">
-              <span class="crew-dot ${team.colorClass}" style="width: 14px; height: 14px;"></span>
+              <span class="crew-dot ${team.colorClass}"></span>
               <strong class="podium-team-name">${escapeHtml(team.name)}</strong>
-              ${team.frozen ? `<span class="frozen-banner" style="position: static; font-size: 0.65rem;">❄️ FROZEN</span>` : ""}
             </div>
 
             <div class="podium-score-row">
@@ -6407,18 +6507,8 @@
               <span class="podium-score-unit">PTS</span>
             </div>
 
-            <div class="podium-meta-line">
-              <span>👑 <strong>CAPTAIN:</strong> ${escapeHtml(captainStr)}</span>
-            </div>
-
-            <div class="podium-roster" title="${escapeHtml(playerListStr)}">
-              👥 <strong>Crew:</strong> ${escapeHtml(playerListStr)}
-            </div>
-
             <div class="podium-stats-chips">
-              <span class="podium-chip">🍺 ${team.sips} sips</span>
-              <span class="podium-chip">🃏 ${team.stash}/2 wild</span>
-              <span class="podium-chip" style="color: var(--ink-muted);">🎯 vs ${escapeHtml(team.targetName)}</span>
+              <span class="podium-chip" title="${team.sips} sips taken">🍺 ${team.sips} sips</span>
             </div>
           `;
 
@@ -6462,7 +6552,7 @@
         });
       }
 
-      // --- 07. STEP-BY-STEP DYNAMIC SCORING (CHOOSE YOUR TEAM -> TARGET) ---
+      // --- 07. STEP-BY-STEP DYNAMIC SCORING (TARGET TEAM) ---
       function renderScoringTab() {
         // Ensure myTeamIdx and targetTeamIdx are valid
         if (state.myTeamIdx === undefined || !state.teams[state.myTeamIdx]) state.myTeamIdx = 0;
@@ -6472,53 +6562,43 @@
         renderPodiumBox();
         renderTurnBanner();
 
-        // Step 1: Render My Team Picker
+        // Step 1: Update "Scoring as" indicator
+        const myTeam = state.teams[state.myTeamIdx] || state.teams[0];
+        const asBadge = document.getElementById("scoringAsBadge");
+        if (asBadge) {
+          asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
+        }
         const myPicker = document.getElementById("myTeamPicker");
-        myPicker.innerHTML = "";
-        state.teams.forEach((t, idx) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = `btn-pick-team ${idx === state.myTeamIdx ? "selected" : ""}`;
-          btn.innerHTML = `
-            <span class="crew-dot ${t.colorClass}"></span>
-            <span>${escapeHtml(t.name)}</span>
-            <span class="sub">${idx === state.myTeamIdx ? "★ YOUR CREW" : t.captain ? '👑 ' + escapeHtml(t.captain) : "Select"}</span>
-          `;
-          btn.onclick = () => {
-            state.myTeamIdx = idx;
-            state.targetTeamIdx = (t.targetIdx !== undefined && state.teams[t.targetIdx]) ? t.targetIdx : ((idx + 1) % 4);
-            applyTeamTheme(state.myTeamIdx);
-            saveGameState(false);
-            renderCrewBar();
-            renderScoringTab();
-          };
-          myPicker.appendChild(btn);
-        });
+        if (myPicker) {
+          myPicker.style.display = "none";
+        }
 
         // Step 2: Render Target Team Picker
         const targetPicker = document.getElementById("targetTeamPicker");
-        targetPicker.innerHTML = "";
-        state.teams.forEach((t, idx) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = `btn-pick-team ${idx === state.targetTeamIdx ? "selected" : ""}`;
-          const isOfficialRival = idx === state.teams[state.myTeamIdx].targetIdx;
-          btn.innerHTML = `
-            <span class="crew-dot ${t.colorClass}"></span>
-            <span>${escapeHtml(t.name)}</span>
-            <span class="sub">${isOfficialRival ? "🎯 OFFICIAL RIVAL" : idx === state.myTeamIdx ? "(Your Team)" : "Target"}</span>
-          `;
-          btn.onclick = () => {
-            state.targetTeamIdx = idx;
-            saveGameState(false);
-            renderScoringTab();
-          };
-          targetPicker.appendChild(btn);
-        });
+        if (targetPicker) {
+          targetPicker.innerHTML = "";
+          state.teams.forEach((t, idx) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = `btn-pick-team ${idx === state.targetTeamIdx ? "selected" : ""}`;
+            const isOfficialRival = idx === state.teams[state.myTeamIdx].targetIdx;
+            const isSelf = idx === state.myTeamIdx;
+            btn.innerHTML = `
+              <span class="crew-dot ${t.colorClass}"></span>
+              <span>${escapeHtml(t.name)}</span>
+              <span class="sub">${isOfficialRival ? "🎯 RIVAL" : isSelf ? "(Your Team)" : "Target"}</span>
+            `;
+            btn.onclick = () => {
+              state.targetTeamIdx = idx;
+              saveGameState(false);
+              renderScoringTab();
+            };
+            targetPicker.appendChild(btn);
+          });
+        }
 
         // Step 3: Render Active Scoring Console
         const consoleEl = document.getElementById("scoringConsole");
-        const myTeam = state.teams[state.myTeamIdx] || state.teams[0];
         const targetTeam = state.teams[state.targetTeamIdx] || state.teams[1];
         const targetCaptain = targetTeam.captain ? ` • 👑 Captain: ${escapeHtml(targetTeam.captain)}` : "";
 
