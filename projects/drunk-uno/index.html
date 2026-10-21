@@ -1254,40 +1254,56 @@
     }
 
     .btn-score-tap {
-      border: 1.5px solid var(--ink);
-      border-radius: 6px;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
       padding: 10px 4px;
-      font-family: 'Pirata One', cursive;
-      font-size: 1.15rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
       cursor: pointer;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
-      transition: transform 0.1s;
+      gap: 3px;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
-    .btn-score-tap:active { transform: scale(0.94); }
+    .btn-score-tap:active { transform: scale(0.96); }
     .btn-score-tap small {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
     .btn-score-tap.deduct {
-      background: rgba(214, 40, 40, 0.15);
-      color: #8d0801;
-      border-color: #8d0801;
+      background: rgba(185, 28, 28, 0.28) !important;
+      color: #fca5a5 !important;
+      border: 1.5px solid #ef4444 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    }
+    .btn-score-tap.deduct small {
+      color: #fee2e2 !important;
     }
     .btn-score-tap.reward {
-      background: rgba(43, 147, 72, 0.15);
-      color: #1e612f;
-      border-color: #1e612f;
+      background: rgba(22, 101, 52, 0.3) !important;
+      color: #86efac !important;
+      border: 1.5px solid #22c55e !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    }
+    .btn-score-tap.reward small {
+      color: #dcfce7 !important;
     }
     .btn-score-tap.drink {
-      background: rgba(223, 183, 76, 0.22);
-      color: #5c3a07;
-      border-color: #8a580e;
+      background: rgba(161, 98, 7, 0.28) !important;
+      color: #ffd885 !important;
+      border: 1.5px solid #eab308 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    }
+    .btn-score-tap.drink small {
+      color: #fef08a !important;
     }
 
     /* Quick Point Adjust Grid */
@@ -3134,6 +3150,33 @@
       color: #ffffff !important;
       box-shadow: 0 2px 6px rgba(100, 70, 30, 0.15) !important;
     }
+    body.light-mode .btn-score-tap.deduct {
+      background: #fee2e2 !important;
+      color: #991b1b !important;
+      border-color: #f87171 !important;
+      text-shadow: none !important;
+    }
+    body.light-mode .btn-score-tap.deduct small {
+      color: #7f1d1d !important;
+    }
+    body.light-mode .btn-score-tap.reward {
+      background: #dcfce7 !important;
+      color: #166534 !important;
+      border-color: #4ade80 !important;
+      text-shadow: none !important;
+    }
+    body.light-mode .btn-score-tap.reward small {
+      color: #14532d !important;
+    }
+    body.light-mode .btn-score-tap.drink {
+      background: #fef3c7 !important;
+      color: #854d0e !important;
+      border-color: #facc15 !important;
+      text-shadow: none !important;
+    }
+    body.light-mode .btn-score-tap.drink small {
+      color: #713f12 !important;
+    }
     body.light-mode .btn-edit-crew {
       background: var(--theme-primary, #925424) !important;
       border: 1.5px solid var(--theme-border, #cca972) !important;
@@ -3273,7 +3316,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v2.9</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.0</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5504,7 +5547,7 @@
             <button type="button" class="btn-score-tap drink" style="flex: 1;" data-sip-add="4">
               <span>🥃 +1 Shot / Chug</span>
             </button>
-            <button type="button" class="btn-score-tap" style="flex: 1; background: #e0f2fe; color: #0369a1; border-color: #0369a1;" data-freeze-toggle="true">
+            <button type="button" class="btn-score-tap" style="flex: 1; background: rgba(14, 116, 144, 0.35); color: #bae6fd; border: 1.5px solid #38bdf8; text-shadow: 0 1px 3px rgba(0,0,0,0.8);" data-freeze-toggle="true">
               <span>${targetTeam.frozen ? "☀️ Defrost" : "❄️ Freeze"}</span>
             </button>
           </div>
