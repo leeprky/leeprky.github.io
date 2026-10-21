@@ -2784,6 +2784,93 @@
       border-color: var(--theme-border, var(--gold)) !important;
     }
 
+    /* Battle Log, Rules Cards & Wheel Cards in Dark Mode */
+    body:not(.light-mode) .battle-log-card {
+      background: var(--glass-card-bg, rgba(28, 16, 10, 0.88)) !important;
+      border: 1.5px solid var(--theme-border, rgba(220, 180, 120, 0.25)) !important;
+      color: #f7eedc !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
+    }
+    body:not(.light-mode) .battle-log-head h3 {
+      color: #ffd885 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .log-list {
+      background: rgba(16, 9, 5, 0.75) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+    body:not(.light-mode) .rule-card-mini {
+      background: var(--glass-card-bg, rgba(28, 16, 12, 0.88)) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      color: #f7eedc !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+    }
+    body:not(.light-mode) .rule-card-mini.target-active {
+      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(220, 180, 120, 0.25)) 0%, rgba(36, 20, 14, 0.95) 100%) !important;
+      border: 2px solid var(--theme-border, var(--gold)) !important;
+      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    }
+    body:not(.light-mode) .rule-card-mini p {
+      color: #e2ceb0 !important;
+    }
+    body:not(.light-mode) #card-RED .rule-card-mini-head span:last-child {
+      color: #fca5a5 !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    body:not(.light-mode) #card-YELLOW .rule-card-mini-head span:last-child {
+      color: #fef08a !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    body:not(.light-mode) #card-BLUE .rule-card-mini-head span:last-child {
+      color: #93c5fd !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    body:not(.light-mode) #card-GREEN .rule-card-mini-head span:last-child {
+      color: #86efac !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    body:not(.light-mode) .rules-card-box {
+      background: var(--glass-card-bg, rgba(28, 16, 10, 0.88)) !important;
+      border: 1.5px solid var(--theme-border, rgba(220, 180, 120, 0.25)) !important;
+      color: #f7eedc !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
+    }
+    body:not(.light-mode) .rules-card-box h2,
+    body:not(.light-mode) .rules-card-box h3 {
+      color: #ffd885 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .rules-card-box table th {
+      background: var(--theme-primary-dark, #2b1810) !important;
+      color: #ffd885 !important;
+      border-color: var(--theme-border, rgba(220, 180, 120, 0.3)) !important;
+    }
+    body:not(.light-mode) .rules-card-box table td {
+      background: rgba(18, 10, 6, 0.45) !important;
+      color: #fdf6ec !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+    body:not(.light-mode) .rules-card-box table td strong {
+      color: #ffd885 !important;
+    }
+    body:not(.light-mode) .standings-table th {
+      background: var(--theme-primary-dark, #2b1810) !important;
+      color: #ffd885 !important;
+      border-color: var(--theme-border, rgba(220, 180, 120, 0.3)) !important;
+    }
+    body:not(.light-mode) .standings-table td {
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      color: #fdf6ec !important;
+      background: rgba(18, 10, 6, 0.4) !important;
+    }
+    body:not(.light-mode) .standings-table td small {
+      color: #e2ceb0 !important;
+    }
+    body:not(.light-mode) .standings-table td em {
+      color: #fcd34d !important;
+    }
+
     /* =========================================================================
        DESKTOP EXPANSIVE LAYOUT & CONTAINER INTEGRITY (FIX FOR SQUISHED BOXES)
        ========================================================================= */
@@ -3316,7 +3403,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.0</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.1</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -3747,11 +3834,11 @@
         <section id="tab-rules" class="tab-panel">
           <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
 
-            <div style="background: rgba(255, 248, 230, 0.95); border: 2px solid var(--ink); border-radius: 12px; padding: 14px;">
-              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0; color: #7a1d1d; border-bottom: 2px solid var(--ink); padding-bottom: 4px;">
+            <div class="rules-card-box">
+              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0; padding-bottom: 4px;">
                 🃏 UNO CARD CODEX // TAP ANY CARD FOR RULES
               </h2>
-              <p style="font-size: 0.92rem; font-style: italic; color: var(--ink-faded); margin-top: 4px;">
+              <p style="font-size: 0.92rem; font-style: italic; margin-top: 4px;">
                 Simplified for quick reference during pub crawl rounds. Play 1 card on color or number!
               </p>
 
@@ -3760,7 +3847,7 @@
             </div>
 
             <!-- Point Matrix Cheat Sheet -->
-            <div style="background: rgba(255, 248, 230, 0.95); border: 2px solid var(--ink); border-radius: 12px; padding: 14px;">
+            <div class="rules-card-box">
               <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 6px;">
                 ⚡ SCORING QUICK REFERENCE
               </h3>
