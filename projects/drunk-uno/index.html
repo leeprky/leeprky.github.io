@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DRUNK: UNO</title>
 
   <!-- Open Graph & Mobile App Meta (Optimized for iOS Safari & Android Chrome) -->
   <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
-  <meta name="theme-color" id="themeColorMeta" content="#0b0f17" />
-  <meta name="theme-color" id="themeColorLightMeta" media="(prefers-color-scheme: light)" content="#f6efe2" />
-  <meta name="theme-color" id="themeColorDarkMeta" media="(prefers-color-scheme: dark)" content="#0b0f17" />
+  <meta name="theme-color" content="#0d1117">
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DRUNK: UNO" />
@@ -144,14 +144,14 @@
     }
 
     html {
-      background-color: #0b0f17;
+      background-color: #0d1117;
       position: relative;
     }
 
     body {
       color: var(--ink);
-      min-height: 100vh;
-      min-height: 100lvh;
+      min-height: calc(100vh + 140px);
+      min-height: calc(100lvh + 140px);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -163,7 +163,7 @@
       width: 100%;
       max-width: 680px;
       margin: 0 auto;
-      padding: max(6px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
+      padding: max(6px, var(--sat)) max(8px, var(--sar)) calc(max(32px, var(--sab)) + 80px) max(8px, var(--sal));
       box-sizing: border-box;
     }
 
@@ -8690,7 +8690,7 @@
           else titleBarHex = "#190e0e";
         }
 
-        const safariTone = isLight ? "#f6efe2" : "#0b0f17";
+        const safariTone = isLight ? "#ffffff" : "#0d1117";
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", safariTone));
         if (document.documentElement) {
           document.documentElement.style.setProperty('--theme-bg', titleBarHex);
