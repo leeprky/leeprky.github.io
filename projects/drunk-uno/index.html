@@ -1149,21 +1149,21 @@
     .wheel-rules-col {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .rule-card-mini {
       background: rgba(255, 248, 230, 0.8);
       border: 1.5px solid var(--ink);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 8px 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       position: relative;
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .rule-card-mini:hover { transform: translateY(-2px); }
     .rule-card-mini.target-active {
-      box-shadow: 0 0 0 2.5px var(--gold), 0 8px 18px rgba(0,0,0,0.25);
+      box-shadow: 0 0 0 2px #38bdf8, 0 8px 18px rgba(56, 189, 248, 0.35);
       background: #fffef8;
     }
     .rule-card-mini-head {
@@ -1171,13 +1171,14 @@
       align-items: center;
       gap: 6px;
       font-family: var(--font-uno);
-      font-size: 1.25rem;
-      margin-bottom: 3px;
+      font-size: 1.15rem;
+      margin-bottom: 2px;
     }
     .rule-card-mini p {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       line-height: 1.35;
       color: var(--ink-faded);
+      margin: 0;
     }
 
     .wheel-stage {
@@ -3231,6 +3232,11 @@
       color: #ffffff !important;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
     }
+    body:not(.light-mode) .rule-card-mini.target-active {
+      box-shadow: 0 0 0 2px #38bdf8, 0 0 24px rgba(56, 189, 248, 0.45) !important;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+      border-color: #38bdf8 !important;
+    }
     body:not(.light-mode) .rule-card-mini p,
     body:not(.light-mode)[class*="theme-"] .rule-card-mini p {
       color: #cbd5e1 !important;
@@ -4710,7 +4716,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.3</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.4</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4753,27 +4759,53 @@
 
 
         <!-- ===================================================================
-             TAB 1: WHEEL OF DOOM (UNO COLORS FOR LOOKS, NOT TEAMS)
+             TAB 1: WHEEL OF DOOM (8-SEGMENT EDITION)
              =================================================================== -->
         <section id="tab-wheel" class="tab-panel">
+          <div style="text-align: center; margin-bottom: 10px;">
+            <span class="impact-pill special" style="font-size: 0.8rem; padding: 3px 12px; letter-spacing: 0.5px;">🎡 8-SEGMENT EDITION</span>
+            <h2 style="font-family: var(--font-uno); font-size: 1.85rem; margin: 6px 0 2px 0; color: #ffffff; letter-spacing: 0.5px;">
+              WHEEL OF DOOM
+            </h2>
+            <p style="font-size: 0.86rem; color: #cbd5e1; margin: 0;">
+              Spin for drinking penalties, wild card heists, chug challenges, waterfalls &amp; team intel!
+            </p>
+          </div>
+
           <div class="wheel-view-grid">
 
-            <!-- Left Rules Column -->
+            <!-- Left Rules Column (4 Segments) -->
             <div class="wheel-rules-col">
               <div class="rule-card-mini" id="card-RED">
                 <div class="rule-card-mini-head">
-                  <span class="crew-dot red"></span>
-                  <span style="color: var(--red-quad);">RED — Drink Swapper</span>
+                  <span class="crew-dot" style="background:#ef4444;box-shadow:0 0 8px #ef4444;"></span>
+                  <span style="color: #ef4444;">RED — Drink Swapper</span>
                 </div>
-                <p>Swap your current drink with another team's drink of your choice!</p>
+                <p>Swap your current drink with another team's drink!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-BLUE">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot" style="background:#3b82f6;box-shadow:0 0 8px #3b82f6;"></span>
+                  <span style="color: #60a5fa;">BLUE — Shot Roulette</span>
+                </div>
+                <p>Nominate 1 rival player to take a mystery sip/shot.</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-GREEN">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot" style="background:#22c55e;box-shadow:0 0 8px #22c55e;"></span>
+                  <span style="color: #4ade80;">GREEN — Chug Challenge</span>
+                </div>
+                <p>5-second head-to-head chug race vs the attacker!</p>
               </div>
 
               <div class="rule-card-mini" id="card-YELLOW">
                 <div class="rule-card-mini-head">
-                  <span class="crew-dot yellow"></span>
-                  <span style="color: #b58500;">YELLOW — Drinker's Freeze</span>
+                  <span class="crew-dot" style="background:#eab308;box-shadow:0 0 8px #eab308;"></span>
+                  <span style="color: #facc15;">YELLOW — Drinker's Freeze</span>
                 </div>
-                <p>Stops all drinking penalties for that targeted team temporarily!</p>
+                <p>Stops all drinking penalties for that targeted team until their next turn!</p>
               </div>
             </div>
 
@@ -4791,16 +4823,24 @@
                   <circle cx="250" cy="250" r="244" fill="#1e293b" stroke="#0f172a" stroke-width="6"/>
                   <circle cx="250" cy="250" r="224" fill="#0f172a" stroke="#020617" stroke-width="4"/>
 
-                  <!-- 4 UNO Color Quadrants (Red, Blue, Green, Yellow) -->
+                  <!-- 8 Segments (Red, Blue, Green, Yellow, Purple, Orange, Teal, Pink) -->
                   <g id="quadrants">
-                    <!-- RED (Top) -->
-                    <path d="M250,250 L108.6,108.6 A200,200 0 0,1 391.4,108.6 Z" fill="#d62828" stroke="#0f172a" stroke-width="4.5"/>
-                    <!-- BLUE (Right) -->
-                    <path d="M250,250 L391.4,108.6 A200,200 0 0,1 391.4,391.4 Z" fill="#1d63b8" stroke="#0f172a" stroke-width="4.5"/>
-                    <!-- GREEN (Bottom) -->
-                    <path d="M250,250 L391.4,391.4 A200,200 0 0,1 108.6,391.4 Z" fill="#2b9348" stroke="#0f172a" stroke-width="4.5"/>
-                    <!-- YELLOW (Left) -->
-                    <path d="M250,250 L108.6,391.4 A200,200 0 0,1 108.6,108.6 Z" fill="#f7b801" stroke="#0f172a" stroke-width="4.5"/>
+                    <!-- 0: RED — Drink Swapper (0°) -->
+                    <path d="M250,250 L173.5,65.2 A200,200 0 0,1 326.5,65.2 Z" fill="#ef4444" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 1: BLUE — Shot Roulette (45°) -->
+                    <path d="M250,250 L326.5,65.2 A200,200 0 0,1 434.8,173.5 Z" fill="#3b82f6" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 2: GREEN — Chug Challenge (90°) -->
+                    <path d="M250,250 L434.8,173.5 A200,200 0 0,1 434.8,326.5 Z" fill="#22c55e" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 3: YELLOW — Drinker's Freeze (135°) -->
+                    <path d="M250,250 L434.8,326.5 A200,200 0 0,1 326.5,434.8 Z" fill="#eab308" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 4: PURPLE — Wild Heist (180°) -->
+                    <path d="M250,250 L326.5,434.8 A200,200 0 0,1 173.5,434.8 Z" fill="#a855f7" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 5: ORANGE — +4 Upgrade (225°) -->
+                    <path d="M250,250 L173.5,434.8 A200,200 0 0,1 65.2,326.5 Z" fill="#f97316" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 6: TEAL — Waterfall (270°) -->
+                    <path d="M250,250 L65.2,326.5 A200,200 0 0,1 65.2,173.5 Z" fill="#06b6d4" stroke="#0f172a" stroke-width="3"/>
+                    <!-- 7: PINK — Intel Peek (315°) -->
+                    <path d="M250,250 L65.2,173.5 A200,200 0 0,1 173.5,65.2 Z" fill="#ec4899" stroke="#0f172a" stroke-width="3"/>
                   </g>
 
                   <!-- 24 Chrome Metallic Silver Pegs -->
@@ -4815,30 +4855,48 @@
                     <circle cx="107" cy="107" r="5"/><circle cx="149" cy="75" r="5"/><circle cx="198" cy="55" r="5"/>
                   </g>
 
-                  <!-- Quadrant Illustrations (From Reference Slide) -->
-                  <!-- Red: Drink Swap -->
-                  <g transform="translate(250, 95)" stroke="#0f172a" stroke-width="2.5" fill="none">
-                    <rect x="-24" y="-12" width="16" height="32" rx="3" fill="#8d0801"/>
-                    <rect x="-19" y="-24" width="6" height="12" fill="#8d0801"/>
-                    <rect x="6" y="-8" width="22" height="28" rx="3" fill="#f4a261"/>
-                    <path d="M4,-10 C10,-18 22,-18 28,-10" fill="#fff" stroke="#0f172a"/>
-                  </g>
-                  <!-- Blue: Shot Roulette -->
-                  <g transform="translate(402, 250)" stroke="#0f172a" stroke-width="2.5">
-                    <circle cx="-8" cy="8" r="16" fill="#48cae4"/>
-                    <rect x="-12" y="-16" width="8" height="10" fill="#48cae4"/>
-                    <polygon points="12,-2 26,-2 23,20 15,20" fill="#90e0ef"/>
-                  </g>
-                  <!-- Green: Chug Tankard -->
-                  <g transform="translate(250, 402)" stroke="#0f172a" stroke-width="2.5">
-                    <rect x="-16" y="-16" width="32" height="38" rx="4" fill="#52b788"/>
-                    <path d="M16,-8 H26 V14 H16" fill="none" stroke-width="4"/>
-                    <path d="M-18,-16 Q-8,-28 2,-18 Q14,-28 20,-14 Z" fill="#fff"/>
-                  </g>
-                  <!-- Yellow: Ice Snowflake -->
-                  <g transform="translate(96, 250)" stroke="#0f172a" stroke-width="2.5">
-                    <rect x="-16" y="-14" width="30" height="36" rx="4" fill="#caf0f8"/>
-                    <path d="M-18,-14 Q-6,-26 4,-16 Q14,-25 18,-12 Z" fill="#fff"/>
+                  <!-- 8 Segment Illustrations & Radial Labels -->
+                  <g pointer-events="none">
+                    <!-- 0: RED — Drink Swapper (0°) -->
+                    <g transform="rotate(0, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">🔄</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">DRINK SWAP</text>
+                    </g>
+                    <!-- 1: BLUE — Shot Roulette (45°) -->
+                    <g transform="rotate(45, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">🥃</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">ROULETTE</text>
+                    </g>
+                    <!-- 2: GREEN — Chug Challenge (90°) -->
+                    <g transform="rotate(90, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">🍺</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">CHUG RACE</text>
+                    </g>
+                    <!-- 3: YELLOW — Drinker's Freeze (135°) -->
+                    <g transform="rotate(135, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">❄️</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">FREEZE</text>
+                    </g>
+                    <!-- 4: PURPLE — Wild Heist (180°) -->
+                    <g transform="rotate(180, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">🃏</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">WILD HEIST</text>
+                    </g>
+                    <!-- 5: ORANGE — +4 Upgrade (225°) -->
+                    <g transform="rotate(225, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">💥</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">+4 UPGRADE</text>
+                    </g>
+                    <!-- 6: TEAL — Waterfall (270°) -->
+                    <g transform="rotate(270, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">🌊</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">WATERFALL</text>
+                    </g>
+                    <!-- 7: PINK — Intel Peek (315°) -->
+                    <g transform="rotate(315, 250, 250)">
+                      <text x="250" y="90" text-anchor="middle" font-size="22" dominant-baseline="central">👁️</text>
+                      <text x="250" y="113" text-anchor="middle" fill="#ffffff" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="9.5" letter-spacing="0.5px" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.85))">INTEL PEEK</text>
+                    </g>
                   </g>
 
                   <!-- Inner Sleek Neo-Glass Ring & Center Hub -->
@@ -4868,22 +4926,38 @@
               <p class="spin-hint">Flick wheel with finger or hold <strong>SPIN</strong> to charge!</p>
             </div>
 
-            <!-- Right Rules Column -->
+            <!-- Right Rules Column (4 Segments) -->
             <div class="wheel-rules-col">
-              <div class="rule-card-mini" id="card-BLUE">
+              <div class="rule-card-mini" id="card-PURPLE">
                 <div class="rule-card-mini-head">
-                  <span class="crew-dot blue"></span>
-                  <span style="color: var(--blue-quad);">BLUE — Shot Roulette</span>
+                  <span class="crew-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7;"></span>
+                  <span style="color: #c084fc;">PURPLE — Wild Heist</span>
                 </div>
-                <p>Nominate 1 rival player to take a mystery sip/shot!</p>
+                <p>Forcefully <strong>steal 1 Wild card</strong> directly from a chosen rival team's hand or Power Stash <em>(Max 1)</em>!</p>
               </div>
 
-              <div class="rule-card-mini" id="card-GREEN">
+              <div class="rule-card-mini" id="card-ORANGE">
                 <div class="rule-card-mini-head">
-                  <span class="crew-dot green"></span>
-                  <span style="color: #1e7033;">GREEN — Chug Challenge</span>
+                  <span class="crew-dot" style="background:#f97316;box-shadow:0 0 8px #f97316;"></span>
+                  <span style="color: #fb923c;">ORANGE — +4 Upgrade</span>
                 </div>
-                <p>5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss).</p>
+                <p>Wild card instantly converts into a <strong>Wild +4</strong>! Target team downs drink or takes shot <em>(+4 pts to you)</em>.</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-TEAL">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot" style="background:#06b6d4;box-shadow:0 0 8px #06b6d4;"></span>
+                  <span style="color: #22d3ee;">TEAL — Waterfall</span>
+                </div>
+                <p>Classic <em>Ring of Fire</em>! Attacker drinks &amp; all chain. Only stop when the person on your right stops!</p>
+              </div>
+
+              <div class="rule-card-mini" id="card-PINK">
+                <div class="rule-card-mini-head">
+                  <span class="crew-dot" style="background:#ec4899;box-shadow:0 0 8px #ec4899;"></span>
+                  <span style="color: #f472b6;">PINK — Intel Peek</span>
+                </div>
+                <p>Force a chosen rival team to fully reveal their hand and face-down Power Stash for <strong>5 seconds</strong>!</p>
               </div>
             </div>
 
@@ -6643,7 +6717,7 @@
         { code: "🚫", bg: "#f7b801", title: "SKIP", impact: "-1 POINT", impactType: "danger", desc: "Skips the next team in rotation. The skipped team loses 1 point and drinks.", drink: "All members take 1 sip" },
         { code: "+2", bg: "#2b9348", title: "DRAW TWO (+2)", impact: "-2 POINTS", impactType: "danger", desc: "Forces target team to draw 2 cards and drink 2 sips. Stacks to +4 if countered!", drink: "2 sips (or 4 sips)" },
         { code: "🔄", bg: "#1d63b8", title: "WILD (REVERSE)", impact: "±4 POINTS", impactType: "reward", desc: "Reverses an incoming attack! Gives +4 pts to the defender and -4 pts to the attacker.", drink: "Reverses drinking penalty" },
-        { code: "🎡", bg: "#d62828", title: "WILD (WHEEL)", impact: "±6 POINTS", impactType: "special", desc: "Triggers a spin on the Wheel of Doom! Play the mini-game for ±6 points and drinking events.", drink: "Depends on Wheel outcome" },
+        { code: "🎡", bg: "#d62828", title: "WILD (WHEEL)", impact: "8 SEGMENTS", impactType: "special", desc: "Triggers a spin on the 8-Segment Wheel of Doom! Drink swaps, roulette, chugs, wild heists, +4 upgrades, waterfalls & intel.", drink: "Depends on Wheel outcome" },
         { code: "+4", bg: "#23170b", title: "WILD (+4)", impact: "+4 / -4 PTS", impactType: "danger", isWild: true, desc: "Ultimate weapon! +4 points to attacking team and -4 to victim. Target team takes shots!", drink: "Whole team downs drink / shot" },
         { code: "+10", bg: "#7c3aed", title: "SECRET +10 WILD (MEGA NUKE)", impact: "-10 POINTS", impactType: "danger", isWild: true, desc: "Secret Tavern Weapon! Target team takes massive -10 points and drinks 10 sips / chug forfeit!", drink: "Target drinks 10 sips / chug" }
       ];
@@ -9356,12 +9430,72 @@
       let chargePower = 0;
       let chargeInterval = null;
 
-      // 4 Quadrants: Uno Colors for Looks Only
-      const QUADRANTS = [
-        { id: "RED", name: "Drink Swapper", color: "RED", desc: "Swap your current drink with any rival team's drink of your choice!", bg: "#d62828" },
-        { id: "BLUE", name: "Shot Roulette", color: "BLUE", desc: "Nominate 1 rival player to take a mystery sip or shot!", bg: "#1d63b8" },
-        { id: "GREEN", name: "Chug Challenge", color: "GREEN", desc: "5-second head-to-head chug race vs attacker! (+6 pts winner / -6 pts loser).", bg: "#2b9348" },
-        { id: "YELLOW", name: "Drinker's Freeze", color: "YELLOW", desc: "Stops all drinking penalties for that targeted team temporarily!", bg: "#f7b801" }
+      // 8-Segment Wheel of Doom
+      const WHEEL_SEGMENTS = [
+        {
+          id: "RED",
+          name: "Drink Swapper",
+          color: "RED",
+          colorHex: "#ef4444",
+          icon: "🔄",
+          desc: "Swap your current drink with another team's drink!"
+        },
+        {
+          id: "BLUE",
+          name: "Shot Roulette",
+          color: "BLUE",
+          colorHex: "#3b82f6",
+          icon: "🥃",
+          desc: "Nominate 1 rival player to take a mystery sip/shot."
+        },
+        {
+          id: "GREEN",
+          name: "Chug Challenge",
+          color: "GREEN",
+          colorHex: "#22c55e",
+          icon: "🍺",
+          desc: "5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss)."
+        },
+        {
+          id: "YELLOW",
+          name: "Drinker's Freeze",
+          color: "YELLOW",
+          colorHex: "#eab308",
+          icon: "❄️",
+          desc: "Stops all drinking penalties for that targeted team until their next turn!"
+        },
+        {
+          id: "PURPLE",
+          name: "Wild Heist",
+          color: "PURPLE",
+          colorHex: "#a855f7",
+          icon: "🃏",
+          desc: "Forcefully steal 1 Wild card directly from a chosen rival team's hand or Power Stash (Max 1)!"
+        },
+        {
+          id: "ORANGE",
+          name: "+4 Upgrade",
+          color: "ORANGE",
+          colorHex: "#f97316",
+          icon: "💥",
+          desc: "The Wild card you just played instantly converts into a Wild +4! Every member of the targeted team must down their drink or take a shot (+4 pts to your team)."
+        },
+        {
+          id: "TEAL",
+          name: "Waterfall",
+          color: "TEAL",
+          colorHex: "#06b6d4",
+          icon: "🌊",
+          desc: "The classic Ring of Fire rule! The attacker starts drinking, and everyone else immediately joins in a cascading chain. You can only stop drinking once the person to your right stops (the attacker sets the pace and decides when to stop first)."
+        },
+        {
+          id: "PINK",
+          name: "Intel Peek",
+          color: "PINK",
+          colorHex: "#ec4899",
+          icon: "👁️",
+          desc: "Force a chosen rival team to fully reveal their hand and face-down Power Stash to your team for 5 seconds!"
+        }
       ];
 
       function launchSpin(power) {
@@ -9402,22 +9536,32 @@
 
       function resolveWheelOutcome(angle) {
         const normalized = ((360 - (angle % 360)) % 360 + 360) % 360;
-        let quadrantIdx = 0;
-        if (normalized >= 45 && normalized < 135) quadrantIdx = 1; // Blue
-        else if (normalized >= 135 && normalized < 225) quadrantIdx = 2; // Green
-        else if (normalized >= 225 && normalized < 315) quadrantIdx = 3; // Yellow
-        else quadrantIdx = 0; // Red
+        // 8 slices of 45° each, slice 0 (RED) centered at 0° (spans -22.5° to +22.5°)
+        const segmentIdx = Math.floor(((normalized + 22.5) % 360) / 45);
 
-        const outcome = QUADRANTS[quadrantIdx];
+        const outcome = WHEEL_SEGMENTS[segmentIdx] || WHEEL_SEGMENTS[0];
+        highlightActiveWheelRuleCard(outcome.id);
         openWheelOutcomeModal(outcome);
+      }
+
+      function highlightActiveWheelRuleCard(outcomeId) {
+        document.querySelectorAll(".rule-card-mini").forEach(card => card.classList.remove("target-active"));
+        const targetCard = document.getElementById("card-" + outcomeId);
+        if (targetCard) {
+          targetCard.classList.add("target-active");
+          targetCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
       }
 
       function openWheelOutcomeModal(outcome) {
         const myTeam = (state.myTeamIdx !== null && state.teams[state.myTeamIdx]) ? state.teams[state.myTeamIdx] : (state.teams[0] || { name: "Crawl Participant", score: 0, sips: 0 });
         playFanfare(outcome.id === "YELLOW" ? "freeze" : "win");
-        spawnCoins(outcome.id === "GREEN" ? 50 : 30);
+        spawnCoins(outcome.id === "GREEN" || outcome.id === "ORANGE" ? 50 : 30);
 
-        document.getElementById("modalOutcomeTitle").textContent = `${outcome.color} — ${outcome.name.toUpperCase()}`;
+        const outcomeTitleEl = document.getElementById("modalOutcomeTitle");
+        outcomeTitleEl.textContent = `${outcome.icon} ${outcome.color} — ${outcome.name.toUpperCase()}`;
+        outcomeTitleEl.style.color = outcome.colorHex;
+
         document.getElementById("modalOutcomeDesc").textContent = outcome.desc;
 
         const targetList = document.getElementById("wheelTargetList");
@@ -9430,21 +9574,21 @@
             btn.type = "button";
             btn.className = "btn-stop-check";
             btn.style.padding = "8px 6px";
-            btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${t.name}`;
+            btn.innerHTML = `<span class="crew-dot ${t.colorClass}"></span> ${escapeHtml(t.name)}`;
             if (idx === chosenVictimIdx) {
-              btn.style.border = "2px solid var(--gold)";
-              btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+              btn.style.border = "2px solid #38bdf8";
+              btn.style.background = "linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%)";
               btn.style.color = "#ffffff";
             }
             btn.onclick = () => {
               chosenVictimIdx = idx;
               targetList.querySelectorAll("button").forEach(b => {
                 b.style.border = "1.5px solid rgba(255,255,255,0.18)";
-                b.style.background = "rgba(24, 14, 10, 0.85)";
-                b.style.color = "#f7eedc";
+                b.style.background = "rgba(30, 41, 59, 0.75)";
+                b.style.color = "#ffffff";
               });
-              btn.style.border = "2px solid var(--gold)";
-              btn.style.background = "linear-gradient(135deg, var(--theme-accent-bg, rgba(216, 122, 128, 0.3)) 0%, rgba(40, 22, 16, 0.95) 100%)";
+              btn.style.border = "2px solid #38bdf8";
+              btn.style.background = "linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%)";
               btn.style.color = "#ffffff";
             };
             targetList.appendChild(btn);
@@ -9458,6 +9602,9 @@
           // Chug Challenge (+6 to winner / -6 to loser)
           const btnAtk = document.createElement("button");
           btnAtk.className = "modal-btn";
+          btnAtk.style.background = "linear-gradient(135deg, #22c55e 0%, #15803d 100%)";
+          btnAtk.style.borderColor = "#4ade80";
+          btnAtk.style.color = "#ffffff";
           btnAtk.textContent = `⚔️ ${myTeam.name} Won (+6 pts / -6 pts)`;
           btnAtk.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
@@ -9472,8 +9619,7 @@
           };
 
           const btnDef = document.createElement("button");
-          btnDef.className = "modal-btn";
-          btnDef.style.background = "#4a2810";
+          btnDef.className = "modal-btn secondary";
           btnDef.textContent = `🛡️ Defender Won (+6 pts / -6 pts)`;
           btnDef.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
@@ -9492,11 +9638,14 @@
         } else if (outcome.id === "YELLOW") {
           const btnFreeze = document.createElement("button");
           btnFreeze.className = "modal-btn";
-          btnFreeze.textContent = `❄️ Freeze Target Team`;
+          btnFreeze.style.background = "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)";
+          btnFreeze.style.borderColor = "#38bdf8";
+          btnFreeze.style.color = "#ffffff";
+          btnFreeze.textContent = `❄️ Freeze Target Team Until Next Turn`;
           btnFreeze.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.frozen = true;
-            addLog(`❄️ DRINKER'S FREEZE: ${myTeam.name} froze ${victim.name}!`);
+            addLog(`❄️ DRINKER'S FREEZE: ${myTeam.name} froze ${victim.name} until next turn!`);
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
@@ -9507,6 +9656,9 @@
         } else if (outcome.id === "RED") {
           const btnSwap = document.createElement("button");
           btnSwap.className = "modal-btn";
+          btnSwap.style.background = "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)";
+          btnSwap.style.borderColor = "#f87171";
+          btnSwap.style.color = "#ffffff";
           btnSwap.textContent = `🔄 Confirm Drink Swap`;
           btnSwap.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
@@ -9519,17 +9671,123 @@
         } else if (outcome.id === "BLUE") {
           const btnShot = document.createElement("button");
           btnShot.className = "modal-btn";
-          btnShot.textContent = `🥃 Assign Mystery Sip / Shot`;
+          btnShot.style.background = "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)";
+          btnShot.style.borderColor = "#60a5fa";
+          btnShot.style.color = "#ffffff";
+          btnShot.textContent = `🥃 Nominate Mystery Drink (+2 sips)`;
           btnShot.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.sips += 2;
-            addLog(`🥃 SHOT ROULETTE: ${myTeam.name} nominated ${victim.name} for mystery drink!`);
+            addLog(`🥃 SHOT ROULETTE: ${myTeam.name} nominated ${victim.name} for mystery drink! (+2 sips).`);
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
             document.getElementById("outcomeModal").classList.remove("open");
           };
           actionsBox.appendChild(btnShot);
+
+        } else if (outcome.id === "PURPLE") {
+          // PURPLE — Wild Heist (Steal 1 Wild card)
+          const btnHeist = document.createElement("button");
+          btnHeist.className = "modal-btn";
+          btnHeist.style.background = "linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)";
+          btnHeist.style.borderColor = "#c084fc";
+          btnHeist.style.color = "#ffffff";
+          btnHeist.textContent = `🃏 Steal 1 Wild Card (From Rival)`;
+          btnHeist.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            if (victim.stash > 0) victim.stash = Math.max(0, victim.stash - 1);
+            if (myTeam.stash < 2) myTeam.stash += 1;
+            addLog(`🃏 WILD HEIST: ${myTeam.name} forcefully stole 1 Wild card from ${victim.name}!`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnHeist);
+
+        } else if (outcome.id === "ORANGE") {
+          // ORANGE — +4 Upgrade (+4 pts to you, rival drinks/shots)
+          const btnUpgrade = document.createElement("button");
+          btnUpgrade.className = "modal-btn";
+          btnUpgrade.style.background = "linear-gradient(135deg, #f97316 0%, #c2410c 100%)";
+          btnUpgrade.style.borderColor = "#fb923c";
+          btnUpgrade.style.color = "#ffffff";
+          btnUpgrade.textContent = `💥 Unleash Wild +4 Upgrade (+4 pts)`;
+          btnUpgrade.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            myTeam.score += 4;
+            victim.score -= 4;
+            victim.sips += 4;
+            addLog(`💥 +4 UPGRADE: ${myTeam.name}'s Wild upgraded to a Wild +4 against ${victim.name}! (+4 pts to ${myTeam.name}, rival team downs drink / shot).`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnUpgrade);
+
+        } else if (outcome.id === "TEAL") {
+          // TEAL — Waterfall (Ring of Fire)
+          const btnWaterfall = document.createElement("button");
+          btnWaterfall.className = "modal-btn";
+          btnWaterfall.style.background = "linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)";
+          btnWaterfall.style.borderColor = "#22d3ee";
+          btnWaterfall.style.color = "#ffffff";
+          btnWaterfall.textContent = `🌊 Start Ring of Fire Waterfall Chain`;
+          btnWaterfall.onclick = () => {
+            state.teams.forEach((t, i) => {
+              if (i !== state.myTeamIdx) t.sips += 3;
+              else t.sips += 1;
+            });
+            addLog(`🌊 WATERFALL: ${myTeam.name} triggered a Ring of Fire Waterfall chain across all teams!`);
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+            document.getElementById("outcomeModal").classList.remove("open");
+          };
+          actionsBox.appendChild(btnWaterfall);
+
+        } else if (outcome.id === "PINK") {
+          // PINK — Intel Peek (5 seconds)
+          const btnPeek = document.createElement("button");
+          btnPeek.className = "modal-btn";
+          btnPeek.style.background = "linear-gradient(135deg, #ec4899 0%, #be185d 100%)";
+          btnPeek.style.borderColor = "#f472b6";
+          btnPeek.style.color = "#ffffff";
+          btnPeek.textContent = `👁️ Reveal Cards & Secret Stash (5s Peek)`;
+          btnPeek.onclick = () => {
+            const victim = state.teams[chosenVictimIdx];
+            addLog(`👁️ INTEL PEEK: ${myTeam.name} forced ${victim.name} to reveal their secret cards for 5 seconds!`);
+            saveGameState(true);
+
+            // Display live countdown and rival intel inside modal
+            actionsBox.innerHTML = `
+              <div style="margin-top: 6px; padding: 12px; background: rgba(236, 72, 153, 0.18); border: 1.5px solid #ec4899; border-radius: 10px; text-align: center; width: 100%; box-sizing: border-box;">
+                <strong style="font-size: 1.05rem; color: #f472b6;">👁️ ${escapeHtml(victim.name)}'s Secret Intel</strong>
+                <div style="margin: 8px 0; font-size: 0.92rem; color: #ffffff; line-height: 1.5;">
+                  Power Stash: <strong style="color: #facc15;">${victim.stash} / 2 Wilds</strong><br/>
+                  Captain: <strong>${escapeHtml(victim.captain || "None assigned")}</strong><br/>
+                  Crew Status: <span style="color: ${victim.frozen ? '#38bdf8' : '#4ade80'}; font-weight: 700;">${victim.frozen ? '❄️ FROZEN' : 'Active'}</span>
+                </div>
+                <div id="intelCountdownBadge" style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #f472b6; font-weight: 800; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 6px; display: inline-block;">
+                  ⏳ Time remaining: 5s
+                </div>
+              </div>
+            `;
+
+            let secondsLeft = 5;
+            const intelTimer = setInterval(() => {
+              secondsLeft -= 1;
+              const cdEl = document.getElementById("intelCountdownBadge");
+              if (cdEl) cdEl.textContent = `⏳ Time remaining: ${secondsLeft}s`;
+              if (secondsLeft <= 0) {
+                clearInterval(intelTimer);
+                document.getElementById("outcomeModal").classList.remove("open");
+              }
+            }, 1000);
+          };
+          actionsBox.appendChild(btnPeek);
         }
 
         document.getElementById("outcomeModal").classList.add("open");
