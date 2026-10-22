@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>The Ultimate UNO Team Crawl — Preston Route // Drunk Uno Tavern Referee</title>
+  <title>DRUNK: UNO</title>
 
   <!-- Open Graph & Mobile App Meta (Optimized for iOS Safari & Android Chrome) -->
   <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
@@ -12,7 +12,7 @@
   <meta name="theme-color" id="themeColorDarkMeta" media="(prefers-color-scheme: dark)" content="#101317" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Drunk Uno" />
+  <meta name="apple-mobile-web-app-title" content="DRUNK: UNO" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
 
@@ -44,7 +44,7 @@
   <!-- Paho MQTT WebSocket Client for Real-Time Phone Synchronization -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
-  <!-- Immediate Device Scheme Detection (Eliminates Theme Flash) -->
+  <!-- Immediate Device Scheme Detection & Main Dashboard Gating (Eliminates Flash) -->
   <script>
     (function() {
       try {
@@ -57,6 +57,12 @@
         }
         if (isLight) {
           document.documentElement.classList.add("light-mode");
+        }
+
+        // Gate main dashboard area until player registers or links & enters crawl
+        var isReg = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
+        if (!isReg) {
+          document.documentElement.classList.add("dashboard-gated");
         }
       } catch(e) {}
     })();
@@ -512,7 +518,30 @@
       padding-bottom: calc(85px + max(12px, env(safe-area-inset-bottom, 12px))) !important;
     }
 
-    /* 5-Second Zooming In and Out Cinematic App Loading Screen */
+    /* Main Dashboard Gating (Hidden until player links and enters crawl) */
+    html.dashboard-gated .app-container,
+    html.dashboard-gated #bottomDock,
+    body.dashboard-gated .app-container,
+    body.dashboard-gated #bottomDock {
+      display: none !important;
+    }
+
+    @keyframes dashboardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .app-container.revealed {
+      animation: dashboardReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* 2.5-Second Zooming In and Out Cinematic App Loading Screen */
     .app-intro-splash {
       position: fixed;
       inset: 0;
@@ -4542,7 +4571,7 @@
 
 <body>
   <!-- =========================================================================
-       APP INTRO LOADING SCREEN (5-SECOND ZOOM IN/OUT CINEMATIC SPLASH)
+       APP INTRO LOADING SCREEN (2.5-SECOND CINEMATIC SPLASH)
        ========================================================================= -->
   <div id="appIntroLoadingScreen" class="app-intro-splash" aria-label="Drunk Uno Loading Screen">
     <div class="intro-splash-backdrop"></div>
@@ -4578,7 +4607,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.0</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.1</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4785,7 +4814,7 @@
             <div class="scoring-stepper-card">
               <!-- CHOOSE TARGET CREW TO ATTACK / SCORE -->
               <div class="step-title" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                <span>🎯 TARGET TEAM (ATTACK / SCORE):</span>
+                <span id="targetSectionHeaderTxt">🎯 YOUR ASSIGNED REFEREE TARGET:</span>
                 <span id="scoringAsBadge" class="scoring-as-pill">Scoring as: <strong>Your Crew</strong></span>
               </div>
               <div class="team-picker-grid" id="targetTeamPicker"></div>
@@ -5644,6 +5673,56 @@
     </div>
   </div>
 
+  <!-- =========================================================================
+       MODAL 7B: UNLINK HARDWARE CONFIRMATION MODAL (IN-APP POPUP)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="unlinkHardwareConfirmModal" style="z-index: 100020;">
+    <div class="modal-scroll glass-card" style="position: relative; max-width: 440px; text-align: center; border: 2px solid #ef4444; box-shadow: 0 10px 40px rgba(0,0,0,0.85), 0 0 25px rgba(239,68,68,0.35);">
+      <button type="button" class="btn-stop-check" style="position: absolute; top: 12px; right: 12px; font-weight: 700; z-index: 10;" id="closeUnlinkModalBtn">✕</button>
+      <div style="font-size: 2.8rem; margin-bottom: 8px;">🔓</div>
+      <h2 class="modal-title" style="color: #f87171; font-size: 1.6rem; margin-bottom: 8px; font-family: var(--font-uno);">
+        UNLINK HARDWARE PROFILE?
+      </h2>
+      <p style="font-size: 0.92rem; color: #f1f5f9; line-height: 1.5; margin-bottom: 12px;">
+        This will completely unlink this phone from your crew, wipe your device ID (<code id="unlinkDevIdPreview" style="color:#7dd3fc; font-weight: bold;">...</code>), clear hardware fingerprint cookies, and reset you to a fresh unregistered state.
+      </p>
+      <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 10px; font-size: 0.8rem; color: #fca5a5; margin-bottom: 16px; text-align: left;">
+        ⚠️ <strong>Note:</strong> You will be returned to the onboarding screen where you can re-join a different crew or spectate without a team.
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button type="button" class="modal-btn secondary" id="cancelUnlinkHardwareBtn" style="flex: 1; padding: 10px 14px; font-weight: 700;">
+          ✕ Cancel
+        </button>
+        <button type="button" class="modal-btn" id="confirmUnlinkHardwareBtn" style="flex: 1; padding: 10px 14px; font-weight: 800; background: #dc2626; border-color: #ef4444; color: #fff; box-shadow: 0 4px 15px rgba(220,38,38,0.4);">
+          🔓 Confirm & Unlink
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 7C: RESET AS FIRST-TIME VISITOR CONFIRMATION MODAL (IN-APP POPUP)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="firstTimeResetConfirmModal" style="z-index: 100020;">
+    <div class="modal-scroll glass-card" style="position: relative; max-width: 440px; text-align: center; border: 2px solid #ef4444; box-shadow: 0 10px 40px rgba(0,0,0,0.85), 0 0 25px rgba(239,68,68,0.35);">
+      <button type="button" class="btn-stop-check" style="position: absolute; top: 12px; right: 12px; font-weight: 700; z-index: 10;" id="closeFirstTimeResetModalBtn">✕</button>
+      <div style="font-size: 2.8rem; margin-bottom: 8px;">🧹</div>
+      <h2 class="modal-title" style="color: #f87171; font-size: 1.6rem; margin-bottom: 8px; font-family: var(--font-uno);">
+        WIPE CACHE & VIEW AS NEW VISITOR?
+      </h2>
+      <p style="font-size: 0.92rem; color: #f1f5f9; line-height: 1.5; margin-bottom: 12px;">
+        This will completely erase all cookies, localStorage, and cached files on your browser, resetting the app to when you first loaded it.
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button type="button" class="modal-btn secondary" id="cancelFirstTimeResetBtn" style="flex: 1; padding: 10px 14px; font-weight: 700;">
+          ✕ Cancel
+        </button>
+        <button type="button" class="modal-btn" id="confirmFirstTimeResetBtn" style="flex: 1; padding: 10px 14px; font-weight: 800; background: #dc2626; border-color: #ef4444; color: #fff;">
+          🧹 Wipe & Reload
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- =========================================================================
        MODAL 8: ONBOARDING: WELCOME TUTORIAL -> RULES -> TARGETS -> NAME & CREW -> LOCK TARGET -> LINK HARDWARE
@@ -8426,44 +8505,93 @@
           myPicker.style.display = "none";
         }
 
-        // Step 2: Render Target Team Picker (Per-Team Vibrant Colors with Live Cross-Examining Badges)
+        // Step 2: Render Target Team Section (Assigned Referee Target for Linked Crews)
         const targetPicker = document.getElementById("targetTeamPicker");
+        const targetHeaderTxt = document.getElementById("targetSectionHeaderTxt");
         if (targetPicker) {
           targetPicker.innerHTML = "";
-          state.teams.forEach((t, idx) => {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = `btn-pick-team team-btn-${t.colorClass} ${idx === state.targetTeamIdx ? "selected" : ""}`;
-            const isSelf = isRegistered && (idx === state.myTeamIdx);
-            const isMyTarget = isRegistered && myTeam && (myTeam.targetIdx === idx);
-            const refereeCrew = state.teams.find((tm, i) => (!isRegistered || i !== state.myTeamIdx) && tm.targetIdx === idx && (tm.targetLocked || tm.targetLockedBy));
+          if (isRegistered && myTeam) {
+            if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 YOUR ASSIGNED REFEREE TARGET:";
+            targetPicker.style.display = "block";
 
-            let subTxt = "Target Crew";
-            let statusBadge = "";
-            if (isSelf) {
-              subTxt = "(Your Crew - View)";
-            } else if (isMyTarget) {
-              subTxt = "🎯 Assigned Target";
-              statusBadge = `<span style="font-size: 0.68rem; background: rgba(34,197,94,0.3); color: #86efac; padding: 1px 5px; border-radius: 4px; border: 1px solid #22c55e; margin-left: 4px;">REFEREE</span>`;
-            } else if (refereeCrew) {
-              subTxt = `🔒 ${refereeCrew.name}`;
-              statusBadge = `<span style="font-size: 0.68rem; background: rgba(239,68,68,0.25); color: #fca5a5; padding: 1px 5px; border-radius: 4px; border: 1px solid #ef4444; margin-left: 4px;">LOCKED</span>`;
-            } else if (!isRegistered) {
-              subTxt = "Tap to Inspect";
-            }
+            // Force targetTeamIdx to this crew's locked assigned referee target
+            const assignedTargetIdx = (myTeam.targetIdx !== undefined && myTeam.targetIdx !== null && state.teams[myTeam.targetIdx])
+              ? myTeam.targetIdx
+              : ((state.myTeamIdx + 1) % 4);
+            state.targetTeamIdx = assignedTargetIdx;
+            const targetTeam = state.teams[assignedTargetIdx];
 
-            btn.innerHTML = `
-              <span class="crew-dot ${t.colorClass}"></span>
-              <span class="team-name-txt">${escapeHtml(t.name)}${statusBadge}</span>
-              <span class="sub">${escapeHtml(subTxt)}</span>
+            let bgHex = "#d62828";
+            if (targetTeam.colorClass === "blue") bgHex = "#2b7fff";
+            else if (targetTeam.colorClass === "green") bgHex = "#2ecc71";
+            else if (targetTeam.colorClass === "yellow") bgHex = "#f59e0b";
+
+            const capTxt = targetTeam.captain ? `Captain: ${escapeHtml(targetTeam.captain)}` : `Crew: ${targetTeam.players?.length || 0} players`;
+
+            const card = document.createElement("div");
+            card.className = "assigned-referee-target-card";
+            card.style.cssText = `
+              background: linear-gradient(135deg, rgba(20,26,38,0.92) 0%, rgba(12,16,24,0.98) 100%);
+              border: 2px solid ${bgHex};
+              box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 16px ${bgHex}33;
+              border-radius: 14px;
+              padding: 14px 16px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              gap: 12px;
+              width: 100%;
+              box-sizing: border-box;
             `;
-            btn.onclick = () => {
-              state.targetTeamIdx = idx;
-              saveGameState(false);
-              renderScoringTab();
-            };
-            targetPicker.appendChild(btn);
-          });
+
+            card.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="color-badge" style="background: ${bgHex}; width: 44px; height: 44px; font-size: 1.4rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; box-shadow: 0 4px 12px ${bgHex}66;">
+                  ${targetTeam.key.charAt(0)}
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    <span style="font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #86efac; background: rgba(34,197,94,0.18); border: 1px solid rgba(34,197,94,0.4); padding: 2px 7px; border-radius: 6px;">
+                      🎯 ASSIGNED REFEREE TARGET
+                    </span>
+                    <span style="font-size: 0.72rem; color: #94a3b8;">(Locked Cross-Examining)</span>
+                  </div>
+                  <div style="font-family: var(--font-uno); font-size: 1.35rem; font-weight: 900; color: ${targetTeam.colorClass === 'yellow' ? '#ffd885' : bgHex}; margin-top: 2px;">
+                    ${escapeHtml(targetTeam.name)}
+                  </div>
+                  <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">
+                    👑 ${capTxt} • 🍺 Drinks: <strong>${targetTeam.sips || 0}</strong> • Points: <strong>${targetTeam.score || 0}</strong>
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                <span style="font-size: 0.72rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #f1f5f9; padding: 4px 8px; border-radius: 6px; font-weight: 700;">
+                  🔒 Only Your Crew Can Score Them
+                </span>
+              </div>
+            `;
+            targetPicker.appendChild(card);
+          } else {
+            if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 INSPECT CREW STATS (SPECTATOR MODE):";
+            targetPicker.style.display = "";
+            state.teams.forEach((t, idx) => {
+              const btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = `btn-pick-team team-btn-${t.colorClass} ${idx === state.targetTeamIdx ? "selected" : ""}`;
+              btn.innerHTML = `
+                <span class="crew-dot ${t.colorClass}"></span>
+                <span class="team-name-txt">${escapeHtml(t.name)}</span>
+                <span class="sub">Inspect Crew</span>
+              `;
+              btn.onclick = () => {
+                state.targetTeamIdx = idx;
+                saveGameState(false);
+                renderScoringTab();
+              };
+              targetPicker.appendChild(btn);
+            });
+          }
         }
 
         // Step 3: Render Active Scoring Console Themed to Target Team
@@ -10580,11 +10708,39 @@
       }
 
       const settingsUnlinkBtn = document.getElementById("settingsUnlinkHardwareBtn");
+      const unlinkModal = document.getElementById("unlinkHardwareConfirmModal");
+      const confirmUnlinkBtn = document.getElementById("confirmUnlinkHardwareBtn");
+      const cancelUnlinkBtn = document.getElementById("cancelUnlinkHardwareBtn");
+      const closeUnlinkBtn = document.getElementById("closeUnlinkModalBtn");
+      const unlinkDevIdPreview = document.getElementById("unlinkDevIdPreview");
+
+      function hideUnlinkModal() {
+        if (unlinkModal) unlinkModal.classList.remove("open");
+      }
+
       if (settingsUnlinkBtn) {
         settingsUnlinkBtn.onclick = () => {
-          if (confirm("⚠️ UNLINK THIS PHONE HARDWARE PROFILE?\n\nThis will completely erase your device ID, MAC fingerprint, and team link, allowing a complete clean reset.")) {
-            unlinkHardwareProfile(true);
-          }
+          const devId = localStorage.getItem("drunk_uno_device_id") || "Unknown Device";
+          if (unlinkDevIdPreview) unlinkDevIdPreview.textContent = devId;
+          if (unlinkModal) unlinkModal.classList.add("open");
+          playTick(450);
+        };
+      }
+
+      if (cancelUnlinkBtn) cancelUnlinkBtn.onclick = hideUnlinkModal;
+      if (closeUnlinkBtn) closeUnlinkBtn.onclick = hideUnlinkModal;
+      if (unlinkModal) {
+        unlinkModal.onclick = (e) => {
+          if (e.target === unlinkModal) hideUnlinkModal();
+        };
+      }
+
+      if (confirmUnlinkBtn) {
+        confirmUnlinkBtn.onclick = () => {
+          playTick(600);
+          hideUnlinkModal();
+          if (settingsModal) settingsModal.classList.remove("open");
+          unlinkHardwareProfile(true);
         };
       }
 
@@ -11326,11 +11482,35 @@
       }
 
       const settingsResetFirstTimeBtn = document.getElementById("settingsResetFirstTimeBtn");
+      const firstTimeResetModal = document.getElementById("firstTimeResetConfirmModal");
+      const confirmFirstTimeResetBtn = document.getElementById("confirmFirstTimeResetBtn");
+      const cancelFirstTimeResetBtn = document.getElementById("cancelFirstTimeResetBtn");
+      const closeFirstTimeResetBtn = document.getElementById("closeFirstTimeResetModalBtn");
+
+      function hideFirstTimeResetModal() {
+        if (firstTimeResetModal) firstTimeResetModal.classList.remove("open");
+      }
+
       if (settingsResetFirstTimeBtn) {
         settingsResetFirstTimeBtn.onclick = () => {
-          if (confirm("🧹 WIPE ALL CACHE & VIEW AS FIRST TIME VISITOR?\n\nThis will completely erase all cookies, localStorage, and cached files on your browser, resetting the page to when you first loaded it.")) {
-            executeResetToFirstTimeVisitor();
-          }
+          if (firstTimeResetModal) firstTimeResetModal.classList.add("open");
+          playTick(450);
+        };
+      }
+
+      if (cancelFirstTimeResetBtn) cancelFirstTimeResetBtn.onclick = hideFirstTimeResetModal;
+      if (closeFirstTimeResetBtn) closeFirstTimeResetBtn.onclick = hideFirstTimeResetModal;
+      if (firstTimeResetModal) {
+        firstTimeResetModal.onclick = (e) => {
+          if (e.target === firstTimeResetModal) hideFirstTimeResetModal();
+        };
+      }
+
+      if (confirmFirstTimeResetBtn) {
+        confirmFirstTimeResetBtn.onclick = () => {
+          hideFirstTimeResetModal();
+          if (settingsModal) settingsModal.classList.remove("open");
+          executeResetToFirstTimeVisitor();
         };
       }
 
@@ -11417,6 +11597,18 @@
             // Hide modal
             crewSetupModal.classList.remove("open");
 
+            // Ungate main dashboard & trigger smooth reveal animation
+            document.documentElement.classList.remove("dashboard-gated");
+            document.body.classList.remove("dashboard-gated");
+            const appContainer = document.querySelector(".app-container");
+            if (appContainer) {
+              appContainer.classList.remove("revealed");
+              void appContainer.offsetWidth; // trigger reflow
+              appContainer.classList.add("revealed");
+            }
+            const dock = document.getElementById("bottomDock");
+            if (dock) dock.classList.remove("dock-hidden");
+
             // Apply website-wide Material You theme
             applyTeamTheme(state.myTeamIdx);
             updateTopUserName();
@@ -11435,6 +11627,14 @@
           } catch (err) {
             console.error("Error saving crew setup:", err);
             crewSetupModal.classList.remove("open");
+            document.documentElement.classList.remove("dashboard-gated");
+            document.body.classList.remove("dashboard-gated");
+            const appContainer = document.querySelector(".app-container");
+            if (appContainer) {
+              appContainer.classList.remove("revealed");
+              void appContainer.offsetWidth;
+              appContainer.classList.add("revealed");
+            }
             switchToTab("scores");
           }
         };
@@ -11444,6 +11644,14 @@
       if (closeCrewBtn) {
         closeCrewBtn.onclick = () => {
           crewSetupModal.classList.remove("open");
+          document.documentElement.classList.remove("dashboard-gated");
+          document.body.classList.remove("dashboard-gated");
+          const appContainer = document.querySelector(".app-container");
+          if (appContainer) {
+            appContainer.classList.remove("revealed");
+            void appContainer.offsetWidth;
+            appContainer.classList.add("revealed");
+          }
           const hasReg = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
           applyTeamTheme(hasReg ? state.myTeamIdx : null);
         };
@@ -11452,6 +11660,14 @@
       document.getElementById("setupDismissBtn").onclick = () => {
         try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
         crewSetupModal.classList.remove("open");
+        document.documentElement.classList.remove("dashboard-gated");
+        document.body.classList.remove("dashboard-gated");
+        const appContainer = document.querySelector(".app-container");
+        if (appContainer) {
+          appContainer.classList.remove("revealed");
+          void appContainer.offsetWidth;
+          appContainer.classList.add("revealed");
+        }
         applyTeamTheme(null);
         updateTopUserName();
         renderScoringTab();
@@ -11566,7 +11782,7 @@
       checkBannedStatus();
       checkKickedStatus();
 
-      // --- 5-SECOND ZOOMING IN AND OUT CINEMATIC LOADING SCREEN ---
+      // --- 2.5-SECOND CINEMATIC APP LOADING SCREEN ---
       function initIntroLoadingScreen(onFinished) {
         const splashEl = document.getElementById("appIntroLoadingScreen");
         if (!splashEl) {
@@ -11580,14 +11796,14 @@
 
         const phrases = [
           { time: 0, text: "🎴 SHUFFLING THE UNO DECK..." },
-          { time: 1100, text: "🍺 SYNCING PRESTON ROUTE PUBS..." },
-          { time: 2300, text: "📡 CONNECTING PHONE TAVERN NETWORK..." },
-          { time: 3500, text: "⚔️ PREPARING THE UNO BATTLE..." },
-          { time: 4400, text: "🚀 WELCOME TO DRUNK UNO!" }
+          { time: 550, text: "🍺 SYNCING PRESTON ROUTE PUBS..." },
+          { time: 1100, text: "📡 CONNECTING PHONE TAVERN NETWORK..." },
+          { time: 1650, text: "⚔️ PREPARING THE UNO BATTLE..." },
+          { time: 2150, text: "🚀 WELCOME TO DRUNK UNO!" }
         ];
 
         let startTime = performance.now();
-        const duration = 5000;
+        const duration = 2500;
         let completed = false;
         let animationFrameId = null;
 
@@ -11640,15 +11856,21 @@
         animationFrameId = requestAnimationFrame(updateProgress);
       }
 
-      // 5-second intro loading screen, then immediately prompt join team/name
+      // 2.5-second intro loading screen, then prompt join team/name (or ungate dashboard if already registered)
       initIntroLoadingScreen(() => {
         const isRegisteredNow = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
         if (!isRegisteredNow) {
           setTimeout(() => {
             openCrewSetupModal(false);
-          }, 250);
-        } else if (!isStandalone && !hsSeen) {
-          checkHomescreenPrompt();
+          }, 150);
+        } else {
+          document.documentElement.classList.remove("dashboard-gated");
+          document.body.classList.remove("dashboard-gated");
+          const appContainer = document.querySelector(".app-container");
+          if (appContainer) appContainer.classList.add("revealed");
+          if (!isStandalone && !hsSeen) {
+            checkHomescreenPrompt();
+          }
         }
       });
 
