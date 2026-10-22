@@ -16,10 +16,15 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
 
-  <!-- Drunk Uno Custom Game Branding & Favicons -->
+  <!-- Drunk Uno Custom Game Branding & Native iOS / Android PWA Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
   <link rel="icon" type="image/svg+xml" href="assets/drunk-uno-logo.svg" />
-  <link rel="apple-touch-icon" href="assets/drunk-uno-logo.svg" />
-  <link rel="shortcut icon" href="assets/drunk-uno-logo.svg" />
+  <link rel="shortcut icon" href="assets/favicon.png" />
 
   <!-- Google Fonts: Pirate Display, Antique Serif & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -319,9 +324,45 @@
     /* =========================================================================
        NATIVE HOMESCREEN WEBAPP (PWA) & MOBILE VIEWPORT POLISH
        ========================================================================= */
+    /* iOS Top Status Bar Frosted Blur Shield (Keeps Clock & Battery Legible When Scrolling) */
+    .ios-status-bar-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: max(24px, env(safe-area-inset-top, 24px));
+      background: var(--theme-bg, #101317);
+      background: rgba(16, 19, 24, 0.78);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+      z-index: 99995;
+      pointer-events: none;
+    }
+    body.light-mode .ios-status-bar-blur {
+      background: rgba(255, 255, 255, 0.88) !important;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+    }
+
+    /* Accessibility: Reduced Motion / Static Wallpaper Mode */
+    html.reduce-motion *,
+    body.reduce-motion * {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+    body.reduce-motion .rubber-fluid-canvas,
+    html.reduce-motion .rubber-fluid-canvas,
+    body.reduce-motion #fxCanvas,
+    html.reduce-motion #fxCanvas {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     @media (max-width: 600px), (display-mode: standalone) {
       body {
-        padding: max(6px, var(--sat)) 6px calc(14px + var(--sab)) 6px !important;
+        padding: calc(max(10px, var(--sat)) + 8px) 6px calc(14px + var(--sab)) 6px !important;
         -webkit-user-select: none;
         user-select: none;
       }
@@ -451,20 +492,51 @@
         z-index: 9999 !important;
       }
     }
-    @media (display-mode: standalone) {
+    @media (display-mode: standalone), (display-mode: fullscreen) {
       .mobile-bottom-dock {
+        position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
         max-width: 100vw !important;
         transform: none !important;
-        border-radius: 22px 22px 0 0 !important;
+        border-radius: 20px 20px 0 0 !important;
         border: none !important;
         border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
-        background: var(--glass-card-bg, rgba(16, 20, 28, 0.90)) !important;
-        padding: 6px 4px calc(max(10px, var(--sab)) + 2px) 4px !important;
+        background: var(--glass-card-bg, rgba(16, 20, 28, 0.94)) !important;
+        backdrop-filter: blur(28px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+        padding: 6px 6px calc(max(16px, env(safe-area-inset-bottom, 16px)) + 4px) 6px !important;
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
+        z-index: 9999 !important;
       }
+      .app-container {
+        padding-bottom: calc(95px + max(16px, env(safe-area-inset-bottom, 16px))) !important;
+      }
+    }
+    body.standalone-app .mobile-bottom-dock,
+    html.standalone-app .mobile-bottom-dock {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      max-width: 100vw !important;
+      transform: none !important;
+      border-radius: 20px 20px 0 0 !important;
+      border: none !important;
+      border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
+      background: var(--glass-card-bg, rgba(16, 20, 28, 0.94)) !important;
+      backdrop-filter: blur(28px) saturate(200%) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+      padding: 6px 6px calc(max(16px, env(safe-area-inset-bottom, 16px)) + 4px) 6px !important;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
+      z-index: 9999 !important;
+    }
+    body.standalone-app .app-container,
+    html.standalone-app .app-container {
+      padding-bottom: calc(95px + max(16px, env(safe-area-inset-bottom, 16px))) !important;
     }
 
     .dock-tab {
@@ -4218,6 +4290,9 @@
 </head>
 
 <body>
+  <!-- iOS Safari / WebApp Status Bar Frosted Blur Shield (Keeps Clock & Battery Legible When Scrolling) -->
+  <div class="ios-status-bar-blur" aria-hidden="true"></div>
+
   <!-- Rubber Fluid WebGL Shader Canvas Background (Glossy Folds Drifting Slowly) -->
   <canvas id="rubberFluidCanvas" class="rubber-fluid-canvas"></canvas>
 
@@ -4234,7 +4309,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.4</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.5</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5186,6 +5261,35 @@
         </div>
         <button type="button" class="modal-btn" id="soundToggleBtn" style="padding: 8px 14px; font-size: 0.92rem; width: auto; flex-shrink: 0;">
           🔊 Sound: ON
+        </button>
+      </div>
+
+      <!-- ACCESSIBILITY: REDUCE MOTION & WALLPAPER SHADER -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div>
+            <strong style="color: #fff; font-size: 0.98rem; display: block;">♿ Accessibility & Motion</strong>
+            <span style="font-size: 0.74rem; color: var(--ink-faded);" id="motionStatusTxt">Live rubber fluid wallpaper active</span>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px;">
+          <button type="button" class="modal-btn" id="motionEnableBtn" style="padding: 8px 6px; font-size: 0.78rem; text-align: center;">
+            ✨ Full Motion
+          </button>
+          <button type="button" class="modal-btn secondary" id="motionDisableBtn" style="padding: 8px 6px; font-size: 0.78rem; text-align: center;">
+            🛑 Disable Motion
+          </button>
+        </div>
+      </div>
+
+      <!-- WEBAPP SITE REFRESH / RELOAD -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+        <div>
+          <strong style="color: #fff; font-size: 0.98rem; display: block;">🔄 Refresh Web App</strong>
+          <span style="font-size: 0.74rem; color: var(--ink-faded);">Reload site & sync state without closing home screen app</span>
+        </div>
+        <button type="button" class="modal-btn" id="settingsRefreshAppBtn" style="padding: 8px 14px; font-size: 0.88rem; width: auto; flex-shrink: 0; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border-color: #38bdf8; color: #fff;">
+          🔄 Reload
         </button>
       </div>
 
@@ -7591,6 +7695,10 @@
 
         function renderRubberFluid() {
           if (!rfGl || !rfProgram) return;
+          if (document.documentElement.classList.contains("reduce-motion")) {
+            setTimeout(() => requestAnimationFrame(renderRubberFluid), 500);
+            return;
+          }
           rfTime += 0.005;
 
           // Smooth color transition towards selected team theme
@@ -7630,6 +7738,10 @@
         resize2D();
 
         function draw2D() {
+          if (document.documentElement.classList.contains("reduce-motion")) {
+            setTimeout(() => requestAnimationFrame(draw2D), 500);
+            return;
+          }
           ctx.clearRect(0, 0, rfCanvas.width, rfCanvas.height);
           rfTime += 0.003;
           const target = THEME_SHADERS[currentThemeKey] || THEME_SHADERS.RED;
@@ -9781,6 +9893,8 @@
           }
           // Refresh appearance mode buttons & status
           updateAppearanceSettingsUI();
+          // Refresh accessibility motion buttons & status
+          updateMotionUI();
           // Refresh QR code display
           updateSettingsQrUI();
           // Populate device info
@@ -9794,6 +9908,87 @@
           }
           settingsModal.classList.add("open");
           playTick(600);
+        };
+      }
+
+      // Accessibility Motion Setting Logic & Handlers
+      const MOTION_STORAGE_KEY = "drunk_uno_disable_motion";
+
+      function isMotionDisabled() {
+        try {
+          const saved = localStorage.getItem(MOTION_STORAGE_KEY);
+          if (saved !== null) return saved === "true";
+        } catch (e) {}
+        return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      }
+
+      function applyMotionSetting() {
+        const disabled = isMotionDisabled();
+        if (disabled) {
+          document.documentElement.classList.add("reduce-motion");
+          document.body.classList.add("reduce-motion");
+          if (rfCanvas) rfCanvas.style.display = "none";
+        } else {
+          document.documentElement.classList.remove("reduce-motion");
+          document.body.classList.remove("reduce-motion");
+          if (rfCanvas) rfCanvas.style.display = "block";
+        }
+        updateMotionUI();
+      }
+
+      function updateMotionUI() {
+        const disabled = isMotionDisabled();
+        const enableBtn = document.getElementById("motionEnableBtn");
+        const disableBtn = document.getElementById("motionDisableBtn");
+        const statusTxt = document.getElementById("motionStatusTxt");
+
+        if (enableBtn && disableBtn) {
+          if (disabled) {
+            enableBtn.classList.add("secondary");
+            enableBtn.classList.remove("active");
+            disableBtn.classList.remove("secondary");
+            disableBtn.classList.add("active");
+          } else {
+            enableBtn.classList.remove("secondary");
+            enableBtn.classList.add("active");
+            disableBtn.classList.add("secondary");
+            disableBtn.classList.remove("active");
+          }
+        }
+        if (statusTxt) {
+          statusTxt.textContent = disabled ? "Motion effects & live wallpaper disabled 🛑" : "Live rubber fluid wallpaper active ✨";
+        }
+      }
+
+      const motionEnableBtn = document.getElementById("motionEnableBtn");
+      if (motionEnableBtn) {
+        motionEnableBtn.onclick = () => {
+          try { localStorage.setItem(MOTION_STORAGE_KEY, "false"); } catch (e) {}
+          applyMotionSetting();
+          showToast("✨ Live Wallpaper & Motion Enabled");
+          playTick(500);
+        };
+      }
+
+      const motionDisableBtn = document.getElementById("motionDisableBtn");
+      if (motionDisableBtn) {
+        motionDisableBtn.onclick = () => {
+          try { localStorage.setItem(MOTION_STORAGE_KEY, "true"); } catch (e) {}
+          applyMotionSetting();
+          showToast("🛑 Motion & Shader Wallpaper Disabled");
+          playTick(400);
+        };
+      }
+
+      // Standalone Web App Reload / Refresh Action
+      const refreshAppBtn = document.getElementById("settingsRefreshAppBtn");
+      if (refreshAppBtn) {
+        refreshAppBtn.onclick = () => {
+          showToast("🔄 Reloading Web App...");
+          playTick(600);
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 250);
         };
       }
 
@@ -10461,6 +10656,17 @@
 
       loadGameState();
       applyAppearanceMode();
+
+      // Standalone web app detection (iOS PWA / Android TWA)
+      const isRunningStandalone = (window.navigator && window.navigator.standalone === true) || 
+                                  (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+      if (isRunningStandalone) {
+        document.documentElement.classList.add("standalone-app");
+        document.body.classList.add("standalone-app");
+      }
+
+      // Accessibility & reduced motion setting
+      applyMotionSetting();
 
       // Ensure persistent team index is respected across reloads
       const savedTeamIdx = localStorage.getItem("drunk_uno_team_idx");

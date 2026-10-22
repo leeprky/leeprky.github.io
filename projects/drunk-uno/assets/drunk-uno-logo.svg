@@ -1,112 +1,119 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <defs>
-    <!-- Background Radial Gradient -->
-    <radialGradient id="bgGrad" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#2a1408"/>
-      <stop offset="70%" stop-color="#140a04"/>
-      <stop offset="100%" stop-color="#080301"/>
-    </radialGradient>
-
-    <!-- Metallic Gold Gradient -->
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff0a0"/>
-      <stop offset="35%" stop-color="#dfb74c"/>
-      <stop offset="70%" stop-color="#8a5c18"/>
-      <stop offset="100%" stop-color="#dfb74c"/>
-    </linearGradient>
-
-    <!-- Foam Gradient -->
-    <linearGradient id="foamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#fff8e7"/>
-      <stop offset="100%" stop-color="#edd9b4"/>
-    </linearGradient>
-
-    <!-- Beer Amber Gradient -->
-    <linearGradient id="beerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffd54f"/>
-      <stop offset="50%" stop-color="#ffb300"/>
-      <stop offset="100%" stop-color="#e65100"/>
-    </linearGradient>
-
-    <!-- Uno Card Gradients -->
-    <linearGradient id="cardRed" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ef4444"/>
-      <stop offset="100%" stop-color="#991b1b"/>
-    </linearGradient>
-    <linearGradient id="cardBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="100%" stop-color="#1d4ed8"/>
-    </linearGradient>
-
     <!-- Drop Shadows -->
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.8"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.75"/>
     </filter>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#dfb74c" flood-opacity="0.6"/>
+    <filter id="textGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.9"/>
     </filter>
+    <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+
+    <!-- Metallic Gold Rim Gradients -->
+    <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1a8"/>
+      <stop offset="30%" stop-color="#e5b842"/>
+      <stop offset="65%" stop-color="#936417"/>
+      <stop offset="100%" stop-color="#e5b842"/>
+    </linearGradient>
+
+    <!-- Quadrant Color Gradients for 3D depth -->
+    <linearGradient id="redQuad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff4757"/>
+      <stop offset="100%" stop-color="#b71523"/>
+    </linearGradient>
+    <linearGradient id="blueQuad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2ed573"/>
+      <stop offset="0%" stop-color="#1e90ff"/>
+      <stop offset="100%" stop-color="#0952a5"/>
+    </linearGradient>
+    <linearGradient id="greenQuad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2ed573"/>
+      <stop offset="100%" stop-color="#107a38"/>
+    </linearGradient>
+    <linearGradient id="yellowQuad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffa502"/>
+      <stop offset="100%" stop-color="#d68000"/>
+    </linearGradient>
+
+    <!-- Text Fill Gradient -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f2f6"/>
+    </linearGradient>
+    <linearGradient id="unoGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff4b8"/>
+      <stop offset="40%" stop-color="#ffd32a"/>
+      <stop offset="100%" stop-color="#f39c12"/>
+    </linearGradient>
   </defs>
 
-  <!-- Outer Dark Shield -->
-  <circle cx="256" cy="256" r="244" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="12" filter="url(#shadow)"/>
-  <circle cx="256" cy="256" r="230" fill="none" stroke="#dfb74c" stroke-width="2" stroke-dasharray="6,4" opacity="0.6"/>
+  <!-- Deep Dark iOS Squircle Friendly Base -->
+  <rect width="512" height="512" rx="115" fill="#0f1115"/>
+  <rect width="512" height="512" rx="115" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
 
-  <!-- 4 Uno Color Quadrant Arcs (Outer Wheel) -->
-  <path d="M 256,36 A 220,220 0 0,1 476,256 L 440,256 A 184,184 0 0,0 256,72 Z" fill="#ef4444" opacity="0.95"/>
-  <path d="M 476,256 A 220,220 0 0,1 256,476 L 256,440 A 184,184 0 0,0 440,256 Z" fill="#3b82f6" opacity="0.95"/>
-  <path d="M 256,476 A 220,220 0 0,1 36,256 L 72,256 A 184,184 0 0,0 256,440 Z" fill="#22c55e" opacity="0.95"/>
-  <path d="M 36,256 A 220,220 0 0,1 256,36 L 256,72 A 184,184 0 0,0 72,256 Z" fill="#eab308" opacity="0.95"/>
+  <!-- Centered Colorful Uno Wheel -->
+  <g transform="translate(256, 256)" filter="url(#shadow)">
+    <!-- Outer Gold Border Ring -->
+    <circle cx="0" cy="0" r="216" fill="none" stroke="url(#goldRim)" stroke-width="12"/>
+    <circle cx="0" cy="0" r="210" fill="#12151b"/>
 
-  <!-- Inner Dark Medallion -->
-  <circle cx="256" cy="256" r="176" fill="#180c05" stroke="url(#goldGrad)" stroke-width="6"/>
+    <!-- 4 Uno Color Quadrants (Red, Blue, Green, Yellow) -->
+    <!-- Top-Left: Red -->
+    <path d="M 0,0 L 0,-206 A 206,206 0 0,0 -206,0 Z" fill="url(#redQuad)"/>
+    <!-- Top-Right: Blue -->
+    <path d="M 0,0 L 206,0 A 206,206 0 0,0 0,-206 Z" fill="url(#blueQuad)"/>
+    <!-- Bottom-Left: Yellow -->
+    <path d="M 0,0 L -206,0 A 206,206 0 0,0 0,206 Z" fill="url(#yellowQuad)"/>
+    <!-- Bottom-Right: Green -->
+    <path d="M 0,0 L 0,206 A 206,206 0 0,0 206,0 Z" fill="url(#greenQuad)"/>
 
-  <!-- Left Uno Card: Blue Reverse -->
-  <g transform="translate(190, 220) rotate(-18)">
-    <rect x="-55" y="-85" width="110" height="170" rx="14" fill="#ffffff" filter="url(#shadow)"/>
-    <rect x="-49" y="-79" width="98" height="158" rx="10" fill="url(#cardBlue)"/>
-    <ellipse cx="0" cy="0" rx="34" ry="46" fill="#ffffff" transform="rotate(25)"/>
-    <text x="0" y="10" font-family="'Arial Black', Impact, sans-serif" font-size="34" font-weight="900" fill="#1d4ed8" text-anchor="middle">⇄</text>
+    <!-- Quadrant Dividing Cross Lines -->
+    <line x1="0" y1="-206" x2="0" y2="206" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+    <line x1="-206" y1="0" x2="206" y2="0" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+
+    <!-- Inner Dark Oval / Pill Platform for Maximum Text Legibility -->
+    <ellipse cx="0" cy="0" rx="172" ry="122" fill="#0b0e13" stroke="url(#goldRim)" stroke-width="7" filter="url(#badgeShadow)"/>
+    <ellipse cx="0" cy="0" rx="160" ry="110" fill="#12161f" opacity="0.95"/>
+
+    <!-- Subtle Bevel Gloss on Platform -->
+    <path d="M -150,-10 C -120,-85 120,-85 150,-10 C 100,-45 -100,-45 -150,-10 Z" fill="#ffffff" opacity="0.12"/>
   </g>
 
-  <!-- Right Uno Card: Red Wild +4 -->
-  <g transform="translate(322, 220) rotate(16)">
-    <rect x="-55" y="-85" width="110" height="170" rx="14" fill="#ffffff" filter="url(#shadow)"/>
-    <rect x="-49" y="-79" width="98" height="158" rx="10" fill="url(#cardRed)"/>
-    <ellipse cx="0" cy="0" rx="34" ry="46" fill="#ffffff" transform="rotate(-25)"/>
-    <text x="0" y="12" font-family="'Arial Black', Impact, sans-serif" font-size="32" font-weight="900" fill="#991b1b" text-anchor="middle">+4</text>
-  </g>
+  <!-- BOLD TEXT: DRUNK (TOP) and UNO (BELOW) -->
+  <g text-anchor="middle" filter="url(#textGlow)">
+    <!-- "DRUNK" on top -->
+    <text x="256" y="222"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Arial Black', Impact, sans-serif"
+          font-size="64"
+          font-weight="900"
+          letter-spacing="5"
+          fill="url(#textGrad)"
+          stroke="#05070a"
+          stroke-width="7"
+          paint-order="stroke fill"
+          font-style="italic">
+      DRUNK
+    </text>
 
-  <!-- Central Frothy Beer Mug -->
-  <g id="beerMug" filter="url(#shadow)">
-    <!-- Mug Handle -->
-    <path d="M 295,190 C 350,190 355,275 295,280" fill="none" stroke="#fff0a0" stroke-width="16" stroke-linecap="round" opacity="0.9"/>
-
-    <!-- Glass Body -->
-    <path d="M 195,165 L 295,165 L 285,305 C 285,315 275,325 265,325 L 225,325 C 215,325 205,315 205,305 Z" fill="url(#beerGrad)" stroke="#ffffff" stroke-width="4"/>
-
-    <!-- Glass Highlights / Facets -->
-    <path d="M 215,175 L 210,300" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
-    <path d="M 240,175 L 240,310" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
-    <path d="M 275,175 L 270,300" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
-
-    <!-- Foamy Beer Head Overflowing -->
-    <path d="M 185,165 C 180,145 205,135 220,145 C 230,130 255,130 265,145 C 275,135 300,140 300,160 C 305,175 290,180 275,175 C 265,185 245,185 240,175 C 235,185 210,185 205,175 C 195,180 185,175 185,165 Z" fill="url(#foamGrad)" stroke="#e2ceb0" stroke-width="2"/>
-    <ellipse cx="205" cy="195" rx="7" ry="12" fill="url(#foamGrad)"/>
-    <ellipse cx="278" cy="205" rx="6" ry="10" fill="url(#foamGrad)"/>
-  </g>
-
-  <!-- Banner: DRUNK UNO -->
-  <g transform="translate(256, 395)" filter="url(#glow)">
-    <!-- Banner Ribbon Background -->
-    <path d="M -180,-30 L 180,-30 L 165,15 L 180,25 L -180,25 L -165,15 Z" fill="#991b1b" stroke="url(#goldGrad)" stroke-width="4"/>
-    <text x="0" y="8" font-family="'Arial Black', Impact, sans-serif" font-size="34" font-weight="900" fill="#ffea85" letter-spacing="3" text-anchor="middle" stroke="#23170b" stroke-width="2">
-      DRUNK UNO
+    <!-- "UNO" below -->
+    <text x="256" y="306"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Arial Black', Impact, sans-serif"
+          font-size="78"
+          font-weight="900"
+          letter-spacing="6"
+          fill="url(#unoGold)"
+          stroke="#05070a"
+          stroke-width="8"
+          paint-order="stroke fill"
+          font-style="italic">
+      UNO
     </text>
   </g>
 
-  <!-- Top Crown / Star Icon -->
-  <g transform="translate(256, 105)" filter="url(#glow)">
-    <polygon points="0,-16 5,-5 16,-5 8,3 11,14 0,7 -11,14 -8,3 -16,-5 -5,-5" fill="url(#goldGrad)"/>
-  </g>
+  <!-- Top Gloss Highlight across Entire Icon -->
+  <path d="M 0,0 L 512,0 C 512,180 340,160 0,230 Z" fill="#ffffff" opacity="0.04" pointer-events="none"/>
 </svg>
