@@ -1942,26 +1942,27 @@
        ========================================================================= */
     .rules-codex-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
       margin-top: 10px;
     }
 
     .codex-card {
       background: rgba(255, 248, 230, 0.95);
       border: 2px solid var(--ink);
-      border-radius: 10px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 12px 14px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       display: flex;
       gap: 12px;
-      align-items: flex-start;
-      transition: transform 0.15s;
+      align-items: stretch;
+      transition: transform 0.15s, box-shadow 0.15s;
+      min-height: 120px;
     }
-    .codex-card:hover { transform: translateY(-2px); }
+    .codex-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); }
 
     .uno-card-art {
-      width: 58px;
+      width: 56px;
       height: 84px;
       border-radius: 6px;
       border: 2px solid #23170b;
@@ -1972,7 +1973,7 @@
       color: #fff;
       font-family: 'Cinzel Decorative', Georgia, serif;
       font-weight: 900;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
       flex-shrink: 0;
       position: relative;
@@ -1984,35 +1985,53 @@
     .codex-body {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      justify-content: space-between;
+      gap: 6px;
       flex: 1;
+      min-width: 0;
     }
     .codex-title {
       font-family: 'Pirata One', cursive;
-      font-size: 1.35rem;
-      line-height: 1.1;
+      font-size: 1.3rem;
+      line-height: 1.15;
       color: var(--ink);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .impact-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.68rem;
       font-weight: 800;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
+      white-space: nowrap;
     }
     .impact-pill.danger { background: #ffebee; color: #b71c1c; border: 1px solid #b71c1c; }
     .impact-pill.reward { background: #e8f5e9; color: #1b5e20; border: 1px solid #1b5e20; }
     .impact-pill.special { background: #fff8e1; color: #b78103; border: 1px solid #b78103; }
 
     .codex-desc {
-      font-size: 0.88rem;
-      line-height: 1.35;
+      font-size: 0.86rem;
+      line-height: 1.4;
       color: var(--ink-faded);
     }
+    .codex-drink-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #991b1b;
+      background: rgba(185, 28, 28, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      border-radius: 6px;
+      padding: 3px 8px;
+      margin-top: 2px;
+      display: inline-block;
+    }
     .codex-drink {
+      display: none;
+    }
       font-size: 0.82rem;
       font-weight: 700;
       color: #7a1d1d;
@@ -3032,6 +3051,11 @@
     body:not(.light-mode) .codex-drink {
       color: #f6ad55 !important;
     }
+    body:not(.light-mode) .codex-drink-badge {
+      background: rgba(220, 38, 38, 0.2) !important;
+      border: 1px solid rgba(248, 113, 113, 0.35) !important;
+      color: #fca5a5 !important;
+    }
     body:not(.light-mode) .stop-card {
       background: rgba(26, 16, 10, 0.85) !important;
       color: #f7eedc !important;
@@ -3924,6 +3948,11 @@
     body.light-mode .codex-card .codex-drink {
       color: #7a3212 !important;
     }
+    body.light-mode .codex-card .codex-drink-badge {
+      background: rgba(220, 38, 38, 0.08) !important;
+      border: 1px solid rgba(185, 28, 28, 0.25) !important;
+      color: #991b1b !important;
+    }
     body.light-mode .stop-card {
       background: rgba(255, 255, 255, 0.92) !important;
       color: #241609 !important;
@@ -4064,7 +4093,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.6</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.7</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4291,7 +4320,6 @@
                     <th>Rank</th>
                     <th>Crew</th>
                     <th>Captain & Roster</th>
-                    <th>Cross-Rival</th>
                     <th>Points</th>
                     <th>Drinks Taken</th>
                     <th>Stash</th>
@@ -4457,12 +4485,33 @@
         <section id="tab-rules" class="tab-panel">
           <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
 
+            <!-- 3 Golden Rules Bar -->
+            <div class="rules-card-box" style="background: linear-gradient(135deg, rgba(35, 23, 11, 0.95) 0%, rgba(20, 10, 5, 0.98) 100%); border: 1.5px solid var(--gold); border-radius: 12px; padding: 14px;">
+              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.55rem; margin: 0 0 6px 0; color: var(--gold-bright);">
+                📜 THE 3 GOLDEN CRAWL LAWS
+              </h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px;">
+                <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #1d63b8; border-radius: 6px; padding: 8px 10px;">
+                  <strong style="color: #93c5fd; font-size: 0.92rem; display: block;">1. Match or Strike</strong>
+                  <span style="font-size: 0.82rem; color: #f0dec5;">Play 1 card per round on matching color or symbol. Attack rival crews to score points!</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #ef4444; border-radius: 6px; padding: 8px 10px;">
+                  <strong style="color: #fca5a5; font-size: 0.92rem; display: block;">2. Penalties Stack</strong>
+                  <span style="font-size: 0.82rem; color: #f0dec5;">Draw cards and drinking penalties resolve instantly. If you hold only 1 card, shout UNO or take 2 sips!</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.4); border-left: 3px solid #facc15; border-radius: 6px; padding: 8px 10px;">
+                  <strong style="color: #fef08a; font-size: 0.92rem; display: block;">3. Secret Stash</strong>
+                  <span style="font-size: 0.82rem; color: #f0dec5;">Captains keep secret Wilds face down. Card 7 lets opponents steal a hidden Wild! Stash cards score +1 pt each at crawl end.</span>
+                </div>
+              </div>
+            </div>
+
             <div class="rules-card-box">
               <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0; padding-bottom: 4px;">
-                🃏 UNO CARD CODEX // TAP ANY CARD FOR RULES
+                🃏 OFFICIAL UNO CARD CODEX
               </h2>
               <p style="font-size: 0.92rem; font-style: italic; margin-top: 4px;">
-                Simplified for quick reference during pub crawl rounds. Play 1 card on color or number!
+                Standardized visual guide for every special Uno card played during the pub crawl:
               </p>
 
               <!-- Interactive Card Grid -->
@@ -4571,6 +4620,12 @@
                 </button>
                 <button type="button" class="modal-btn" id="adminResetAllDevicesBtn" style="background: #8b1e1e; font-size: 0.95rem; padding: 8px 14px; width: auto; border-color: #ff4d4d; color: #fff;">
                   🚨 RESET ALL DEVICES SETTINGS
+                </button>
+                <button type="button" class="modal-btn" id="adminUnlinkAllHardwareBtn" style="background: #991b1b; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #f87171; color: #fff;" title="Completely unlink and erase all hardware fingerprints and device IDs">
+                  🔌 UNLINK ALL HARDWARE
+                </button>
+                <button type="button" class="modal-btn" id="adminNukeSiteBtn" style="background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); font-size: 0.95rem; padding: 8px 14px; width: auto; border: 2px solid #ef4444; color: #fee2e2; font-weight: 800; box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);" title="Prompts confirmation, gives everyone on site a 15-second countdown warning, wipes all game cookies and reloads everyone on any game code">
+                  ☢️ NUKE ALL CUSTOM GAME DATA (15s SITE PURGE)
                 </button>
               </div>
 
@@ -4943,7 +4998,10 @@
       <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <strong style="color: #fff; font-size: 0.92rem;">📱 Linked Device Profile</strong>
-          <button type="button" class="btn-stop-check" id="settingsEditProfileBtn" style="font-size: 0.75rem; padding: 3px 8px;">Edit Profile</button>
+          <div style="display: flex; gap: 4px;">
+            <button type="button" class="btn-stop-check" id="settingsEditProfileBtn" style="font-size: 0.75rem; padding: 3px 8px;">Edit Profile</button>
+            <button type="button" class="btn-stop-check" id="settingsUnlinkHardwareBtn" style="font-size: 0.75rem; padding: 3px 8px; color: #fca5a5; border-color: #ef4444;" title="Unlink hardware and wipe cached phone fingerprint">🔓 Unlink Hardware</button>
+          </div>
         </div>
         <div style="font-size: 0.76rem; color: #ffd885; font-family: 'JetBrains Mono', monospace;" id="settingsDeviceInfoTxt">
           Checking device...
@@ -5293,6 +5351,28 @@
       <button type="button" id="gameLockedAdminUnlockBtn" style="background: transparent; border: 1px dashed rgba(255,255,255,0.3); color: #94a3b8; font-size: 0.72rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
         🔑 Crawl Master Admin Unlock
       </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FULLSCREEN OVERLAY: SITE-WIDE NUCLEAR PURGE (15s COUNTDOWN)
+       ========================================================================= -->
+  <div id="globalNukeOverlay" class="game-locked-overlay" style="display: none; background: rgba(30, 0, 0, 0.96); z-index: 999999;">
+    <div class="locked-crawl-card" style="border: 3px solid #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); max-width: 440px;">
+      <div style="font-size: 4rem; margin-bottom: 6px;">☢️💥</div>
+      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);">
+        SITE-WIDE NUCLEAR PURGE
+      </h1>
+      <p style="font-size: 1.05rem; color: #fee2e2; margin-bottom: 12px; line-height: 1.4;">
+        The Crawl Master has initiated a complete wipe of all custom game data, cookies, scoreboards, and hardware links across the entire site!
+      </p>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 900; color: #fef08a; background: rgba(0,0,0,0.6); border: 2px solid #ef4444; border-radius: 12px; padding: 10px; margin-bottom: 14px;">
+        <span id="nukeTimerDisplay">15</span>s
+      </div>
+      <p style="font-size: 0.84rem; color: #fca5a5; margin: 0;">
+        ⚠️ Site will automatically wipe all local storage and reload fresh in <span id="nukeTimerSecs">15</span> seconds...
+      </p>
     </div>
   </div>
 
@@ -5726,6 +5806,14 @@
               if (parsed.currentStopIdx !== undefined) state.currentStopIdx = parsed.currentStopIdx;
               if (parsed.currentTurnIdx !== undefined) state.currentTurnIdx = parsed.currentTurnIdx;
               if (parsed.myTeamIdx !== undefined) state.myTeamIdx = parsed.myTeamIdx;
+              const savedTeamIdx = localStorage.getItem("drunk_uno_team_idx");
+              if (savedTeamIdx !== null && !isNaN(parseInt(savedTeamIdx, 10))) {
+                state.myTeamIdx = parseInt(savedTeamIdx, 10);
+              }
+              const myDevId = getOrCreateDeviceId();
+              if (state.devices && state.devices[myDevId] && typeof state.devices[myDevId].teamIdx === "number" && state.devices[myDevId].teamIdx >= 0) {
+                state.myTeamIdx = state.devices[myDevId].teamIdx;
+              }
               if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
               if (parsed.logs) state.logs = parsed.logs.slice(0, 25);
@@ -6058,6 +6146,79 @@
       const syncBtn = document.getElementById("syncRoomBtn");
       const syncLabel = document.getElementById("syncRoomLabel");
 
+      function unlinkHardwareProfile(reload = true) {
+        const devId = localStorage.getItem("drunk_uno_device_id");
+        if (devId && state.devices && state.devices[devId]) {
+          delete state.devices[devId];
+          saveGameState(true);
+        }
+        try {
+          localStorage.removeItem("drunk_uno_device_id");
+          localStorage.removeItem("drunk_uno_device_mac");
+          localStorage.removeItem("drunk_uno_player_name");
+          localStorage.removeItem("drunk_uno_team_idx");
+          localStorage.removeItem("drunk_uno_crew_setup");
+          localStorage.removeItem("drunk_uno_player_registered");
+          localStorage.removeItem("drunk_uno_is_kicked");
+          localStorage.removeItem("drunk_uno_is_banned");
+          localStorage.removeItem("drunk_uno_device_frozen");
+          localStorage.removeItem("drunk_uno_game_locked");
+          localStorage.removeItem("drunk_uno_cached_ip");
+          sessionStorage.clear();
+        } catch (e) {}
+        if (reload) {
+          window.location.reload();
+        }
+      }
+
+      let nukeInterval = null;
+      function triggerGlobalNukeCountdown() {
+        const overlay = document.getElementById("globalNukeOverlay");
+        const disp = document.getElementById("nukeTimerDisplay");
+        const secs = document.getElementById("nukeTimerSecs");
+        if (overlay) overlay.style.display = "flex";
+        playFanfare("freeze");
+        playAirhorn();
+        triggerHaptic([100, 50, 100, 50, 200]);
+
+        let remaining = 15;
+        if (disp) disp.textContent = String(remaining);
+        if (secs) secs.textContent = String(remaining);
+
+        clearInterval(nukeInterval);
+        nukeInterval = setInterval(() => {
+          remaining--;
+          if (disp) disp.textContent = String(remaining);
+          if (secs) secs.textContent = String(remaining);
+          playTick(750);
+          triggerHaptic(30);
+
+          if (remaining <= 0) {
+            clearInterval(nukeInterval);
+            try {
+              const keysToPurge = [];
+              for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith("drunk_uno")) {
+                  keysToPurge.push(k);
+                }
+              }
+              keysToPurge.forEach(k => localStorage.removeItem(k));
+              sessionStorage.clear();
+
+              document.cookie.split(";").forEach(c => {
+                const eq = c.indexOf("=");
+                const name = eq > -1 ? c.substr(0, eq).trim() : c.trim();
+                if (name.startsWith("drunk_uno")) {
+                  deleteCookie(name);
+                }
+              });
+            } catch (e) {}
+            window.location.href = window.location.origin + window.location.pathname;
+          }
+        }, 1000);
+      }
+
       function applyIncomingState(incoming) {
         if (!incoming || !Array.isArray(incoming.teams)) return;
         state.teams = incoming.teams;
@@ -6078,6 +6239,14 @@
         if (incoming.isGameLocked !== undefined) state.isGameLocked = incoming.isGameLocked;
         if (incoming.frozenDevices && typeof incoming.frozenDevices === "object") {
           state.frozenDevices = incoming.frozenDevices;
+        }
+
+        // Sync our persistent team if admin reassigned us in the device roster
+        const myDevId = getOrCreateDeviceId();
+        if (state.devices && state.devices[myDevId] && typeof state.devices[myDevId].teamIdx === "number" && state.devices[myDevId].teamIdx >= 0) {
+          state.myTeamIdx = state.devices[myDevId].teamIdx;
+          try { localStorage.setItem("drunk_uno_team_idx", String(state.myTeamIdx)); } catch (e) {}
+          applyTeamTheme(state.myTeamIdx);
         }
 
         // Persist to local storage for this room WITHOUT broadcasting back
@@ -6124,6 +6293,25 @@
           mqttClient.onMessageArrived = (message) => {
             try {
               const incoming = JSON.parse(message.payloadString);
+
+              // Global Site-Wide Nuclear Purge (15s Countdown on All Games)
+              if (incoming && incoming.action === "GLOBAL_SITE_NUKE") {
+                triggerGlobalNukeCountdown();
+                return;
+              }
+
+              // Unlink Hardware Signals
+              if (incoming && incoming.action === "UNLINK_ALL_HARDWARE") {
+                unlinkHardwareProfile(true);
+                return;
+              }
+              if (incoming && incoming.action === "UNLINK_HARDWARE") {
+                const myDevId = getOrCreateDeviceId();
+                if (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) {
+                  unlinkHardwareProfile(true);
+                  return;
+                }
+              }
 
               // Real-Time Connection Test Popup
               if (incoming && incoming.action === "TEST_CONNECTION_POPUP") {
@@ -6183,10 +6371,15 @@
                                  (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
                 if (isTarget && typeof incoming.newTeamIdx === "number") {
                   state.myTeamIdx = incoming.newTeamIdx;
+                  if (state.devices && state.devices[myDevId]) {
+                    state.devices[myDevId].teamIdx = incoming.newTeamIdx;
+                  }
                   try {
+                    localStorage.setItem("drunk_uno_team_idx", String(incoming.newTeamIdx));
                     localStorage.setItem("drunk_uno_crew_setup", "true");
                     localStorage.setItem("drunk_uno_player_registered", "true");
                   } catch (e) {}
+                  saveGameState(false);
                   applyTeamTheme(incoming.newTeamIdx);
                   renderCrewBar();
                   renderScoringTab();
@@ -6336,6 +6529,7 @@
               syncBtn.classList.remove("offline");
               syncLabel.textContent = "CONNECTED";
               mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
+              mqttClient.subscribe("leeprky/drunkuno/global");
               
               // Request current room state from existing devices in this specific game
               try {
@@ -7035,7 +7229,7 @@
               <div class="crew-score-big">${team.score}</div>
             </div>
             <div class="crew-rival-tag">
-              ${team.captain ? `👑 ${escapeHtml(team.captain)} • ` : ""}🎯 Targets: ${escapeHtml(team.targetName)} • ${team.sips} sips
+              ${team.captain ? `👑 ${escapeHtml(team.captain)} • ` : ""}${team.sips} sips taken
             </div>
           `;
           bar.appendChild(pill);
@@ -7086,12 +7280,11 @@
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = `btn-pick-team ${idx === state.targetTeamIdx ? "selected" : ""}`;
-            const isOfficialRival = idx === state.teams[state.myTeamIdx].targetIdx;
             const isSelf = idx === state.myTeamIdx;
             btn.innerHTML = `
               <span class="crew-dot ${t.colorClass}"></span>
               <span>${escapeHtml(t.name)}</span>
-              <span class="sub">${isOfficialRival ? "🎯 RIVAL" : isSelf ? "(Your Team)" : "Target"}</span>
+              <span class="sub">${isSelf ? "(Your Team)" : "Target Crew"}</span>
             `;
             btn.onclick = () => {
               state.targetTeamIdx = idx;
@@ -7314,7 +7507,6 @@
             if (checkSpectatorBlock()) return;
             const dir = parseInt(btn.dataset.stashChange, 10);
             targetTeam.stash = Math.max(0, Math.min(2, targetTeam.stash + dir));
-            addLog(`🃏 ${targetTeam.name} Captain's Stash updated to ${targetTeam.stash} Wild(s).`);
             saveGameState(true);
             renderScoringTab();
           };
@@ -7344,7 +7536,6 @@
             <td><strong>${rank === 0 ? "👑 1st" : rank === 1 ? "🥈 2nd" : rank === 2 ? "🥉 3rd" : "⚓ 4th"}</strong></td>
             <td><span class="crew-dot ${team.colorClass}"></span> <strong>${escapeHtml(team.name)}</strong></td>
             <td><div>${captainDisplay}</div><small style="color: var(--ink-faded); font-size: 0.78rem;">${rosterDisplay}</small></td>
-            <td>${escapeHtml(team.targetName)}</td>
             <td style="font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 1.25rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
             <td>${team.sips} sips</td>
             <td>${team.stash}/2 wild</td>
@@ -7504,6 +7695,7 @@
       // --- 09. RENDER UNO CARD CODEX (SIMPLIFIED RULES) ---
       function renderUnoCodex() {
         const grid = document.getElementById("rulesCodexGrid");
+        if (!grid) return;
         grid.innerHTML = "";
         UNO_CODEX.forEach(c => {
           const card = document.createElement("div");
@@ -7513,12 +7705,16 @@
               <span>${c.code}</span>
             </div>
             <div class="codex-body">
-              <div class="codex-title">
-                <span>${c.title}</span>
-                <span class="impact-pill ${c.impactType}">${c.impact}</span>
+              <div>
+                <div class="codex-title">
+                  <span>${escapeHtml(c.title)}</span>
+                  <span class="impact-pill ${c.impactType}">${escapeHtml(c.impact)}</span>
+                </div>
+                <div class="codex-desc" style="margin-top: 4px;">${escapeHtml(c.desc)}</div>
               </div>
-              <div class="codex-desc">${c.desc}</div>
-              <div class="codex-drink">🍺 Penalty: ${c.drink}</div>
+              <div>
+                <div class="codex-drink-badge">🍺 <strong>Consequence:</strong> ${escapeHtml(c.drink)}</div>
+              </div>
             </div>
           `;
           grid.appendChild(card);
@@ -8074,6 +8270,18 @@
                 }
                 addLog(`⚙️ ADMIN: Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
 
+                // If this is the current device being reassigned:
+                if (devId === getOrCreateDeviceId()) {
+                  state.myTeamIdx = newTeamIdx;
+                  try {
+                    localStorage.setItem("drunk_uno_team_idx", String(newTeamIdx));
+                    localStorage.setItem("drunk_uno_player_registered", "true");
+                    localStorage.setItem("drunk_uno_crew_setup", "true");
+                  } catch (e) {}
+                  applyTeamTheme(newTeamIdx);
+                  updateTopUserName();
+                }
+
                 if (mqttClient && mqttClient.isConnected()) {
                   try {
                     const p = JSON.stringify({
@@ -8204,19 +8412,19 @@
               };
 
               card.querySelector(".btn-device-unlink").onclick = () => {
-                if (confirm(`Unlink and kick device for ${d.name}?`)) {
+                if (confirm(`Unlink and kick device for ${d.name}?\n\nThis will completely unbind their hardware profile and phone ID.`)) {
                   const targetTeam = state.teams[d.teamIdx];
                   if (targetTeam) {
                     targetTeam.players = targetTeam.players.filter(p => p !== d.name);
                     if (targetTeam.captain === d.name) targetTeam.captain = targetTeam.players[0] || "";
                   }
                   delete state.devices[devId];
-                  addLog(`⚙️ ADMIN: Kicked device for ${d.name}`);
+                  addLog(`⚙️ ADMIN: Unlinked device for ${d.name}`);
 
                   if (mqttClient && mqttClient.isConnected()) {
                     try {
                       const p = JSON.stringify({
-                        action: "KICK_DEVICE",
+                        action: "UNLINK_HARDWARE",
                         targetDeviceId: devId,
                         targetIp: d.ip,
                         state: state
@@ -8226,6 +8434,11 @@
                       m.retained = false;
                       mqttClient.send(m);
                     } catch (e) {}
+                  }
+
+                  if (devId === getOrCreateDeviceId()) {
+                    unlinkHardwareProfile(true);
+                    return;
                   }
 
                   saveGameState(true);
@@ -8730,6 +8943,66 @@
         };
       }
 
+      const adminUnlinkAllBtn = document.getElementById("adminUnlinkAllHardwareBtn");
+      if (adminUnlinkAllBtn) {
+        adminUnlinkAllBtn.onclick = () => {
+          const answer = confirm("🔌 UNLINK ALL HARDWARE DEVICES?\n\nThis will instantly unlink and clear hardware fingerprints on all connected phones, wiping cached device IDs and forcing everyone to start clean.\n\nAre you sure you want to proceed?");
+          if (!answer) return;
+
+          state.devices = {};
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const payload = JSON.stringify({
+                action: "UNLINK_ALL_HARDWARE",
+                timestamp: Date.now()
+              });
+              const m = new Paho.MQTT.Message(payload);
+              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.retained = false;
+              mqttClient.send(m);
+            } catch (e) {}
+          }
+          saveGameState(true);
+          unlinkHardwareProfile(true);
+        };
+      }
+
+      const adminNukeBtn = document.getElementById("adminNukeSiteBtn");
+      if (adminNukeBtn) {
+        adminNukeBtn.onclick = () => {
+          const answer = confirm("☢️ NUKE ALL CUSTOM GAME DATA ACROSS SITE?\n\nThis will purge all custom games, scoreboard states, cookies, and device links.\n\nAll connected phones on ANY game code will see a 15-second countdown warning before being reloaded.\n\nAre you sure you want to NUKE everything?");
+          if (!answer) return;
+
+          addLog("☢️ CRAWL MASTER: Broadcasted SITE-WIDE NUCLEAR PURGE to all game codes!");
+
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const payload = JSON.stringify({
+                action: "GLOBAL_SITE_NUKE",
+                sender: state.myPlayerName || "Crawl Master",
+                timestamp: Date.now()
+              });
+              // Send to global universal topic
+              const msgGlobal = new Paho.MQTT.Message(payload);
+              msgGlobal.destinationName = "leeprky/drunkuno/global";
+              msgGlobal.retained = false;
+              mqttClient.send(msgGlobal);
+
+              // Also send to current room topic for redundancy
+              const msgRoom = new Paho.MQTT.Message(payload);
+              msgRoom.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msgRoom.retained = false;
+              mqttClient.send(msgRoom);
+            } catch (e) {
+              console.warn("MQTT nuke broadcast error:", e);
+            }
+          }
+
+          // Trigger countdown locally
+          triggerGlobalNukeCountdown();
+        };
+      }
+
       const adminBroadcastBtn = document.getElementById("adminBroadcastPubBtn");
       if (adminBroadcastBtn) {
         adminBroadcastBtn.onclick = () => {
@@ -8962,6 +9235,15 @@
         settingsEditProfileBtn.onclick = () => {
           if (settingsModal) settingsModal.classList.remove("open");
           openCrewSetupModal(true);
+        };
+      }
+
+      const settingsUnlinkBtn = document.getElementById("settingsUnlinkHardwareBtn");
+      if (settingsUnlinkBtn) {
+        settingsUnlinkBtn.onclick = () => {
+          if (confirm("⚠️ UNLINK THIS PHONE HARDWARE PROFILE?\n\nThis will completely erase your device ID, MAC fingerprint, and team link, allowing a complete clean reset.")) {
+            unlinkHardwareProfile(true);
+          }
         };
       }
 
@@ -9217,7 +9499,6 @@
                 <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
                 <div>
                   <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">${escapeHtml(t.name)}</div>
-                  <div class="rival-hint" style="color: #e2ceb0; font-size: 0.76rem;">Targets: ${escapeHtml(t.targetName)}</div>
                 </div>
               </div>
               ${isOtherTeamLocked ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #fca5a5; padding: 2px 6px; border-radius: 4px; border: 1px solid #ef4444;">🔒 Locked</span>' : ''}
@@ -9296,6 +9577,7 @@
             state.myPlayerName = playerName;
             try {
               localStorage.setItem("drunk_uno_player_name", playerName);
+              localStorage.setItem("drunk_uno_team_idx", String(setupSelectedTeamIdx));
               localStorage.setItem("drunk_uno_player_registered", "true");
               localStorage.setItem("drunk_uno_crew_setup", "true");
             } catch (err) {}
@@ -9412,6 +9694,17 @@
 
       loadGameState();
       applyAppearanceMode();
+
+      // Ensure persistent team index is respected across reloads
+      const savedTeamIdx = localStorage.getItem("drunk_uno_team_idx");
+      if (savedTeamIdx !== null && !isNaN(parseInt(savedTeamIdx, 10))) {
+        state.myTeamIdx = parseInt(savedTeamIdx, 10);
+      }
+      const myCurrentDevId = getOrCreateDeviceId();
+      if (state.devices && state.devices[myCurrentDevId] && typeof state.devices[myCurrentDevId].teamIdx === "number" && state.devices[myCurrentDevId].teamIdx >= 0) {
+        state.myTeamIdx = state.devices[myCurrentDevId].teamIdx;
+        try { localStorage.setItem("drunk_uno_team_idx", String(state.myTeamIdx)); } catch (e) {}
+      }
       const hasRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
       applyTeamTheme(hasRegistered ? (state.myTeamIdx ?? 0) : null);
       updateTopUserName();
