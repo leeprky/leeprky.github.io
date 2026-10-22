@@ -4064,7 +4064,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.5</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.6</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4127,7 +4127,7 @@
                   <span class="crew-dot yellow"></span>
                   <span style="color: #b58500;">YELLOW — Drinker's Freeze</span>
                 </div>
-                <p>Stops all drinking penalties for that targeted team until their next turn!</p>
+                <p>Stops all drinking penalties for that targeted team temporarily!</p>
               </div>
             </div>
 
@@ -4530,7 +4530,7 @@
                 ⚔️ CRAWL MASTER ADMIN
               </h2>
               <p style="font-size: 0.95rem; color: #f4e2be; margin: 0;">
-                Live device hardware links (MAC & IP), active pub location, team turns, and emergency crawl sync.
+                Live device hardware links (MAC & IP), active pub location, device roster, and emergency crawl sync.
               </p>
             </div>
 
@@ -4955,6 +4955,33 @@
         </div>
       </div>
 
+      <!-- INSTANT JOIN QR CODE FOR EASY JOINING -->
+      <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: center;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <strong style="color: var(--gold-bright); font-size: 0.96rem;">📲 Instant Join QR Code</strong>
+          <span style="font-size: 0.72rem; color: #86efac; background: rgba(34, 197, 94, 0.2); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(74, 222, 128, 0.4);">Scan to Play</span>
+        </div>
+        <p style="font-size: 0.76rem; color: #f0dec5; margin: 0 0 10px 0;">
+          Show this QR code to other players so they can jump straight in on their phones:
+        </p>
+        <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+          <div style="background: #ffffff; padding: 10px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.45); display: inline-block;">
+            <img id="settingsQrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&amp;data=https%3A%2F%2Fleeprky.github.io%2Fprojects%2Fdrunk-uno%2F" alt="Scan to join Drunk Uno" style="width: 150px; height: 150px; display: block; border-radius: 4px;" />
+          </div>
+        </div>
+        <div style="font-size: 0.73rem; color: #ffd885; font-family: 'JetBrains Mono', monospace; word-break: break-all; margin-bottom: 8px;" id="settingsQrTargetUrlTxt">
+          https://leeprky.github.io/projects/drunk-uno/
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+          <button type="button" class="modal-btn secondary" id="settingsToggleQrBtn" style="font-size: 0.78rem; padding: 6px 8px; white-space: nowrap;">
+            🔗 With Room Code
+          </button>
+          <button type="button" class="modal-btn" id="settingsCopyQrUrlBtn" style="font-size: 0.78rem; padding: 6px 8px; white-space: nowrap;">
+            📋 Copy Website URL
+          </button>
+        </div>
+      </div>
+
       <!-- MASTER ADMIN CONSOLE (PIN PROTECTED: 22140711) -->
       <div class="glass-panel" style="padding: 12px; border-radius: 10px; margin-bottom: 4px; border: 1.5px solid rgba(223, 183, 76, 0.5); background: linear-gradient(135deg, rgba(35, 23, 11, 0.9) 0%, rgba(20, 10, 5, 0.95) 100%);">
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
@@ -5280,6 +5307,7 @@
       // --- 01. STATE & COOKIE PERSISTENCE CONFIGURATION ---
       const COOKIE_KEY = "drunk_uno_game_state";
       const ADMIN_PASSCODE = "22140711";
+      const BASE_PROJECT_URL = "https://leeprky.github.io/projects/drunk-uno/";
 
       function setCookie(name, value, days = 30) {
         const d = new Date();
@@ -5290,6 +5318,47 @@
       function getCookie(name) {
         const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
         return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      function deleteCookie(name) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax`;
+      }
+
+      function getRoomStorageKey(code) {
+        const c = (code || roomCode || "PRESTON-2026").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
+        return `drunk_uno_state_${c || "DEFAULT"}`;
+      }
+
+      function copyTextToClipboard(text, successMsg = "📋 Copied to clipboard!") {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast(successMsg);
+          }).catch(() => {
+            fallbackCopyText(text, successMsg);
+          });
+        } else {
+          fallbackCopyText(text, successMsg);
+        }
+      }
+
+      function fallbackCopyText(text, successMsg) {
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          ta.style.top = "0";
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const successful = document.execCommand("copy");
+          document.body.removeChild(ta);
+          if (successful) {
+            showToast(successMsg);
+            return;
+          }
+        } catch (e) {}
+        showToast(successMsg);
       }
 
       function showToast(text) {
@@ -5450,7 +5519,7 @@
         { id: "b3", icon: "🃏", title: "Drops Card on Dirty Floor", pts: -1, isBonus: false, desc: "Butterfingers card drop under table", claimedBy: null },
         { id: "b4", icon: "🗣️", title: "Argues with Referee", pts: -2, isBonus: false, desc: "Disputing official Uno crawl laws", claimedBy: null },
         { id: "b5", icon: "🥃", title: "Orders Cursed / Bizarre Shot", pts: -2, isBonus: false, desc: "Tequila rose, sambuca, or mystery concoction", claimedBy: null },
-        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Turn", pts: -2, isBonus: false, desc: "Holding up gameplay for bladder relief", claimedBy: null },
+        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Game", pts: -2, isBonus: false, desc: "Holding up gameplay for bladder relief", claimedBy: null },
         { id: "b7", icon: "⏳", title: "Takes > 20s to Play a Card", pts: -1, isBonus: false, desc: "Paralysis by analysis", claimedBy: null },
         { id: "b8", icon: "👁️", title: "Peeking at Captain's Stash", pts: -4, isBonus: false, desc: "Illegally spying on hidden wild cards", claimedBy: null },
         { id: "b9", icon: "💃", title: "Dances / Sings to Pub Music", pts: -2, isBonus: false, desc: "Distracted by tavern bangers", claimedBy: null },
@@ -5475,7 +5544,8 @@
 
       // Get Room Code from URL query param (e.g. ?room=PRESTON-2026) or default
       const urlParams = new URLSearchParams(window.location.search);
-      let roomCode = (urlParams.get("room") || "PRESTON-2026").toUpperCase().trim();
+      let roomCode = (urlParams.get("room") || "PRESTON-2026").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
+      if (!roomCode) roomCode = "PRESTON-2026";
 
       let state = {
         teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
@@ -5614,8 +5684,9 @@
           state.logs = state.logs.slice(0, 25);
         }
         const serialized = JSON.stringify(state);
-        setCookie(COOKIE_KEY, serialized, 30);
-        try { localStorage.setItem(COOKIE_KEY, serialized); } catch (e) {}
+        const storageKey = getRoomStorageKey(roomCode);
+        setCookie(storageKey, serialized, 30);
+        try { localStorage.setItem(storageKey, serialized); } catch (e) {}
 
         if (broadcast && mqttClient && mqttClient.isConnected()) {
           try {
@@ -5630,9 +5701,17 @@
       }
 
       function loadGameState() {
-        let raw = getCookie(COOKIE_KEY);
+        const storageKey = getRoomStorageKey(roomCode);
+        let raw = getCookie(storageKey);
         if (!raw) {
-          try { raw = localStorage.getItem(COOKIE_KEY); } catch (e) {}
+          try { raw = localStorage.getItem(storageKey); } catch (e) {}
+        }
+        // Fallback for default room legacy key
+        if (!raw && roomCode === "PRESTON-2026") {
+          raw = getCookie("drunk_uno_game_state");
+          if (!raw) {
+            try { raw = localStorage.getItem("drunk_uno_game_state"); } catch (e) {}
+          }
         }
         if (raw) {
           try {
@@ -5979,6 +6058,48 @@
       const syncBtn = document.getElementById("syncRoomBtn");
       const syncLabel = document.getElementById("syncRoomLabel");
 
+      function applyIncomingState(incoming) {
+        if (!incoming || !Array.isArray(incoming.teams)) return;
+        state.teams = incoming.teams;
+        state.teams.forEach(t => {
+          if (!Array.isArray(t.players)) t.players = [];
+          if (!t.captain) t.captain = "";
+        });
+        state.stops = incoming.stops || state.stops;
+        state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
+        if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
+        state.bingoCards = incoming.bingoCards || state.bingoCards;
+        if (incoming.logs) state.logs = incoming.logs.slice(0, 25);
+        if (incoming.devices && typeof incoming.devices === "object") {
+          state.devices = Object.assign({}, state.devices, incoming.devices);
+        }
+        if (incoming.bannedList) state.bannedList = incoming.bannedList;
+        if (incoming.resetEpoch) state.resetEpoch = incoming.resetEpoch;
+        if (incoming.isGameLocked !== undefined) state.isGameLocked = incoming.isGameLocked;
+        if (incoming.frozenDevices && typeof incoming.frozenDevices === "object") {
+          state.frozenDevices = incoming.frozenDevices;
+        }
+
+        // Persist to local storage for this room WITHOUT broadcasting back
+        saveGameState(false);
+
+        checkBannedStatus();
+        checkKickedStatus();
+        checkGameLockedStatus();
+        checkFrozenStatus();
+        updateTopUserName();
+
+        renderCrewBar();
+        renderScoringTab();
+        renderTurnBanner();
+        renderStops();
+        renderBingoGrid();
+        renderLogs();
+        renderAdminTab();
+        playTick(660);
+        showToast("📡 Live Score Updated from Room!");
+      }
+
       function initMqttSync() {
         if (checkBannedStatus() || checkKickedStatus()) {
           syncBtn.classList.add("offline");
@@ -6168,41 +6289,40 @@
                 }
               }
 
-              if (incoming && Array.isArray(incoming.teams)) {
-                state.teams = incoming.teams;
-                state.teams.forEach(t => {
-                  if (!Array.isArray(t.players)) t.players = [];
-                  if (!t.captain) t.captain = "";
-                });
-                state.stops = incoming.stops || state.stops;
-                state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
-                if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
-                state.bingoCards = incoming.bingoCards || state.bingoCards;
-                if (incoming.logs) state.logs = incoming.logs.slice(0, 25);
-                if (incoming.devices && typeof incoming.devices === "object") {
-                  state.devices = Object.assign({}, state.devices, incoming.devices);
+              // Room handshake: request for room state from a newly joined peer
+              if (incoming && incoming.action === "REQUEST_ROOM_SYNC") {
+                const myDevId = getOrCreateDeviceId();
+                if (incoming.requesterId && incoming.requesterId !== myDevId) {
+                  if (mqttClient && mqttClient.isConnected()) {
+                    try {
+                      const resp = JSON.stringify({
+                        action: "ROOM_SYNC_RESPONSE",
+                        targetRequesterId: incoming.requesterId,
+                        state: state,
+                        timestamp: Date.now()
+                      });
+                      const rm = new Paho.MQTT.Message(resp);
+                      rm.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      rm.retained = false;
+                      mqttClient.send(rm);
+                    } catch (e) {}
+                  }
                 }
-                if (incoming.bannedList) state.bannedList = incoming.bannedList;
-                if (incoming.resetEpoch) state.resetEpoch = incoming.resetEpoch;
-                if (incoming.isGameLocked !== undefined) state.isGameLocked = incoming.isGameLocked;
-                if (incoming.frozenDevices && typeof incoming.frozenDevices === "object") {
-                  state.frozenDevices = incoming.frozenDevices;
-                }
-                checkBannedStatus();
-                checkKickedStatus();
-                checkGameLockedStatus();
-                checkFrozenStatus();
-                updateTopUserName();
+                return;
+              }
 
-                renderCrewBar();
-                renderScoringTab();
-                renderTurnBanner();
-                renderStops();
-                renderBingoGrid();
-                renderLogs();
-                renderAdminTab();
-                playTick(660);
-                showToast("📡 Live Score Updated from Room!");
+              // Room handshake: response to our sync request
+              if (incoming && incoming.action === "ROOM_SYNC_RESPONSE") {
+                const myDevId = getOrCreateDeviceId();
+                if (incoming.targetRequesterId === myDevId && incoming.state) {
+                  applyIncomingState(incoming.state);
+                }
+                return;
+              }
+
+              if (incoming && Array.isArray(incoming.teams)) {
+                applyIncomingState(incoming);
+                return;
               }
             } catch (err) {
               console.error("MQTT receive error:", err);
@@ -6216,8 +6336,22 @@
               syncBtn.classList.remove("offline");
               syncLabel.textContent = "CONNECTED";
               mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
-              // Broadcast our state so new devices receive it
-              saveGameState(true);
+              
+              // Request current room state from existing devices in this specific game
+              try {
+                const req = JSON.stringify({
+                  action: "REQUEST_ROOM_SYNC",
+                  requesterId: getOrCreateDeviceId(),
+                  requesterName: state.myPlayerName || "",
+                  timestamp: Date.now()
+                });
+                const m = new Paho.MQTT.Message(req);
+                m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                m.retained = false;
+                mqttClient.send(m);
+              } catch (e) {}
+
+              syncMyDevice();
             },
             onFailure: (err) => {
               console.warn("MQTT connect failed:", err);
@@ -7408,7 +7542,7 @@
         { id: "RED", name: "Drink Swapper", color: "RED", desc: "Swap your current drink with any rival team's drink of your choice!", bg: "#d62828" },
         { id: "BLUE", name: "Shot Roulette", color: "BLUE", desc: "Nominate 1 rival player to take a mystery sip or shot!", bg: "#1d63b8" },
         { id: "GREEN", name: "Chug Challenge", color: "GREEN", desc: "5-second head-to-head chug race vs attacker! (+6 pts winner / -6 pts loser).", bg: "#2b9348" },
-        { id: "YELLOW", name: "Drinker's Freeze", color: "YELLOW", desc: "Stops all drinking penalties for that targeted team until their next turn!", bg: "#f7b801" }
+        { id: "YELLOW", name: "Drinker's Freeze", color: "YELLOW", desc: "Stops all drinking penalties for that targeted team temporarily!", bg: "#f7b801" }
       ];
 
       function launchSpin(power) {
@@ -7539,7 +7673,7 @@
         } else if (outcome.id === "YELLOW") {
           const btnFreeze = document.createElement("button");
           btnFreeze.className = "modal-btn";
-          btnFreeze.textContent = `❄️ Freeze Target Team Until Next Turn`;
+          btnFreeze.textContent = `❄️ Freeze Target Team`;
           btnFreeze.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
             victim.frozen = true;
@@ -8340,15 +8474,7 @@
       const adminRegCurrentBtn = document.getElementById("adminRegisterCurrentDeviceBtn");
       if (adminRegCurrentBtn) {
         adminRegCurrentBtn.onclick = () => {
-          const name = prompt("Enter your player name to link this phone:", state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "");
-          if (name && name.trim()) {
-            state.myPlayerName = name.trim();
-            try { localStorage.setItem("drunk_uno_player_name", name.trim()); } catch (e) {}
-            syncMyDevice(name.trim(), state.myTeamIdx, false);
-            updateTopUserName();
-            renderAdminTab();
-            showToast(`📱 Linked this phone as ${name.trim()}`);
-          }
+          openCrewSetupModal(true);
         };
       }
 
@@ -8782,6 +8908,8 @@
           }
           // Refresh appearance mode buttons & status
           updateAppearanceSettingsUI();
+          // Refresh QR code display
+          updateSettingsQrUI();
           // Populate device info
           const devInfo = document.getElementById("settingsDeviceInfoTxt");
           if (devInfo) {
@@ -8837,19 +8965,57 @@
         };
       }
 
+      // --- SETTINGS QR CODE CONTROLLER ---
+      let settingsQrMode = "base"; // "base" = website root URL | "room" = with current room code
+
+      function updateSettingsQrUI() {
+        const img = document.getElementById("settingsQrCodeImg");
+        const txt = document.getElementById("settingsQrTargetUrlTxt");
+        const toggleBtn = document.getElementById("settingsToggleQrBtn");
+        const copyBtn = document.getElementById("settingsCopyQrUrlBtn");
+
+        const targetUrl = (settingsQrMode === "room")
+          ? `${BASE_PROJECT_URL}?room=${encodeURIComponent(roomCode)}`
+          : BASE_PROJECT_URL;
+
+        if (img) {
+          img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(targetUrl)}`;
+        }
+        if (txt) {
+          txt.textContent = targetUrl;
+        }
+        if (toggleBtn) {
+          toggleBtn.textContent = (settingsQrMode === "room") ? "🌐 Switch to Main URL" : "🔗 Include Room Code";
+        }
+        if (copyBtn) {
+          copyBtn.textContent = (settingsQrMode === "room") ? "📋 Copy Room Link" : "📋 Copy Website URL";
+        }
+      }
+
+      const toggleQrBtn = document.getElementById("settingsToggleQrBtn");
+      if (toggleQrBtn) {
+        toggleQrBtn.onclick = () => {
+          settingsQrMode = (settingsQrMode === "base") ? "room" : "base";
+          updateSettingsQrUI();
+          playTick(600);
+        };
+      }
+
+      const copyQrUrlBtn = document.getElementById("settingsCopyQrUrlBtn");
+      if (copyQrUrlBtn) {
+        copyQrUrlBtn.onclick = () => {
+          const targetUrl = (settingsQrMode === "room")
+            ? `${BASE_PROJECT_URL}?room=${encodeURIComponent(roomCode)}`
+            : BASE_PROJECT_URL;
+          copyTextToClipboard(targetUrl, settingsQrMode === "room" ? "📋 Room Link Copied!" : "📋 Website URL Copied!");
+        };
+      }
+
       const settingsCopyLinkBtn = document.getElementById("settingsCopyRoomLinkBtn");
       if (settingsCopyLinkBtn) {
         settingsCopyLinkBtn.onclick = () => {
-          const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}`;
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(shareUrl).then(() => {
-              showToast("📋 Share Link Copied to Clipboard!");
-            }).catch(() => {
-              prompt("Room Link:", shareUrl);
-            });
-          } else {
-            prompt("Room Link:", shareUrl);
-          }
+          const shareUrl = `${BASE_PROJECT_URL}?room=${encodeURIComponent(roomCode)}`;
+          copyTextToClipboard(shareUrl, "📋 Room Invite Link Copied!");
         };
       }
 
@@ -8860,25 +9026,19 @@
       };
 
       document.getElementById("joinRoomBtn").onclick = () => {
-        const newCode = document.getElementById("roomCodeInput").value.toUpperCase().trim();
-        if (newCode && newCode !== roomCode) {
-          roomCode = newCode;
-          window.history.replaceState({}, '', `?room=${roomCode}`);
-          initMqttSync();
-          showToast(`Connected to Room: ${roomCode}`);
+        const rawCode = document.getElementById("roomCodeInput").value.toUpperCase().trim();
+        const cleanCode = rawCode.replace(/[^A-Z0-9_-]/g, "");
+        if (cleanCode && cleanCode !== roomCode) {
+          const targetUrl = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(cleanCode)}`;
+          window.location.href = targetUrl;
+          return;
         }
         document.getElementById("roomSyncModal").classList.remove("open");
       };
 
       document.getElementById("copyRoomLinkBtn").onclick = () => {
-        const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}`;
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(shareUrl).then(() => {
-            showToast("📋 Share Link Copied to Clipboard!");
-          });
-        } else {
-          prompt("Copy this share URL to invite players:", shareUrl);
-        }
+        const shareUrl = `${BASE_PROJECT_URL}?room=${encodeURIComponent(roomCode)}`;
+        copyTextToClipboard(shareUrl, "📋 Share Link Copied to Clipboard!");
       };
 
       document.getElementById("closeRoomSyncModalBtn").onclick = () => {
@@ -8931,6 +9091,13 @@
       };
 
       document.getElementById("confirmFactoryResetBtn").onclick = () => {
+        const storageKey = getRoomStorageKey(roomCode);
+        deleteCookie(storageKey);
+        deleteCookie("drunk_uno_game_state");
+        try {
+          localStorage.removeItem(storageKey);
+          localStorage.removeItem("drunk_uno_game_state");
+        } catch (e) {}
         state.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
         state.myTeamIdx = 0;
         state.targetTeamIdx = 1;
