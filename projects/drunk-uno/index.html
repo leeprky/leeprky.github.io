@@ -4126,7 +4126,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.9</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.0</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4657,9 +4657,42 @@
                 <button type="button" class="modal-btn" id="adminUnlinkAllHardwareBtn" style="background: #991b1b; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #f87171; color: #fff;" title="Completely unlink and erase all hardware fingerprints and device IDs">
                   🔌 UNLINK ALL HARDWARE
                 </button>
+                <button type="button" class="modal-btn" id="adminResetToZeroBtn" style="background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); font-size: 0.95rem; padding: 8px 14px; width: auto; border: 2px solid #f87171; color: #fff; font-weight: 800; box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);" title="Completely wipes all scores, drinks, cards, stops, and cached cookies, starting a fresh game from 0 for everyone">
+                  ⚡ RESET GAME TO 0 & CLEAR EVERYONE
+                </button>
                 <button type="button" class="modal-btn" id="adminNukeSiteBtn" style="background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); font-size: 0.95rem; padding: 8px 14px; width: auto; border: 2px solid #ef4444; color: #fee2e2; font-weight: 800; box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);" title="Prompts confirmation, gives everyone on site a 15-second countdown warning, wipes all game cookies and reloads everyone on any game code">
                   ☢️ NUKE ALL CUSTOM GAME DATA (15s SITE PURGE)
                 </button>
+              </div>
+
+              <!-- MASTER ADMIN QUICK COMMAND BAR (TYPE COMMAND TO RESET OR PURGE) -->
+              <div style="margin-top: 16px; padding: 12px; background: rgba(0, 0, 0, 0.45); border: 1.5px solid #eab308; border-radius: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
+                  <strong style="color: #ffd885; font-size: 0.94rem; font-family: 'Pirata One', cursive; letter-spacing: 0.5px;">
+                    ⚡ MASTER COMMAND PROMPT (START GAME FROM 0):
+                  </strong>
+                  <span style="font-size: 0.72rem; color: #86efac; font-family: 'JetBrains Mono', monospace;">Type or Tap Quick Action</span>
+                </div>
+                <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                  <input type="text" id="adminCommandInput" placeholder="Type /reset, /nuke, /zero, /unlink..." style="flex: 1; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; background: rgba(15, 10, 5, 0.95); border: 1.5px solid #eab308; border-radius: 6px; color: #fff;" />
+                  <button type="button" class="modal-btn" id="adminExecCommandBtn" style="width: auto; padding: 8px 14px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #fff; font-size: 0.88rem; font-weight: 700; white-space: nowrap;">
+                    ⚡ Run Command
+                  </button>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/reset" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(220, 38, 38, 0.25); border: 1px solid #ef4444; color: #fca5a5; border-radius: 4px; cursor: pointer;">
+                    🔄 /reset (Reset Game to 0)
+                  </button>
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/nuke" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(185, 28, 28, 0.35); border: 1px solid #dc2626; color: #fecaca; border-radius: 4px; cursor: pointer;">
+                    ☢️ /nuke (15s Site Purge)
+                  </button>
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/zero" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(234, 179, 8, 0.2); border: 1px solid #eab308; color: #fef08a; border-radius: 4px; cursor: pointer;">
+                    0️⃣ /zero (Zero Scores Only)
+                  </button>
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/unlink" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(147, 51, 234, 0.25); border: 1px solid #a855f7; color: #e9d5ff; border-radius: 4px; cursor: pointer;">
+                    🔌 /unlink (Unlink All Hardware)
+                  </button>
+                </div>
               </div>
 
               <!-- BANNED PLAYERS & ALL CONNECTED IPs MANAGER -->
@@ -5426,23 +5459,26 @@
 
 
   <!-- =========================================================================
-       FULLSCREEN OVERLAY: SITE-WIDE NUCLEAR PURGE (15s COUNTDOWN)
+       FULLSCREEN OVERLAY: SITE-WIDE NUCLEAR PURGE / ZERO RESET (COUNTDOWN)
        ========================================================================= -->
-  <div id="globalNukeOverlay" class="game-locked-overlay" style="display: none; background: rgba(30, 0, 0, 0.96); z-index: 999999;">
+  <div id="globalNukeOverlay" class="game-locked-overlay" style="display: none; background: rgba(30, 0, 0, 0.96); z-index: 2147483647 !important; position: fixed; inset: 0;">
     <div class="locked-crawl-card" style="border: 3px solid #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); max-width: 440px;">
       <div style="font-size: 4rem; margin-bottom: 6px;">☢️💥</div>
-      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);">
+      <h1 id="nukeOverlayTitle" style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);">
         SITE-WIDE NUCLEAR PURGE
       </h1>
-      <p style="font-size: 1.05rem; color: #fee2e2; margin-bottom: 12px; line-height: 1.4;">
+      <p id="nukeOverlayDesc" style="font-size: 1.05rem; color: #fee2e2; margin-bottom: 12px; line-height: 1.4;">
         The Crawl Master has initiated a complete wipe of all custom game data, cookies, scoreboards, and hardware links across the entire site!
       </p>
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 900; color: #fef08a; background: rgba(0,0,0,0.6); border: 2px solid #ef4444; border-radius: 12px; padding: 10px; margin-bottom: 14px;">
         <span id="nukeTimerDisplay">15</span>s
       </div>
-      <p style="font-size: 0.84rem; color: #fca5a5; margin: 0;">
+      <p id="nukeOverlaySubtext" style="font-size: 0.84rem; color: #fca5a5; margin: 0 0 14px 0;">
         ⚠️ Site will automatically wipe all local storage and reload fresh in <span id="nukeTimerSecs">15</span> seconds...
       </p>
+      <button type="button" class="modal-btn" id="nukeInstantReloadBtn" style="background: #ef4444; color: #fff; padding: 8px 16px; font-size: 0.88rem; width: auto; font-weight: 700; border: 1.5px solid #fff; display: inline-block;">
+        ⚡ Wipe & Reload Now (Skip Timer)
+      </button>
     </div>
   </div>
 
@@ -6225,78 +6261,278 @@
       function unlinkHardwareProfile(reload = true) {
         const devId = localStorage.getItem("drunk_uno_device_id");
         if (devId && state.devices && state.devices[devId]) {
+          const d = state.devices[devId];
+          const devName = d.name;
+          const targetTeam = state.teams[d.teamIdx];
+          if (targetTeam && devName) {
+            targetTeam.players = targetTeam.players.filter(p => p !== devName);
+            if (targetTeam.captain === devName) targetTeam.captain = targetTeam.players[0] || "";
+          }
           delete state.devices[devId];
-          saveGameState(true);
         }
+        state.myPlayerName = "";
+        state.myTeamIdx = 0;
+
         try {
-          localStorage.removeItem("drunk_uno_device_id");
-          localStorage.removeItem("drunk_uno_device_mac");
-          localStorage.removeItem("drunk_uno_player_name");
-          localStorage.removeItem("drunk_uno_team_idx");
-          localStorage.removeItem("drunk_uno_crew_setup");
-          localStorage.removeItem("drunk_uno_player_registered");
-          localStorage.removeItem("drunk_uno_is_kicked");
-          localStorage.removeItem("drunk_uno_is_banned");
-          localStorage.removeItem("drunk_uno_device_frozen");
-          localStorage.removeItem("drunk_uno_game_locked");
-          localStorage.removeItem("drunk_uno_cached_ip");
+          const keys = [
+            "drunk_uno_device_id",
+            "drunk_uno_device_mac",
+            "drunk_uno_player_name",
+            "drunk_uno_team_idx",
+            "drunk_uno_crew_setup",
+            "drunk_uno_player_registered",
+            "drunk_uno_is_kicked",
+            "drunk_uno_is_banned",
+            "drunk_uno_device_frozen",
+            "drunk_uno_game_locked",
+            "drunk_uno_cached_ip"
+          ];
+          keys.forEach(k => {
+            try { localStorage.removeItem(k); } catch(e) {}
+          });
           sessionStorage.clear();
+
+          // Strip device and player from saved room storage
+          const storageKey = getRoomStorageKey(roomCode);
+          const savedRaw = localStorage.getItem(storageKey);
+          if (savedRaw) {
+            try {
+              const savedParsed = JSON.parse(savedRaw);
+              if (savedParsed.devices && devId) delete savedParsed.devices[devId];
+              savedParsed.myPlayerName = "";
+              savedParsed.myTeamIdx = null;
+              localStorage.setItem(storageKey, JSON.stringify(savedParsed));
+              setCookie(storageKey, JSON.stringify(savedParsed), 30);
+            } catch(e) {}
+          }
         } catch (e) {}
+
         if (reload) {
-          window.location.reload();
+          window.location.href = window.location.origin + window.location.pathname + (roomCode !== "PRESTON-2026" ? `?room=${roomCode}` : "");
         }
       }
 
+      function executeUnlinkAllHardware(broadcast = true) {
+        state.devices = {};
+        state.teams.forEach(t => {
+          t.players = [];
+          t.captain = "";
+        });
+        state.myPlayerName = "";
+        saveGameState(true);
+
+        if (broadcast && mqttClient && mqttClient.isConnected()) {
+          try {
+            const payload = JSON.stringify({
+              action: "UNLINK_ALL_HARDWARE",
+              sender: "Crawl Master",
+              timestamp: Date.now()
+            });
+            const msg = new Paho.MQTT.Message(payload);
+            msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+            mqttClient.send(msg);
+
+            const msgGlobal = new Paho.MQTT.Message(payload);
+            msgGlobal.destinationName = "leeprky/drunkuno/global";
+            mqttClient.send(msgGlobal);
+          } catch(e) {}
+        }
+
+        unlinkHardwareProfile(true);
+      }
+
+      function executeGameResetToZero(broadcast = true, isNuke = false) {
+        const resetEpoch = Date.now();
+        localStorage.setItem("drunk_uno_reset_epoch", String(resetEpoch));
+        localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(resetEpoch));
+
+        // 1. Wipe local identity & registration keys
+        const keysToRemove = [
+          "drunk_uno_player_registered",
+          "drunk_uno_player_name",
+          "drunk_uno_team_idx",
+          "drunk_uno_crew_setup",
+          "drunk_uno_device_id",
+          "drunk_uno_device_mac",
+          "drunk_uno_cached_ip",
+          "drunk_uno_is_banned",
+          "drunk_uno_is_kicked",
+          "drunk_uno_device_frozen",
+          "drunk_uno_game_locked"
+        ];
+        keysToRemove.forEach(k => {
+          try { localStorage.removeItem(k); } catch(e) {}
+        });
+
+        if (isNuke) {
+          try {
+            const allKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const k = localStorage.key(i);
+              if (k && k.startsWith("drunk_uno")) allKeys.push(k);
+            }
+            allKeys.forEach(k => localStorage.removeItem(k));
+          } catch(e) {}
+        }
+
+        // Wipe cookies
+        try {
+          document.cookie.split(";").forEach(c => {
+            const eq = c.indexOf("=");
+            const name = eq > -1 ? c.substr(0, eq).trim() : c.trim();
+            if (name.startsWith("drunk_uno")) deleteCookie(name);
+          });
+        } catch(e) {}
+
+        try { sessionStorage.clear(); } catch(e) {}
+
+        // 2. Reset state object to clean zero
+        state.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
+        state.teams.forEach(t => {
+          t.score = 0;
+          t.drinks = 0;
+          t.captain = "";
+          t.players = [];
+        });
+        state.myTeamIdx = 0;
+        state.myPlayerName = "";
+        state.currentStopIdx = 0;
+        state.currentTurnIdx = 0;
+        state.stops = JSON.parse(JSON.stringify(DEFAULT_STOPS));
+        state.stops.forEach(s => s.visited = false);
+        state.bingoCards = JSON.parse(JSON.stringify(BINGO_CARDS));
+        state.devices = {};
+        state.bannedList = [];
+        state.resetEpoch = resetEpoch;
+        state.isGameLocked = false;
+        state.logs = ["Game reset to 0 by Crawl Master at " + new Date().toLocaleTimeString()];
+
+        // 3. Save zero state to storage
+        const storageKey = getRoomStorageKey(roomCode);
+        const serialized = JSON.stringify(state);
+        try {
+          localStorage.setItem(storageKey, serialized);
+          setCookie(storageKey, serialized, 30);
+        } catch(e) {}
+
+        // 4. Broadcast over MQTT to all connected devices
+        if (broadcast && mqttClient && mqttClient.isConnected()) {
+          try {
+            const payload = JSON.stringify({
+              action: isNuke ? "GLOBAL_SITE_NUKE" : "RESET_GAME_TO_ZERO",
+              resetEpoch: resetEpoch,
+              sender: "Crawl Master",
+              state: state,
+              timestamp: resetEpoch
+            });
+
+            // Send to room topic
+            const msgRoom = new Paho.MQTT.Message(payload);
+            msgRoom.destinationName = `leeprky/drunkuno/${roomCode}`;
+            msgRoom.retained = false;
+            mqttClient.send(msgRoom);
+
+            // Send to global topic
+            const msgGlobal = new Paho.MQTT.Message(payload);
+            msgGlobal.destinationName = "leeprky/drunkuno/global";
+            msgGlobal.retained = false;
+            mqttClient.send(msgGlobal);
+          } catch(e) {
+            console.warn("MQTT reset broadcast error:", e);
+          }
+        }
+
+        // 5. Trigger visual overlay countdown
+        triggerGlobalNukeCountdown(isNuke ? 15 : 4, isNuke ? "SITE-WIDE NUCLEAR PURGE" : "GAME RESET TO 0");
+      }
+
       let nukeInterval = null;
-      function triggerGlobalNukeCountdown() {
+      function triggerGlobalNukeCountdown(seconds = 15, title = "SITE-WIDE NUCLEAR PURGE") {
+        document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+
         const overlay = document.getElementById("globalNukeOverlay");
+        const titleEl = document.getElementById("nukeOverlayTitle");
+        const descEl = document.getElementById("nukeOverlayDesc");
         const disp = document.getElementById("nukeTimerDisplay");
         const secs = document.getElementById("nukeTimerSecs");
-        if (overlay) overlay.style.display = "flex";
-        playFanfare("freeze");
-        playAirhorn();
-        triggerHaptic([100, 50, 100, 50, 200]);
 
-        let remaining = 15;
+        if (titleEl) titleEl.textContent = title;
+        if (descEl) {
+          descEl.textContent = (title.includes("0"))
+            ? "The Crawl Master has reset the scoreboard to 0 and cleared all player device links! Starting clean game..."
+            : "The Crawl Master has initiated a complete wipe of all custom game data, cookies, scoreboards, and hardware links!";
+        }
+
+        if (overlay) {
+          overlay.style.display = "flex";
+          overlay.style.opacity = "1";
+          overlay.style.visibility = "visible";
+        }
+
+        try {
+          playFanfare("freeze");
+          playAirhorn();
+          triggerHaptic([100, 50, 100, 50, 200]);
+        } catch(e) {}
+
+        let remaining = seconds;
         if (disp) disp.textContent = String(remaining);
         if (secs) secs.textContent = String(remaining);
+
+        const performFinalWipeAndReload = () => {
+          clearInterval(nukeInterval);
+          try {
+            const keysToPurge = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const k = localStorage.key(i);
+              if (k && k.startsWith("drunk_uno")) {
+                keysToPurge.push(k);
+              }
+            }
+            keysToPurge.forEach(k => localStorage.removeItem(k));
+            sessionStorage.clear();
+
+            document.cookie.split(";").forEach(c => {
+              const eq = c.indexOf("=");
+              const name = eq > -1 ? c.substr(0, eq).trim() : c.trim();
+              if (name.startsWith("drunk_uno")) {
+                deleteCookie(name);
+              }
+            });
+          } catch (e) {}
+
+          window.location.href = window.location.origin + window.location.pathname;
+        };
+
+        const instantBtn = document.getElementById("nukeInstantReloadBtn");
+        if (instantBtn) {
+          instantBtn.onclick = performFinalWipeAndReload;
+        }
 
         clearInterval(nukeInterval);
         nukeInterval = setInterval(() => {
           remaining--;
           if (disp) disp.textContent = String(remaining);
           if (secs) secs.textContent = String(remaining);
-          playTick(750);
-          triggerHaptic(30);
+          try {
+            playTick(750);
+            triggerHaptic(30);
+          } catch(e) {}
 
           if (remaining <= 0) {
-            clearInterval(nukeInterval);
-            try {
-              const keysToPurge = [];
-              for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if (k && k.startsWith("drunk_uno")) {
-                  keysToPurge.push(k);
-                }
-              }
-              keysToPurge.forEach(k => localStorage.removeItem(k));
-              sessionStorage.clear();
-
-              document.cookie.split(";").forEach(c => {
-                const eq = c.indexOf("=");
-                const name = eq > -1 ? c.substr(0, eq).trim() : c.trim();
-                if (name.startsWith("drunk_uno")) {
-                  deleteCookie(name);
-                }
-              });
-            } catch (e) {}
-            window.location.href = window.location.origin + window.location.pathname;
+            performFinalWipeAndReload();
           }
         }, 1000);
       }
 
       function applyIncomingState(incoming) {
         if (!incoming || !Array.isArray(incoming.teams)) return;
+        const incomingResetEpoch = incoming.resetEpoch || 0;
+        const localResetEpoch = parseInt(localStorage.getItem("drunk_uno_reset_epoch") || "0", 10);
+        if (incomingResetEpoch < localResetEpoch) {
+          console.warn("Discarded outdated incoming state older than local reset epoch.");
+          return;
+        }
         state.teams = incoming.teams;
         state.teams.forEach(t => {
           if (!Array.isArray(t.players)) t.players = [];
@@ -6374,9 +6610,14 @@
             try {
               const incoming = JSON.parse(message.payloadString);
 
-              // Global Site-Wide Nuclear Purge (15s Countdown on All Games)
-              if (incoming && incoming.action === "GLOBAL_SITE_NUKE") {
-                triggerGlobalNukeCountdown();
+              // Global Site-Wide Nuclear Purge or Game Reset to 0
+              if (incoming && (incoming.action === "GLOBAL_SITE_NUKE" || incoming.action === "RESET_GAME_TO_ZERO")) {
+                const incomingEpoch = incoming.resetEpoch || Date.now();
+                const lastHandled = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
+                if (incomingEpoch > lastHandled) {
+                  localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(incomingEpoch));
+                  executeGameResetToZero(false, incoming.action === "GLOBAL_SITE_NUKE");
+                }
                 return;
               }
 
@@ -9028,62 +9269,74 @@
       const adminUnlinkAllBtn = document.getElementById("adminUnlinkAllHardwareBtn");
       if (adminUnlinkAllBtn) {
         adminUnlinkAllBtn.onclick = () => {
-          const answer = confirm("🔌 UNLINK ALL HARDWARE DEVICES?\n\nThis will instantly unlink and clear hardware fingerprints on all connected phones, wiping cached device IDs and forcing everyone to start clean.\n\nAre you sure you want to proceed?");
-          if (!answer) return;
+          executeUnlinkAllHardware(true);
+        };
+      }
 
-          state.devices = {};
-          if (mqttClient && mqttClient.isConnected()) {
-            try {
-              const payload = JSON.stringify({
-                action: "UNLINK_ALL_HARDWARE",
-                timestamp: Date.now()
-              });
-              const m = new Paho.MQTT.Message(payload);
-              m.destinationName = `leeprky/drunkuno/${roomCode}`;
-              m.retained = false;
-              mqttClient.send(m);
-            } catch (e) {}
-          }
-          saveGameState(true);
-          unlinkHardwareProfile(true);
+      const adminResetToZeroBtn = document.getElementById("adminResetToZeroBtn");
+      if (adminResetToZeroBtn) {
+        adminResetToZeroBtn.onclick = () => {
+          executeGameResetToZero(true, false);
         };
       }
 
       const adminNukeBtn = document.getElementById("adminNukeSiteBtn");
       if (adminNukeBtn) {
         adminNukeBtn.onclick = () => {
-          const answer = confirm("☢️ NUKE ALL CUSTOM GAME DATA ACROSS SITE?\n\nThis will purge all custom games, scoreboard states, cookies, and device links.\n\nAll connected phones on ANY game code will see a 15-second countdown warning before being reloaded.\n\nAre you sure you want to NUKE everything?");
-          if (!answer) return;
-
-          addLog("☢️ CRAWL MASTER: Broadcasted SITE-WIDE NUCLEAR PURGE to all game codes!");
-
-          if (mqttClient && mqttClient.isConnected()) {
-            try {
-              const payload = JSON.stringify({
-                action: "GLOBAL_SITE_NUKE",
-                sender: state.myPlayerName || "Crawl Master",
-                timestamp: Date.now()
-              });
-              // Send to global universal topic
-              const msgGlobal = new Paho.MQTT.Message(payload);
-              msgGlobal.destinationName = "leeprky/drunkuno/global";
-              msgGlobal.retained = false;
-              mqttClient.send(msgGlobal);
-
-              // Also send to current room topic for redundancy
-              const msgRoom = new Paho.MQTT.Message(payload);
-              msgRoom.destinationName = `leeprky/drunkuno/${roomCode}`;
-              msgRoom.retained = false;
-              mqttClient.send(msgRoom);
-            } catch (e) {
-              console.warn("MQTT nuke broadcast error:", e);
-            }
-          }
-
-          // Trigger countdown locally
-          triggerGlobalNukeCountdown();
+          executeGameResetToZero(true, true);
         };
       }
+
+      // --- MASTER ADMIN TERMINAL COMMAND CONTROLLER ---
+      function handleAdminCommand(cmdRaw) {
+        const cmd = (cmdRaw || "").trim().toLowerCase();
+        if (!cmd) return;
+
+        if (cmd === "/reset" || cmd === "reset") {
+          showToast("🔄 Running Game Reset to 0...");
+          executeGameResetToZero(true, false);
+        } else if (cmd === "/nuke" || cmd === "nuke") {
+          showToast("☢️ Running 15s Site Nuclear Purge...");
+          executeGameResetToZero(true, true);
+        } else if (cmd === "/zero" || cmd === "zero") {
+          showToast("0️⃣ Zeroing all team scores and drinks...");
+          state.teams.forEach(t => { t.score = 0; t.drinks = 0; });
+          saveGameState(true);
+          renderScoringTab();
+          renderCrewBar();
+        } else if (cmd === "/unlink" || cmd === "unlink") {
+          showToast("🔌 Unlinking all hardware devices...");
+          executeUnlinkAllHardware(true);
+        } else if (cmd === "/clear" || cmd === "clear") {
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.reload();
+        } else {
+          showToast(`⚠️ Command not recognized. Try /reset, /nuke, /zero, or /unlink`);
+        }
+      }
+
+      const adminExecCmdBtn = document.getElementById("adminExecCommandBtn");
+      const adminCmdInput = document.getElementById("adminCommandInput");
+      if (adminExecCmdBtn && adminCmdInput) {
+        adminExecCmdBtn.onclick = () => {
+          handleAdminCommand(adminCmdInput.value);
+          adminCmdInput.value = "";
+        };
+        adminCmdInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            handleAdminCommand(adminCmdInput.value);
+            adminCmdInput.value = "";
+          }
+        });
+      }
+
+      document.querySelectorAll(".admin-quick-cmd-btn").forEach(btn => {
+        btn.onclick = () => {
+          const cmd = btn.getAttribute("data-cmd");
+          if (cmd) handleAdminCommand(cmd);
+        };
+      });
 
       const adminBroadcastBtn = document.getElementById("adminBroadcastPubBtn");
       if (adminBroadcastBtn) {
@@ -9888,6 +10141,41 @@
           openCrewSetupModal(false);
         }, 180);
       }
+
+      // --- URL QUERY COMMAND HANDLERS (e.g. ?cmd=reset, ?reset=1, ?cmd=nuke, ?cmd=unlink) ---
+      const cmdParam = (urlParams.get("cmd") || "").toLowerCase().trim();
+      const hasResetParam = urlParams.has("reset") || cmdParam === "reset" || cmdParam === "zero";
+      const hasNukeParam = urlParams.has("nuke") || cmdParam === "nuke";
+      const hasUnlinkParam = urlParams.has("unlink") || cmdParam === "unlink";
+
+      if (hasResetParam || hasNukeParam) {
+        setTimeout(() => {
+          executeGameResetToZero(true, hasNukeParam);
+        }, 200);
+      } else if (hasUnlinkParam) {
+        setTimeout(() => {
+          unlinkHardwareProfile(true);
+        }, 200);
+      }
+
+      // --- GLOBAL CONSOLE HOOKS (RUN DIRECTLY FROM BROWSER DEVTOOLS CONSOLE) ---
+      window.drunkUno = {
+        resetGame: () => executeGameResetToZero(true, false),
+        nukeSite: () => executeGameResetToZero(true, true),
+        unlinkDevice: () => unlinkHardwareProfile(true),
+        unlinkAll: () => executeUnlinkAllHardware(true),
+        zeroScores: () => {
+          state.teams.forEach(t => { t.score = 0; t.drinks = 0; });
+          saveGameState(true);
+          renderScoringTab();
+          renderCrewBar();
+          showToast("0️⃣ Scores zeroed!");
+        },
+        getState: () => state
+      };
+      window.drunkUnoResetGame = window.drunkUno.resetGame;
+      window.drunkUnoNukeAll = window.drunkUno.nukeSite;
+      window.drunkUnoUnlink = window.drunkUno.unlinkDevice;
 
     })();
   </script>
