@@ -4821,7 +4821,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.6</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.7</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5285,10 +5285,10 @@
         <section id="tab-rules" class="tab-panel">
           <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
 
-            <!-- 3 Golden Rules Bar -->
+            <!-- 4 Golden Rules Bar -->
             <div class="rules-card-box" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1.5px solid rgba(255, 255, 255, 0.16); border-radius: 12px; padding: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
               <h3 style="font-family: var(--font-uno); font-size: 1.55rem; margin: 0 0 6px 0; color: #ffffff;">
-                📜 THE 3 GOLDEN CRAWL LAWS
+                📜 THE 4 GOLDEN CRAWL LAWS & PUB CROWNS
               </h3>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px;">
                 <div style="background: rgba(0,0,0,0.35); border-left: 3px solid #38bdf8; border-radius: 6px; padding: 8px 10px;">
@@ -5302,6 +5302,10 @@
                 <div style="background: rgba(0,0,0,0.35); border-left: 3px solid #facc15; border-radius: 6px; padding: 8px 10px;">
                   <strong style="color: #fde047; font-size: 0.92rem; display: block;">3. Wild Heists & Stash</strong>
                   <span style="font-size: 0.82rem; color: #cbd5e1;">Playing a 7 steals 1 Wild card from whichever crew matches that color (+1 Atk / -1 Def). Hold unplayed Wilds for +1 point each at crawl end (max +2)!</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.35); border-left: 3px solid #eab308; border-radius: 6px; padding: 8px 10px;">
+                  <strong style="color: #fef08a; font-size: 0.92rem; display: block;">4. Pub Crowns (+10 Pts Repeatable)</strong>
+                  <span style="font-size: 0.82rem; color: #cbd5e1;">Winning the Uno round at any of the 10 pubs awards your crew +1 Crown 👑 and +10 Points (repeatable up to 10 crowns, max +100 pts)!</span>
                 </div>
               </div>
             </div>
@@ -5521,7 +5525,7 @@
                 <h3 style="color: #ffffff;">PUB STOP WINNERS & TEAM CROWNS (UP TO 10):</h3>
               </div>
               <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 12px;">
-                Select the winning team for each of the 10 pubs. Each stop won awards +1 Crown 👑 to that team (max 10).
+                Select the winning team for each of the 10 pubs. Each stop won awards +1 Crown 👑 and +10 Points to that team (repeatable up to 10 crowns).
               </p>
               <div id="adminPubWinnersList" style="display: flex; flex-direction: column; gap: 8px;"></div>
             </div>
@@ -6771,17 +6775,34 @@
       const BINGO_CARDS = [
         // --- 1. POSITIVE / FEAT CARDS (ONCE) ---
         { id: "bg_round", icon: "🍻", title: "Buys Round for Whole Team", pts: 10, isBonus: true, repeatable: false, desc: "Generous crawler buys a full drink round for their entire crew.", claimedBy: null, claimCount: 0 },
-        { id: "bg_dj", icon: "🎧", title: "Song Played by the DJ", pts: 4, isBonus: true, repeatable: false, desc: "Successfully requests and gets their team song played by the tavern DJ.", claimedBy: null, claimCount: 0 },
-        { id: "bg_selfie", icon: "📸", title: "Selfie with Barstaff", pts: 6, isBonus: true, repeatable: false, hidden: true, adminOnly: true, hint: "Hint: Befriend the crew behind the bar with a quick photo... 📸", desc: "Captured an epic selfie with the pub barstaff! (Verified by Admin)", claimedBy: null, claimCount: 0 },
         { id: "bg_chant", icon: "📢", title: "Pub Chanting Team's Colour", pts: 8, isBonus: true, repeatable: false, desc: "Hyped up the crowd and got the whole pub loudly chanting your team's color!", claimedBy: null, claimCount: 0 },
         { id: "bg_karaoke", icon: "🎤", title: "Karaoke Performance", pts: 6, isBonus: true, repeatable: false, desc: "Took the microphone on stage and belted out a karaoke pub anthem!", claimedBy: null, claimCount: 0 },
+        { id: "bg_stranger_drink", icon: "🥂", title: "Stranger Buys You a Drink", pts: 6, isBonus: true, repeatable: false, desc: "High charisma: convinced a random stranger at the pub to buy you a drink!", claimedBy: null, claimCount: 0 },
+        { id: "bg_dj", icon: "🎧", title: "Song Played by the DJ", pts: 4, isBonus: true, repeatable: false, desc: "Successfully requests and gets their team song played by the tavern DJ.", claimedBy: null, claimCount: 0 },
+        { id: "bg_sneaky_trade", icon: "🥷", title: "Sneaky Card Trade", pts: 4, isBonus: true, repeatable: false, desc: "Successfully pulled off a stealthy, covert card swap with another player without getting caught.", claimedBy: null, claimCount: 0 },
+        { id: "bg_steal_drink", icon: "🥷", title: "Steal Drink Without Realising", pts: 4, isBonus: true, repeatable: false, desc: "Stealth phantom: drank or stole someone else's drink without them noticing!", claimedBy: null, claimCount: 0 },
         { id: "bg_pirate", icon: "🏴‍☠️", title: "Orders in Pirate Accent", pts: 2, isBonus: true, repeatable: false, desc: "Orders a full drink or round from the bartender in full pirate accent.", claimedBy: null, claimCount: 0 },
 
-        // --- 2. HIDDEN CURSED PHRASES (ONCE) ---
+        // --- 2. MULTI-CLAIM / SIDE GAME (MAX 2 CLAIMS) ---
+        { id: "bg_sidegame_win", icon: "🎱", title: "Wins Non-Uno Game (Pool/Darts/Arcade)", pts: 6, isBonus: true, repeatable: true, maxClaims: 2, desc: "Victory in a pub side game (pool, darts, arcade/videogame) — max 2 claims!", claimedBy: null, claimCount: 0 },
+
+        // --- 3. HIDDEN BONUS FEATS (ONCE, SECRET UNTIL CLAIMED) ---
+        { id: "bg_selfie", icon: "📸", title: "Selfie with Barstaff", pts: 6, isBonus: true, repeatable: false, hidden: true, adminOnly: true, hint: "Hint: Befriend the crew behind the bar with a quick photo... 📸", desc: "Captured an epic selfie with the pub barstaff! (Verified by Admin)", claimedBy: null, claimCount: 0 },
+        { id: "bg_team_cocktail", icon: "🍹", title: "Order Cocktail in Team Colour", pts: 4, isBonus: true, repeatable: false, hidden: true, hint: "Hint: What fancy mixed drink matches your team's sacred hue? 🍹", desc: "Ordered and drank a cocktail matching your team's official color.", claimedBy: null, claimCount: 0 },
+        { id: "bg_bluff_wild", icon: "🎭", title: "Wild Card Bluff Master", pts: 6, isBonus: true, repeatable: false, hidden: true, hint: "Hint: High-stakes deception... convince rivals you hold ultimate power! 🃏", desc: "Successfully bluffed a rival crew into believing you held a Wild card when you didn't.", claimedBy: null, claimCount: 0 },
+        { id: "bg_buy_lee", icon: "👑", title: "Buys Lee a Drink First", pts: 4, isBonus: true, repeatable: false, hidden: true, hint: "Hint: Respect the crawl architect! Who buys the host a drink first? 🍺", desc: "Bought Lee a drink before anyone else! Legendary host respect.", claimedBy: null, claimCount: 0 },
+        { id: "bg_stranger_photo", icon: "📸", title: "Stranger Takes Group Photo", pts: 4, isBonus: true, repeatable: false, hidden: true, hint: "Hint: Say cheese! Hand your phone to a pub stranger for a squad picture... 📸", desc: "Convinced a friendly pub stranger to take a group photo of the crawl crew.", claimedBy: null, claimCount: 0 },
+        { id: "bg_free_drink", icon: "🍺", title: "Free Drink from Bar Staff", pts: 6, isBonus: true, repeatable: false, hidden: true, hint: "Hint: Master negotiator at the bar... scored a complimentary drink? 🍺", desc: "Convinced bar staff to give you a free drink!", claimedBy: null, claimCount: 0 },
+        { id: "bg_free_snack", icon: "🥨", title: "Free Snack from Bar Staff", pts: 2, isBonus: true, repeatable: false, hidden: true, hint: "Hint: Bar snack hustler... scored free crisps, nuts, or bites from the bar? 🥨", desc: "Convinced bar staff to give you a free snack or crisps!", claimedBy: null, claimCount: 0 },
+
+        // --- 4. HIDDEN PENALTIES & CURSED PHRASES (ONCE, SECRET UNTIL CLAIMED) ---
         { id: "bg_alex", icon: "🎭", title: "Alex: 'Nonchalant Merchant'", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: Listen closely when Alex tries to act casually cool... 🗣️", desc: "Alex uttered the cursed phrase 'nonchalant merchant' in conversation!", claimedBy: null, claimCount: 0 },
         { id: "bg_jamie", icon: "🫂", title: "Jamie: 'Not Seen You in Forever'", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: What classic reunion greeting does Jamie always drop? 🫂", desc: "Jamie dropped his signature line: 'I feel like I've not seen you in forever!'", claimedBy: null, claimCount: 0 },
+        { id: "bg_tiktok_reels", icon: "📱", title: "Doomscrolling TikTok / Reels", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: Put that phone down! Caught mindlessly scrolling short-form video... 📱", desc: "Caught scrolling TikTok, Instagram Reels, or Shorts during crawl play!", claimedBy: null, claimCount: 0 },
+        { id: "bg_tired_hungry", icon: "🥱", title: "Says 'I'm Tired' or 'I'm Hungry'", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: Party foul! Whining about fatigue or craving food mid-crawl... 🥱🍔", desc: "Caught whining that they are 'tired' or 'hungry' instead of rallying for the crawl!", claimedBy: null, claimCount: 0 },
+        { id: "bg_conor_pic", icon: "📏", title: "Conor Shows 'How Big It Is' Pic", pts: -8, isBonus: false, repeatable: false, hidden: true, hint: "Hint: Beware when Conor pulls out his phone to brag about scale... 📏", desc: "Conor inflicted trauma by showing a picture bragging about 'how big it is'!", claimedBy: null, claimCount: 0 },
 
-        // --- 3. REPEATABLE PENALTIES ---
+        // --- 5. REPEATABLE PENALTIES ---
         { id: "bg_cheat", icon: "🃏", title: "Caught Cheating", pts: -8, isBonus: false, repeatable: true, desc: "Caught hiding cards, taking extra turns, or tampering with the deck!", claimedBy: null, claimCount: 0 },
         { id: "bg_spew", icon: "🤮", title: "Throwing Up / Spewing", pts: -5, isBonus: false, repeatable: true, desc: "Surrendered white flag: vomiting in the toilet or tavern alley.", claimedBy: null, claimCount: 0 },
         { id: "bg_unfinished", icon: "🍺", title: "Doesn't Finish Drink", pts: -4, isBonus: false, repeatable: true, desc: "Abandoned an unfinished drink at the table before departing for next pub.", claimedBy: null, claimCount: 0 },
@@ -9236,6 +9257,10 @@
               <span>🤫 NO UNO!</span>
               <small>-2 Pts & 2 Sips</small>
             </button>
+            <button type="button" class="btn-score-tap reward" data-uno-score="pubcrown" style="border: 1.5px solid #facc15; background: rgba(234, 179, 8, 0.22); color: #fef08a;">
+              <span>👑 PUB CROWN</span>
+              <small>+10 Pts & +1 Crown</small>
+            </button>
             <button type="button" class="btn-score-tap deduct" data-uno-score="rulebreak">
               <span>⚠️ RULE 0 BREAK</span>
               <small>1 Sip Penalty (0 Pts)</small>
@@ -9362,6 +9387,12 @@
               targetTeam.sips += 2;
               addLog(`🤫 FORGOT UNO: ${targetTeam.name} held 1 card without shouting UNO! (-2 pts, 2 sips).`);
               playBuzzer();
+            } else if (act === "pubcrown") {
+              targetTeam.score += 10;
+              targetTeam.crowns = Math.min(10, (targetTeam.crowns || 0) + 1);
+              addLog(`👑 PUB CROWN: ${targetTeam.name} crowned pub stop champion! (+10 pts & Crown #${targetTeam.crowns}).`);
+              playCoinDing();
+              spawnCoins(35);
             } else if (act === "rulebreak") {
               targetTeam.sips += 1;
               addLog(`⚠️ RULE 0: ${targetTeam.name} violated house law (1 sip penalty, 0 pts).`);
@@ -10099,11 +10130,12 @@
           const tile = document.createElement("div");
           const isBonus = Boolean(card.isBonus || card.pts > 0);
           const isClaimed = Boolean(card.claimedBy);
+          const isMaxedOut = Boolean(card.maxClaims && (card.claimCount || 0) >= card.maxClaims);
           const isHiddenAndLocked = card.hidden && !isClaimed && !state.adminUnlocked;
 
           let classes = ["bingo-card-tile"];
           if (isBonus) classes.push("is-bonus");
-          if (!card.repeatable && isClaimed) classes.push("claimed");
+          if ((!card.repeatable && isClaimed) || isMaxedOut) classes.push("claimed");
           if (card.hidden && isHiddenAndLocked) classes.push("is-hidden-secret");
           tile.className = classes.join(" ");
 
@@ -10115,7 +10147,11 @@
             : "";
 
           let badgeHtml = "";
-          if (card.repeatable) {
+          if (card.maxClaims) {
+            const count = card.claimCount || 0;
+            const isFull = count >= card.maxClaims;
+            badgeHtml = `<div class="bingo-repeat-pill" style="${isFull ? 'color:#4ade80;background:rgba(34,197,94,0.18);border-color:rgba(34,197,94,0.4);' : ''}">${isFull ? `✅ Max Claims (${count}/${card.maxClaims})` : `🎯 ${count}/${card.maxClaims} Claims`}</div>`;
+          } else if (card.repeatable) {
             const count = card.claimCount || 0;
             badgeHtml = `<div class="bingo-repeat-pill">${count > 0 ? `💥 Struck ${count}x` : '🔄 Repeatable'}</div>`;
           } else if (isClaimed) {
@@ -10134,7 +10170,11 @@
 
           tile.onclick = () => {
             if (checkSpectatorBlock()) return;
-            if (!card.repeatable && card.claimedBy && !state.adminUnlocked) {
+            if (card.maxClaims && (card.claimCount || 0) >= card.maxClaims && !state.adminUnlocked) {
+              showToast(`⚠️ Max claims reached (${card.claimCount}/${card.maxClaims})!`);
+              return;
+            }
+            if (!card.repeatable && !card.maxClaims && card.claimedBy && !state.adminUnlocked) {
               showToast(`⚠️ Already claimed by ${card.claimedBy}!`);
               return;
             }
@@ -10174,9 +10214,10 @@
             confirmBtn.textContent = `🔒 Admin Passcode Required to Verify`;
             confirmBtn.style.background = "#0284c7";
           } else {
+            const repeatTag = card.maxClaims ? ` (${card.claimCount || 0}/${card.maxClaims} Max)` : (card.repeatable ? ' (Repeatable)' : '');
             confirmBtn.textContent = isBonus
-              ? `⭐ Award +${card.pts} Points to Target Team${card.repeatable ? ' (Repeatable)' : ''}`
-              : `🎯 Deduct -${ptsAbs} Points from Target Team${card.repeatable ? ' (Repeatable)' : ''}`;
+              ? `⭐ Award +${card.pts} Points to Target Team${repeatTag}`
+              : `🎯 Deduct -${ptsAbs} Points from Target Team${repeatTag}`;
             confirmBtn.style.background = isBonus ? "#15803d" : "#9e1b1b";
           }
         }
@@ -10228,7 +10269,10 @@
         const isBonus = points > 0;
         target.score += points;
 
-        if (selectedBingoCard.repeatable) {
+        if (selectedBingoCard.maxClaims) {
+          selectedBingoCard.claimCount = (selectedBingoCard.claimCount || 0) + 1;
+          selectedBingoCard.claimedBy = `${target.name} (${selectedBingoCard.claimCount}/${selectedBingoCard.maxClaims})`;
+        } else if (selectedBingoCard.repeatable) {
           selectedBingoCard.claimCount = (selectedBingoCard.claimCount || 0) + 1;
         } else {
           selectedBingoCard.claimedBy = target.name;
