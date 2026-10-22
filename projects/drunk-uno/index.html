@@ -1832,10 +1832,19 @@
       color: #dcfce7 !important;
     }
     .btn-score-tap.drink {
-      background: rgba(161, 98, 7, 0.28) !important;
-      color: #ffd885 !important;
-      border: 1.5px solid #eab308 !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.24) 0%, rgba(180, 83, 9, 0.35) 100%) !important;
+      color: #ffffff !important;
+      border: 1.5px solid rgba(245, 158, 11, 0.65) !important;
+      border-top: 1.5px solid rgba(254, 240, 138, 0.8) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+      font-weight: 800;
+    }
+    .btn-score-tap.drink:hover {
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.38) 0%, rgba(180, 83, 9, 0.48) 100%) !important;
+      border-color: #fbbf24 !important;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+      color: #ffffff !important;
     }
     .btn-score-tap.drink small {
       color: #fef08a !important;
@@ -3099,13 +3108,13 @@
        DYNAMIC TEAM COLOR CASCADES (ENTIRE WEBSITE ADAPTS TO SELECTED CREW)
        ========================================================================= */
     body:not(.light-mode) {
-      --ink: #fdf6ec !important;
-      --ink-faded: #f0deb8 !important;
-      --ink-muted: #ffd885 !important;
-      color: #fdf6ec !important;
+      --ink: #ffffff !important;
+      --ink-faded: #cbd5e1 !important;
+      --ink-muted: var(--theme-celtic-accent, #94a3b8) !important;
+      color: #f8fafc !important;
     }
     body:not(.light-mode) .header-subtext {
-      color: #f0deb8 !important;
+      color: #cbd5e1 !important;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
       font-weight: 500 !important;
     }
@@ -3136,26 +3145,32 @@
       color: #ffffff !important;
     }
     body:not(.light-mode) .pub-ticker-info span {
-      color: #f5e4c6 !important;
+      color: #cbd5e1 !important;
     }
     body:not(.light-mode) .pub-ticker b {
-      color: #ffd885 !important;
+      color: var(--theme-celtic-accent, #38bdf8) !important;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
       font-weight: 800 !important;
     }
     body:not(.light-mode) .turn-ticker-box {
       background: rgba(0, 0, 0, 0.85) !important;
-      border: 1.5px solid var(--theme-border, #ffd885) !important;
+      border: 1.5px solid var(--theme-border, #38bdf8) !important;
       color: #ffffff !important;
     }
     body:not(.light-mode) .turn-ticker-box span {
-      color: #ffd885 !important;
+      color: var(--theme-celtic-accent, #38bdf8) !important;
     }
     body:not(.light-mode) .btn-quick-turn-pass {
-      background: var(--theme-primary, #b8860b) !important;
+      background: var(--theme-primary, #38bdf8) !important;
       color: #ffffff !important;
       border: 1px solid rgba(255, 255, 255, 0.4) !important;
       font-weight: 800 !important;
+    }
+    body:not(.light-mode)[class*="theme-"] {
+      --ink: #ffffff !important;
+      --ink-faded: #cbd5e1 !important;
+      --ink-muted: var(--theme-celtic-accent, #94a3b8) !important;
+      color: #f8fafc !important;
     }
     body:not(.light-mode)[class*="theme-"] .parchment-board {
       background: var(--theme-board-bg) !important;
@@ -3198,7 +3213,7 @@
     body:not(.light-mode)[class*="theme-"] .turn-ticker-box {
       background: rgba(0, 0, 0, 0.85) !important;
       border: 1.5px solid var(--theme-border) !important;
-      color: #ffd885 !important;
+      color: var(--theme-celtic-accent, #ffffff) !important;
       box-shadow: 0 0 12px var(--theme-glow) !important;
     }
     body:not(.light-mode)[class*="theme-"] .btn-quick-turn-pass {
@@ -3227,11 +3242,11 @@
       box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45), 0 0 18px var(--theme-glow) !important;
     }
     body:not(.light-mode)[class*="theme-"] .podium-main-title {
-      color: #ffd885 !important;
-      text-shadow: 0 0 12px var(--theme-glow) !important;
+      color: var(--theme-celtic-accent, #ffffff) !important;
+      text-shadow: 0 0 14px var(--theme-glow) !important;
     }
     body:not(.light-mode)[class*="theme-"] .podium-subtitle {
-      color: #f0deb8 !important;
+      color: #cbd5e1 !important;
     }
     body:not(.light-mode)[class*="theme-"] .btn-edit-crew {
       background: var(--theme-accent-bg) !important;
@@ -3303,118 +3318,294 @@
     body:not(.light-mode) .podium-cards-grid {
       border-bottom-color: rgba(255, 255, 255, 0.18) !important;
     }
-    body:not(.light-mode) .podium-card {
-      color: #f7eedc !important;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
-    }
-    body:not(.light-mode) .podium-card.rank-1 {
-      background: linear-gradient(180deg, rgba(64, 46, 16, 0.95) 0%, rgba(36, 24, 10, 0.98) 100%) !important;
-      border-color: #d4af37 !important;
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25), inset 0 0 12px rgba(212, 175, 55, 0.12) !important;
-    }
-    body:not(.light-mode) .podium-card.rank-2 {
-      background: linear-gradient(180deg, rgba(45, 52, 64, 0.95) 0%, rgba(24, 28, 36, 0.98) 100%) !important;
-      border-color: #94a3b8 !important;
-      box-shadow: 0 6px 20px rgba(148, 163, 184, 0.18) !important;
-    }
-    body:not(.light-mode) .podium-card.rank-3 {
-      background: linear-gradient(180deg, rgba(58, 36, 24, 0.95) 0%, rgba(32, 18, 12, 0.98) 100%) !important;
-      border-color: #cd7f32 !important;
-      box-shadow: 0 6px 20px rgba(205, 127, 50, 0.18) !important;
-    }
-    body:not(.light-mode) .podium-card.rank-4 {
-      background: linear-gradient(180deg, rgba(38, 32, 28, 0.95) 0%, rgba(20, 16, 14, 0.98) 100%) !important;
-      border-color: #71717a !important;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
-    }
-    body:not(.light-mode) .podium-card.is-my-crew {
-      outline: 2.5px solid var(--theme-border, #ffd885) !important;
-      box-shadow: 0 0 20px var(--theme-glow, rgba(0,0,0,0)), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-    }
-    body:not(.light-mode) .podium-team-name {
-      color: #ffffff !important;
-    }
-    body:not(.light-mode) .podium-score-row {
-      border-top-color: rgba(255, 255, 255, 0.14) !important;
-      border-bottom-color: rgba(255, 255, 255, 0.14) !important;
-    }
-    body:not(.light-mode) .podium-score-number {
-      color: #ffffff !important;
-    }
-    body:not(.light-mode) .podium-score-unit {
-      color: #cbd5e1 !important;
-    }
-    body:not(.light-mode) .podium-chip {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border-color: rgba(255, 255, 255, 0.14) !important;
-      color: #f1f5f9 !important;
-    }
-    body:not(.light-mode) .podium-my-crew-tag {
-      background: #ffd885 !important;
-      color: #1a0f05 !important;
-      border-color: #ffd885 !important;
-    }
-    body:not(.light-mode) .scoring-as-pill {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border-color: rgba(255, 255, 255, 0.15) !important;
-      color: #f1f5f9 !important;
+    .podium-card {
+      position: relative;
+      background: rgba(18, 24, 34, 0.85) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+      border-radius: 12px;
+      padding: 12px 8px 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      transition: all 0.25s ease;
     }
 
-    /* Team Pickers in Dark Mode */
-    body:not(.light-mode) .btn-pick-team {
-      background: rgba(28, 18, 12, 0.82) !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+    /* Podium Cards Themed to Each Crew's Actual Colors */
+    .podium-card.podium-team-red {
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.18) 0%, rgba(22, 10, 12, 0.94) 100%) !important;
+      border-color: rgba(239, 68, 68, 0.5) !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 16px rgba(239, 68, 68, 0.22) !important;
     }
-    body:not(.light-mode) .btn-pick-team:hover {
-      background: rgba(45, 28, 18, 0.92) !important;
-      border-color: var(--theme-border, var(--gold)) !important;
+    .podium-card.podium-team-red .podium-team-name {
+      color: #f87171 !important;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.4) !important;
     }
-    body:not(.light-mode) .btn-pick-team.selected {
-      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(220, 180, 120, 0.2)) 0%, rgba(32, 18, 12, 0.95) 100%) !important;
-      border: 2px solid var(--theme-border, var(--gold)) !important;
-      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+
+    .podium-card.podium-team-blue {
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.18) 0%, rgba(10, 16, 28, 0.94) 100%) !important;
+      border-color: rgba(59, 130, 246, 0.5) !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 16px rgba(59, 130, 246, 0.22) !important;
+    }
+    .podium-card.podium-team-blue .podium-team-name {
+      color: #60a5fa !important;
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.4) !important;
+    }
+
+    .podium-card.podium-team-green {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.18) 0%, rgba(10, 22, 14, 0.94) 100%) !important;
+      border-color: rgba(34, 197, 94, 0.5) !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 16px rgba(34, 197, 94, 0.22) !important;
+    }
+    .podium-card.podium-team-green .podium-team-name {
+      color: #4ade80 !important;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.4) !important;
+    }
+
+    .podium-card.podium-team-yellow {
+      background: linear-gradient(180deg, rgba(234, 179, 8, 0.18) 0%, rgba(26, 20, 8, 0.94) 100%) !important;
+      border-color: rgba(234, 179, 8, 0.5) !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 16px rgba(234, 179, 8, 0.22) !important;
+    }
+    .podium-card.podium-team-yellow .podium-team-name {
+      color: #facc15 !important;
+      text-shadow: 0 0 10px rgba(234, 179, 8, 0.4) !important;
+    }
+
+    /* Rank badges (1st Gold, 2nd Silver, 3rd Bronze, 4th Iron) */
+    .podium-rank-badge {
+      width: 100%;
+      border-radius: 8px;
+      padding: 3px 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .podium-card.rank-1 .podium-rank-badge {
+      background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+      color: #1a0f02 !important;
+      box-shadow: 0 0 14px rgba(234, 179, 8, 0.6);
+    }
+    .podium-card.rank-2 .podium-rank-badge {
+      background: linear-gradient(135deg, #cbd5e1 0%, #64748b 100%);
+      color: #0f172a !important;
+      box-shadow: 0 0 12px rgba(148, 163, 184, 0.4);
+    }
+    .podium-card.rank-3 .podium-rank-badge {
+      background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%);
+      color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(234, 88, 12, 0.4);
+    }
+    .podium-card.rank-4 .podium-rank-badge {
+      background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
+      color: #e2e8f0 !important;
+    }
+
+    .podium-card.is-my-crew {
+      outline: 2.5px solid var(--theme-border, #38bdf8) !important;
+      box-shadow: 0 0 24px var(--theme-glow, rgba(56, 189, 248, 0.4)), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    }
+    .podium-my-crew-tag {
+      position: absolute;
+      top: -10px;
+      right: 50%;
+      transform: translateX(50%);
+      background: var(--theme-primary, #38bdf8) !important;
+      color: #ffffff !important;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 1px 8px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 10px var(--theme-glow, rgba(0,0,0,0));
+      z-index: 5;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .podium-score-row {
+      border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+      padding: 4px 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .podium-score-number {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #ffffff !important;
+      line-height: 1;
+    }
+    .podium-score-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: #cbd5e1 !important;
+      font-weight: 700;
+    }
+    .podium-chip {
+      background: rgba(0, 0, 0, 0.5) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #e2e8f0 !important;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .scoring-as-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      background: rgba(0, 0, 0, 0.6) !important;
+      border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.25)) !important;
+      color: #e2e8f0 !important;
+      padding: 3px 10px;
+      border-radius: 999px;
+      box-shadow: 0 0 10px var(--theme-glow, rgba(0,0,0,0));
+    }
+    .scoring-as-pill strong {
+      color: var(--theme-celtic-accent, #ffffff) !important;
+    }
+
+    /* Team Pickers in Dark Mode (Vibrant Per-Team Theming) */
+    .btn-pick-team {
+      background: rgba(18, 24, 34, 0.78) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+      border-radius: 10px;
+      padding: 10px 8px;
+      font-family: 'Pirata One', cursive;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .btn-pick-team .team-name-txt {
+      font-size: 1.25rem;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+    .btn-pick-team .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: #94a3b8 !important;
+      font-weight: 700;
+    }
+
+    .btn-pick-team.team-btn-red {
+      color: #f87171 !important;
+      border-color: rgba(239, 68, 68, 0.35) !important;
+    }
+    .btn-pick-team.team-btn-red:hover {
+      background: rgba(239, 68, 68, 0.16) !important;
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+    }
+    .btn-pick-team.team-btn-red.selected {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.28) 0%, rgba(20, 10, 12, 0.95) 100%) !important;
+      border: 2px solid #ef4444 !important;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.5), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
       color: #ffffff !important;
       transform: translateY(-2px);
     }
-    body:not(.light-mode) .btn-pick-team .sub {
-      color: #c9ab85 !important;
+
+    .btn-pick-team.team-btn-blue {
+      color: #60a5fa !important;
+      border-color: rgba(59, 130, 246, 0.35) !important;
     }
-    body:not(.light-mode) .btn-pick-team.selected .sub {
-      color: #ffd885 !important;
+    .btn-pick-team.team-btn-blue:hover {
+      background: rgba(59, 130, 246, 0.16) !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+    }
+    .btn-pick-team.team-btn-blue.selected {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.28) 0%, rgba(10, 16, 26, 0.95) 100%) !important;
+      border: 2px solid #3b82f6 !important;
+      box-shadow: 0 0 18px rgba(59, 130, 246, 0.5), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-pick-team.team-btn-green {
+      color: #4ade80 !important;
+      border-color: rgba(34, 197, 94, 0.35) !important;
+    }
+    .btn-pick-team.team-btn-green:hover {
+      background: rgba(34, 197, 94, 0.16) !important;
+      border-color: #22c55e !important;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.35);
+    }
+    .btn-pick-team.team-btn-green.selected {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.28) 0%, rgba(10, 22, 14, 0.95) 100%) !important;
+      border: 2px solid #22c55e !important;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.5), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-pick-team.team-btn-yellow {
+      color: #facc15 !important;
+      border-color: rgba(234, 179, 8, 0.35) !important;
+    }
+    .btn-pick-team.team-btn-yellow:hover {
+      background: rgba(234, 179, 8, 0.16) !important;
+      border-color: #eab308 !important;
+      box-shadow: 0 0 14px rgba(234, 179, 8, 0.35);
+    }
+    .btn-pick-team.team-btn-yellow.selected {
+      background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(26, 20, 8, 0.95) 100%) !important;
+      border: 2px solid #eab308 !important;
+      box-shadow: 0 0 18px rgba(234, 179, 8, 0.5), 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
     }
 
     /* Scoring Stepper & Console in Dark Mode */
     body:not(.light-mode) .scoring-stepper-card {
-      background: var(--glass-card-bg, rgba(28, 16, 10, 0.88)) !important;
-      border: 1.5px solid var(--theme-border, var(--gold)) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 18px var(--theme-glow, rgba(0,0,0,0)) !important;
+      background: var(--glass-card-bg, rgba(18, 24, 34, 0.88)) !important;
+      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.2)) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5), 0 0 18px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
     body:not(.light-mode) .step-title {
-      color: var(--theme-celtic-accent, #ffd885) !important;
+      color: var(--theme-celtic-accent, #ffffff) !important;
+      text-shadow: 0 0 10px var(--theme-glow, rgba(0,0,0,0));
     }
     body:not(.light-mode) .active-scoring-console {
-      background: rgba(20, 12, 7, 0.88) !important;
-      border: 1.5px solid var(--theme-border, var(--gold)) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
+      background: rgba(12, 16, 24, 0.9) !important;
+      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.25)) !important;
+      color: #ffffff !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+      border-radius: 12px;
     }
     body:not(.light-mode) .scoring-actions-grid button {
-      background: rgba(35, 22, 14, 0.85) !important;
+      background: rgba(22, 28, 38, 0.85) !important;
       border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
-      color: #f7eedc !important;
+      color: #ffffff !important;
     }
     body:not(.light-mode) .scoring-actions-grid button:hover {
-      background: rgba(50, 32, 20, 0.95) !important;
-      border-color: var(--theme-border, var(--gold)) !important;
+      background: rgba(36, 46, 62, 0.95) !important;
+      border-color: var(--theme-border, rgba(255, 255, 255, 0.4)) !important;
     }
     body:not(.light-mode) .pass-turn-btn {
-      background: linear-gradient(135deg, var(--theme-primary, #b8860b) 0%, var(--theme-primary-dark, #54370d) 100%) !important;
-      border: 1.5px solid var(--theme-border, var(--gold)) !important;
+      background: linear-gradient(135deg, var(--theme-primary, #3b82f6) 0%, var(--theme-primary-dark, #1e3a61) 100%) !important;
+      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
       color: #ffffff !important;
-      box-shadow: 0 0 12px var(--theme-glow, rgba(0,0,0,0)) !important;
+      box-shadow: 0 0 14px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
 
     /* Codex cards, pub cards, bingo tiles in Dark Mode */
@@ -4515,7 +4706,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.7</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.8</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -8056,7 +8247,7 @@
           const r = ranks[idx] || ranks[3];
           const isMyCrew = team.id === state.myTeamIdx;
           const card = document.createElement("div");
-          card.className = `podium-card ${r.class} ${isMyCrew ? "is-my-crew" : ""}`;
+          card.className = `podium-card ${r.class} podium-team-${team.colorClass} ${isMyCrew ? "is-my-crew" : ""}`;
           card.style.order = r.order;
 
           const playerListStr = team.players && team.players.length ? team.players.join(", ") : "No crew listed";
@@ -8077,7 +8268,7 @@
             </div>
 
             <div class="podium-score-row">
-              <span class="podium-score-number" style="color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</span>
+              <span class="podium-score-number" style="color: ${team.score < 0 ? '#ef4444' : '#ffffff'};">${team.score}</span>
               <span class="podium-score-unit">PTS</span>
             </div>
 
@@ -8163,18 +8354,18 @@
           myPicker.style.display = "none";
         }
 
-        // Step 2: Render Target Team Picker
+        // Step 2: Render Target Team Picker (Per-Team Vibrant Colors)
         const targetPicker = document.getElementById("targetTeamPicker");
         if (targetPicker) {
           targetPicker.innerHTML = "";
           state.teams.forEach((t, idx) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = `btn-pick-team ${idx === state.targetTeamIdx ? "selected" : ""}`;
+            btn.className = `btn-pick-team team-btn-${t.colorClass} ${idx === state.targetTeamIdx ? "selected" : ""}`;
             const isSelf = idx === state.myTeamIdx;
             btn.innerHTML = `
               <span class="crew-dot ${t.colorClass}"></span>
-              <span>${escapeHtml(t.name)}</span>
+              <span class="team-name-txt">${escapeHtml(t.name)}</span>
               <span class="sub">${isSelf ? "(Your Team)" : "Target Crew"}</span>
             `;
             btn.onclick = () => {
@@ -8186,31 +8377,34 @@
           });
         }
 
-        // Step 3: Render Active Scoring Console
+        // Step 3: Render Active Scoring Console Themed to Target Team
         const consoleEl = document.getElementById("scoringConsole");
         const targetTeam = state.teams[state.targetTeamIdx] || state.teams[1];
         const targetCaptain = targetTeam.captain ? ` • 👑 Captain: ${escapeHtml(targetTeam.captain)}` : "";
 
+        consoleEl.style.border = `2px solid ${targetTeam.colorHex}77`;
+        consoleEl.style.boxShadow = `0 8px 30px rgba(0, 0, 0, 0.55), 0 0 22px ${targetTeam.colorHex}30`;
+
         consoleEl.innerHTML = `
-          <div class="scoring-header-row">
+          <div class="scoring-header-row" style="border-bottom: 1.5px dashed ${targetTeam.colorHex}55;">
             <div class="scoring-identity">
-              <span class="crew-dot ${targetTeam.colorClass}" style="width: 16px; height: 16px;"></span>
+              <span class="crew-dot ${targetTeam.colorClass}" style="width: 18px; height: 18px; box-shadow: 0 0 10px ${targetTeam.colorHex};"></span>
               <div>
                 <div class="scoring-target-badge">
-                  <span>${escapeHtml(targetTeam.name)}</span>
-                  ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #0284c7;">[❄️ FROZEN]</span>` : ""}
+                  <span style="color: ${targetTeam.colorHex}; font-weight: 800; text-shadow: 0 0 12px ${targetTeam.colorHex}45;">${escapeHtml(targetTeam.name)}</span>
+                  ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #38bdf8;">[❄️ FROZEN]</span>` : ""}
                 </div>
-                <div style="font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-muted);">
-                  ${!isRegistered ? 'Mode: <strong>Spectator (Scoreboard View)</strong>' : `Scoring by: <strong>${escapeHtml(myTeam.name)}</strong>`}${targetCaptain} • ${targetTeam.sips} drinks taken
+                <div style="font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: #cbd5e1;">
+                  ${!isRegistered ? 'Mode: <strong style="color:#ffffff;">Spectator (Scoreboard View)</strong>' : `Scoring by: <strong style="color:#ffffff;">${escapeHtml(myTeam.name)}</strong>`}${targetCaptain} • ${targetTeam.sips} drinks taken
                 </div>
               </div>
             </div>
 
             <div class="big-score-display">
-              <div class="big-score-num" style="color: ${targetTeam.score < 0 ? '#9e1b1b' : 'inherit'};">
+              <div class="big-score-num" style="color: ${targetTeam.score < 0 ? '#ef4444' : targetTeam.colorHex}; text-shadow: 0 0 16px ${targetTeam.colorHex}40;">
                 ${targetTeam.score}
               </div>
-              <div class="big-score-label">POINTS</div>
+              <div class="big-score-label" style="color: #94a3b8; font-weight: 700;">POINTS</div>
             </div>
           </div>
 
@@ -8287,12 +8481,12 @@
             </button>
           </div>
 
-          <!-- Stash Control -->
-          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(223, 183, 76, 0.16); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--gold); font-size: 0.88rem;">
-            <span>🃏 Captain's Stash (Wild Cards): <strong>${targetTeam.stash}</strong>/2 (+1 pt each at end)</span>
+          <!-- Stash Control Themed to Target Team -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: ${targetTeam.colorHex}18; padding: 10px 14px; border-radius: 8px; border: 1.5px solid ${targetTeam.colorHex}55; font-size: 0.88rem; box-shadow: 0 0 12px ${targetTeam.colorHex}18;">
+            <span style="color: #ffffff; font-weight: 600;">🃏 Captain's Stash (Wild Cards): <strong style="color: ${targetTeam.colorHex}; font-size: 1.05rem;">${targetTeam.stash}</strong>/2 (+1 pt each at end)</span>
             <div style="display: flex; gap: 6px;">
-              <button type="button" class="btn-stop-check" data-stash-change="-1">-</button>
-              <button type="button" class="btn-stop-check" data-stash-change="1">+</button>
+              <button type="button" class="btn-stop-check" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; font-weight: 800; font-size: 1.1rem; border-radius: 6px; cursor: pointer;" data-stash-change="-1">-</button>
+              <button type="button" class="btn-stop-check" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; font-weight: 800; font-size: 1.1rem; border-radius: 6px; cursor: pointer;" data-stash-change="1">+</button>
             </div>
           </div>
         `;
