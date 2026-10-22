@@ -7,7 +7,9 @@
 
   <!-- Open Graph & Mobile App Meta (Optimized for iOS Safari & Android Chrome) -->
   <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
-  <meta name="theme-color" id="themeColorMeta" content="#190e0e" />
+  <meta name="theme-color" id="themeColorMeta" content="#101317" />
+  <meta name="theme-color" id="themeColorLightMeta" media="(prefers-color-scheme: light)" content="#f1f5f9" />
+  <meta name="theme-color" id="themeColorDarkMeta" media="(prefers-color-scheme: dark)" content="#101317" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Drunk Uno" />
@@ -345,33 +347,57 @@
       }
       .top-bar {
         padding: 6px 8px !important;
-        gap: 5px !important;
+        gap: 6px !important;
         margin-bottom: 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
       }
-      .top-bar-left, .top-bar-right {
-        gap: 4px !important;
+      .top-bar-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+      }
+      .top-bar-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        flex: 0 0 auto !important;
       }
       .version-badge {
         font-size: 0.68rem !important;
         padding: 2px 6px !important;
+        flex-shrink: 0 !important;
       }
       .user-profile-badge {
         font-size: 0.68rem !important;
-        padding: 3px 6px !important;
-        max-width: 90px !important;
+        padding: 3px 8px !important;
+        max-width: min(140px, 34vw) !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+      }
+      .user-profile-badge span:last-child {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
       }
       .sync-status-pill {
         font-size: 0.65rem !important;
-        padding: 3px 6px !important;
+        padding: 3px 8px !important;
         max-width: none !important;
         white-space: nowrap !important;
+        flex-shrink: 0 !important;
       }
       .settings-btn {
         font-size: 0.72rem !important;
-        padding: 3px 6px !important;
+        padding: 3px 7px !important;
+        flex-shrink: 0 !important;
       }
       .hide-mobile {
         display: none !important;
@@ -392,7 +418,7 @@
       padding: 6px 14px;
       width: auto;
       max-width: min(94vw, 560px);
-      background: rgba(18, 10, 6, 0.68);
+      background: var(--glass-card-bg, rgba(16, 20, 28, 0.78));
       backdrop-filter: blur(28px) saturate(200%);
       -webkit-backdrop-filter: blur(28px) saturate(200%);
       border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.22));
@@ -417,7 +443,7 @@
         border-radius: 28px !important;
         border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
         border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
-        background: rgba(32, 16, 10, 0.65) !important;
+        background: var(--glass-card-bg, rgba(16, 20, 28, 0.85)) !important;
         backdrop-filter: blur(28px) saturate(200%) !important;
         -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
         padding: 5px 6px !important;
@@ -436,7 +462,7 @@
         border-radius: 22px 22px 0 0 !important;
         border: none !important;
         border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
-        background: rgba(30, 15, 8, 0.72) !important;
+        background: var(--glass-card-bg, rgba(16, 20, 28, 0.90)) !important;
         padding: 6px 4px calc(max(10px, var(--sab)) + 2px) 4px !important;
       }
     }
@@ -1221,11 +1247,16 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 82%;
+      max-width: 88%;
     }
     @media (max-width: 540px) {
       .podium-team-name {
-        font-size: 0.88rem;
+        font-size: 0.84rem !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.02 !important;
+        max-width: 100% !important;
+        text-align: center !important;
       }
     }
 
@@ -2313,7 +2344,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(18, 9, 5, 0.78) !important;
+      background: rgba(8, 10, 14, 0.82) !important;
       backdrop-filter: blur(14px) saturate(180%);
       -webkit-backdrop-filter: blur(14px) saturate(180%);
       z-index: 100000 !important;
@@ -2445,8 +2476,11 @@
        DYNAMIC MATERIAL YOU (M3) THEME SYSTEM & SIGNATURE GLOSSY GLASS
        Adapted from main portfolio blueprint.css with dynamic tonal palettes
        ========================================================================= */
-    body.theme-red {
+    html.theme-red,
+    body.theme-red,
+    :root:has(body.theme-red) {
       --theme-bg: #190e0e;
+      background-color: #190e0e !important;
       --md-primary: #d87a80;
       --md-primary-rgb: 216, 122, 128;
       --md-on-primary: #ffffff;
@@ -2471,8 +2505,11 @@
       --theme-celtic-accent: #e8989e;
       --theme-topbar-bg: linear-gradient(135deg, rgba(216, 122, 128, 0.22) 0%, rgba(26, 14, 16, 0.94) 100%);
     }
-    body.theme-blue {
+    html.theme-blue,
+    body.theme-blue,
+    :root:has(body.theme-blue) {
       --theme-bg: #0a121e;
+      background-color: #0a121e !important;
       --md-primary: #7aafe6;
       --md-primary-rgb: 122, 175, 230;
       --md-on-primary: #ffffff;
@@ -2497,8 +2534,11 @@
       --theme-celtic-accent: #9cc5f2;
       --theme-topbar-bg: linear-gradient(135deg, rgba(122, 175, 230, 0.22) 0%, rgba(12, 18, 28, 0.94) 100%);
     }
-    body.theme-green {
+    html.theme-green,
+    body.theme-green,
+    :root:has(body.theme-green) {
       --theme-bg: #0b170e;
+      background-color: #0b170e !important;
       --md-primary: #80c692;
       --md-primary-rgb: 128, 198, 146;
       --md-on-primary: #052610;
@@ -2523,8 +2563,11 @@
       --theme-celtic-accent: #a2dbae;
       --theme-topbar-bg: linear-gradient(135deg, rgba(128, 198, 146, 0.22) 0%, rgba(12, 24, 16, 0.94) 100%);
     }
-    body.theme-yellow {
+    html.theme-yellow,
+    body.theme-yellow,
+    :root:has(body.theme-yellow) {
       --theme-bg: #18130a;
+      background-color: #18130a !important;
       --md-primary: #e5b768;
       --md-primary-rgb: 229, 183, 104;
       --md-on-primary: #2d1d03;
@@ -2639,6 +2682,46 @@
       outline: none;
       border-color: var(--gold-bright) !important;
       box-shadow: 0 0 14px var(--theme-glow, rgba(223, 183, 76, 0.5)), inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Modal & Admin Dark Theme Inputs */
+    .modal-scroll input[type="text"],
+    .modal-scroll input[type="password"] {
+      background: rgba(12, 16, 24, 0.85) !important;
+      color: #fffef8 !important;
+      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
+      border-radius: 8px;
+    }
+    .modal-scroll input[type="text"]:focus,
+    .modal-scroll input[type="password"]:focus {
+      outline: none;
+      border-color: var(--gold-bright, #ffd166) !important;
+      box-shadow: 0 0 14px var(--theme-glow, rgba(255, 209, 102, 0.45)), inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+    body.light-mode .modal-scroll input[type="text"],
+    body.light-mode .modal-scroll input[type="password"] {
+      background: rgba(255, 255, 255, 0.96) !important;
+      color: #1a0f05 !important;
+      border: 1.5px solid var(--theme-border, #cca972) !important;
+    }
+
+    /* Admin Action Button Uniform Responsive Grid */
+    .admin-btn-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+      gap: 6px !important;
+      width: 100% !important;
+    }
+    .admin-btn-grid .modal-btn {
+      width: 100% !important;
+      font-size: 0.82rem !important;
+      padding: 8px 6px !important;
+      text-align: center !important;
+      justify-content: center !important;
+      line-height: 1.15 !important;
+      display: flex !important;
+      align-items: center !important;
+      margin: 0 !important;
     }
 
     /* Title chip buttons */
@@ -4151,7 +4234,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.3</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.4</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4657,39 +4740,39 @@
               <!-- Device Table / Cards -->
               <div class="admin-device-grid" id="adminDeviceGrid" style="margin-top: 10px;"></div>
 
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;">
-                <button type="button" class="modal-btn" id="adminRefreshDevicesBtn" style="background: #1d63b8; font-size: 0.95rem; padding: 8px 14px; width: auto;">
-                  🔄 Refresh Device Directory
+              <div class="admin-btn-grid" style="margin-top: 14px;">
+                <button type="button" class="modal-btn" id="adminRefreshDevicesBtn" style="background: #1d63b8;">
+                  🔄 Refresh Devices
                 </button>
-                <button type="button" class="modal-btn" id="adminPruneDuplicatesBtn" style="background: #7c2d12; border: 1.5px solid #ea580c; color: #ffedd5; font-size: 0.95rem; padding: 8px 14px; width: auto; font-weight: 700;" title="Instantly cleans and merges duplicate players, stale ghost sessions, and unlinked lurkers">
-                  🧹 Prune Stale & Duplicate Devices
+                <button type="button" class="modal-btn" id="adminPruneDuplicatesBtn" style="background: #7c2d12; border: 1.5px solid #ea580c; color: #ffedd5; font-weight: 700;" title="Instantly cleans and merges duplicate players, stale ghost sessions, and unlinked lurkers">
+                  🧹 Prune Duplicates
                 </button>
-                <button type="button" class="modal-btn" id="adminRegisterCurrentDeviceBtn" style="background: #2b9348; font-size: 0.95rem; padding: 8px 14px; width: auto;">
-                  📱 Link My Current Device
+                <button type="button" class="modal-btn" id="adminRegisterCurrentDeviceBtn" style="background: #2b9348;">
+                  📱 Link My Device
                 </button>
-                <button type="button" class="modal-btn" id="adminTestConnectionBtn" style="background: #0284c7; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #38bdf8; color: #fff;" title="Broadcast an instant visual & audio test alert popup to all connected phones">
-                  🔔 TEST CONNECTION (POPUP TO ALL DEVICES)
+                <button type="button" class="modal-btn" id="adminTestConnectionBtn" style="background: #0284c7; border: 1.5px solid #38bdf8; color: #fff;" title="Broadcast an instant visual & audio test alert popup to all connected phones">
+                  🔔 Test Popups
                 </button>
-                <button type="button" class="modal-btn" id="adminLockGameBtn" style="background: #0369a1; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #38bdf8; color: #fff;" title="Lock all phones with an uncloseable pub transition pause screen">
-                  ❄️ FREEZE ALL PHONES / LOCK GAME
+                <button type="button" class="modal-btn" id="adminLockGameBtn" style="background: #0369a1; border: 1.5px solid #38bdf8; color: #fff;" title="Lock all phones with an uncloseable pub transition pause screen">
+                  ❄️ Freeze Phones
                 </button>
-                <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706; font-size: 0.95rem; padding: 8px 14px; width: auto;">
-                  📢 Ping All Devices
+                <button type="button" class="modal-btn" id="adminPingAllBtn" style="background: #d97706;">
+                  📢 Ping All
                 </button>
-                <button type="button" class="modal-btn" id="adminRedirectPortfolioBtn" style="background: #6d28d9; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #a78bfa; color: #fff;" title="Force redirect every connected player's screen to portfolio homepage">
-                  🚀 FORCE REDIRECT ALL TO PORTFOLIO
+                <button type="button" class="modal-btn" id="adminRedirectPortfolioBtn" style="background: #6d28d9; border: 1.5px solid #a78bfa; color: #fff;" title="Force redirect every connected player's screen to portfolio homepage">
+                  🚀 Portfolio Redirect
                 </button>
-                <button type="button" class="modal-btn" id="adminResetAllDevicesBtn" style="background: #8b1e1e; font-size: 0.95rem; padding: 8px 14px; width: auto; border-color: #ff4d4d; color: #fff;">
-                  🚨 RESET ALL DEVICES SETTINGS
+                <button type="button" class="modal-btn" id="adminResetAllDevicesBtn" style="background: #8b1e1e; border-color: #ff4d4d; color: #fff;">
+                  🚨 Reset Settings
                 </button>
-                <button type="button" class="modal-btn" id="adminUnlinkAllHardwareBtn" style="background: #991b1b; font-size: 0.95rem; padding: 8px 14px; width: auto; border: 1.5px solid #f87171; color: #fff;" title="Completely unlink and erase all hardware fingerprints and device IDs">
-                  🔌 UNLINK ALL HARDWARE
+                <button type="button" class="modal-btn" id="adminUnlinkAllHardwareBtn" style="background: #991b1b; border: 1.5px solid #f87171; color: #fff;" title="Completely unlink and erase all hardware fingerprints and device IDs">
+                  🔌 Unlink Hardware
                 </button>
-                <button type="button" class="modal-btn" id="adminResetToZeroBtn" style="background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); font-size: 0.95rem; padding: 8px 14px; width: auto; border: 2px solid #f87171; color: #fff; font-weight: 800; box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);" title="Completely wipes all scores, drinks, cards, stops, and cached cookies, starting a fresh game from 0 for everyone">
-                  ⚡ RESET GAME TO 0 & CLEAR EVERYONE
+                <button type="button" class="modal-btn" id="adminResetToZeroBtn" style="background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); border: 2px solid #f87171; color: #fff; font-weight: 800; box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);" title="Completely wipes all scores, drinks, cards, stops, and cached cookies, starting a fresh game from 0 for everyone">
+                  ⚡ Reset Game to 0
                 </button>
-                <button type="button" class="modal-btn" id="adminNukeSiteBtn" style="background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); font-size: 0.95rem; padding: 8px 14px; width: auto; border: 2px solid #ef4444; color: #fee2e2; font-weight: 800; box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);" title="Prompts confirmation, gives everyone on site a 15-second countdown warning, wipes all game cookies and reloads everyone on any game code">
-                  ☢️ NUKE ALL CUSTOM GAME DATA (15s SITE PURGE)
+                <button type="button" class="modal-btn" id="adminNukeSiteBtn" style="background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); border: 2px solid #ef4444; color: #fee2e2; font-weight: 800; box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);" title="Prompts confirmation, gives everyone on site a 15-second countdown warning, wipes all game cookies and reloads everyone on any game code">
+                  ☢️ 15s Site Purge
                 </button>
               </div>
 
@@ -4702,23 +4785,23 @@
                   <span style="font-size: 0.72rem; color: #86efac; font-family: 'JetBrains Mono', monospace;">Type or Tap Quick Action</span>
                 </div>
                 <div style="display: flex; gap: 6px; margin-bottom: 8px;">
-                  <input type="text" id="adminCommandInput" placeholder="Type /reset, /nuke, /zero, /unlink..." style="flex: 1; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; background: rgba(15, 10, 5, 0.95); border: 1.5px solid #eab308; border-radius: 6px; color: #fff;" />
-                  <button type="button" class="modal-btn" id="adminExecCommandBtn" style="width: auto; padding: 8px 14px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #fff; font-size: 0.88rem; font-weight: 700; white-space: nowrap;">
-                    ⚡ Run Command
+                  <input type="text" id="adminCommandInput" placeholder="Type /reset, /nuke, /zero..." style="flex: 1; min-width: 0; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; background: rgba(12, 16, 24, 0.95); border: 1.5px solid #eab308; border-radius: 6px; color: #fff;" />
+                  <button type="button" class="modal-btn" id="adminExecCommandBtn" style="width: auto; padding: 8px 12px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #fff; font-size: 0.86rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
+                    ⚡ Run
                   </button>
                 </div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/reset" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(220, 38, 38, 0.25); border: 1px solid #ef4444; color: #fca5a5; border-radius: 4px; cursor: pointer;">
-                    🔄 /reset (Reset Game to 0)
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 6px;">
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/reset" style="padding: 5px 6px; font-size: 0.72rem; background: rgba(220, 38, 38, 0.25); border: 1px solid #ef4444; color: #fca5a5; border-radius: 5px; cursor: pointer; text-align: center;">
+                    🔄 /reset (To 0)
                   </button>
-                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/nuke" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(185, 28, 28, 0.35); border: 1px solid #dc2626; color: #fecaca; border-radius: 4px; cursor: pointer;">
-                    ☢️ /nuke (15s Site Purge)
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/nuke" style="padding: 5px 6px; font-size: 0.72rem; background: rgba(185, 28, 28, 0.35); border: 1px solid #dc2626; color: #fecaca; border-radius: 5px; cursor: pointer; text-align: center;">
+                    ☢️ /nuke (Purge)
                   </button>
-                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/zero" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(234, 179, 8, 0.2); border: 1px solid #eab308; color: #fef08a; border-radius: 4px; cursor: pointer;">
-                    0️⃣ /zero (Zero Scores Only)
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/zero" style="padding: 5px 6px; font-size: 0.72rem; background: rgba(234, 179, 8, 0.2); border: 1px solid #eab308; color: #fef08a; border-radius: 5px; cursor: pointer; text-align: center;">
+                    0️⃣ /zero (Scores)
                   </button>
-                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/unlink" style="padding: 4px 8px; font-size: 0.74rem; background: rgba(147, 51, 234, 0.25); border: 1px solid #a855f7; color: #e9d5ff; border-radius: 4px; cursor: pointer;">
-                    🔌 /unlink (Unlink All Hardware)
+                  <button type="button" class="admin-quick-cmd-btn" data-cmd="/unlink" style="padding: 5px 6px; font-size: 0.72rem; background: rgba(147, 51, 234, 0.25); border: 1px solid #a855f7; color: #e9d5ff; border-radius: 5px; cursor: pointer; text-align: center;">
+                    🔌 /unlink (MACs)
                   </button>
                 </div>
               </div>
@@ -4960,9 +5043,9 @@
        ========================================================================= -->
   <div class="modal-backdrop" id="passcodeModal">
     <div class="modal-scroll" style="max-width: 380px;">
-      <h2 class="modal-title" style="color: #9e1b1b;">🔒 ADMIN RESTRICTED</h2>
+      <h2 class="modal-title" style="color: #ef4444;">🔒 ADMIN RESTRICTED</h2>
       <p class="modal-body">Enter the secret 8-digit passcode to unlock the Crawl Master Admin Console:</p>
-      <input type="password" id="passcodeInput" maxlength="12" placeholder="Passcode..." style="width: 100%; text-align: center; letter-spacing: 0.25em; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; border: 2px solid var(--ink); border-radius: 8px; margin-bottom: 12px;" />
+      <input type="password" id="passcodeInput" class="glass-input" maxlength="12" placeholder="••••••••" style="width: 100%; text-align: center; letter-spacing: 0.25em; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; background: rgba(10, 14, 20, 0.85) !important; color: #fffef8 !important; border: 2px solid var(--theme-border, #d87a80) !important; border-radius: 8px; margin-bottom: 12px;" />
       <div class="modal-actions">
         <button type="button" class="modal-btn" id="submitPasscodeBtn">Unlock Admin Console</button>
         <button type="button" class="modal-btn secondary" id="closePasscodeModalBtn">Cancel</button>
@@ -4982,7 +5065,7 @@
       </p>
       <div style="margin-bottom: 12px;">
         <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 4px;">ROOM CODE:</label>
-        <input type="text" id="roomCodeInput" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 6px;" />
+        <input type="text" id="roomCodeInput" class="glass-input" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; background: rgba(10, 14, 20, 0.85) !important; color: #fffef8 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 6px;" />
       </div>
       <div class="modal-actions">
         <button type="button" class="modal-btn" id="joinRoomBtn">Connect to Room</button>
@@ -5048,7 +5131,7 @@
     <div class="modal-scroll">
       <h2 class="modal-title">0 (RULE MAKER)</h2>
       <p class="modal-body">Create or update the house rule for this pub:</p>
-      <input type="text" id="ruleInput" placeholder="e.g. Must drink with left hand only..." style="width: 100%; padding: 10px; font-family: 'IM Fell English', serif; font-size: 1rem; border: 2px solid var(--ink); border-radius: 6px; margin-bottom: 12px;" />
+      <input type="text" id="ruleInput" class="glass-input" placeholder="e.g. Must drink with left hand only..." style="width: 100%; padding: 10px; font-family: 'IM Fell English', serif; font-size: 1rem; background: rgba(10, 14, 20, 0.85) !important; color: #fffef8 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 6px; margin-bottom: 12px;" />
       <div class="modal-actions">
         <button type="button" class="modal-btn" id="saveRuleBtn">Save Pub Rule</button>
         <button type="button" class="modal-btn secondary" id="closeRuleModalBtn">Cancel</button>
@@ -6307,18 +6390,23 @@
         overlay.style.display = isFrozen ? "flex" : "none";
       }
 
-      function checkHomescreenPrompt() {
+      function checkHomescreenPrompt(onDone) {
         const isStandalone = (window.navigator && window.navigator.standalone === true) || 
                              (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-        if (isStandalone) return;
+        if (isStandalone) {
+          if (typeof onDone === "function") onDone();
+          return;
+        }
         const alreadySeen = localStorage.getItem("drunk_uno_homescreen_prompt_seen") === "true";
         if (!alreadySeen) {
           const modal = document.getElementById("homescreenInstallModal");
           if (modal) {
             setTimeout(() => {
               modal.classList.add("open");
-            }, 850);
+            }, 300);
           }
+        } else if (typeof onDone === "function") {
+          onDone();
         }
       }
 
@@ -6328,6 +6416,13 @@
           try { localStorage.setItem("drunk_uno_homescreen_prompt_seen", "true"); } catch (e) {}
           document.getElementById("homescreenInstallModal")?.classList.remove("open");
           playTick(600);
+          // If not registered yet, immediately proceed to name & crew onboarding guide!
+          const isReg = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
+          if (!isReg) {
+            setTimeout(() => {
+              openCrewSetupModal(false);
+            }, 250);
+          }
         };
       }
 
@@ -7221,27 +7316,35 @@
         return window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
       }
 
-      function updateThemeColorMeta() {
+      function updateThemeColorMeta(teamIdx) {
         const isLight = document.body ? document.body.classList.contains("light-mode") : isSystemLightMode();
-        const team = (state.teams && state.teams[state.myTeamIdx]) || (state.teams && state.teams[0]) || { colorClass: "red" };
-        const colorClass = team.colorClass || "red";
+        const activeIdx = (teamIdx !== undefined) ? teamIdx : state.myTeamIdx;
+        const isSpectator = (activeIdx === null || activeIdx === undefined || activeIdx < 0 || !state.teams || !state.teams[activeIdx]);
+        const team = (!isSpectator && state.teams) ? state.teams[activeIdx] : null;
+        const colorClass = team ? (team.colorClass || "spectator") : "spectator";
 
-        let titleBarHex = "#54191f";
-        if (isLight) {
-          if (colorClass === "blue") titleBarHex = "#dbe8f8";
-          else if (colorClass === "green") titleBarHex = "#dbeef0";
-          else if (colorClass === "yellow") titleBarHex = "#fcecd2";
-          else titleBarHex = "#fbdcde";
+        let titleBarHex = "#101317";
+        if (isSpectator) {
+          titleBarHex = isLight ? "#f1f5f9" : "#101317";
+        } else if (isLight) {
+          if (colorClass === "blue") titleBarHex = "#e8f1fc";
+          else if (colorClass === "green") titleBarHex = "#eaf5ed";
+          else if (colorClass === "yellow") titleBarHex = "#fbf5e6";
+          else titleBarHex = "#fcf0f1";
         } else {
-          if (colorClass === "blue") titleBarHex = "#1a3a60";
-          else if (colorClass === "green") titleBarHex = "#1b4426";
-          else if (colorClass === "yellow") titleBarHex = "#4d3614";
-          else titleBarHex = "#54191f";
+          if (colorClass === "blue") titleBarHex = "#0a121e";
+          else if (colorClass === "green") titleBarHex = "#0b170e";
+          else if (colorClass === "yellow") titleBarHex = "#18130a";
+          else titleBarHex = "#190e0e";
         }
 
         document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
         if (document.documentElement) {
           document.documentElement.style.setProperty('--theme-bg', titleBarHex);
+          document.documentElement.style.backgroundColor = titleBarHex;
+        }
+        if (document.body) {
+          document.body.style.setProperty('--theme-bg', titleBarHex);
         }
 
         const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
@@ -7327,12 +7430,15 @@
       }
 
       function applyTeamTheme(teamIdx) {
-        document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow", "theme-spectator");
+        const themeClasses = ["theme-red", "theme-blue", "theme-green", "theme-yellow", "theme-spectator"];
+        if (document.body) document.body.classList.remove(...themeClasses);
+        if (document.documentElement) document.documentElement.classList.remove(...themeClasses);
 
         if (teamIdx === null || teamIdx === undefined || teamIdx < 0 || !state.teams || !state.teams[teamIdx]) {
           currentThemeKey = "SPECTATOR";
-          document.body.classList.add("theme-spectator");
-          updateThemeColorMeta();
+          if (document.body) document.body.classList.add("theme-spectator");
+          if (document.documentElement) document.documentElement.classList.add("theme-spectator");
+          updateThemeColorMeta(null);
           return;
         }
 
@@ -7340,11 +7446,12 @@
         const colorKey = team.key || "RED";
         currentThemeKey = colorKey;
 
-        // Apply theme class to document.body so the whole website updates
-        document.body.classList.add(`theme-${team.colorClass}`);
+        // Apply theme class to document.body AND document.documentElement so Safari taskbars and roots update
+        if (document.body) document.body.classList.add(`theme-${team.colorClass}`);
+        if (document.documentElement) document.documentElement.classList.add(`theme-${team.colorClass}`);
 
         // Update mobile browser chrome bar & iOS Safari / Android status bar
-        updateThemeColorMeta();
+        updateThemeColorMeta(teamIdx);
       }
 
       function initRubberFluid() {
@@ -8695,31 +8802,35 @@
                 </div>
 
                 <!-- Admin Device Quick Controls -->
-                <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px;">
-                  <select class="admin-reassign-select" style="font-size: 0.75rem; padding: 3px 6px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--gold); border-radius: 6px;" title="Reassign Team">
-                    <option value="0" ${d.teamIdx === 0 ? "selected" : ""}>🔴 Red Crew</option>
-                    <option value="1" ${d.teamIdx === 1 ? "selected" : ""}>🔵 Blue Crew</option>
-                    <option value="2" ${d.teamIdx === 2 ? "selected" : ""}>🟢 Green Crew</option>
-                    <option value="3" ${d.teamIdx === 3 ? "selected" : ""}>🟡 Yellow Crew</option>
-                  </select>
-                  <button type="button" class="btn-device-captain" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffd885; border-radius: 6px; cursor: pointer;">
-                    ${d.isCaptain ? "Demote" : "👑 Captain"}
-                  </button>
-                  <button type="button" class="btn-device-msg" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(217, 119, 6, 0.35); border: 1px solid #d97706; color: #fde68a; border-radius: 6px; cursor: pointer;" title="Send custom popup alert to this phone">
-                    💬 Msg
-                  </button>
-                  <button type="button" class="btn-device-freeze" style="font-size: 0.72rem; padding: 3px 8px; background: ${state.frozenDevices && state.frozenDevices[devId] ? 'rgba(34, 197, 94, 0.35)' : 'rgba(2, 132, 199, 0.35)'}; border: 1px solid ${state.frozenDevices && state.frozenDevices[devId] ? '#4ade80' : '#38bdf8'}; color: ${state.frozenDevices && state.frozenDevices[devId] ? '#86efac' : '#7dd3fc'}; border-radius: 6px; cursor: pointer;" title="Freeze or unfreeze this phone">
-                    ${state.frozenDevices && state.frozenDevices[devId] ? '🔓 Unfreeze' : '❄️ Freeze'}
-                  </button>
-                  <button type="button" class="btn-device-ping" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(29, 99, 184, 0.3); border: 1px solid #1d63b8; color: #90caf9; border-radius: 6px; cursor: pointer;">
-                    📢 Ping
-                  </button>
-                  <button type="button" class="btn-device-ban" style="font-size: 0.72rem; padding: 3px 8px; background: rgba(185, 28, 28, 0.4); border: 1px solid #ef4444; color: #fca5a5; border-radius: 6px; cursor: pointer; margin-left: auto;">
-                    🚫 Ban
-                  </button>
-                  <button type="button" class="btn-device-unlink" style="font-size: 0.72rem; padding: 3px 6px; background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; border-radius: 6px; cursor: pointer;">
-                    ✕ Kick
-                  </button>
+                <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 4px;">
+                  <div style="display: flex; gap: 4px; width: 100%;">
+                    <select class="admin-reassign-select" style="flex: 1.4; font-size: 0.74rem; padding: 4px 6px; background: rgba(0,0,0,0.6); color: #fff; border: 1px solid var(--gold); border-radius: 6px;" title="Reassign Team">
+                      <option value="0" ${d.teamIdx === 0 ? "selected" : ""}>🔴 Red Crew</option>
+                      <option value="1" ${d.teamIdx === 1 ? "selected" : ""}>🔵 Blue Crew</option>
+                      <option value="2" ${d.teamIdx === 2 ? "selected" : ""}>🟢 Green Crew</option>
+                      <option value="3" ${d.teamIdx === 3 ? "selected" : ""}>🟡 Yellow Crew</option>
+                    </select>
+                    <button type="button" class="btn-device-captain" style="flex: 1; font-size: 0.72rem; padding: 4px 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffd885; border-radius: 6px; cursor: pointer;">
+                      ${d.isCaptain ? "Demote" : "👑 Captain"}
+                    </button>
+                    <button type="button" class="btn-device-msg" style="flex: 0.8; font-size: 0.72rem; padding: 4px 6px; background: rgba(217, 119, 6, 0.35); border: 1px solid #d97706; color: #fde68a; border-radius: 6px; cursor: pointer;" title="Send custom popup alert to this phone">
+                      💬 Msg
+                    </button>
+                  </div>
+                  <div style="display: flex; gap: 4px; width: 100%;">
+                    <button type="button" class="btn-device-freeze" style="flex: 1.1; font-size: 0.72rem; padding: 4px 6px; background: ${state.frozenDevices && state.frozenDevices[devId] ? 'rgba(34, 197, 94, 0.35)' : 'rgba(2, 132, 199, 0.35)'}; border: 1px solid ${state.frozenDevices && state.frozenDevices[devId] ? '#4ade80' : '#38bdf8'}; color: ${state.frozenDevices && state.frozenDevices[devId] ? '#86efac' : '#7dd3fc'}; border-radius: 6px; cursor: pointer;" title="Freeze or unfreeze this phone">
+                      ${state.frozenDevices && state.frozenDevices[devId] ? '🔓 Unfreeze' : '❄️ Freeze'}
+                    </button>
+                    <button type="button" class="btn-device-ping" style="flex: 0.9; font-size: 0.72rem; padding: 4px 6px; background: rgba(29, 99, 184, 0.3); border: 1px solid #1d63b8; color: #90caf9; border-radius: 6px; cursor: pointer;">
+                      📢 Ping
+                    </button>
+                    <button type="button" class="btn-device-ban" style="flex: 0.8; font-size: 0.72rem; padding: 4px 6px; background: rgba(185, 28, 28, 0.4); border: 1px solid #ef4444; color: #fca5a5; border-radius: 6px; cursor: pointer;">
+                      🚫 Ban
+                    </button>
+                    <button type="button" class="btn-device-unlink" style="flex: 0.8; font-size: 0.72rem; padding: 4px 6px; background: rgba(214, 40, 40, 0.25); border: 1px solid #d62828; color: #ff8a80; border-radius: 6px; cursor: pointer;">
+                      ✕ Kick
+                    </button>
+                  </div>
                 </div>
               `;
 
@@ -10294,11 +10405,6 @@
             playFanfare("win");
             spawnCoins(35);
             showToast(`🎉 Linked! Welcome ${playerName} to ${team.name}`);
-
-            // First-join onboarding: recommend installing to homescreen for optimal mobile experience
-            setTimeout(() => {
-              checkHomescreenPrompt();
-            }, 900);
           } catch (err) {
             console.error("Error saving crew setup:", err);
             crewSetupModal.classList.remove("open");
@@ -10391,11 +10497,17 @@
       });
       const savedName = localStorage.getItem("drunk_uno_player_name");
       const isRegistered = localStorage.getItem("drunk_uno_player_registered") === "true";
+      const isStandalone = (window.navigator && window.navigator.standalone === true) || 
+                           (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+      const hsSeen = localStorage.getItem("drunk_uno_homescreen_prompt_seen") === "true";
+
       if (savedName && isRegistered) {
         state.myPlayerName = savedName;
         updateTopUserName();
         syncMyDevice(savedName, state.myTeamIdx);
-        checkHomescreenPrompt();
+        if (!isStandalone && !hsSeen) {
+          checkHomescreenPrompt();
+        }
       }
 
       checkGameLockedStatus();
@@ -10403,11 +10515,17 @@
       checkBannedStatus();
       checkKickedStatus();
 
-      // Check first-load onboarding: if player name not set, prompt immediately
+      // Check first-load onboarding: prompt "Add to Home Screen" suggestion BEFORE logging in with name / crew!
       if (!savedName || !isRegistered) {
-        setTimeout(() => {
-          openCrewSetupModal(false);
-        }, 180);
+        if (!isStandalone && !hsSeen) {
+          setTimeout(() => {
+            document.getElementById("homescreenInstallModal")?.classList.add("open");
+          }, 350);
+        } else {
+          setTimeout(() => {
+            openCrewSetupModal(false);
+          }, 250);
+        }
       }
 
       // --- URL QUERY COMMAND HANDLERS (e.g. ?cmd=reset, ?reset=1, ?cmd=nuke, ?cmd=unlink, ?fresh=1) ---
