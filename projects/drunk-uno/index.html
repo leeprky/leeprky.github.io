@@ -4145,7 +4145,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.1</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.2</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4654,6 +4654,9 @@
               <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;">
                 <button type="button" class="modal-btn" id="adminRefreshDevicesBtn" style="background: #1d63b8; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   🔄 Refresh Device Directory
+                </button>
+                <button type="button" class="modal-btn" id="adminPruneDuplicatesBtn" style="background: #7c2d12; border: 1.5px solid #ea580c; color: #ffedd5; font-size: 0.95rem; padding: 8px 14px; width: auto; font-weight: 700;" title="Instantly cleans and merges duplicate players, stale ghost sessions, and unlinked lurkers">
+                  🧹 Prune Stale & Duplicate Devices
                 </button>
                 <button type="button" class="modal-btn" id="adminRegisterCurrentDeviceBtn" style="background: #2b9348; font-size: 0.95rem; padding: 8px 14px; width: auto;">
                   📱 Link My Current Device
@@ -5819,10 +5822,31 @@
       }
 
       // --- DEVICE HARDWARE & NETWORK IDENTITY (MAC / IP FINGERPRINT) ---
+      function getHardwareFingerprintSeed() {
+        const nav = window.navigator || {};
+        const scr = window.screen || {};
+        const tz = (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : "GMT";
+        const raw = [
+          nav.userAgent || "",
+          nav.hardwareConcurrency || 4,
+          scr.width || 390,
+          scr.height || 844,
+          scr.colorDepth || 24,
+          tz
+        ].join("###");
+
+        let hash = 0;
+        for (let i = 0; i < raw.length; i++) {
+          hash = (hash * 31 + raw.charCodeAt(i)) >>> 0;
+        }
+        return hash;
+      }
+
       function getOrCreateDeviceId() {
         let id = localStorage.getItem("drunk_uno_device_id");
         if (!id) {
-          id = "dev-" + Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
+          const seed = getHardwareFingerprintSeed();
+          id = "dev-" + seed.toString(36);
           try { localStorage.setItem("drunk_uno_device_id", id); } catch (e) {}
         }
         return id;
@@ -5831,10 +5855,13 @@
       function getOrCreateDeviceMac() {
         let mac = localStorage.getItem("drunk_uno_device_mac");
         if (!mac) {
+          const seed = getHardwareFingerprintSeed();
           const prefixes = ["E4:5F:01", "B8:27:EB", "DC:A6:32", "00:E0:4C", "3C:22:FB", "70:85:C2", "F0:18:98", "A4:C3:F0"];
-          const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-          const hex = () => Math.floor(Math.random() * 256).toString(16).padStart(2, "0").toUpperCase();
-          mac = `${prefix}:${hex()}:${hex()}:${hex()}`;
+          const prefix = prefixes[seed % prefixes.length];
+          const b1 = ((seed >>> 8) & 0xFF).toString(16).padStart(2, "0").toUpperCase();
+          const b2 = ((seed >>> 16) & 0xFF).toString(16).padStart(2, "0").toUpperCase();
+          const b3 = ((seed >>> 24) & 0xFF).toString(16).padStart(2, "0").toUpperCase();
+          mac = `${prefix}:${b1}:${b2}:${b3}`;
           try { localStorage.setItem("drunk_uno_device_mac", mac); } catch (e) {}
         }
         return mac;
@@ -5885,15 +5912,43 @@
               })
               .catch(() => {
                 if (!clientIp) {
-                  const devId = getOrCreateDeviceId();
-                  let hash = 0;
-                  for (let i = 0; i < devId.length; i++) hash = (hash * 31 + devId.charCodeAt(i)) % 220 + 20;
-                  clientIp = `192.168.1.${hash}`;
+                  const seed = getHardwareFingerprintSeed();
+                  clientIp = `192.168.1.${(seed % 200) + 20}`;
                   syncMyDevice();
                   if (callback) callback(clientIp);
                 }
               });
           });
+      }
+
+      function deduplicateDevices() {
+        if (!state.devices) return;
+        const seenNames = new Set();
+        const seenMacs = new Set();
+        const cleaned = {};
+
+        // Sort keys by lastSeen descending so newest active device wins
+        const keys = Object.keys(state.devices).sort((a, b) => {
+          return (state.devices[b]?.lastSeen || 0) - (state.devices[a]?.lastSeen || 0);
+        });
+
+        keys.forEach(k => {
+          const d = state.devices[k];
+          if (!d) return;
+          const name = (d.name || "").trim();
+          if (!name || name === "(Lurker / Unregistered)") return; // Drop ghost lurkers
+
+          const nameKey = name.toLowerCase();
+          const macKey = d.mac || "";
+
+          if (!seenNames.has(nameKey) && (!macKey || !seenMacs.has(macKey))) {
+            seenNames.add(nameKey);
+            if (macKey) seenMacs.add(macKey);
+            cleaned[k] = d;
+          }
+        });
+
+        state.devices = cleaned;
       }
 
       function syncMyDevice(name, teamIdx, isCap) {
@@ -5911,18 +5966,37 @@
         }
 
         if (!state.devices) state.devices = {};
-        state.devices[devId] = {
-          id: devId,
-          mac: mac,
-          ip: clientIp || existing.ip || "Detecting...",
-          name: isRegistered ? pName.trim() : "(Lurker / Unregistered)",
-          hasJoined: isRegistered,
-          teamIdx: isRegistered ? tIdx : -1,
-          isCaptain: isRegistered ? captain : false,
-          deviceModel: detectDeviceModel(),
-          joinedAt: existing.joinedAt || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          lastSeen: Date.now()
-        };
+
+        // DEDUPLICATION: Purge any old devices with this player name, MAC, or ID to prevent duplicates
+        if (isRegistered) {
+          const lowerName = pName.trim().toLowerCase();
+          Object.keys(state.devices).forEach(k => {
+            const d = state.devices[k];
+            if (!d) return;
+            const matchesName = (d.name || "").trim().toLowerCase() === lowerName;
+            const matchesMac = (d.mac && d.mac === mac);
+            const matchesId = (k === devId);
+            if (matchesName || matchesMac || matchesId) {
+              delete state.devices[k];
+            }
+          });
+        }
+
+        // Only add device if registered, or if lurkers are needed preserve single entry
+        if (isRegistered) {
+          state.devices[devId] = {
+            id: devId,
+            mac: mac,
+            ip: clientIp || existing.ip || "Detecting...",
+            name: pName.trim(),
+            hasJoined: true,
+            teamIdx: tIdx,
+            isCaptain: captain,
+            deviceModel: detectDeviceModel(),
+            joinedAt: existing.joinedAt || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            lastSeen: Date.now()
+          };
+        }
 
         saveGameState(true);
         renderAdminTab();
@@ -8543,6 +8617,9 @@
       };
 
       function renderAdminTab() {
+        // Automatically prune duplicate devices and ghost lurkers
+        deduplicateDevices();
+
         // --- 0. Render Connected Devices Directory (Linked by MAC & IP) ---
         const devGrid = document.getElementById("adminDeviceGrid");
         const devSummary = document.getElementById("adminDeviceSummary");
@@ -9063,10 +9140,22 @@
       if (adminRefreshBtn) {
         adminRefreshBtn.onclick = () => {
           fetchClientIp(() => {
+            deduplicateDevices();
             syncMyDevice();
             renderAdminTab();
             showToast("🔄 Device directory refreshed");
           });
+        };
+      }
+
+      const adminPruneBtn = document.getElementById("adminPruneDuplicatesBtn");
+      if (adminPruneBtn) {
+        adminPruneBtn.onclick = () => {
+          deduplicateDevices();
+          saveGameState(true);
+          renderAdminTab();
+          playTick(600);
+          showToast("🧹 Pruned duplicate players and ghost sessions!");
         };
       }
 
