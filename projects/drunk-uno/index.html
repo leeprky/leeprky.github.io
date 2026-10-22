@@ -1699,21 +1699,30 @@
       outline-offset: 1px;
     }
     .podium-my-crew-tag {
-      position: absolute;
-      top: -9px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #23170b;
-      color: #dfb74c;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 4px;
-      border: 1px solid #dfb74c;
-      white-space: nowrap;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-      z-index: 3;
+      position: absolute !important;
+      top: -11px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      background: #23170b !important;
+      color: #dfb74c !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.65rem !important;
+      font-weight: 800 !important;
+      padding: 2px 8px !important;
+      border-radius: 12px !important;
+      border: 1px solid #dfb74c !important;
+      white-space: nowrap !important;
+      width: auto !important;
+      max-width: 90% !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5) !important;
+      z-index: 10 !important;
+      letter-spacing: 0.4px !important;
+      line-height: 1 !important;
     }
 
     .scoring-as-pill {
@@ -3774,21 +3783,31 @@
       box-shadow: 0 0 24px var(--theme-glow, rgba(56, 189, 248, 0.4)), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
     }
     .podium-my-crew-tag {
-      position: absolute;
-      top: -10px;
-      right: 50%;
-      transform: translateX(50%);
+      position: absolute !important;
+      top: -11px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
       background: var(--theme-primary, #38bdf8) !important;
       color: #ffffff !important;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 800;
-      padding: 1px 8px;
-      border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 10px var(--theme-glow, rgba(0,0,0,0));
-      z-index: 5;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 0.65rem !important;
+      font-weight: 900 !important;
+      padding: 2px 8px !important;
+      border-radius: 12px !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.6), 0 0 12px var(--theme-glow, rgba(0,0,0,0)) !important;
+      z-index: 10 !important;
+      letter-spacing: 0.4px !important;
+      white-space: nowrap !important;
+      width: auto !important;
+      max-width: 90% !important;
+      line-height: 1 !important;
     }
 
     .podium-score-row {
