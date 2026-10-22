@@ -1872,7 +1872,7 @@
       color: #fef08a !important;
     }
 
-    /* Quick Point Adjust Grid */
+    /* Quick Point Adjust Grid & Numeric Rows */
     .score-quick-adjust-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1880,6 +1880,49 @@
     }
     @media (max-width: 500px) {
       .score-quick-adjust-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .score-quick-nums-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+    }
+    .btn-num-tap {
+      padding: 9px 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.92rem;
+      border-radius: 7px;
+      cursor: pointer;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(15, 23, 42, 0.7);
+      color: #fff;
+      transition: transform 0.08s, filter 0.08s, background 0.15s;
+      user-select: none;
+    }
+    .btn-num-tap:active {
+      transform: scale(0.94);
+    }
+    .btn-num-tap.reward {
+      border-color: rgba(34, 197, 94, 0.45);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.22) 0%, rgba(15, 23, 42, 0.85) 100%);
+      color: #86efac;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .btn-num-tap.reward:hover {
+      background: rgba(34, 197, 94, 0.32);
+      border-color: #4ade80;
+    }
+    .btn-num-tap.deduct {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(15, 23, 42, 0.85) 100%);
+      color: #fca5a5;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .btn-num-tap.deduct:hover {
+      background: rgba(239, 68, 68, 0.32);
+      border-color: #f87171;
     }
 
     /* =========================================================================
@@ -2499,6 +2542,39 @@
       color: #1e612f;
       border-color: #2b9348;
       content: "AWARDED ★";
+    }
+
+    .bingo-repeat-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-align: center;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin-top: 3px;
+    }
+    .bingo-admin-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-align: center;
+      color: #fde047;
+      background: rgba(234, 179, 8, 0.16);
+      border: 1px solid rgba(234, 179, 8, 0.4);
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin-top: 3px;
+    }
+    .bingo-card-tile.is-hidden-secret {
+      border: 1.5px dashed rgba(168, 85, 247, 0.6) !important;
+      background: rgba(24, 18, 42, 0.88) !important;
+    }
+    .bingo-card-tile.is-hidden-secret .bingo-tile-title {
+      color: #e9d5ff !important;
+      letter-spacing: 0.04em;
     }
 
     /* =========================================================================
@@ -4568,6 +4644,16 @@
       border: 1px solid rgba(185, 28, 28, 0.25) !important;
       color: #991b1b !important;
     }
+    body.light-mode .btn-num-tap.reward {
+      background: #e8f5e9 !important;
+      color: #1b5e20 !important;
+      border-color: #81c784 !important;
+    }
+    body.light-mode .btn-num-tap.deduct {
+      background: #ffebee !important;
+      color: #b71c1c !important;
+      border-color: #e57373 !important;
+    }
     body.light-mode .stop-card {
       background: rgba(255, 255, 255, 0.92) !important;
       color: #241609 !important;
@@ -4735,7 +4821,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.5</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.6</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4816,7 +4902,7 @@
                   <span class="crew-dot" style="background:#22c55e;box-shadow:0 0 8px #22c55e;"></span>
                   <span style="color: #4ade80;">GREEN — Chug Challenge</span>
                 </div>
-                <p>5-second head-to-head chug race vs the attacker!</p>
+                <p>5-second head-to-head chug race vs the attacker! (+8 pts win / -8 pts loss)</p>
               </div>
 
               <div class="rule-card-mini" id="card-YELLOW">
@@ -5210,8 +5296,8 @@
                   <span style="font-size: 0.82rem; color: #cbd5e1;">Play 1 card per round on matching color or symbol. Attack rival crews to score points!</span>
                 </div>
                 <div style="background: rgba(0,0,0,0.35); border-left: 3px solid #ef4444; border-radius: 6px; padding: 8px 10px;">
-                  <strong style="color: #fca5a5; font-size: 0.92rem; display: block;">2. Penalties Stack</strong>
-                  <span style="font-size: 0.82rem; color: #cbd5e1;">Draw cards and drinking penalties resolve instantly. If you hold only 1 card, shout UNO or take 2 sips!</span>
+                  <strong style="color: #fca5a5; font-size: 0.92rem; display: block;">2. Penalties & UNO Shouts</strong>
+                  <span style="font-size: 0.82rem; color: #cbd5e1;">Draw cards and drinking penalties resolve instantly. If you hold only 1 card, you MUST shout UNO! Forgetting to say UNO is a -2 point penalty & 2 sips!</span>
                 </div>
                 <div style="background: rgba(0,0,0,0.35); border-left: 3px solid #facc15; border-radius: 6px; padding: 8px 10px;">
                   <strong style="color: #fde047; font-size: 0.92rem; display: block;">3. Wild Heists & Stash</strong>
@@ -5438,6 +5524,18 @@
                 Select the winning team for each of the 10 pubs. Each stop won awards +1 Crown 👑 to that team (max 10).
               </p>
               <div id="adminPubWinnersList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </div>
+
+            <!-- CONTROLLER: SECRET BINGO CARDS (ADMIN APPLIED) -->
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <span class="admin-badge" style="background: #7c3aed;">🎯 SECRET BINGO</span>
+                <h3 style="color: #ffffff;">SECRET BINGO CARDS (ADMIN VERIFIED):</h3>
+              </div>
+              <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 12px;">
+                Crawl Master 1-tap actions to verify and award hidden secret bingo cards across teams:
+              </p>
+              <div id="adminSecretBingoList" style="display: flex; flex-direction: column; gap: 8px;"></div>
             </div>
 
             <!-- CONTROLLER 1: ACTIVE PUB LOCATION -->
@@ -6671,35 +6769,27 @@
       ];
 
       const BINGO_CARDS = [
-        // --- POSITIVE BONUS CARDS (GAIN POINTS) ---
-        { id: "g1", icon: "🍻", title: "Buys Round for Whole Team", pts: 3, isBonus: true, desc: "Generous crawler buys full drink round for their team", claimedBy: null },
-        { id: "g2", icon: "⚡", title: "Chugs Pint in < 8 Seconds", pts: 4, isBonus: true, desc: "Flawless rapid speed-chug triumph", claimedBy: null },
-        { id: "g3", icon: "🎶", title: "Plays Uno Song on Jukebox", pts: 3, isBonus: true, desc: "Takes over pub playlist with crawl anthem", claimedBy: null },
-        { id: "g4", icon: "👑", title: "Beats Rival Captain at RPS", pts: 2, isBonus: true, desc: "Rock Paper Scissors showdown victory", claimedBy: null },
-        { id: "g5", icon: "📸", title: "Selfie with Bartender / Staff", pts: 3, isBonus: true, desc: "Gets bartender in full team photo", claimedBy: null },
-        { id: "g6", icon: "🃏", title: "Finds Mystery Card on Floor", pts: 4, isBonus: true, desc: "Discovers lost playing card in the wild", claimedBy: null },
-        { id: "g7", icon: "🎯", title: "Card Flip Landed on Pint Glass", pts: 4, isBonus: true, desc: "Epic trick shot lands card balanced on brim", claimedBy: null },
-        { id: "g8", icon: "📢", title: "Gets Pub Chanting Team Color", pts: 5, isBonus: true, desc: "Whole room roars your team's color name!", claimedBy: null },
-        { id: "g9", icon: "🥨", title: "Secures Free Bar Snacks / Crisps", pts: 2, isBonus: true, desc: "Charms bartender for complimentary snacks", claimedBy: null },
-        { id: "g10", icon: "🏴‍☠️", title: "Synced Team Victory Toast", pts: 3, isBonus: true, desc: "All 4 crew members drink in perfect unison", claimedBy: null },
+        // --- 1. POSITIVE / FEAT CARDS (ONCE) ---
+        { id: "bg_round", icon: "🍻", title: "Buys Round for Whole Team", pts: 10, isBonus: true, repeatable: false, desc: "Generous crawler buys a full drink round for their entire crew.", claimedBy: null, claimCount: 0 },
+        { id: "bg_dj", icon: "🎧", title: "Song Played by the DJ", pts: 4, isBonus: true, repeatable: false, desc: "Successfully requests and gets their team song played by the tavern DJ.", claimedBy: null, claimCount: 0 },
+        { id: "bg_selfie", icon: "📸", title: "Selfie with Barstaff", pts: 6, isBonus: true, repeatable: false, hidden: true, adminOnly: true, hint: "Hint: Befriend the crew behind the bar with a quick photo... 📸", desc: "Captured an epic selfie with the pub barstaff! (Verified by Admin)", claimedBy: null, claimCount: 0 },
+        { id: "bg_chant", icon: "📢", title: "Pub Chanting Team's Colour", pts: 8, isBonus: true, repeatable: false, desc: "Hyped up the crowd and got the whole pub loudly chanting your team's color!", claimedBy: null, claimCount: 0 },
+        { id: "bg_karaoke", icon: "🎤", title: "Karaoke Performance", pts: 6, isBonus: true, repeatable: false, desc: "Took the microphone on stage and belted out a karaoke pub anthem!", claimedBy: null, claimCount: 0 },
+        { id: "bg_pirate", icon: "🏴‍☠️", title: "Orders in Pirate Accent", pts: 2, isBonus: true, repeatable: false, desc: "Orders a full drink or round from the bartender in full pirate accent.", claimedBy: null, claimCount: 0 },
 
-        // --- PENALTY CARDS (DEDUCT POINTS) ---
-        { id: "b1", icon: "🍺", title: "Spills Pint / Knocks Drink", pts: -3, isBonus: false, desc: "Accidental clumsy spillage", claimedBy: null },
-        { id: "b2", icon: "🚫", title: "Forgets to say UNO", pts: -2, isBonus: false, desc: "Caught with 1 card without calling Uno", claimedBy: null },
-        { id: "b3", icon: "🃏", title: "Drops Card on Dirty Floor", pts: -1, isBonus: false, desc: "Butterfingers card drop under table", claimedBy: null },
-        { id: "b4", icon: "🗣️", title: "Argues with Referee", pts: -2, isBonus: false, desc: "Disputing official Uno crawl laws", claimedBy: null },
-        { id: "b5", icon: "🥃", title: "Orders Cursed / Bizarre Shot", pts: -2, isBonus: false, desc: "Tequila rose, sambuca, or mystery concoction", claimedBy: null },
-        { id: "b6", icon: "🚽", title: "Leaves for Toilet during Game", pts: -2, isBonus: false, desc: "Holding up gameplay for bladder relief", claimedBy: null },
-        { id: "b7", icon: "⏳", title: "Takes > 20s to Play a Card", pts: -1, isBonus: false, desc: "Paralysis by analysis", claimedBy: null },
-        { id: "b8", icon: "👁️", title: "Peeking at Captain's Stash", pts: -4, isBonus: false, desc: "Illegally spying on hidden wild cards", claimedBy: null },
-        { id: "b9", icon: "💃", title: "Dances / Sings to Pub Music", pts: -2, isBonus: false, desc: "Distracted by tavern bangers", claimedBy: null },
-        { id: "b10", icon: "🤮", title: "Spews / Chunders", pts: -5, isBonus: false, desc: "White flag surrendered to toilet bowl", claimedBy: null },
-        { id: "b11", icon: "🎯", title: "Misses Table with Card", pts: -2, isBonus: false, desc: "Attempted trick shot fail", claimedBy: null },
-        { id: "b12", icon: "📱", title: "Phone checking during Attack", pts: -2, isBonus: false, desc: "Ignoring incoming draw cards", claimedBy: null },
-        { id: "b13", icon: "🏴‍☠️", title: "Calls Bartender 'Captain'", pts: -2, isBonus: false, desc: "Taking the pirate roleplay too far", claimedBy: null },
-        { id: "b14", icon: "💥", title: "Plays Wrong Color by Mistake", pts: -1, isBonus: false, desc: "Color blindness or drunkenness", claimedBy: null },
-        { id: "b15", icon: "💀", title: "Fails Head-to-Head Chug Race", pts: -3, isBonus: false, desc: "Defeated in tavern drinking contest", claimedBy: null },
-        { id: "b16", icon: "🧂", title: "Fails Lemon / Salt Shot", pts: -3, isBonus: false, desc: "Grimaces and coughs on tequila", claimedBy: null }
+        // --- 2. HIDDEN CURSED PHRASES (ONCE) ---
+        { id: "bg_alex", icon: "🎭", title: "Alex: 'Nonchalant Merchant'", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: Listen closely when Alex tries to act casually cool... 🗣️", desc: "Alex uttered the cursed phrase 'nonchalant merchant' in conversation!", claimedBy: null, claimCount: 0 },
+        { id: "bg_jamie", icon: "🫂", title: "Jamie: 'Not Seen You in Forever'", pts: -4, isBonus: false, repeatable: false, hidden: true, hint: "Hint: What classic reunion greeting does Jamie always drop? 🫂", desc: "Jamie dropped his signature line: 'I feel like I've not seen you in forever!'", claimedBy: null, claimCount: 0 },
+
+        // --- 3. REPEATABLE PENALTIES ---
+        { id: "bg_cheat", icon: "🃏", title: "Caught Cheating", pts: -8, isBonus: false, repeatable: true, desc: "Caught hiding cards, taking extra turns, or tampering with the deck!", claimedBy: null, claimCount: 0 },
+        { id: "bg_spew", icon: "🤮", title: "Throwing Up / Spewing", pts: -5, isBonus: false, repeatable: true, desc: "Surrendered white flag: vomiting in the toilet or tavern alley.", claimedBy: null, claimCount: 0 },
+        { id: "bg_unfinished", icon: "🍺", title: "Doesn't Finish Drink", pts: -4, isBonus: false, repeatable: true, desc: "Abandoned an unfinished drink at the table before departing for next pub.", claimedBy: null, claimCount: 0 },
+        { id: "bg_spill_all", icon: "💀", title: "Drops / Spills Entire Drink", pts: -4, isBonus: false, repeatable: true, desc: "Catastrophic drink crash! Completely dropped, smashed, or dumped an entire pint.", claimedBy: null, claimCount: 0 },
+        { id: "bg_wrong_card", icon: "💥", title: "Plays Wrong Colour / Number", pts: -2, isBonus: false, repeatable: true, desc: "Card blindness or drunkenness: played an illegal color or mismatched card!", claimedBy: null, claimCount: 0 },
+        { id: "bg_drop_card", icon: "🃏", title: "Drops Card on Floor", pts: -2, isBonus: false, repeatable: true, desc: "Butterfingers: fumbled and dropped playing cards onto the pub floor.", claimedBy: null, claimCount: 0 },
+        { id: "bg_spill", icon: "💧", title: "Spills Drink", pts: -1, isBonus: false, repeatable: true, desc: "Careless knock or table bump: sloshed or spilled part of a drink.", claimedBy: null, claimCount: 0 },
+        { id: "bg_argue", icon: "🗣️", title: "Arguing with Ref / Players", pts: -2, isBonus: false, repeatable: true, desc: "Heated dispute or arguing over Uno rules and referee calls.", claimedBy: null, claimCount: 0 }
       ];
 
       const UNO_CODEX = [
@@ -6764,9 +6854,9 @@
           title: "WILD (WHEEL)",
           impact: "WHEEL OF DOOM",
           impactType: "special",
-          pointsTxt: "Spins Wheel of Doom (±6 Pts / Duels)",
+          pointsTxt: "Winner +8 Pts / Loser -8 Pts",
           ptsColor: "#f472b6",
-          desc: "Spins the 8-Segment WHEEL OF DOOM! Triggers drink swaps, shot roulette, chugs, wild heists, +4 upgrades, waterfalls or intel.",
+          desc: "Spins the 8-Segment WHEEL OF DOOM! Challenges and duels award +8 points to the winner and dock -8 points to the loser (plus drinking forfeits).",
           drink: "Penalty determined by the Wheel outcome"
         },
         {
@@ -7074,7 +7164,17 @@
                 state.myTeamIdx = state.devices[myDevId].teamIdx;
               }
               if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
-              if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
+              if (parsed.bingoCards && Array.isArray(parsed.bingoCards)) {
+                const reconciled = JSON.parse(JSON.stringify(BINGO_CARDS));
+                parsed.bingoCards.forEach(savedCard => {
+                  const m = reconciled.find(c => c.id === savedCard.id);
+                  if (m) {
+                    m.claimedBy = savedCard.claimedBy;
+                    m.claimCount = savedCard.claimCount || 0;
+                  }
+                });
+                state.bingoCards = reconciled;
+              }
               if (parsed.logs) state.logs = parsed.logs.slice(0, 25);
               if (parsed.devices && typeof parsed.devices === "object") {
                 state.devices = Object.assign({}, state.devices, parsed.devices);
@@ -7798,7 +7898,17 @@
         state.stops = incoming.stops || state.stops;
         state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
         if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
-        state.bingoCards = incoming.bingoCards || state.bingoCards;
+        if (incoming.bingoCards && Array.isArray(incoming.bingoCards)) {
+          const reconciled = JSON.parse(JSON.stringify(BINGO_CARDS));
+          incoming.bingoCards.forEach(incCard => {
+            const m = reconciled.find(c => c.id === incCard.id);
+            if (m) {
+              m.claimedBy = incCard.claimedBy;
+              m.claimCount = incCard.claimCount || 0;
+            }
+          });
+          state.bingoCards = reconciled;
+        }
         if (incoming.logs) state.logs = incoming.logs.slice(0, 25);
         if (incoming.devices && typeof incoming.devices === "object") {
           state.devices = Object.assign({}, state.devices, incoming.devices);
@@ -9091,7 +9201,7 @@
             </div>
           </div>
 
-          <!-- Quick Uno Triggers -->
+          <!-- Quick Uno Triggers (Updated to Drunk Uno Rules) -->
           <div class="score-action-grid">
             <button type="button" class="btn-score-tap deduct" data-uno-score="skip">
               <span>🚫 SKIP</span>
@@ -9116,11 +9226,15 @@
             </button>
             <button type="button" class="btn-score-tap reward" data-uno-score="wheelwin">
               <span>🎡 WHEEL WIN</span>
-              <small>+6 Points</small>
+              <small>+8 Points</small>
             </button>
             <button type="button" class="btn-score-tap deduct" data-uno-score="wheelloss">
               <span>🎡 WHEEL LOSS</span>
-              <small>-6 Points</small>
+              <small>-8 Points</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="nouno">
+              <span>🤫 NO UNO!</span>
+              <small>-2 Pts & 2 Sips</small>
             </button>
             <button type="button" class="btn-score-tap deduct" data-uno-score="rulebreak">
               <span>⚠️ RULE 0 BREAK</span>
@@ -9136,24 +9250,33 @@
             </button>
           </div>
 
-          <!-- Quick Manual Point Adjusters -->
-          <div class="score-quick-adjust-grid">
-            <button type="button" class="btn-score-tap reward" data-point-adj="1">
-              <span>➕ +1 Pt</span>
-              <small>Bonus / Correct</small>
-            </button>
-            <button type="button" class="btn-score-tap deduct" data-point-adj="-1">
-              <span>➖ -1 Pt</span>
-              <small>Foul / Minor</small>
-            </button>
-            <button type="button" class="btn-score-tap reward" data-point-adj="5">
-              <span>⚡ +5 Pts</span>
-              <small>Round Win</small>
-            </button>
-            <button type="button" class="btn-score-tap deduct" data-point-adj="-5">
-              <span>💀 -5 Pts</span>
-              <small>Major Penalty</small>
-            </button>
+          <!-- Quick Manual Point Adjusters (1, 2, 4, 6, 8, 10 for + and -) -->
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+            <div style="font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #86efac; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between;">
+              <span>➕ ADD POINTS</span>
+              <span style="font-size: 0.68rem; color: #94a3b8;">+1, +2, +4, +6, +8, +10</span>
+            </div>
+            <div class="score-quick-nums-row">
+              <button type="button" class="btn-num-tap reward" data-point-adj="1">+1</button>
+              <button type="button" class="btn-num-tap reward" data-point-adj="2">+2</button>
+              <button type="button" class="btn-num-tap reward" data-point-adj="4">+4</button>
+              <button type="button" class="btn-num-tap reward" data-point-adj="6">+6</button>
+              <button type="button" class="btn-num-tap reward" data-point-adj="8">+8</button>
+              <button type="button" class="btn-num-tap reward" data-point-adj="10">+10</button>
+            </div>
+
+            <div style="font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #fca5a5; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between; margin-top: 2px;">
+              <span>➖ DEDUCT POINTS</span>
+              <span style="font-size: 0.68rem; color: #94a3b8;">-1, -2, -4, -6, -8, -10</span>
+            </div>
+            <div class="score-quick-nums-row">
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-1">-1</button>
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-2">-2</button>
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-4">-4</button>
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-6">-6</button>
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-8">-8</button>
+              <button type="button" class="btn-num-tap deduct" data-point-adj="-10">-10</button>
+            </div>
           </div>
 
           <!-- Sip Incrementers & Freeze Toggle -->
@@ -9226,13 +9349,18 @@
               playCoinDing();
               spawnCoins(20);
             } else if (act === "wheelwin") {
-              targetTeam.score += 6;
-              addLog(`🎡 WHEEL VICTORY: ${targetTeam.name} awarded +6 points.`);
+              targetTeam.score += 8;
+              addLog(`🎡 WHEEL VICTORY: ${targetTeam.name} won Wheel challenge! (+8 points).`);
               playCoinDing();
-              spawnCoins(25);
+              spawnCoins(30);
             } else if (act === "wheelloss") {
-              targetTeam.score -= 6;
-              addLog(`🎡 WHEEL DEFEAT: ${targetTeam.name} docked -6 points.`);
+              targetTeam.score -= 8;
+              addLog(`🎡 WHEEL DEFEAT: ${targetTeam.name} lost Wheel challenge! (-8 points).`);
+              playBuzzer();
+            } else if (act === "nouno") {
+              targetTeam.score -= 2;
+              targetTeam.sips += 2;
+              addLog(`🤫 FORGOT UNO: ${targetTeam.name} held 1 card without shouting UNO! (-2 pts, 2 sips).`);
               playBuzzer();
             } else if (act === "rulebreak") {
               targetTeam.sips += 1;
@@ -9553,7 +9681,7 @@
           color: "GREEN",
           colorHex: "#22c55e",
           icon: "🍺",
-          desc: "5-second head-to-head chug race vs the attacker! (+6 pts win / -6 pts loss)."
+          desc: "5-second head-to-head chug race vs the attacker! (+8 pts win / -8 pts loss)."
         },
         {
           id: "YELLOW",
@@ -9698,19 +9826,19 @@
         actionsBox.innerHTML = "";
 
         if (outcome.id === "GREEN") {
-          // Chug Challenge (+6 to winner / -6 to loser)
+          // Chug Challenge (+8 to winner / -8 to loser)
           const btnAtk = document.createElement("button");
           btnAtk.className = "modal-btn";
           btnAtk.style.background = "linear-gradient(135deg, #22c55e 0%, #15803d 100%)";
           btnAtk.style.borderColor = "#4ade80";
           btnAtk.style.color = "#ffffff";
-          btnAtk.textContent = `⚔️ ${myTeam.name} Won (+6 pts / -6 pts)`;
+          btnAtk.textContent = `⚔️ ${myTeam.name} Won (+8 pts / -8 pts)`;
           btnAtk.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
-            myTeam.score += 6;
-            victim.score -= 6;
+            myTeam.score += 8;
+            victim.score -= 8;
             victim.sips += 4;
-            addLog(`🍺 CHUG CHALLENGE: ${myTeam.name} defeated ${victim.name}! (+6 pts / -6 pts).`);
+            addLog(`🍺 CHUG CHALLENGE: ${myTeam.name} defeated ${victim.name}! (+8 pts / -8 pts).`);
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
@@ -9719,13 +9847,13 @@
 
           const btnDef = document.createElement("button");
           btnDef.className = "modal-btn secondary";
-          btnDef.textContent = `🛡️ Defender Won (+6 pts / -6 pts)`;
+          btnDef.textContent = `🛡️ Defender Won (+8 pts / -8 pts)`;
           btnDef.onclick = () => {
             const victim = state.teams[chosenVictimIdx];
-            victim.score += 6;
-            myTeam.score -= 6;
+            victim.score += 8;
+            myTeam.score -= 8;
             myTeam.sips += 4;
-            addLog(`🛡️ CHUG CHALLENGE: Defender ${victim.name} won against ${myTeam.name}! (+6 pts / -6 pts).`);
+            addLog(`🛡️ CHUG CHALLENGE: Defender ${victim.name} won against ${myTeam.name}! (+8 pts / -8 pts).`);
             saveGameState(true);
             renderCrewBar();
             renderScoringTab();
@@ -9970,18 +10098,46 @@
         state.bingoCards.forEach(card => {
           const tile = document.createElement("div");
           const isBonus = Boolean(card.isBonus || card.pts > 0);
-          tile.className = `bingo-card-tile ${isBonus ? "is-bonus" : ""} ${card.claimedBy ? "claimed" : ""}`;
+          const isClaimed = Boolean(card.claimedBy);
+          const isHiddenAndLocked = card.hidden && !isClaimed && !state.adminUnlocked;
+
+          let classes = ["bingo-card-tile"];
+          if (isBonus) classes.push("is-bonus");
+          if (!card.repeatable && isClaimed) classes.push("claimed");
+          if (card.hidden && isHiddenAndLocked) classes.push("is-hidden-secret");
+          tile.className = classes.join(" ");
+
           const ptsText = isBonus ? `+${card.pts} PTS` : `${card.pts} PTS`;
+          const displayIcon = isHiddenAndLocked ? "❓" : card.icon;
+          const displayTitle = isHiddenAndLocked ? "??? (Secret Feat)" : card.title;
+          const displayHint = (card.hidden && isHiddenAndLocked) 
+            ? `<div style="font-size: 0.72rem; color: #cbd5e1; font-style: italic; margin-top: 2px; line-height: 1.25;">${escapeHtml(card.hint)}</div>` 
+            : "";
+
+          let badgeHtml = "";
+          if (card.repeatable) {
+            const count = card.claimCount || 0;
+            badgeHtml = `<div class="bingo-repeat-pill">${count > 0 ? `💥 Struck ${count}x` : '🔄 Repeatable'}</div>`;
+          } else if (isClaimed) {
+            badgeHtml = `<div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; text-align: center; color: ${isBonus ? '#15803d' : '#8d0801'}; font-weight: 700; margin-top: 4px;">Target: ${escapeHtml(card.claimedBy)}</div>`;
+          } else if (card.hidden && card.adminOnly) {
+            badgeHtml = `<div class="bingo-admin-tag">🔒 Admin Verified</div>`;
+          }
 
           tile.innerHTML = `
-            <div class="bingo-tile-icon">${card.icon}</div>
-            <div class="bingo-tile-title">${escapeHtml(card.title)}</div>
+            <div class="bingo-tile-icon">${displayIcon}</div>
+            <div class="bingo-tile-title">${escapeHtml(displayTitle)}</div>
+            ${displayHint}
             <div class="bingo-tile-pts">${ptsText}</div>
-            ${card.claimedBy ? `<div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; text-align: center; color: ${isBonus ? '#15803d' : '#8d0801'}; font-weight: 700; margin-top: 4px;">Target: ${escapeHtml(card.claimedBy)}</div>` : ""}
+            ${badgeHtml}
           `;
 
           tile.onclick = () => {
             if (checkSpectatorBlock()) return;
+            if (!card.repeatable && card.claimedBy && !state.adminUnlocked) {
+              showToast(`⚠️ Already claimed by ${card.claimedBy}!`);
+              return;
+            }
             selectedBingoCard = card;
             openBingoTargetModal(card);
           };
@@ -9996,27 +10152,38 @@
         const descEl = document.getElementById("bingoTargetDesc");
         const confirmBtn = document.getElementById("confirmBingoStrikeBtn");
 
+        const isHiddenAndLocked = card.hidden && !card.claimedBy && !state.adminUnlocked;
+        const displayTitle = isHiddenAndLocked ? "??? (Secret Card)" : card.title;
+        const displayDesc = isHiddenAndLocked 
+          ? `${card.hint} (This secret card will reveal itself on the scoreboard once claimed!)` 
+          : card.desc;
+
         if (titleEl) {
-          titleEl.textContent = `${isBonus ? '⭐ BONUS: ' : '🎯 PENALTY: '}${card.icon} ${card.title}`;
+          titleEl.textContent = `${isBonus ? '⭐ BONUS: ' : '🎯 PENALTY: '}${isHiddenAndLocked ? '❓' : card.icon} ${displayTitle}`;
           titleEl.style.color = isBonus ? '#166534' : '#9e1b1b';
         }
 
         if (descEl) {
           descEl.textContent = isBonus
-            ? `Awards +${card.pts} bonus points to the selected crew: "${card.desc}".`
-            : `Deducts ${ptsAbs} points penalty from the selected crew: "${card.desc}".`;
+            ? `Awards +${card.pts} bonus points: "${displayDesc}".`
+            : `Deducts ${ptsAbs} points penalty: "${displayDesc}".`;
         }
 
         if (confirmBtn) {
-          confirmBtn.textContent = isBonus
-            ? `⭐ Award +${card.pts} Points to Target Team`
-            : `🎯 Deduct -${ptsAbs} Points from Target Team`;
-          confirmBtn.style.background = isBonus ? "#15803d" : "#9e1b1b";
+          if (card.hidden && card.adminOnly && !state.adminUnlocked) {
+            confirmBtn.textContent = `🔒 Admin Passcode Required to Verify`;
+            confirmBtn.style.background = "#0284c7";
+          } else {
+            confirmBtn.textContent = isBonus
+              ? `⭐ Award +${card.pts} Points to Target Team${card.repeatable ? ' (Repeatable)' : ''}`
+              : `🎯 Deduct -${ptsAbs} Points from Target Team${card.repeatable ? ' (Repeatable)' : ''}`;
+            confirmBtn.style.background = isBonus ? "#15803d" : "#9e1b1b";
+          }
         }
 
         const list = document.getElementById("bingoTargetTeamsList");
         list.innerHTML = "";
-        selectedBingoTargetTeamIdx = isBonus ? state.myTeamIdx : state.targetTeamIdx;
+        selectedBingoTargetTeamIdx = isBonus ? (state.myTeamIdx !== null ? state.myTeamIdx : 0) : state.targetTeamIdx;
 
         state.teams.forEach((t, idx) => {
           const btn = document.createElement("button");
@@ -10048,16 +10215,30 @@
 
       document.getElementById("confirmBingoStrikeBtn").onclick = () => {
         if (!selectedBingoCard) return;
+
+        // If card requires admin verification and admin is not yet unlocked
+        if (selectedBingoCard.hidden && selectedBingoCard.adminOnly && !state.adminUnlocked) {
+          document.getElementById("bingoTargetModal").classList.remove("open");
+          triggerAdminAccess();
+          return;
+        }
+
         const target = state.teams[selectedBingoTargetTeamIdx];
         const points = selectedBingoCard.pts;
         const isBonus = points > 0;
         target.score += points;
-        selectedBingoCard.claimedBy = target.name;
 
-        if (isBonus) {
-          addLog(`⭐ BINGO BONUS: ${target.name} scored ${selectedBingoCard.icon} "${selectedBingoCard.title}" (+${points} pts)!`);
+        if (selectedBingoCard.repeatable) {
+          selectedBingoCard.claimCount = (selectedBingoCard.claimCount || 0) + 1;
         } else {
-          addLog(`🎯 BINGO PENALTY: ${selectedBingoCard.icon} "${selectedBingoCard.title}" struck ${target.name} (${points} pts)!`);
+          selectedBingoCard.claimedBy = target.name;
+        }
+
+        const cardName = selectedBingoCard.title; // Always show real title in logs
+        if (isBonus) {
+          addLog(`⭐ BINGO BONUS: ${target.name} scored ${selectedBingoCard.icon} "${cardName}" (+${points} pts)!`);
+        } else {
+          addLog(`🎯 BINGO PENALTY: ${selectedBingoCard.icon} "${cardName}" struck ${target.name} (${points} pts)!`);
         }
 
         playFanfare("win");
@@ -10741,6 +10922,65 @@
               renderScoringTab();
               renderAdminTab();
               playTick(600);
+            };
+          });
+        }
+
+        // --- 0F. Render Secret Bingo Cards (Admin Applied) ---
+        const secretBingoContainer = document.getElementById("adminSecretBingoList");
+        if (secretBingoContainer) {
+          secretBingoContainer.innerHTML = "";
+          const secrets = state.bingoCards.filter(c => c.hidden);
+          secrets.forEach(card => {
+            const isClaimed = Boolean(card.claimedBy);
+            const row = document.createElement("div");
+            row.style.cssText = "background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px;";
+
+            let teamButtonsHtml = "";
+            state.teams.forEach((t, tIdx) => {
+              const isSelected = card.claimedBy === t.name;
+              teamButtonsHtml += `<button type="button" class="admin-secret-bingo-btn" data-card="${card.id}" data-team="${tIdx}" style="flex: 1; min-width: 60px; padding: 4px 6px; font-size: 0.74rem; font-weight: 700; border-radius: 4px; border: ${isSelected ? '2px solid #a855f7' : '1px solid rgba(255,255,255,0.2)'}; background: ${isSelected ? 'rgba(168, 85, 247, 0.4)' : 'rgba(255,255,255,0.06)'}; color: ${isSelected ? '#f3e8ff' : '#cbd5e1'}; cursor: pointer;">${t.colorClass === 'red' ? '🔴' : t.colorClass === 'blue' ? '🔵' : t.colorClass === 'green' ? '🟢' : '🟡'} ${escapeHtml(t.name.split(' ')[1] || t.name)}</button>`;
+            });
+
+            // Clear claim button
+            teamButtonsHtml += `<button type="button" class="admin-secret-bingo-btn" data-card="${card.id}" data-team="-1" style="padding: 4px 6px; font-size: 0.72rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.5); color: #94a3b8; cursor: pointer;" title="Clear claim">✕</button>`;
+
+            row.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.84rem; font-weight: 800; color: #fff;">${card.icon} ${escapeHtml(card.title)} (${card.pts > 0 ? '+' + card.pts : card.pts} pts)</span>
+                <span style="font-size: 0.72rem; color: #c084fc; font-weight: 700;">${isClaimed ? '🎯 Claimed by ' + escapeHtml(card.claimedBy) : 'Unclaimed'}</span>
+              </div>
+              <div style="font-size: 0.72rem; color: #cbd5e1; font-style: italic;">${escapeHtml(card.hint)}</div>
+              <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                ${teamButtonsHtml}
+              </div>
+            `;
+            secretBingoContainer.appendChild(row);
+          });
+
+          secretBingoContainer.querySelectorAll(".admin-secret-bingo-btn").forEach(btn => {
+            btn.onclick = () => {
+              const cardId = btn.dataset.card;
+              const tIdx = parseInt(btn.dataset.team, 10);
+              const card = state.bingoCards.find(c => c.id === cardId);
+              if (!card) return;
+
+              if (tIdx === -1) {
+                card.claimedBy = null;
+                addLog(`🔒 ADMIN: Cleared claim on secret card "${card.title}".`);
+              } else {
+                const target = state.teams[tIdx];
+                card.claimedBy = target.name;
+                target.score += card.pts;
+                addLog(`⭐ ADMIN VERIFIED: Awarded secret card ${card.icon} "${card.title}" to ${target.name} (${card.pts > 0 ? '+' + card.pts : card.pts} pts)!`);
+                playFanfare("win");
+                spawnCoins(30);
+              }
+              saveGameState(true);
+              renderCrewBar();
+              renderScoringTab();
+              renderBingoGrid();
+              renderAdminTab();
             };
           });
         }
