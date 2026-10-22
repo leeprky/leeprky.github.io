@@ -350,24 +350,9 @@
     /* =========================================================================
        NATIVE HOMESCREEN WEBAPP (PWA) & MOBILE VIEWPORT POLISH
        ========================================================================= */
-    /* iOS Top Status Bar Frosted Blur Shield (Keeps Clock & Battery Legible When Scrolling) */
+    /* iOS Top Status Bar Frosted Blur Shield (Disabled to eliminate visible dividing line on Safari) */
     .ios-status-bar-blur {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: max(24px, env(safe-area-inset-top, 24px));
-      background: var(--theme-bg, #101317);
-      background: rgba(16, 19, 24, 0.78);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
-      z-index: 99995;
-      pointer-events: none;
-    }
-    body.light-mode .ios-status-bar-blur {
-      background: rgba(255, 255, 255, 0.88) !important;
-      border-bottom: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+      display: none !important;
     }
 
     /* Accessibility: Reduced Motion / Static Wallpaper Mode */
@@ -633,7 +618,7 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(239, 68, 68, 0.5) 0%, rgba(234, 179, 8, 0.4) 38%, rgba(37, 99, 235, 0.3) 68%, transparent 80%);
       filter: blur(32px);
-      animation: introGlowPulse 2.4s ease-in-out infinite alternate;
+      animation: introGlowPulse 3.6s ease-in-out infinite alternate;
     }
 
     .intro-splash-logo {
@@ -643,7 +628,7 @@
       object-fit: contain;
       border-radius: 36px;
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(239, 68, 68, 0.4);
-      animation: introLogoZoom 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      animation: introLogoZoom 3.3s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
       transform-origin: center center;
       will-change: transform;
     }
@@ -4778,52 +4763,52 @@
       box-shadow: 0 0 12px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
 
-    /* Spectator Grey Theme (Neutral slate / charcoal for unjoined guests) */
+    /* Spectator Grey Theme (True Neutral Graphite / Charcoal for unjoined guests) */
     body.theme-spectator,
     html:has(body.theme-spectator) {
-      --theme-bg: #101317;
-      background-color: #101317 !important;
-      background-image: radial-gradient(circle at 50% 25%, #1d222b 0%, #101317 70%, #080a0c 100%) !important;
+      --theme-bg: #121214;
+      background-color: #121214 !important;
+      background-image: radial-gradient(circle at 50% 25%, #1c1c1f 0%, #121214 70%, #0a0a0c 100%) !important;
     }
     body.theme-spectator {
-      --theme-bg: #101317;
-      --md-primary: #94a3b8;
-      --md-primary-rgb: 148, 163, 184;
-      --md-on-primary: #0f172a;
-      --md-primary-container: rgba(148, 163, 184, 0.18);
-      --md-on-primary-container: #f1f5f9;
-      --md-surface: #15181f;
-      --md-surface-container: #1b1f27;
-      --md-surface-container-high: #242a34;
-      --md-outline: rgba(148, 163, 184, 0.35);
-      --md-outline-variant: rgba(148, 163, 184, 0.16);
-      --theme-primary: #94a3b8;
-      --theme-primary-dark: #475569;
-      --theme-glow: rgba(148, 163, 184, 0.18);
-      --theme-accent-bg: rgba(148, 163, 184, 0.12);
-      --theme-border: #64748b;
-      --theme-card-glow: 0 0 16px rgba(148, 163, 184, 0.14);
-      --glass-card-bg: rgba(22, 26, 32, 0.90);
-      --glass-border: 1.5px solid rgba(148, 163, 184, 0.32);
-      --theme-board-bg: radial-gradient(circle at 50% 20%, #1a2029 0%, #11141a 65%, #080a0d 100%);
-      --theme-board-border: #64748b;
-      --theme-ribbon-bg: linear-gradient(135deg, #475569 0%, #1e293b 100%);
-      --theme-celtic-accent: #cbd5e1;
-      --theme-topbar-bg: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(16, 19, 23, 0.95) 100%);
+      --theme-bg: #121214;
+      --md-primary: #a1a1aa;
+      --md-primary-rgb: 161, 161, 170;
+      --md-on-primary: #18181b;
+      --md-primary-container: rgba(161, 161, 170, 0.18);
+      --md-on-primary-container: #f4f4f5;
+      --md-surface: #141416;
+      --md-surface-container: #1b1b1e;
+      --md-surface-container-high: #242428;
+      --md-outline: rgba(161, 161, 170, 0.32);
+      --md-outline-variant: rgba(161, 161, 170, 0.15);
+      --theme-primary: #a1a1aa;
+      --theme-primary-dark: #52525b;
+      --theme-glow: rgba(161, 161, 170, 0.16);
+      --theme-accent-bg: rgba(161, 161, 170, 0.12);
+      --theme-border: #71717a;
+      --theme-card-glow: 0 0 16px rgba(161, 161, 170, 0.14);
+      --glass-card-bg: rgba(24, 24, 27, 0.90);
+      --glass-border: 1.5px solid rgba(161, 161, 170, 0.28);
+      --theme-board-bg: transparent !important;
+      --theme-board-border: #71717a;
+      --theme-ribbon-bg: linear-gradient(135deg, #52525b 0%, #27272a 100%);
+      --theme-celtic-accent: #d4d4d8;
+      --theme-topbar-bg: linear-gradient(135deg, rgba(161, 161, 170, 0.15) 0%, rgba(18, 18, 20, 0.95) 100%);
     }
     body.light-mode.theme-spectator {
-      --md-surface: #f8fafc;
-      --md-surface-container: #f1f5f9;
-      --md-surface-container-high: #e2e8f0;
-      --theme-primary: #64748b;
-      --theme-primary-dark: #334155;
-      --theme-glow: rgba(100, 116, 139, 0.18);
-      --theme-accent-bg: rgba(100, 116, 139, 0.10);
-      --theme-border: #94a3b8;
-      --theme-board-bg: radial-gradient(circle at 50% 20%, #f8fafc 0%, #e2e8f0 65%, #cbd5e1 100%);
-      --theme-board-border: #64748b;
-      --theme-ribbon-bg: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
-      --theme-topbar-bg: linear-gradient(135deg, rgba(100, 116, 139, 0.15) 0%, rgba(248, 250, 252, 0.94) 100%);
+      --md-surface: #fafafa;
+      --md-surface-container: #f4f4f5;
+      --md-surface-container-high: #e4e4e7;
+      --theme-primary: #71717a;
+      --theme-primary-dark: #3f3f46;
+      --theme-glow: rgba(113, 113, 122, 0.18);
+      --theme-accent-bg: rgba(113, 113, 122, 0.10);
+      --theme-border: #a1a1aa;
+      --theme-board-bg: transparent !important;
+      --theme-board-border: #a1a1aa;
+      --theme-ribbon-bg: linear-gradient(135deg, #a1a1aa 0%, #52525b 100%);
+      --theme-topbar-bg: linear-gradient(135deg, rgba(161, 161, 170, 0.15) 0%, rgba(250, 250, 250, 0.94) 100%);
     }
 
     /* Admin Direct Message Modal Preset Buttons */
@@ -4863,9 +4848,6 @@
       <button type="button" class="intro-skip-btn" id="introSplashSkipBtn" title="Skip Intro">Skip ➔</button>
     </div>
   </div>
-
-  <!-- iOS Safari / WebApp Status Bar Frosted Blur Shield (Keeps Clock & Battery Legible When Scrolling) -->
-  <div class="ios-status-bar-blur" aria-hidden="true"></div>
 
   <!-- Rubber Fluid WebGL Shader Canvas Background (Glossy Folds Drifting Slowly) -->
   <canvas id="rubberFluidCanvas" class="rubber-fluid-canvas"></canvas>
@@ -8537,10 +8519,10 @@
           spec: [1.00, 0.98, 0.90]  // Bright gold sheen
         },
         SPECTATOR: {
-          c1: [0.18, 0.22, 0.28], // Pure cool neutral slate grey (zero red)
-          c2: [0.06, 0.08, 0.10], // Deep charcoal shadow
-          c3: [0.35, 0.40, 0.48], // Silver slate fold crest
-          spec: [0.65, 0.72, 0.80]  // Clean metallic silver sheen
+          c1: [0.15, 0.15, 0.16], // Sleek neutral graphite charcoal (no blue bias)
+          c2: [0.05, 0.05, 0.06], // Deep obsidian shadow
+          c3: [0.32, 0.32, 0.34], // Neutral titanium crest
+          spec: [0.70, 0.70, 0.70]  // Pure metallic platinum sheen
         }
       };
 
@@ -8581,9 +8563,9 @@
         const team = (!isSpectator && state.teams) ? state.teams[activeIdx] : null;
         const colorClass = team ? (team.colorClass || "spectator") : "spectator";
 
-        let titleBarHex = "#101317";
+        let titleBarHex = "#121214";
         if (isSpectator) {
-          titleBarHex = isLight ? "#f1f5f9" : "#101317";
+          titleBarHex = isLight ? "#f4f4f5" : "#121214";
         } else if (isLight) {
           if (colorClass === "blue") titleBarHex = "#e8f1fc";
           else if (colorClass === "green") titleBarHex = "#eaf5ed";
@@ -9164,7 +9146,7 @@
         const asBadge = document.getElementById("scoringAsBadge");
         if (asBadge) {
           if (!isRegistered) {
-            asBadge.innerHTML = `Mode: <strong style="color: #38bdf8;">👀 Spectator (Scoreboard View)</strong>`;
+            asBadge.innerHTML = `Mode: <strong style="color: #e4e4e7;">👀 Spectator (Scoreboard View)</strong>`;
           } else {
             asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
           }
@@ -9342,10 +9324,6 @@
             <button type="button" class="btn-score-tap deduct" data-uno-score="rulebreak">
               <span>⚠️ RULE 0 BREAK</span>
               <small>1 Sip Penalty (0 Pts)</small>
-            </button>
-            <button type="button" class="btn-score-tap deduct" data-uno-score="mysteryshot" style="border: 1.5px solid #f43f5e; background: rgba(244, 63, 94, 0.22); color: #fda4af;">
-              <span>💀 4th PLACE SHOT</span>
-              <small>Mystery Shot Forfeit</small>
             </button>
             <button type="button" class="btn-score-tap deduct" data-uno-score="spew">
               <span>🤮 SPEWING</span>
@@ -12907,14 +12885,14 @@
 
         const phrases = [
           { time: 0, text: "🎴 SHUFFLING THE UNO DECK..." },
-          { time: 550, text: "🍺 SYNCING PRESTON ROUTE PUBS..." },
-          { time: 1100, text: "📡 CONNECTING PHONE TAVERN NETWORK..." },
-          { time: 1650, text: "⚔️ PREPARING THE UNO BATTLE..." },
-          { time: 2150, text: "🚀 WELCOME TO DRUNK UNO!" }
+          { time: 825, text: "🍺 SYNCING PRESTON ROUTE PUBS..." },
+          { time: 1650, text: "📡 CONNECTING PHONE TAVERN NETWORK..." },
+          { time: 2475, text: "⚔️ PREPARING THE UNO BATTLE..." },
+          { time: 3225, text: "🚀 WELCOME TO DRUNK UNO!" }
         ];
 
         let startTime = performance.now();
-        const duration = 2500;
+        const duration = 3750;
         let completed = false;
         let animationFrameId = null;
 
