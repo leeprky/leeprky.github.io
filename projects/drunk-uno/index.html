@@ -5622,7 +5622,7 @@
               </p>
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <button type="button" class="modal-btn" id="adminResetScoresBtn" style="background: #d97706; font-size: 1rem; padding: 10px 16px;">
-                  🔄 Reset All Scores to 12 pts
+                  🔄 Reset All Scores to 15 pts
                 </button>
                 <button type="button" class="modal-btn" id="adminLockConsoleBtn" style="background: #374151; font-size: 1rem; padding: 10px 16px;">
                   🔒 Lock Admin Console
@@ -5960,7 +5960,7 @@
         </p>
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <button type="button" class="modal-btn secondary" id="confirmResetScoresBtn" style="font-size: 0.88rem; padding: 8px 12px;">
-            🔄 Reset Scores to 12 pts Only
+            🔄 Reset Scores to 15 pts Only
           </button>
           <button type="button" class="modal-btn" id="confirmFactoryResetBtn" style="background: #8b1e1e; border-color: #ff4d4d; font-size: 0.88rem; padding: 8px 12px;">
             🚨 Full Factory Reset (Wipe All Cookies & State)
@@ -6166,7 +6166,7 @@
             </div>
             <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
               <span style="font-size: 1.3rem;">🍺</span>
-              <span><strong>12 Starting Points:</strong> Maintain your points by hitting rival teams with card penalties. Lowest points drinks the punishment at the finish line!</span>
+              <span><strong>15 Starting Points:</strong> Maintain your points by hitting rival teams with card penalties. Lowest points drinks the punishment at the finish line!</span>
             </div>
           </div>
         </div>
@@ -7820,11 +7820,14 @@
 
         try { sessionStorage.clear(); } catch(e) {}
 
-        // 2. Reset state object to clean zero
+        // 2. Reset state object to clean starting crawl values (15 pts)
         state.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
         state.teams.forEach(t => {
-          t.score = 0;
-          t.drinks = 0;
+          t.score = 15;
+          t.sips = 0;
+          t.stash = 0;
+          t.crowns = 0;
+          t.frozen = false;
           t.captain = "";
           t.players = [];
         });
@@ -8357,12 +8360,25 @@
         }
       }
 
+      // Automatically reconnect when network transitions from offline to online
+      window.addEventListener("online", () => {
+        if (!mqttClient || !mqttClient.isConnected()) {
+          initMqttSync();
+        }
+      });
+
       // --- 03. SOUND & HAPTICS (SYNTHESIZED WEB AUDIO) ---
       let audioCtx = null;
       function ensureAudio() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === "suspended") audioCtx.resume();
+        if (!state.sound) return;
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === "suspended") audioCtx.resume();
+        } catch (e) {}
       }
+
+      window.addEventListener("pointerdown", () => ensureAudio(), { once: true });
+      window.addEventListener("keydown", () => ensureAudio(), { once: true });
 
       function triggerHaptic(pattern = 10) {
         if (navigator.vibrate) {
@@ -8372,7 +8388,9 @@
 
       function playTick(freq = 520) {
         triggerHaptic(6);
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "triangle";
@@ -8388,7 +8406,9 @@
 
       function playFanfare(type = "win") {
         triggerHaptic([40, 50, 70, 90]);
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const notes = type === "freeze" ? [440, 370, 311, 220] : [330, 440, 554, 660];
         notes.forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
@@ -8406,7 +8426,9 @@
 
       function playCoinDing() {
         triggerHaptic([25, 35]);
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         [987.77, 1318.51].forEach((freq, idx) => {
           const osc = audioCtx.createOscillator();
@@ -8424,7 +8446,9 @@
 
       function playBuzzer() {
         triggerHaptic([120, 80, 120]);
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
@@ -8448,7 +8472,9 @@
 
       function playAirhorn() {
         triggerHaptic([80, 40, 80, 40, 160]);
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         const freqs = [311.13, 370.00, 466.16];
         freqs.forEach(freq => {
@@ -8466,7 +8492,9 @@
       }
 
       function playWhoosh() {
-        if (!state.sound || !audioCtx) return;
+        if (!state.sound) return;
+        ensureAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
