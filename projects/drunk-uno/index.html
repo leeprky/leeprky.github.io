@@ -195,7 +195,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.52;
+      opacity: 0.22;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
       will-change: transform;
@@ -1398,31 +1398,33 @@
       gap: 8px !important;
       width: 100% !important;
       box-sizing: border-box !important;
-      padding: 14px 2px 2px 2px !important;
-      border-bottom: 3px solid rgba(0, 0, 0, 0.25) !important;
+      padding: 16px 2px 0 2px !important;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.18) !important;
       margin-top: 6px !important;
     }
     @media (max-width: 540px) {
       .podium-cards-grid {
-        gap: 5px !important;
-        padding: 10px 1px 1px 1px !important;
+        gap: 4px !important;
+        padding: 12px 1px 0 1px !important;
       }
     }
 
     .podium-card {
       flex: 1 1 0 !important;
       min-width: 0 !important;
-      border-radius: 8px 8px 0 0 !important;
+      border-radius: 10px 10px 0 0 !important;
       padding: 8px 4px 6px 4px !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       text-align: center !important;
-      justify-content: flex-end !important;
+      justify-content: flex-start !important;
       position: relative !important;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       border: 2px solid transparent !important;
       box-sizing: border-box !important;
+      overflow: visible !important;
+      gap: 2px !important;
     }
     .podium-card:hover {
       transform: translateY(-2px);
@@ -1430,8 +1432,7 @@
 
     /* Stepped heights & flex orders: 2nd (Silver, left), 1st (Gold, center-left / tallest), 3rd (Bronze, right), 4th (Anchor, far right) */
     .podium-card.rank-1 {
-      min-height: 168px !important;
-      height: 168px !important;
+      min-height: 195px !important;
       order: 2 !important;
       background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 40%, #fde68a 100%) !important;
       border-color: #b45309 !important;
@@ -1439,8 +1440,7 @@
       z-index: 2;
     }
     .podium-card.rank-2 {
-      min-height: 140px !important;
-      height: 140px !important;
+      min-height: 172px !important;
       order: 1 !important;
       background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%) !important;
       border-color: #64748b !important;
@@ -1448,8 +1448,7 @@
       z-index: 1;
     }
     .podium-card.rank-3 {
-      min-height: 118px !important;
-      height: 118px !important;
+      min-height: 154px !important;
       order: 3 !important;
       background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 40%, #fed7aa 100%) !important;
       border-color: #9a3412 !important;
@@ -1457,8 +1456,7 @@
       z-index: 1;
     }
     .podium-card.rank-4 {
-      min-height: 98px !important;
-      height: 98px !important;
+      min-height: 138px !important;
       order: 4 !important;
       background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 40%, #d1d5db 100%) !important;
       border-color: #4b5563 !important;
@@ -1467,33 +1465,42 @@
     }
 
     @media (max-width: 540px) {
-      .podium-card.rank-1 { min-height: 132px !important; height: 132px !important; }
-      .podium-card.rank-2 { min-height: 112px !important; height: 112px !important; }
-      .podium-card.rank-3 { min-height: 96px !important; height: 96px !important; }
-      .podium-card.rank-4 { min-height: 80px !important; height: 80px !important; }
+      .podium-card {
+        padding: 6px 3px 5px 3px !important;
+        gap: 2px !important;
+      }
+      .podium-card.rank-1 { min-height: 172px !important; }
+      .podium-card.rank-2 { min-height: 154px !important; }
+      .podium-card.rank-3 { min-height: 138px !important; }
+      .podium-card.rank-4 { min-height: 124px !important; }
     }
 
     .podium-rank-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
       font-family: var(--font-uno);
       font-size: 0.95rem;
       padding: 2px 6px;
       border-radius: 4px;
       font-weight: 700;
-      margin-bottom: 4px;
-      width: 92%;
+      margin-bottom: 3px;
+      width: 94%;
       text-align: center;
       letter-spacing: 0.5px;
       line-height: 1.1;
+      flex-shrink: 0 !important;
+      box-sizing: border-box !important;
+      white-space: nowrap !important;
     }
     @media (max-width: 540px) {
       .podium-rank-badge {
-        font-size: 0.82rem;
-        padding: 1px 4px;
-        margin-bottom: 2px;
+        font-size: 0.76rem !important;
+        padding: 2px 3px !important;
+        margin-bottom: 2px !important;
+        letter-spacing: 0.2px !important;
+        width: 96% !important;
       }
     }
     .rank-1 .podium-rank-badge {
@@ -1515,82 +1522,138 @@
     }
 
     .podium-team-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      margin-bottom: 2px;
-      width: 100%;
-      overflow: hidden;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      margin: 1px 0 2px 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      flex-shrink: 0 !important;
+    }
+    .podium-team-header .crew-dot {
+      width: 7px !important;
+      height: 7px !important;
+      flex-shrink: 0 !important;
     }
     .podium-team-name {
       font-family: var(--font-uno);
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: var(--ink);
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.15;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
       max-width: 88%;
+      font-weight: 800;
+      flex-shrink: 0 !important;
     }
     @media (max-width: 540px) {
       .podium-team-name {
-        font-size: 0.84rem !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-        line-height: 1.02 !important;
-        max-width: 100% !important;
+        font-size: 0.75rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        line-height: 1.1 !important;
+        max-width: 90% !important;
         text-align: center !important;
       }
     }
 
     .podium-score-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3px;
-      margin: 2px 0 4px 0;
-      padding: 2px 0;
-      border-top: 1px dashed rgba(0,0,0,0.14);
-      border-bottom: 1px dashed rgba(0,0,0,0.14);
-      width: 100%;
+      display: flex !important;
+      align-items: baseline !important;
+      justify-content: center !important;
+      gap: 2px !important;
+      margin: 2px 0 !important;
+      padding: 2px 0 !important;
+      border-top: 1px dashed rgba(255,255,255,0.14) !important;
+      border-bottom: 1px dashed rgba(255,255,255,0.14) !important;
+      width: 100% !important;
+      flex-shrink: 0 !important;
+      box-sizing: border-box !important;
     }
     .podium-score-number {
       font-family: var(--font-uno);
-      font-size: 1.55rem;
-      font-weight: 900;
-      line-height: 1;
-      color: var(--ink);
+      font-size: 1.45rem !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+      color: #ffffff;
     }
     .podium-score-unit {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: var(--ink-muted);
+      font-size: 0.62rem !important;
+      font-weight: 800 !important;
+      color: #94a3b8;
     }
     @media (max-width: 540px) {
-      .podium-score-number { font-size: 1.35rem; }
-      .podium-score-unit { font-size: 0.6rem; }
+      .podium-score-row {
+        margin: 1px 0 !important;
+        padding: 1px 0 !important;
+      }
+      .podium-score-number { font-size: 1.20rem !important; }
+      .podium-score-unit { font-size: 0.54rem !important; }
     }
 
     .podium-stats-chips {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      margin-top: auto;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      margin-top: auto !important;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      width: 100%;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+      flex-wrap: wrap !important;
+      padding-bottom: 2px !important;
     }
     .podium-chip {
-      background: rgba(0, 0, 0, 0.08);
-      padding: 1px 4px;
-      border-radius: 3px;
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      white-space: nowrap;
-      font-size: 0.65rem;
+      background: rgba(0, 0, 0, 0.35) !important;
+      padding: 1px 4px !important;
+      border-radius: 4px !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      white-space: nowrap !important;
+      font-size: 0.62rem !important;
+      color: #e2e8f0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 2px !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      line-height: 1.2 !important;
+    }
+    @media (max-width: 540px) {
+      .podium-stats-chips {
+        gap: 2px !important;
+      }
+      .podium-chip {
+        font-size: 0.58rem !important;
+        padding: 1px 3px !important;
+      }
+      .podium-chip-label {
+        display: none !important;
+      }
+    }
+
+    /* Pre-Game Lobby Notice Banner styling */
+    #gameLifecycleNoticeBanner {
+      background: rgba(11, 18, 30, 0.96) !important;
+      border: 1.5px solid rgba(56, 189, 248, 0.65) !important;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.25) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+      color: #f0f9ff !important;
+    }
+    body.light-mode #gameLifecycleNoticeBanner {
+      background: rgba(240, 249, 255, 0.97) !important;
+      border: 1.5px solid #0284c7 !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+      color: #0369a1 !important;
     }
 
     .podium-card.is-my-crew {
@@ -2896,7 +2959,7 @@
       height: 100lvh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.65;
+      opacity: 0.38;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
       will-change: transform;
@@ -3558,19 +3621,26 @@
     }
     .podium-card {
       position: relative;
-      background: rgba(18, 24, 34, 0.85) !important;
+      background: rgba(18, 24, 34, 0.88) !important;
       border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
-      border-radius: 12px;
-      padding: 12px 8px 10px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 6px;
+      border-radius: 10px 10px 0 0 !important;
+      padding: 8px 4px 6px 4px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 2px !important;
       backdrop-filter: blur(14px) saturate(160%);
       -webkit-backdrop-filter: blur(14px) saturate(160%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
       transition: all 0.25s ease;
+      box-sizing: border-box !important;
+    }
+    @media (max-width: 540px) {
+      .podium-card {
+        padding: 6px 3px 5px 3px !important;
+        gap: 2px !important;
+      }
     }
 
     /* Podium Cards Themed to Each Crew's Actual Colors */
@@ -8880,7 +8950,7 @@
           rfGl.uniform3f(rfUniforms.c2, curC2[0], curC2[1], curC2[2]);
           rfGl.uniform3f(rfUniforms.c3, curC3[0], curC3[1], curC3[2]);
           rfGl.uniform3f(rfUniforms.spec, curSpec[0], curSpec[1], curSpec[2]);
-          rfGl.uniform1f(rfUniforms.dim, 0.75); // Vivid glossy fluid rubber folds
+          rfGl.uniform1f(rfUniforms.dim, 0.45); // Dimmed glossy fluid rubber folds
 
           rfGl.drawArrays(rfGl.TRIANGLES, 0, 6);
           requestAnimationFrame(renderRubberFluid);
@@ -9047,8 +9117,8 @@
             </div>
 
             <div class="podium-stats-chips">
-              <span class="podium-chip" title="${team.sips} sips taken">🍺 ${team.sips} sips</span>
-              <span class="podium-chip" style="background: rgba(234, 179, 8, 0.2); border: 1px solid #eab308; color: #fde047; font-weight: 800;" title="${team.crowns || 0} Pub Wins">👑 ${team.crowns || 0} Crowns</span>
+              <span class="podium-chip" title="${team.sips} sips taken">🍺 ${team.sips}<span class="podium-chip-label"> sips</span></span>
+              <span class="podium-chip" style="background: rgba(234, 179, 8, 0.22) !important; border: 1px solid rgba(234, 179, 8, 0.6) !important; color: #fde047 !important; font-weight: 800 !important;" title="${team.crowns || 0} Pub Wins">👑 ${team.crowns || 0}<span class="podium-chip-label"> Crowns</span></span>
             </div>
           `;
 
@@ -9149,14 +9219,16 @@
         if (noticeBanner) {
           if (!state.gameStarted) {
             noticeBanner.style.display = "block";
-            noticeBanner.style.background = "rgba(56, 189, 248, 0.15)";
-            noticeBanner.style.border = "1.5px solid #38bdf8";
-            noticeBanner.innerHTML = `<div style="font-size: 1.1rem; color: #38bdf8; font-weight: 800;">⏳ PRE-GAME LOBBY (WAITING FOR START)</div><div style="font-size: 0.82rem; color: #bae6fd; margin-top: 3px;">Crawl Master will hit <strong>▶️ START GAME</strong> to begin scoring & spins. Link your crew and get ready!</div>`;
+            noticeBanner.style.background = "rgba(10, 16, 28, 0.96)";
+            noticeBanner.style.border = "1.5px solid rgba(56, 189, 248, 0.65)";
+            noticeBanner.style.boxShadow = "0 10px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.25)";
+            noticeBanner.innerHTML = `<div style="font-size: 1.05rem; color: #38bdf8; font-weight: 800; letter-spacing: 0.3px; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">⏳ PRE-GAME LOBBY (WAITING FOR START)</div><div style="font-size: 0.84rem; color: #e0f2fe; margin-top: 4px; line-height: 1.35; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">Crawl Master will hit <strong style="color: #ffffff; background: rgba(56, 189, 248, 0.25); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.5);">▶️ START GAME</strong> to begin scoring & spins. Link your crew and get ready!</div>`;
           } else if (state.gameEnded) {
             noticeBanner.style.display = "block";
-            noticeBanner.style.background = "rgba(234, 179, 8, 0.18)";
-            noticeBanner.style.border = "1.5px solid #eab308";
-            noticeBanner.innerHTML = `<div style="font-size: 1.1rem; color: #fde047; font-weight: 800;">🏆 CRAWL COMPLETED!</div><div style="font-size: 0.82rem; color: #fef08a; margin-top: 3px;">The game has concluded. Tap the button below to celebrate the champion!</div><button type="button" class="modal-btn" id="reopenWinnerModalBtn" style="margin-top: 8px; padding: 6px 14px; font-size: 0.86rem; background: #d97706; color: #fff;">👑 View Champion Podium</button>`;
+            noticeBanner.style.background = "rgba(24, 18, 8, 0.96)";
+            noticeBanner.style.border = "1.5px solid rgba(234, 179, 8, 0.75)";
+            noticeBanner.style.boxShadow = "0 10px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(234, 179, 8, 0.3)";
+            noticeBanner.innerHTML = `<div style="font-size: 1.05rem; color: #fde047; font-weight: 800; letter-spacing: 0.3px; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">🏆 CRAWL COMPLETED!</div><div style="font-size: 0.84rem; color: #fef08a; margin-top: 4px; line-height: 1.35; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">The game has concluded. Tap the button below to celebrate the champion!</div><button type="button" class="modal-btn" id="reopenWinnerModalBtn" style="margin-top: 8px; padding: 6px 14px; font-size: 0.86rem; background: #d97706; color: #fff; box-shadow: 0 4px 14px rgba(217,119,6,0.4);">👑 View Champion Podium</button>`;
             setTimeout(() => {
               const b = document.getElementById("reopenWinnerModalBtn");
               if (b) b.onclick = () => showGameEndWinnerModal(state.winnerTeamIdx);
