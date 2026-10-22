@@ -4706,7 +4706,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.8</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.9</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5776,7 +5776,7 @@
 
 
   <!-- =========================================================================
-       MODAL 8: ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (STEPPED GUIDE)
+       MODAL 8: ONBOARDING: WELCOME TUTORIAL -> RULES -> TARGETS -> NAME & CREW -> LOCK TARGET -> LINK HARDWARE
        ========================================================================= -->
   <div class="modal-backdrop" id="crewSetupModal">
     <div class="modal-scroll crew-setup-dialog glass-card" style="position: relative; max-width: 520px;">
@@ -5785,25 +5785,142 @@
       <div style="text-align: center; margin-bottom: 14px;">
         <img src="assets/drunk-uno-logo.png" alt="Drunk Uno Logo" style="width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 10px auto; display: block; box-shadow: 0 10px 28px rgba(0,0,0,0.65), 0 0 20px rgba(239, 68, 68, 0.4); border: 2px solid rgba(255,255,255,0.25);" />
         <span class="impact-pill special" style="font-size: 0.82rem; padding: 4px 12px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
-        <h2 class="modal-title" style="margin-top: 8px; font-size: 2.1rem; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(0,0,0,0.8);" id="setupGuideMainTitle">
-          JOIN THE BATTLE
+        <h2 class="modal-title" style="margin-top: 8px; font-size: 1.95rem; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(0,0,0,0.8);" id="setupGuideMainTitle">
+          WELCOME TO DRUNK UNO
         </h2>
-        <!-- Step progress indicators -->
-        <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;" id="setupStepDots">
-          <span class="setup-dot active" id="dotStep1">1. Enter Name</span>
-          <span class="setup-dot" id="dotStep2">2. Pick Crew</span>
-          <span class="setup-dot" id="dotStep3">3. Link Hardware</span>
+        <!-- Step progress indicators (6 Steps) -->
+        <div style="display: flex; justify-content: center; gap: 6px; margin-top: 10px; flex-wrap: wrap;" id="setupStepDots">
+          <span class="setup-dot active" id="dotStep1">1. Tutorial</span>
+          <span class="setup-dot" id="dotStep2">2. Rules</span>
+          <span class="setup-dot" id="dotStep3">3. Targets</span>
+          <span class="setup-dot" id="dotStep4">4. Name & Crew</span>
+          <span class="setup-dot" id="dotStep5">5. Lock Target</span>
+          <span class="setup-dot" id="dotStep6">6. Link Phone</span>
         </div>
       </div>
 
-      <!-- STEP 1: INPUT YOUR NAME FIRST -->
+      <!-- STEP 1: WELCOME & UNO TUTORIAL -->
       <div id="setupStep1Pane" class="setup-step-pane">
         <div class="setup-step-box glass-panel">
           <div class="setup-step-label">
             <span class="step-num">1</span>
-            <span>ENTER YOUR PLAYER NAME:</span>
+            <span>WELCOME TO DRUNK UNO:</span>
           </div>
-          <p style="font-size: 0.86rem; color: var(--ink-faded); margin-bottom: 8px;">
+          <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 12px; line-height: 1.45;">
+            Welcome to the <strong>Preston Route 10-Pub Crawl</strong>! Classic Uno rules meet a real-time multiplayer pub brawl.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; color: #e2e8f0; margin-bottom: 8px;">
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">🎴</span>
+              <span><strong>4 Rival Crews:</strong> Red, Blue, Green, and Yellow battle for pub domination across 10 venues.</span>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">📡</span>
+              <span><strong>Live Multi-Phone Sync:</strong> Every drink, penalty, score adjustment, and wheel spin syncs instantly across all phones in real time!</span>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">🍺</span>
+              <span><strong>12 Starting Points:</strong> Maintain your points by hitting rival teams with card penalties. Lowest points drinks the punishment at the finish line!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 14px; flex-direction: column; gap: 8px;">
+          <button type="button" class="modal-btn" id="setupStep1NextBtn" style="font-size: 1.1rem; padding: 12px 18px; width: 100%;">
+            Next: Drinking Rules & Codex ➡️
+          </button>
+          <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.82rem; padding: 7px 10px; width: 100%;">
+            👀 Spectate / Browse as Guest
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: DRUNK UNO DRINKING RULES & CODEX -->
+      <div id="setupStep2Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">2</span>
+            <span>THE DRUNK UNO DRINKING CODEX:</span>
+          </div>
+          <p style="font-size: 0.84rem; color: #cbd5e1; margin-bottom: 10px;">
+            Whenever special cards are played at your pub table, record them on your phone to trigger sips and penalties:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.78rem;">
+            <div style="background: rgba(239, 68, 68, 0.16); border: 1px solid rgba(239, 68, 68, 0.35); padding: 8px; border-radius: 8px; color: #fca5a5;">
+              <strong>🚫 SKIP</strong><br><span style="color:#fff;">Target drinks 1 sip & loses -1 pt</span>
+            </div>
+            <div style="background: rgba(239, 68, 68, 0.16); border: 1px solid rgba(239, 68, 68, 0.35); padding: 8px; border-radius: 8px; color: #fca5a5;">
+              <strong>➕ +2 DRAW</strong><br><span style="color:#fff;">Target drinks 2 sips & loses -2 pts</span>
+            </div>
+            <div style="background: rgba(239, 68, 68, 0.16); border: 1px solid rgba(239, 68, 68, 0.35); padding: 8px; border-radius: 8px; color: #fca5a5;">
+              <strong>⚡ +4 STACK</strong><br><span style="color:#fff;">Target drinks 4 sips & loses -4 pts</span>
+            </div>
+            <div style="background: rgba(34, 197, 94, 0.16); border: 1px solid rgba(34, 197, 94, 0.35); padding: 8px; border-radius: 8px; color: #86efac;">
+              <strong>🔄 REVERSE</strong><br><span style="color:#fff;">Counter! +4 Defender / -4 Attacker</span>
+            </div>
+            <div style="background: rgba(234, 179, 8, 0.16); border: 1px solid rgba(234, 179, 8, 0.35); padding: 8px; border-radius: 8px; color: #fef08a;">
+              <strong>🎡 WHEEL OF DOOM</strong><br><span style="color:#fff;">Spin tavern wheel for ±6 pt swing</span>
+            </div>
+            <div style="background: rgba(185, 28, 28, 0.25); border: 1px solid rgba(239, 68, 68, 0.5); padding: 8px; border-radius: 8px; color: #fca5a5;">
+              <strong>🤮 SPEWING</strong><br><span style="color:#fff;">Major forfeit: -5 points penalty</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 14px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep2BackBtn" style="font-size: 0.92rem; padding: 11px;">
+            ⬅️ Back
+          </button>
+          <button type="button" class="modal-btn" id="setupStep2NextBtn" style="font-size: 1.05rem; padding: 11px;">
+            Next: Target System ➡️
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CROSS-EXAMINING TARGET SYSTEM -->
+      <div id="setupStep3Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">3</span>
+            <span>CROSS-EXAMINING TARGET SYSTEM:</span>
+          </div>
+          <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 12px; line-height: 1.45;">
+            To ensure 100% fair scoring and prevent cheating, the crawl uses a <strong>live circular cross-examination ring</strong>:
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; color: #e2e8f0; margin-bottom: 8px;">
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">🎯</span>
+              <span><strong>Every Team Referees ONE Rival:</strong> Your crew will be assigned to record penalties and drinks for exactly one other team.</span>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">🔒</span>
+              <span><strong>Live Lockout:</strong> When your team locks in a target, NO other team can mark them. Targets sync live across all phones!</span>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); display: flex; gap: 8px; align-items: center;">
+              <span style="font-size: 1.3rem;">⚖️</span>
+              <span><strong>Cross-Marking Ring:</strong> Team Red marks Blue, Blue marks Green, Green marks Yellow, and Yellow marks Red!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 14px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep3BackBtn" style="font-size: 0.92rem; padding: 11px;">
+            ⬅️ Back
+          </button>
+          <button type="button" class="modal-btn" id="setupStep3NextBtn" style="font-size: 1.05rem; padding: 11px;">
+            Next: Enter Name & Crew ➡️
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: ENTER PLAYER NAME & PICK CREW -->
+      <div id="setupStep4Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">4</span>
+            <span>ENTER YOUR PLAYER NAME & CREW:</span>
+          </div>
+          <p style="font-size: 0.86rem; color: #cbd5e1; margin-bottom: 8px;">
             Type your real name or pirate handle. This is displayed on the Tavern leaderboard and team scores:
           </p>
           <div style="margin-top: 6px;">
@@ -5811,72 +5928,83 @@
           </div>
           <!-- Quick title badges -->
           <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;">
-            <span style="font-size: 0.72rem; color: var(--ink-faded); align-self: center; font-weight: 700;">PRESETS:</span>
+            <span style="font-size: 0.72rem; color: #94a3b8; align-self: center; font-weight: 700;">PRESETS:</span>
             <button type="button" class="btn-title-chip" data-title="Captain">⚔️ Captain</button>
             <button type="button" class="btn-title-chip" data-title="First Mate">⚓ First Mate</button>
             <button type="button" class="btn-title-chip" data-title="Gunner">🎯 Gunner</button>
             <button type="button" class="btn-title-chip" data-title="Brewmaster">🍺 Brewmaster</button>
             <button type="button" class="btn-title-chip" data-title="Navigator">🧭 Navigator</button>
           </div>
-        </div>
 
-        <div class="modal-actions" style="margin-top: 16px; flex-direction: column; gap: 8px;">
-          <button type="button" class="modal-btn" id="setupStep1NextBtn" style="font-size: 1.15rem; padding: 14px 20px; width: 100%;">
-            Next: Choose Your Crew ➡️
-          </button>
-          <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 8px 12px; width: 100%;">
-            Spectate / Browse without Joining
-          </button>
-        </div>
-      </div>
-
-      <!-- STEP 2: CHOOSE YOUR CREW TO JOIN -->
-      <div id="setupStep2Pane" class="setup-step-pane" style="display: none;">
-        <div class="setup-step-box glass-panel">
-          <div class="setup-step-label">
-            <span class="step-num">2</span>
-            <span>CHOOSE YOUR CREW & JOIN TEAM:</span>
+          <div style="margin-top: 14px;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: #e2e8f0; margin-bottom: 6px;">SELECT YOUR CREW:</div>
+            <div class="setup-color-grid" id="setupColorGrid"></div>
           </div>
-          <p style="font-size: 0.84rem; color: var(--ink-faded); margin-bottom: 8px;">
-            Select which crew you will battle and drink for tonight:
-          </p>
-          <div class="setup-color-grid" id="setupColorGrid"></div>
 
           <div style="margin-top: 12px; display: flex; align-items: center; gap: 10px;">
-            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #ffd885;">
-              <input type="checkbox" id="setupCaptainCheck" style="width: 18px; height: 18px; accent-color: var(--gold);" />
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: var(--theme-celtic-accent, #38bdf8);">
+              <input type="checkbox" id="setupCaptainCheck" style="width: 18px; height: 18px; accent-color: #38bdf8;" />
               <span>Appoint me as Team Captain 👑</span>
             </label>
           </div>
         </div>
 
-        <div class="modal-actions" style="margin-top: 16px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
-          <button type="button" class="modal-btn secondary" id="setupStep2BackBtn" style="font-size: 0.95rem; padding: 12px;">
+        <div class="modal-actions" style="margin-top: 14px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep4BackBtn" style="font-size: 0.92rem; padding: 11px;">
             ⬅️ Back
           </button>
-          <button type="button" class="modal-btn" id="setupStep2NextBtn" style="font-size: 1.05rem; padding: 12px;">
-            Next: Link Phone ➡️
+          <button type="button" class="modal-btn" id="setupStep4NextBtn" style="font-size: 1.05rem; padding: 11px;">
+            Next: Choose Target Team ➡️
           </button>
         </div>
       </div>
 
-      <!-- STEP 3: DEVICE HARDWARE LINK & CONFIRMATION -->
-      <div id="setupStep3Pane" class="setup-step-pane" style="display: none;">
+      <!-- STEP 5: CHOOSE TEAM TO SCORE & LOCK TARGET (CROSS-EXAMINING LIVE SYNC) -->
+      <div id="setupStep5Pane" class="setup-step-pane" style="display: none;">
         <div class="setup-step-box glass-panel">
           <div class="setup-step-label">
-            <span class="step-num">3</span>
+            <span class="step-num">5</span>
+            <span>CHOOSE TEAM TO SCORE & LOCK:</span>
+          </div>
+          <p style="font-size: 0.86rem; color: #cbd5e1; margin-bottom: 8px; line-height: 1.4;">
+            Select which rival crew your team will mark and referee. <strong style="color: #f87171;">Once locked, no other team can mark them!</strong>
+          </p>
+
+          <div class="setup-targets-grid" id="setupTargetsLockingGrid" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px;"></div>
+
+          <div id="setupTargetLockedStatusTxt" style="font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; color: #86efac; margin-top: 10px; text-align: center; font-weight: 700;"></div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 14px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep5BackBtn" style="font-size: 0.92rem; padding: 11px;">
+            ⬅️ Back
+          </button>
+          <button type="button" class="modal-btn" id="setupStep5NextBtn" style="font-size: 1.05rem; padding: 11px; font-weight: 800;">
+            Lock Target & Next 🔒 ➡️
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 6: DEVICE HARDWARE LINK & CONFIRMATION -->
+      <div id="setupStep6Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">6</span>
             <span>DEVICE HARDWARE LINK & CONFIRMATION:</span>
           </div>
 
-          <div style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(223, 183, 76, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-            <div style="font-size: 0.76rem; color: var(--ink-faded); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Joining As:</div>
+          <div style="background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Joining As:</div>
             <div style="font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px;">
               <span>👤</span>
               <span id="setupSummaryNameTxt">Player</span>
               <span id="setupSummaryRoleBadge" style="font-size: 0.72rem; background: #d97706; color: #fff; padding: 2px 7px; border-radius: 4px; display: none;">👑 CAPTAIN</span>
             </div>
-            <div style="font-size: 0.95rem; font-weight: 700; margin-top: 6px; color: #ffd885;" id="setupSummaryTeamTxt">
+            <div style="font-size: 0.95rem; font-weight: 700; margin-top: 6px;" id="setupSummaryTeamTxt">
               Joining Crew...
+            </div>
+            <div style="font-size: 0.86rem; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.15);" id="setupSummaryTargetTxt">
+              🎯 Locked Target: Loading...
             </div>
           </div>
           
@@ -5888,22 +6016,24 @@
               </div>
               <span class="chip-ip-mac" id="setupDeviceMacTxt">MAC: --:--:--:--:--:--</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 0.76rem; color: var(--ink-faded);">
-              <span>🌐 Network IP: <strong id="setupDeviceIpTxt" style="color: #ffd885;">Detecting IP...</strong></span>
-              <span>Hardware Link Ready</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 0.76rem; color: #94a3b8;">
+              <span>🌐 Network IP: <strong id="setupDeviceIpTxt" style="color: #38bdf8;">Detecting IP...</strong></span>
+              <span style="color:#86efac; font-weight:700;">Hardware Link Ready</span>
             </div>
           </div>
         </div>
 
-        <div class="modal-actions" style="margin-top: 16px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
-          <button type="button" class="modal-btn secondary" id="setupStep3BackBtn" style="font-size: 0.95rem; padding: 12px;">
+        <div class="modal-actions" style="margin-top: 14px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep6BackBtn" style="font-size: 0.92rem; padding: 11px;">
             ⬅️ Back
           </button>
-          <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: var(--theme-primary, #2b9348); font-size: 1.15rem; padding: 12px; font-weight: 800;">
+          <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: var(--theme-primary, #22c55e); font-size: 1.12rem; padding: 12px; font-weight: 800;">
             ⚔️ LINK & ENTER CRAWL 🎉
           </button>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -7318,6 +7448,9 @@
         renderBingoGrid();
         renderLogs();
         renderAdminTab();
+        if (typeof setupCurrentStep !== "undefined" && setupCurrentStep === 5) {
+          renderSetupTargetsLockingGrid();
+        }
         playTick(660);
         showToast("📡 Live Score Updated from Room!");
       }
@@ -7373,6 +7506,27 @@
                   unlinkHardwareProfile(true);
                   return;
                 }
+              }
+
+              // Cross-Examining Target Lock from peer phone
+              if (incoming && incoming.action === "LOCK_TEAM_TARGET") {
+                const tIdx = incoming.teamIdx;
+                const tgtIdx = incoming.targetIdx;
+                if (typeof tIdx === "number" && typeof tgtIdx === "number" && state.teams[tIdx] && state.teams[tgtIdx]) {
+                  state.teams[tIdx].targetIdx = tgtIdx;
+                  state.teams[tIdx].targetLocked = true;
+                  state.teams[tIdx].targetLockedBy = incoming.lockedByPlayer || "";
+                  if (state.myTeamIdx === tIdx) {
+                    state.targetTeamIdx = tgtIdx;
+                  }
+                  saveGameState(false);
+                  renderScoringTab();
+                  if (typeof setupCurrentStep !== "undefined" && setupCurrentStep === 5) {
+                    renderSetupTargetsLockingGrid();
+                  }
+                  showToast(`🔒 ${state.teams[tIdx].name} locked ${state.teams[tgtIdx].name} as scoring target!`);
+                }
+                return;
               }
 
               // Real-Time Connection Test Popup
@@ -8326,6 +8480,16 @@
           openCrewSetupModal(false);
           return true;
         }
+        const myTeam = state.teams[state.myTeamIdx];
+        if (myTeam && myTeam.targetIdx !== undefined && myTeam.targetIdx !== null) {
+          if (state.targetTeamIdx !== myTeam.targetIdx) {
+            const assignedTarget = state.teams[myTeam.targetIdx];
+            const assignedName = assignedTarget ? assignedTarget.name : `Team ${myTeam.targetIdx}`;
+            showToast(`🔒 Anti-Cheat: Your crew referees ${assignedName}! You cannot score other teams.`);
+            playTick(240);
+            return true;
+          }
+        }
         return false;
       }
 
@@ -8354,7 +8518,7 @@
           myPicker.style.display = "none";
         }
 
-        // Step 2: Render Target Team Picker (Per-Team Vibrant Colors)
+        // Step 2: Render Target Team Picker (Per-Team Vibrant Colors with Live Cross-Examining Badges)
         const targetPicker = document.getElementById("targetTeamPicker");
         if (targetPicker) {
           targetPicker.innerHTML = "";
@@ -8363,10 +8527,25 @@
             btn.type = "button";
             btn.className = `btn-pick-team team-btn-${t.colorClass} ${idx === state.targetTeamIdx ? "selected" : ""}`;
             const isSelf = idx === state.myTeamIdx;
+            const isMyTarget = isRegistered && (myTeam.targetIdx === idx);
+            const refereeCrew = state.teams.find((tm, i) => i !== state.myTeamIdx && tm.targetIdx === idx && (tm.targetLocked || tm.targetLockedBy));
+
+            let subTxt = "Target Crew";
+            let statusBadge = "";
+            if (isSelf) {
+              subTxt = "(Your Crew - View)";
+            } else if (isMyTarget) {
+              subTxt = "🎯 Assigned Target";
+              statusBadge = `<span style="font-size: 0.68rem; background: rgba(34,197,94,0.3); color: #86efac; padding: 1px 5px; border-radius: 4px; border: 1px solid #22c55e; margin-left: 4px;">REFEREE</span>`;
+            } else if (refereeCrew) {
+              subTxt = `🔒 ${refereeCrew.name}`;
+              statusBadge = `<span style="font-size: 0.68rem; background: rgba(239,68,68,0.25); color: #fca5a5; padding: 1px 5px; border-radius: 4px; border: 1px solid #ef4444; margin-left: 4px;">LOCKED</span>`;
+            }
+
             btn.innerHTML = `
               <span class="crew-dot ${t.colorClass}"></span>
-              <span class="team-name-txt">${escapeHtml(t.name)}</span>
-              <span class="sub">${isSelf ? "(Your Team)" : "Target Crew"}</span>
+              <span class="team-name-txt">${escapeHtml(t.name)}${statusBadge}</span>
+              <span class="sub">${escapeHtml(subTxt)}</span>
             `;
             btn.onclick = () => {
               state.targetTeamIdx = idx;
@@ -8381,6 +8560,8 @@
         const consoleEl = document.getElementById("scoringConsole");
         const targetTeam = state.teams[state.targetTeamIdx] || state.teams[1];
         const targetCaptain = targetTeam.captain ? ` • 👑 Captain: ${escapeHtml(targetTeam.captain)}` : "";
+        const isTargetReferee = isRegistered && (myTeam.targetIdx === state.targetTeamIdx);
+        const otherRefereeCrew = state.teams.find((tm, i) => i !== state.myTeamIdx && tm.targetIdx === state.targetTeamIdx && (tm.targetLocked || tm.targetLockedBy));
 
         consoleEl.style.border = `2px solid ${targetTeam.colorHex}77`;
         consoleEl.style.boxShadow = `0 8px 30px rgba(0, 0, 0, 0.55), 0 0 22px ${targetTeam.colorHex}30`;
@@ -8395,7 +8576,11 @@
                   ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #38bdf8;">[❄️ FROZEN]</span>` : ""}
                 </div>
                 <div style="font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: #cbd5e1;">
-                  ${!isRegistered ? 'Mode: <strong style="color:#ffffff;">Spectator (Scoreboard View)</strong>' : `Scoring by: <strong style="color:#ffffff;">${escapeHtml(myTeam.name)}</strong>`}${targetCaptain} • ${targetTeam.sips} drinks taken
+                  ${!isRegistered 
+                    ? 'Mode: <strong style="color:#ffffff;">Spectator (Scoreboard View)</strong>' 
+                    : (isTargetReferee 
+                        ? `Scoring as Referee: <strong style="color:#86efac;">${escapeHtml(myTeam.name)} 🎯</strong>` 
+                        : `Viewing: <strong style="color:#fca5a5;">Refereed by ${otherRefereeCrew ? escapeHtml(otherRefereeCrew.name) : 'Rival Crew'} 🔒 (View Only)</strong>`)}${targetCaptain} • ${targetTeam.sips} drinks taken
                 </div>
               </div>
             </div>
@@ -10656,57 +10841,85 @@
         showToast("Full Factory Reset Applied");
       };
 
-      // --- 13B. ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (STEPPED GUIDE) ---
+      // --- 13B. ONBOARDING: WELCOME TUTORIAL -> RULES -> TARGETS -> NAME & CREW -> LOCK TARGET -> LINK HARDWARE ---
       const crewSetupModal = document.getElementById("crewSetupModal");
       let setupSelectedTeamIdx = 0;
+      let setupSelectedTargetIdx = null;
       let setupCurrentStep = 1;
 
       function setSetupGuideStep(step) {
         setupCurrentStep = step;
-        const p1 = document.getElementById("setupStep1Pane");
-        const p2 = document.getElementById("setupStep2Pane");
-        const p3 = document.getElementById("setupStep3Pane");
 
-        if (p1) p1.style.display = (step === 1) ? "block" : "none";
-        if (p2) p2.style.display = (step === 2) ? "block" : "none";
-        if (p3) p3.style.display = (step === 3) ? "block" : "none";
+        // Toggle panes 1 through 6
+        for (let i = 1; i <= 6; i++) {
+          const pane = document.getElementById(`setupStep${i}Pane`);
+          if (pane) pane.style.display = (step === i) ? "block" : "none";
+          const dot = document.getElementById(`dotStep${i}`);
+          if (dot) dot.className = `setup-dot ${step === i ? 'active' : ''}`;
+        }
 
-        const d1 = document.getElementById("dotStep1");
-        const d2 = document.getElementById("dotStep2");
-        const d3 = document.getElementById("dotStep3");
-        if (d1) d1.className = `setup-dot ${step === 1 ? 'active' : ''}`;
-        if (d2) d2.className = `setup-dot ${step === 2 ? 'active' : ''}`;
-        if (d3) d3.className = `setup-dot ${step === 3 ? 'active' : ''}`;
+        // Dynamically update modal title based on active step
+        const titleMap = {
+          1: "WELCOME TO DRUNK UNO",
+          2: "DRUNK UNO RULES & CODEX",
+          3: "CROSS-EXAMINING TARGETS",
+          4: "ENTER NAME & CHOOSE CREW",
+          5: "CHOOSE TARGET TO SCORE & LOCK",
+          6: "DEVICE LINK & CONFIRMATION"
+        };
+        const mainTitle = document.getElementById("setupGuideMainTitle");
+        if (mainTitle && titleMap[step]) {
+          mainTitle.textContent = titleMap[step];
+        }
 
         const input = document.getElementById("setupPlayerInput");
         const rawName = input ? (input.value.trim() || state.myPlayerName || "Player") : "Player";
         const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
         const isCap = !!(document.getElementById("setupCaptainCheck")?.checked);
 
-        const summaryName = document.getElementById("setupSummaryNameTxt");
-        const summaryTeam = document.getElementById("setupSummaryTeamTxt");
-        const summaryBadge = document.getElementById("setupSummaryRoleBadge");
-
-        if (summaryName) summaryName.textContent = rawName;
-        if (summaryBadge) summaryBadge.style.display = isCap ? "inline-block" : "none";
-        if (summaryTeam) {
-          summaryTeam.textContent = `Joining ${team.name} • ${isCap ? 'Captain 👑' : 'Crew Member'}`;
-          let colorHex = "#fca5a5";
-          if (team.colorClass === "blue") colorHex = "#93c5fd";
-          else if (team.colorClass === "green") colorHex = "#86efac";
-          else if (team.colorClass === "yellow") colorHex = "#ffd885";
-          summaryTeam.style.color = colorHex;
-        }
-
-        if (step === 1) {
-          if (input) setTimeout(() => input.focus(), 120);
-        } else if (step === 2) {
+        if (step === 4) {
           renderSetupColors();
+          if (input) setTimeout(() => input.focus(), 120);
+        } else if (step === 5) {
+          renderSetupTargetsLockingGrid();
+        } else if (step === 6) {
+          const summaryName = document.getElementById("setupSummaryNameTxt");
+          const summaryTeam = document.getElementById("setupSummaryTeamTxt");
+          const summaryTarget = document.getElementById("setupSummaryTargetTxt");
+          const summaryBadge = document.getElementById("setupSummaryRoleBadge");
+
+          if (summaryName) summaryName.textContent = rawName;
+          if (summaryBadge) summaryBadge.style.display = isCap ? "inline-block" : "none";
+          if (summaryTeam) {
+            summaryTeam.textContent = `Joining ${team.name} • ${isCap ? 'Captain 👑' : 'Crew Member'}`;
+            let colorHex = "#fca5a5";
+            if (team.colorClass === "blue") colorHex = "#93c5fd";
+            else if (team.colorClass === "green") colorHex = "#86efac";
+            else if (team.colorClass === "yellow") colorHex = "#ffd885";
+            summaryTeam.style.color = colorHex;
+          }
+          if (summaryTarget) {
+            const tgtIdx = (setupSelectedTargetIdx !== null && setupSelectedTargetIdx !== undefined) 
+              ? setupSelectedTargetIdx 
+              : ((setupSelectedTeamIdx + 1) % 4);
+            const tgtTeam = state.teams[tgtIdx] || state.teams[1];
+            summaryTarget.textContent = `🎯 Locked Target: Refereeing ${tgtTeam.name}`;
+            let tgtColor = "#fca5a5";
+            if (tgtTeam.colorClass === "blue") tgtColor = "#93c5fd";
+            else if (tgtTeam.colorClass === "green") tgtColor = "#86efac";
+            else if (tgtTeam.colorClass === "yellow") tgtColor = "#ffd885";
+            summaryTarget.style.color = tgtColor;
+          }
         }
       }
 
       function openCrewSetupModal(isEditing = false) {
         setupSelectedTeamIdx = (state.myTeamIdx !== null && state.myTeamIdx !== undefined) ? state.myTeamIdx : 0;
+        const myCrew = state.teams[setupSelectedTeamIdx];
+        if (myCrew && myCrew.targetIdx !== undefined && myCrew.targetIdx !== null) {
+          setupSelectedTargetIdx = myCrew.targetIdx;
+        }
+
         const input = document.getElementById("setupPlayerInput");
         const existingName = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "";
         if (input) input.value = existingName;
@@ -10734,17 +10947,21 @@
         }
 
         renderSetupColors();
-        setSetupGuideStep(1);
-
-        crewSetupModal.classList.add("open");
+        
+        // If editing an existing profile, skip directly to step 4; if first-time, start at step 1 tutorial
         if (isEditing) {
+          setSetupGuideStep(4);
           setTimeout(() => {
             if (input) {
               input.focus();
               if (input.select) input.select();
             }
           }, 150);
+        } else {
+          setSetupGuideStep(1);
         }
+
+        crewSetupModal.classList.add("open");
       }
 
       function renderSetupColors() {
@@ -10789,7 +11006,11 @@
             renderSetupColors();
             playTick(500);
 
-            // Update Step 3 summary immediately so they see their chosen crew!
+            // Invalidate selected target if it conflicts with chosen team
+            if (setupSelectedTargetIdx === idx) {
+              setupSelectedTargetIdx = null;
+            }
+
             const summaryTeam = document.getElementById("setupSummaryTeamTxt");
             const isCap = !!(document.getElementById("setupCaptainCheck")?.checked);
             if (summaryTeam) {
@@ -10800,6 +11021,125 @@
 
           grid.appendChild(btn);
         });
+      }
+
+      function renderSetupTargetsLockingGrid() {
+        const grid = document.getElementById("setupTargetsLockingGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        const myCrew = state.teams[setupSelectedTeamIdx] || state.teams[0];
+
+        // Find which team locks a candidate target
+        const getLockingTeam = (candIdx) => {
+          return state.teams.find((tm, i) => i !== setupSelectedTeamIdx && tm.targetIdx === candIdx && (tm.targetLocked || tm.targetLockedBy));
+        };
+
+        // Determine default target selection if not yet set or conflicts with self/locker
+        if (setupSelectedTargetIdx === null || setupSelectedTargetIdx === undefined || setupSelectedTargetIdx === setupSelectedTeamIdx || getLockingTeam(setupSelectedTargetIdx)) {
+          if (myCrew.targetIdx !== undefined && myCrew.targetIdx !== setupSelectedTeamIdx && !getLockingTeam(myCrew.targetIdx)) {
+            setupSelectedTargetIdx = myCrew.targetIdx;
+          } else {
+            const available = [0, 1, 2, 3].find(idx => idx !== setupSelectedTeamIdx && !getLockingTeam(idx));
+            setupSelectedTargetIdx = (available !== undefined) ? available : ((setupSelectedTeamIdx + 1) % 4);
+          }
+        }
+
+        state.teams.forEach((t, candIdx) => {
+          const isSelf = candIdx === setupSelectedTeamIdx;
+          const locker = getLockingTeam(candIdx);
+          const isLockedByOther = !!locker;
+          const isSelected = candIdx === setupSelectedTargetIdx && !isSelf && !isLockedByOther;
+
+          let bgHex = "#d62828";
+          if (t.colorClass === "blue") bgHex = "#2b7fff";
+          else if (t.colorClass === "green") bgHex = "#2ecc71";
+          else if (t.colorClass === "yellow") bgHex = "#f59e0b";
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `btn-setup-color ${isSelected ? "selected" : ""}`;
+          btn.style.width = "100%";
+          btn.style.textAlign = "left";
+          btn.style.padding = "12px 14px";
+          btn.style.borderRadius = "10px";
+          btn.style.marginBottom = "6px";
+          btn.style.transition = "all 0.2s ease";
+
+          if (isSelf) {
+            btn.style.opacity = "0.45";
+            btn.style.cursor = "not-allowed";
+            btn.style.filter = "grayscale(40%)";
+          } else if (isLockedByOther) {
+            btn.style.opacity = "0.55";
+            btn.style.borderColor = "#ef4444";
+            btn.style.cursor = "not-allowed";
+          } else if (isSelected) {
+            btn.style.borderColor = "#22c55e";
+            btn.style.boxShadow = `0 0 16px ${bgHex}55, 0 0 10px rgba(34,197,94,0.4)`;
+          }
+
+          let badgeHtml = "";
+          if (isSelf) {
+            badgeHtml = `<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #94a3b8; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">🚫 Your Crew (Cannot mark self)</span>`;
+          } else if (isLockedByOther) {
+            badgeHtml = `<span style="font-size: 0.72rem; background: rgba(239,68,68,0.25); color: #fca5a5; padding: 2px 7px; border-radius: 4px; border: 1px solid #ef4444;">🔒 Locked by ${escapeHtml(locker.name)}</span>`;
+          } else if (isSelected) {
+            badgeHtml = `<span style="font-size: 0.72rem; background: rgba(34,197,94,0.3); color: #86efac; padding: 2px 7px; border-radius: 4px; border: 1px solid #22c55e; font-weight: 800;">✓ Selected Target (You Referee)</span>`;
+          } else {
+            badgeHtml = `<span style="font-size: 0.72rem; background: rgba(56,189,248,0.2); color: #7dd3fc; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(56,189,248,0.4);">🟢 Available to Referee</span>`;
+          }
+
+          const playerList = Array.isArray(t.players) && t.players.length > 0 ? t.players.join(", ") : "No players yet";
+
+          btn.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="color-badge" style="background: ${bgHex};">${t.key.charAt(0)}</div>
+                <div>
+                  <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">
+                    ${escapeHtml(t.name)}
+                  </div>
+                </div>
+              </div>
+              ${badgeHtml}
+            </div>
+            <div style="font-size: 0.74rem; color: #cbd5e1; margin-top: 5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
+              <span>👥 <strong>Members:</strong> ${escapeHtml(playerList)}</span>
+              <span>🍺 Drinks: ${t.sips || 0}</span>
+            </div>
+          `;
+
+          btn.onclick = () => {
+            if (isSelf) {
+              showToast("⚠️ Anti-Cheat: You cannot referee your own crew!");
+              playTick(240);
+              return;
+            }
+            if (isLockedByOther) {
+              showToast(`🔒 ${t.name} is already refereed by ${locker.name}! Pick an available rival crew.`);
+              playTick(240);
+              return;
+            }
+            setupSelectedTargetIdx = candIdx;
+            renderSetupTargetsLockingGrid();
+            playTick(550);
+          };
+
+          grid.appendChild(btn);
+        });
+
+        const statusTxt = document.getElementById("setupTargetLockedStatusTxt");
+        if (statusTxt) {
+          if (setupSelectedTargetIdx !== null && setupSelectedTargetIdx !== undefined && state.teams[setupSelectedTargetIdx]) {
+            const tgt = state.teams[setupSelectedTargetIdx];
+            statusTxt.innerHTML = `🎯 Target Selected: <strong>${escapeHtml(myCrew.name)}</strong> will referee & mark penalties for <strong>${escapeHtml(tgt.name)}</strong>!`;
+            statusTxt.style.color = "#86efac";
+          } else {
+            statusTxt.textContent = "⚠️ Please select an available rival team to referee.";
+            statusTxt.style.color = "#f87171";
+          }
+        }
       }
 
       // Quick preset title buttons
@@ -10824,17 +11164,66 @@
         playerInput.onkeydown = (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            const step1Next = document.getElementById("setupStep1NextBtn");
-            if (setupCurrentStep === 1 && step1Next) {
-              step1Next.click();
+            const step4Next = document.getElementById("setupStep4NextBtn");
+            if (setupCurrentStep === 4 && step4Next) {
+              step4Next.click();
             }
           }
         };
       }
 
+      // Step 1: Welcome & Uno Tutorial Next
       const step1NextBtn = document.getElementById("setupStep1NextBtn");
       if (step1NextBtn) {
         step1NextBtn.onclick = () => {
+          playTick(550);
+          setSetupGuideStep(2);
+        };
+      }
+
+      // Step 2: Drunk Uno Drinking Rules & Codex Back/Next
+      const step2BackBtn = document.getElementById("setupStep2BackBtn");
+      if (step2BackBtn) {
+        step2BackBtn.onclick = () => {
+          playTick(450);
+          setSetupGuideStep(1);
+        };
+      }
+      const step2NextBtn = document.getElementById("setupStep2NextBtn");
+      if (step2NextBtn) {
+        step2NextBtn.onclick = () => {
+          playTick(550);
+          setSetupGuideStep(3);
+        };
+      }
+
+      // Step 3: Cross-Examining Target System Back/Next
+      const step3BackBtn = document.getElementById("setupStep3BackBtn");
+      if (step3BackBtn) {
+        step3BackBtn.onclick = () => {
+          playTick(450);
+          setSetupGuideStep(2);
+        };
+      }
+      const step3NextBtn = document.getElementById("setupStep3NextBtn");
+      if (step3NextBtn) {
+        step3NextBtn.onclick = () => {
+          playTick(550);
+          setSetupGuideStep(4);
+        };
+      }
+
+      // Step 4: Player Name & Crew Back/Next
+      const step4BackBtn = document.getElementById("setupStep4BackBtn");
+      if (step4BackBtn) {
+        step4BackBtn.onclick = () => {
+          playTick(450);
+          setSetupGuideStep(3);
+        };
+      }
+      const step4NextBtn = document.getElementById("setupStep4NextBtn");
+      if (step4NextBtn) {
+        step4NextBtn.onclick = () => {
           const input = document.getElementById("setupPlayerInput");
           const val = input ? input.value.trim() : "";
           if (!val) {
@@ -10848,32 +11237,94 @@
           }
           if (input) input.style.borderColor = "";
           playTick(550);
-          setSetupGuideStep(2);
+          setSetupGuideStep(5);
         };
       }
 
-      const step2BackBtn = document.getElementById("setupStep2BackBtn");
-      if (step2BackBtn) {
-        step2BackBtn.onclick = () => {
+      // Step 5: Choose Target to Score & Lock Back/Next
+      const step5BackBtn = document.getElementById("setupStep5BackBtn");
+      if (step5BackBtn) {
+        step5BackBtn.onclick = () => {
           playTick(450);
-          setSetupGuideStep(1);
+          setSetupGuideStep(4);
         };
       }
+      const step5NextBtn = document.getElementById("setupStep5NextBtn");
+      if (step5NextBtn) {
+        step5NextBtn.onclick = () => {
+          if (setupSelectedTargetIdx === null || setupSelectedTargetIdx === undefined || setupSelectedTargetIdx === setupSelectedTeamIdx) {
+            showToast("⚠️ Please select an available rival team to referee!");
+            playTick(240);
+            return;
+          }
 
-      const step2NextBtn = document.getElementById("setupStep2NextBtn");
-      if (step2NextBtn) {
-        step2NextBtn.onclick = () => {
+          // Check if another team locked it in the meantime
+          const locker = state.teams.find((tm, i) => i !== setupSelectedTeamIdx && tm.targetIdx === setupSelectedTargetIdx && (tm.targetLocked || tm.targetLockedBy));
+          if (locker) {
+            showToast(`⚠️ ${state.teams[setupSelectedTargetIdx].name} was just locked by ${locker.name}! Pick another.`);
+            renderSetupTargetsLockingGrid();
+            playTick(240);
+            return;
+          }
+
+          const input = document.getElementById("setupPlayerInput");
+          const playerName = input ? input.value.trim() : (state.myPlayerName || "Player");
+
+          // Lock the target for this team
+          state.teams[setupSelectedTeamIdx].targetIdx = setupSelectedTargetIdx;
+          state.teams[setupSelectedTeamIdx].targetLocked = true;
+          state.teams[setupSelectedTeamIdx].targetLockedBy = playerName;
+          state.targetTeamIdx = setupSelectedTargetIdx;
+
+          // Broadcast LOCK_TEAM_TARGET over MQTT immediately
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const msg = new Paho.MQTT.Message(JSON.stringify({
+                action: "LOCK_TEAM_TARGET",
+                teamIdx: setupSelectedTeamIdx,
+                targetIdx: setupSelectedTargetIdx,
+                lockedByPlayer: playerName,
+                timestamp: Date.now()
+              }));
+              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.retained = false;
+              mqttClient.send(msg);
+            } catch (err) {}
+          }
+
           playTick(550);
-          setSetupGuideStep(3);
+          setSetupGuideStep(6);
         };
       }
 
-      const step3BackBtn = document.getElementById("setupStep3BackBtn");
-      if (step3BackBtn) {
-        step3BackBtn.onclick = () => {
+      // Step 6: Confirmation Back
+      const step6BackBtn = document.getElementById("setupStep6BackBtn");
+      if (step6BackBtn) {
+        step6BackBtn.onclick = () => {
           playTick(450);
-          setSetupGuideStep(2);
+          setSetupGuideStep(5);
         };
+      }
+
+      // Interactive step dots (1 to 6)
+      for (let i = 1; i <= 6; i++) {
+        const dot = document.getElementById(`dotStep${i}`);
+        if (dot) {
+          dot.style.cursor = "pointer";
+          dot.onclick = () => {
+            if (i >= 5) {
+              const input = document.getElementById("setupPlayerInput");
+              const val = input ? input.value.trim() : "";
+              if (!val) {
+                showToast("⚠️ Enter your player name first!");
+                setSetupGuideStep(4);
+                return;
+              }
+            }
+            setSetupGuideStep(i);
+            playTick(500);
+          };
+        }
       }
 
       const capCheckElem = document.getElementById("setupCaptainCheck");
@@ -10976,10 +11427,30 @@
             }
 
             state.myTeamIdx = setupSelectedTeamIdx;
-            const targetIdx = (team.targetIdx !== undefined && state.teams[team.targetIdx]) 
-              ? team.targetIdx 
-              : ((setupSelectedTeamIdx + 1) % 4);
+            const targetIdx = (setupSelectedTargetIdx !== null && setupSelectedTargetIdx !== undefined && state.teams[setupSelectedTargetIdx]) 
+              ? setupSelectedTargetIdx 
+              : ((team.targetIdx !== undefined && state.teams[team.targetIdx]) ? team.targetIdx : ((setupSelectedTeamIdx + 1) % 4));
+            
+            team.targetIdx = targetIdx;
+            team.targetLocked = true;
+            team.targetLockedBy = playerName;
             state.targetTeamIdx = targetIdx;
+
+            // Broadcast target lock over MQTT immediately to all peer phones
+            if (mqttClient && mqttClient.isConnected()) {
+              try {
+                const lockMsg = new Paho.MQTT.Message(JSON.stringify({
+                  action: "LOCK_TEAM_TARGET",
+                  teamIdx: setupSelectedTeamIdx,
+                  targetIdx: targetIdx,
+                  lockedByPlayer: playerName,
+                  timestamp: Date.now()
+                }));
+                lockMsg.destinationName = `leeprky/drunkuno/${roomCode}`;
+                lockMsg.retained = false;
+                mqttClient.send(lockMsg);
+              } catch (e) {}
+            }
 
             // Register device link with hardware MAC & IP
             syncMyDevice(playerName, setupSelectedTeamIdx, isCaptain);
