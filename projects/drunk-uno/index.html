@@ -2660,6 +2660,25 @@
       color: #fff;
     }
 
+    /* Onboarding Guide Step Pills */
+    .setup-dot {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(223, 183, 76, 0.3);
+      color: var(--ink-faded);
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s ease;
+    }
+    .setup-dot.active {
+      background: rgba(223, 183, 76, 0.25);
+      border-color: var(--gold-bright);
+      color: #ffd885;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(223, 183, 76, 0.3);
+    }
+
     /* Device Link Status Card */
     .device-link-status-card {
       background: rgba(0, 0, 0, 0.35);
@@ -4126,7 +4145,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.0</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.1</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5106,9 +5125,12 @@
         <div style="font-size: 0.76rem; color: #ffd885; font-family: 'JetBrains Mono', monospace;" id="settingsDeviceInfoTxt">
           Checking device...
         </div>
-        <div style="margin-top: 8px;">
+        <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
           <button type="button" class="modal-btn secondary" id="settingsCopyRoomLinkBtn" style="font-size: 0.85rem; padding: 6px 12px; width: 100%;">
             📋 Copy Invite Link & Room Code
+          </button>
+          <button type="button" class="modal-btn" id="settingsResetFirstTimeBtn" style="background: rgba(185, 28, 28, 0.35); border: 1.5px solid #ef4444; color: #fca5a5; font-size: 0.82rem; padding: 7px 12px; width: 100%; font-weight: 700;" title="Completely wipes all cookies, localStorage, and browser caches, resetting the site to viewing it for the very first time">
+            🧹 Wipe Cache & View as First Time Visitor
           </button>
         </div>
       </div>
@@ -5160,7 +5182,7 @@
 
 
   <!-- =========================================================================
-       MODAL 8: ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (MAC & IP)
+       MODAL 8: ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (STEPPED GUIDE)
        ========================================================================= -->
   <div class="modal-backdrop" id="crewSetupModal">
     <div class="modal-scroll crew-setup-dialog glass-card" style="position: relative; max-width: 520px;">
@@ -5168,83 +5190,124 @@
       
       <div style="text-align: center; margin-bottom: 14px;">
         <span class="impact-pill special" style="font-size: 0.82rem; padding: 4px 12px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
-        <h2 class="modal-title" style="margin-top: 8px; font-size: 2.1rem; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
+        <h2 class="modal-title" style="margin-top: 8px; font-size: 2.1rem; color: var(--gold-bright); text-shadow: 0 2px 8px rgba(0,0,0,0.8);" id="setupGuideMainTitle">
           JOIN THE BATTLE
         </h2>
-        <p class="modal-body" style="margin-bottom: 2px; font-size: 0.95rem; color: #f0dec5;">
-          Enter your name first, pick your crew, and link your phone to the Crawl Master!
-        </p>
+        <!-- Step progress indicators -->
+        <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;" id="setupStepDots">
+          <span class="setup-dot active" id="dotStep1">1. Enter Name</span>
+          <span class="setup-dot" id="dotStep2">2. Pick Crew</span>
+          <span class="setup-dot" id="dotStep3">3. Link Hardware</span>
+        </div>
       </div>
 
       <!-- STEP 1: INPUT YOUR NAME FIRST -->
-      <div class="setup-step-box glass-panel">
-        <div class="setup-step-label">
-          <span class="step-num">1</span>
-          <span>ENTER YOUR PLAYER NAME:</span>
+      <div id="setupStep1Pane" class="setup-step-pane">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">1</span>
+            <span>ENTER YOUR PLAYER NAME:</span>
+          </div>
+          <p style="font-size: 0.86rem; color: var(--ink-faded); margin-bottom: 8px;">
+            Type your real name or pirate handle. This is displayed on the Tavern leaderboard and team scores:
+          </p>
+          <div style="margin-top: 6px;">
+            <input type="text" id="setupPlayerInput" class="glass-input" placeholder="e.g. Liam, Callum, Sarah, Capt. Jack..." autocomplete="name" style="width: 100%; font-size: 1.25rem; padding: 14px; font-weight: 700;" />
+          </div>
+          <!-- Quick title badges -->
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;">
+            <span style="font-size: 0.72rem; color: var(--ink-faded); align-self: center; font-weight: 700;">PRESETS:</span>
+            <button type="button" class="btn-title-chip" data-title="Captain">⚔️ Captain</button>
+            <button type="button" class="btn-title-chip" data-title="First Mate">⚓ First Mate</button>
+            <button type="button" class="btn-title-chip" data-title="Gunner">🎯 Gunner</button>
+            <button type="button" class="btn-title-chip" data-title="Brewmaster">🍺 Brewmaster</button>
+            <button type="button" class="btn-title-chip" data-title="Navigator">🧭 Navigator</button>
+          </div>
         </div>
-        <p style="font-size: 0.82rem; color: var(--ink-faded); margin-bottom: 6px;">
-          Type your real name or pirate handle. This links your device to the Admin Console:
-        </p>
-        <div style="margin-top: 4px;">
-          <input type="text" id="setupPlayerInput" class="glass-input" placeholder="e.g. Liam, Callum, Sarah, Capt. Jack..." autocomplete="name" style="width: 100%; font-size: 1.15rem; padding: 12px 14px; font-weight: 700;" />
-        </div>
-        <!-- Quick title badges -->
-        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
-          <span style="font-size: 0.72rem; color: var(--ink-faded); align-self: center; font-weight: 700;">PRESETS:</span>
-          <button type="button" class="btn-title-chip" data-title="Captain">⚔️ Captain</button>
-          <button type="button" class="btn-title-chip" data-title="First Mate">⚓ First Mate</button>
-          <button type="button" class="btn-title-chip" data-title="Gunner">🎯 Gunner</button>
-          <button type="button" class="btn-title-chip" data-title="Brewmaster">🍺 Brewmaster</button>
-          <button type="button" class="btn-title-chip" data-title="Navigator">🧭 Navigator</button>
+
+        <div class="modal-actions" style="margin-top: 16px; flex-direction: column; gap: 8px;">
+          <button type="button" class="modal-btn" id="setupStep1NextBtn" style="font-size: 1.15rem; padding: 14px 20px; width: 100%;">
+            Next: Choose Your Crew ➡️
+          </button>
+          <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 8px 12px; width: 100%;">
+            Spectate / Browse without Joining
+          </button>
         </div>
       </div>
 
       <!-- STEP 2: CHOOSE YOUR CREW TO JOIN -->
-      <div class="setup-step-box glass-panel" style="margin-top: 12px;">
-        <div class="setup-step-label">
-          <span class="step-num">2</span>
-          <span>CHOOSE YOUR CREW & JOIN TEAM:</span>
+      <div id="setupStep2Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">2</span>
+            <span>CHOOSE YOUR CREW & JOIN TEAM:</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--ink-faded); margin-bottom: 8px;">
+            Select which crew you will battle and drink for tonight:
+          </p>
+          <div class="setup-color-grid" id="setupColorGrid"></div>
+
+          <div style="margin-top: 12px; display: flex; align-items: center; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #ffd885;">
+              <input type="checkbox" id="setupCaptainCheck" style="width: 18px; height: 18px; accent-color: var(--gold);" />
+              <span>Appoint me as Team Captain 👑</span>
+            </label>
+          </div>
         </div>
-        <div class="setup-color-grid" id="setupColorGrid"></div>
+
+        <div class="modal-actions" style="margin-top: 16px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep2BackBtn" style="font-size: 0.95rem; padding: 12px;">
+            ⬅️ Back
+          </button>
+          <button type="button" class="modal-btn" id="setupStep2NextBtn" style="font-size: 1.05rem; padding: 12px;">
+            Next: Link Phone ➡️
+          </button>
+        </div>
       </div>
 
-      <!-- STEP 3: DEVICE HARDWARE LINK & CAPTAIN STATUS -->
-      <div class="setup-step-box glass-panel" style="margin-top: 12px;">
-        <div class="setup-step-label">
-          <span class="step-num">3</span>
-          <span>DEVICE HARDWARE LINK & ROLE:</span>
-        </div>
-        
-        <div class="device-link-status-card" style="margin-top: 8px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span class="online-indicator-dot"></span>
-              <span style="font-size: 0.82rem; font-weight: 700; color: #78f89e;" id="setupDeviceModelTxt">Detecting Device...</span>
+      <!-- STEP 3: DEVICE HARDWARE LINK & CONFIRMATION -->
+      <div id="setupStep3Pane" class="setup-step-pane" style="display: none;">
+        <div class="setup-step-box glass-panel">
+          <div class="setup-step-label">
+            <span class="step-num">3</span>
+            <span>DEVICE HARDWARE LINK & CONFIRMATION:</span>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); border: 1.5px solid rgba(223, 183, 76, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 0.76rem; color: var(--ink-faded); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Joining As:</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span>👤</span>
+              <span id="setupSummaryNameTxt">Player</span>
+              <span id="setupSummaryRoleBadge" style="font-size: 0.72rem; background: #d97706; color: #fff; padding: 2px 7px; border-radius: 4px; display: none;">👑 CAPTAIN</span>
             </div>
-            <span class="chip-ip-mac" id="setupDeviceMacTxt">MAC: --:--:--:--:--:--</span>
+            <div style="font-size: 0.95rem; font-weight: 700; margin-top: 6px; color: #ffd885;" id="setupSummaryTeamTxt">
+              Joining Crew...
+            </div>
           </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 0.76rem; color: var(--ink-faded);">
-            <span>🌐 Network IP: <strong id="setupDeviceIpTxt" style="color: #ffd885;">Detecting IP...</strong></span>
-            <span>Auto-linked to Admin Console</span>
+          
+          <div class="device-link-status-card" style="margin-top: 8px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="online-indicator-dot"></span>
+                <span style="font-size: 0.84rem; font-weight: 700; color: #78f89e;" id="setupDeviceModelTxt">Detecting Device...</span>
+              </div>
+              <span class="chip-ip-mac" id="setupDeviceMacTxt">MAC: --:--:--:--:--:--</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 0.76rem; color: var(--ink-faded);">
+              <span>🌐 Network IP: <strong id="setupDeviceIpTxt" style="color: #ffd885;">Detecting IP...</strong></span>
+              <span>Hardware Link Ready</span>
+            </div>
           </div>
         </div>
 
-        <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #ffd885;">
-            <input type="checkbox" id="setupCaptainCheck" style="width: 18px; height: 18px; accent-color: var(--gold);" />
-            <span>Appoint me as Team Captain 👑</span>
-          </label>
+        <div class="modal-actions" style="margin-top: 16px; display: grid; grid-template-columns: 1fr 2fr; gap: 8px;">
+          <button type="button" class="modal-btn secondary" id="setupStep3BackBtn" style="font-size: 0.95rem; padding: 12px;">
+            ⬅️ Back
+          </button>
+          <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: var(--theme-primary, #2b9348); font-size: 1.15rem; padding: 12px; font-weight: 800;">
+            ⚔️ LINK & ENTER CRAWL 🎉
+          </button>
         </div>
-      </div>
-
-      <!-- CONFIRMATION ACTIONS -->
-      <div class="modal-actions" style="margin-top: 16px; flex-direction: column; gap: 8px;">
-        <button type="button" class="modal-btn" id="setupSubmitBtn" style="background: var(--theme-primary, #2b9348); font-size: 1.25rem; padding: 14px 20px; width: 100%;">
-          ⚔️ LINK DEVICE & JOIN CREW
-        </button>
-        <button type="button" class="modal-btn secondary" id="setupDismissBtn" style="font-size: 0.85rem; padding: 8px 12px; width: 100%;">
-          Spectate / Browse without Joining
-        </button>
       </div>
     </div>
   </div>
@@ -9307,10 +9370,8 @@
         } else if (cmd === "/unlink" || cmd === "unlink") {
           showToast("🔌 Unlinking all hardware devices...");
           executeUnlinkAllHardware(true);
-        } else if (cmd === "/clear" || cmd === "clear") {
-          localStorage.clear();
-          sessionStorage.clear();
-          window.location.reload();
+        } else if (cmd === "/clear" || cmd === "clear" || cmd === "/fresh" || cmd === "fresh") {
+          executeResetToFirstTimeVisitor();
         } else {
           showToast(`⚠️ Command not recognized. Try /reset, /nuke, /zero, or /unlink`);
         }
@@ -9619,6 +9680,8 @@
 
       function openQrLightbox() {
         updateSettingsQrUI();
+        const settingsModal = document.getElementById("settingsModal");
+        if (settingsModal) settingsModal.classList.remove("open");
         const modal = document.getElementById("qrLightboxModal");
         if (modal) modal.classList.add("open");
         playTick(550);
@@ -9627,6 +9690,8 @@
       function closeQrLightbox() {
         const modal = document.getElementById("qrLightboxModal");
         if (modal) modal.classList.remove("open");
+        const settingsModal = document.getElementById("settingsModal");
+        if (settingsModal) settingsModal.classList.add("open");
         playTick(450);
       }
 
@@ -9790,9 +9855,54 @@
         showToast("Full Factory Reset Applied");
       };
 
-      // --- 13B. ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (MAC & IP) ---
+      // --- 13B. ONBOARDING: NAME FIRST -> JOIN TEAM -> LINK DEVICE (STEPPED GUIDE) ---
       const crewSetupModal = document.getElementById("crewSetupModal");
       let setupSelectedTeamIdx = 0;
+      let setupCurrentStep = 1;
+
+      function setSetupGuideStep(step) {
+        setupCurrentStep = step;
+        const p1 = document.getElementById("setupStep1Pane");
+        const p2 = document.getElementById("setupStep2Pane");
+        const p3 = document.getElementById("setupStep3Pane");
+
+        if (p1) p1.style.display = (step === 1) ? "block" : "none";
+        if (p2) p2.style.display = (step === 2) ? "block" : "none";
+        if (p3) p3.style.display = (step === 3) ? "block" : "none";
+
+        const d1 = document.getElementById("dotStep1");
+        const d2 = document.getElementById("dotStep2");
+        const d3 = document.getElementById("dotStep3");
+        if (d1) d1.className = `setup-dot ${step === 1 ? 'active' : ''}`;
+        if (d2) d2.className = `setup-dot ${step === 2 ? 'active' : ''}`;
+        if (d3) d3.className = `setup-dot ${step === 3 ? 'active' : ''}`;
+
+        const input = document.getElementById("setupPlayerInput");
+        const rawName = input ? (input.value.trim() || state.myPlayerName || "Player") : "Player";
+        const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
+        const isCap = !!(document.getElementById("setupCaptainCheck")?.checked);
+
+        const summaryName = document.getElementById("setupSummaryNameTxt");
+        const summaryTeam = document.getElementById("setupSummaryTeamTxt");
+        const summaryBadge = document.getElementById("setupSummaryRoleBadge");
+
+        if (summaryName) summaryName.textContent = rawName;
+        if (summaryBadge) summaryBadge.style.display = isCap ? "inline-block" : "none";
+        if (summaryTeam) {
+          summaryTeam.textContent = `Joining ${team.name} • ${isCap ? 'Captain 👑' : 'Crew Member'}`;
+          let colorHex = "#fca5a5";
+          if (team.colorClass === "blue") colorHex = "#93c5fd";
+          else if (team.colorClass === "green") colorHex = "#86efac";
+          else if (team.colorClass === "yellow") colorHex = "#ffd885";
+          summaryTeam.style.color = colorHex;
+        }
+
+        if (step === 1) {
+          if (input) setTimeout(() => input.focus(), 120);
+        } else if (step === 2) {
+          renderSetupColors();
+        }
+      }
 
       function openCrewSetupModal(isEditing = false) {
         setupSelectedTeamIdx = state.myTeamIdx || 0;
@@ -9823,11 +9933,7 @@
         }
 
         renderSetupColors();
-
-        const submitBtn = document.getElementById("setupSubmitBtn");
-        if (submitBtn) {
-          submitBtn.textContent = isEditing ? "💾 UPDATE PROFILE & RETURN" : "⚔️ LINK DEVICE & JOIN CREW";
-        }
+        setSetupGuideStep(1);
 
         crewSetupModal.classList.add("open");
         if (isEditing) {
@@ -9940,8 +10046,102 @@
         playerInput.onkeydown = (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            const submitBtn = document.getElementById("setupSubmitBtn");
-            if (submitBtn) submitBtn.click();
+            const step1Next = document.getElementById("setupStep1NextBtn");
+            if (setupCurrentStep === 1 && step1Next) {
+              step1Next.click();
+            }
+          }
+        };
+      }
+
+      const step1NextBtn = document.getElementById("setupStep1NextBtn");
+      if (step1NextBtn) {
+        step1NextBtn.onclick = () => {
+          const input = document.getElementById("setupPlayerInput");
+          const val = input ? input.value.trim() : "";
+          if (!val) {
+            if (input) {
+              input.style.borderColor = "#ff4d4d";
+              input.focus();
+            }
+            showToast("⚠️ Please enter your player name first!");
+            playTick(240);
+            return;
+          }
+          if (input) input.style.borderColor = "";
+          playTick(550);
+          setSetupGuideStep(2);
+        };
+      }
+
+      const step2BackBtn = document.getElementById("setupStep2BackBtn");
+      if (step2BackBtn) {
+        step2BackBtn.onclick = () => {
+          playTick(450);
+          setSetupGuideStep(1);
+        };
+      }
+
+      const step2NextBtn = document.getElementById("setupStep2NextBtn");
+      if (step2NextBtn) {
+        step2NextBtn.onclick = () => {
+          playTick(550);
+          setSetupGuideStep(3);
+        };
+      }
+
+      const step3BackBtn = document.getElementById("setupStep3BackBtn");
+      if (step3BackBtn) {
+        step3BackBtn.onclick = () => {
+          playTick(450);
+          setSetupGuideStep(2);
+        };
+      }
+
+      const capCheckElem = document.getElementById("setupCaptainCheck");
+      if (capCheckElem) {
+        capCheckElem.onchange = () => {
+          const isCap = capCheckElem.checked;
+          const badge = document.getElementById("setupSummaryRoleBadge");
+          if (badge) badge.style.display = isCap ? "inline-block" : "none";
+          playTick(isCap ? 650 : 450);
+        };
+      }
+
+      async function executeResetToFirstTimeVisitor() {
+        showToast("🧹 Wiping all cache & resetting to first-time visitor...");
+        try { localStorage.clear(); } catch(e) {}
+        try { sessionStorage.clear(); } catch(e) {}
+        try {
+          const cookies = document.cookie.split(";");
+          const paths = ["/", "/projects", "/projects/drunk-uno", window.location.pathname];
+          for (let c of cookies) {
+            const eq = c.indexOf("=");
+            const name = (eq > -1 ? c.substr(0, eq) : c).trim();
+            if (name) {
+              paths.forEach(p => {
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${p};`;
+              });
+            }
+          }
+        } catch(e) {}
+
+        if ('caches' in window) {
+          try {
+            const names = await caches.keys();
+            await Promise.all(names.map(name => caches.delete(name)));
+          } catch(e) {}
+        }
+
+        const freshUrl = window.location.origin + window.location.pathname + "?fresh=" + Date.now();
+        window.location.replace(freshUrl);
+      }
+
+      const settingsResetFirstTimeBtn = document.getElementById("settingsResetFirstTimeBtn");
+      if (settingsResetFirstTimeBtn) {
+        settingsResetFirstTimeBtn.onclick = () => {
+          if (confirm("🧹 WIPE ALL CACHE & VIEW AS FIRST TIME VISITOR?\n\nThis will completely erase all cookies, localStorage, and cached files on your browser, resetting the page to when you first loaded it.")) {
+            executeResetToFirstTimeVisitor();
           }
         };
       }
@@ -10142,13 +10342,18 @@
         }, 180);
       }
 
-      // --- URL QUERY COMMAND HANDLERS (e.g. ?cmd=reset, ?reset=1, ?cmd=nuke, ?cmd=unlink) ---
+      // --- URL QUERY COMMAND HANDLERS (e.g. ?cmd=reset, ?reset=1, ?cmd=nuke, ?cmd=unlink, ?fresh=1) ---
       const cmdParam = (urlParams.get("cmd") || "").toLowerCase().trim();
       const hasResetParam = urlParams.has("reset") || cmdParam === "reset" || cmdParam === "zero";
       const hasNukeParam = urlParams.has("nuke") || cmdParam === "nuke";
       const hasUnlinkParam = urlParams.has("unlink") || cmdParam === "unlink";
+      const hasFreshParam = urlParams.has("first_visit") || cmdParam === "fresh" || cmdParam === "clear";
 
-      if (hasResetParam || hasNukeParam) {
+      if (hasFreshParam) {
+        setTimeout(() => {
+          executeResetToFirstTimeVisitor();
+        }, 200);
+      } else if (hasResetParam || hasNukeParam) {
         setTimeout(() => {
           executeGameResetToZero(true, hasNukeParam);
         }, 200);
@@ -10162,6 +10367,7 @@
       window.drunkUno = {
         resetGame: () => executeGameResetToZero(true, false),
         nukeSite: () => executeGameResetToZero(true, true),
+        resetFirstTime: () => executeResetToFirstTimeVisitor(),
         unlinkDevice: () => unlinkHardwareProfile(true),
         unlinkAll: () => executeUnlinkAllHardware(true),
         zeroScores: () => {
@@ -10176,6 +10382,7 @@
       window.drunkUnoResetGame = window.drunkUno.resetGame;
       window.drunkUnoNukeAll = window.drunkUno.nukeSite;
       window.drunkUnoUnlink = window.drunkUno.unlinkDevice;
+      window.drunkUnoResetFirstTime = window.drunkUno.resetFirstTime;
 
     })();
   </script>
