@@ -138,23 +138,21 @@
       position: relative;
       -webkit-text-size-adjust: 100%;
       touch-action: pan-y pinch-zoom;
-      -webkit-overflow-scrolling: touch;
     }
 
     body {
       width: 100% !important;
       max-width: 100vw !important;
-      background: transparent;
+      background: transparent !important;
       color: var(--ink);
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(8px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
+      padding: max(6px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
       overflow-x: hidden !important;
       position: relative;
       touch-action: pan-y pinch-zoom;
-      -webkit-overflow-scrolling: touch;
       -webkit-font-smoothing: antialiased;
       box-sizing: border-box;
     }
@@ -198,6 +196,11 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0.52;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     /* Confetti Particle Canvas */
@@ -206,6 +209,11 @@
       inset: 0;
       pointer-events: none;
       z-index: 999;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     /* Outer Wrapper */
@@ -220,7 +228,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding: max(16px, env(safe-area-inset-top, 16px)) max(12px, env(safe-area-inset-right, 12px)) calc(125px + var(--sab)) max(12px, env(safe-area-inset-left, 12px)) !important;
+      padding: 6px max(12px, env(safe-area-inset-right, 12px)) calc(125px + var(--sab)) max(12px, env(safe-area-inset-left, 12px)) !important;
     }
 
     /* Main Content Frame (Clean Edge-to-Edge Glass Container) */
@@ -380,13 +388,16 @@
 
     @media (max-width: 600px), (display-mode: standalone) {
       body {
-        padding: calc(max(10px, var(--sat)) + 8px) 6px calc(14px + var(--sab)) 6px !important;
+        padding: max(4px, var(--sat)) 4px calc(14px + var(--sab)) 4px !important;
         -webkit-user-select: none;
         user-select: none;
       }
       .app-container {
         width: 100% !important;
         max-width: 100vw !important;
+        padding-top: 4px !important;
+        padding-left: max(4px, var(--sal)) !important;
+        padding-right: max(4px, var(--sar)) !important;
         padding-bottom: calc(115px + var(--sab)) !important;
         gap: 8px !important;
       }
@@ -464,7 +475,7 @@
     /* Floating iOS Glass Dock for Tab Navigation matching uploaded_media_3 */
     .mobile-bottom-dock {
       position: fixed !important;
-      bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+      bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) * 0.45 + 4px)) !important;
       left: 50% !important;
       right: auto !important;
       transform: translateX(-50%) !important;
@@ -479,6 +490,8 @@
       background: rgba(18, 22, 31, 0.88) !important;
       backdrop-filter: blur(28px) saturate(200%);
       -webkit-backdrop-filter: blur(28px) saturate(200%);
+      -webkit-transform: translateX(-50%) translateZ(0);
+      transform: translateX(-50%) translateZ(0);
       border: 1px solid rgba(255, 255, 255, 0.16) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
       border-radius: 28px !important;
@@ -500,7 +513,7 @@
     @media (max-width: 600px), (display-mode: standalone), (display-mode: fullscreen) {
       .mobile-bottom-dock {
         position: fixed !important;
-        bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+        bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) * 0.45 + 4px)) !important;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
@@ -516,12 +529,17 @@
         transform: translateX(-50%) translateY(140%) !important;
       }
       .app-container {
-        padding-bottom: calc(85px + max(12px, env(safe-area-inset-bottom, 12px))) !important;
+        padding-top: 4px !important;
+        padding-bottom: calc(75px + max(8px, env(safe-area-inset-bottom, 8px))) !important;
       }
+    }
+    body.standalone-app,
+    html.standalone-app body {
+      padding-top: max(4px, var(--sat)) !important;
     }
     body.standalone-app .mobile-bottom-dock,
     html.standalone-app .mobile-bottom-dock {
-      bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+      bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) * 0.45 + 4px)) !important;
       left: 50% !important;
       right: auto !important;
       transform: translateX(-50%) !important;
@@ -530,7 +548,8 @@
     }
     body.standalone-app .app-container,
     html.standalone-app .app-container {
-      padding-bottom: calc(85px + max(12px, env(safe-area-inset-bottom, 12px))) !important;
+      padding-top: 4px !important;
+      padding-bottom: calc(75px + max(8px, env(safe-area-inset-bottom, 8px))) !important;
     }
 
     /* Main Dashboard Gating (Hidden until player links and enters crawl) */
@@ -1463,10 +1482,10 @@
     }
 
     @media (max-width: 540px) {
-      .podium-card.rank-1 { min-height: 150px !important; height: 150px !important; }
-      .podium-card.rank-2 { min-height: 126px !important; height: 126px !important; }
-      .podium-card.rank-3 { min-height: 106px !important; height: 106px !important; }
-      .podium-card.rank-4 { min-height: 88px !important; height: 88px !important; }
+      .podium-card.rank-1 { min-height: 132px !important; height: 132px !important; }
+      .podium-card.rank-2 { min-height: 112px !important; height: 112px !important; }
+      .podium-card.rank-3 { min-height: 96px !important; height: 96px !important; }
+      .podium-card.rank-4 { min-height: 80px !important; height: 80px !important; }
     }
 
     .podium-rank-badge {
@@ -1807,7 +1826,17 @@
       gap: 6px;
     }
     @media (max-width: 600px) {
-      .score-action-grid { grid-template-columns: repeat(2, 1fr); }
+      .score-action-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+      }
+      .btn-score-tap {
+        padding: 7px 4px !important;
+        font-size: 0.82rem !important;
+      }
+      .btn-score-tap small {
+        font-size: 0.65rem !important;
+      }
     }
 
     .btn-score-tap {
@@ -2116,35 +2145,52 @@
 
     /* Leaderboard Standings Table (Scrollable within its card, never breaks page width) */
     .standings-table-wrap {
-      background: rgba(255, 248, 230, 0.9);
-      border: 2px solid var(--ink);
-      border-radius: 10px;
+      background: var(--glass-card-bg, rgba(15, 23, 42, 0.78));
+      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.14));
+      border-radius: 12px;
       padding: 12px;
       width: 100% !important;
       max-width: 100% !important;
       overflow-x: auto !important;
       -webkit-overflow-scrolling: touch;
       box-sizing: border-box !important;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
     }
     .standings-table {
       width: 100%;
-      min-width: 540px;
+      min-width: 460px;
       border-collapse: collapse;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
     }
     .standings-table th, .standings-table td {
-      border: 1px solid var(--ink-muted);
-      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 7px 8px;
       text-align: left;
     }
     .standings-table th {
       background: rgba(30, 41, 59, 0.85);
       color: #ffffff;
       font-family: var(--font-uno);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
     }
     .standings-table tr:nth-child(even) { background: rgba(255, 255, 255, 0.03); }
     .standings-table tr.leader-row { background: rgba(56, 189, 248, 0.12); font-weight: 700; }
+
+    @media (max-width: 600px) {
+      .standings-table-wrap {
+        padding: 8px 6px !important;
+      }
+      .standings-table {
+        min-width: 420px !important;
+        font-size: 0.76rem !important;
+      }
+      .standings-table th, .standings-table td {
+        padding: 6px 4px !important;
+      }
+      .standings-table th {
+        font-size: 0.78rem !important;
+      }
+    }
 
     /* =========================================================================
        07. TAB 3: INTERACTIVE PRESTON ROUTE MAP & 10 STOPS
@@ -2733,9 +2779,14 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(8, 10, 14, 0.82) !important;
-      backdrop-filter: blur(14px) saturate(180%);
-      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      background: rgba(10, 15, 24, 0.68) !important;
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform, opacity;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
       z-index: 100000 !important;
       display: none;
       align-items: center;
@@ -2750,6 +2801,11 @@
     @keyframes modalIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Lock body scroll and keep background transparent when popups are open */
+    body:has(.modal-backdrop.open) {
+      overflow: hidden !important;
     }
 
     /* Automatically hide floating bottom dock when any popup modal is open so it never overlaps or blocks Safari dock */
@@ -2770,10 +2826,11 @@
       width: 100%;
       max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 36px);
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
       position: relative;
       box-sizing: border-box;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
     .modal-title {
       font-family: var(--font-uno);
@@ -2855,6 +2912,11 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0.65;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
       transition: opacity 0.6s ease;
     }
 
@@ -3364,13 +3426,13 @@
       color: #f8fafc !important;
     }
     body:not(.light-mode)[class*="theme-"] .parchment-board {
-      background: var(--theme-board-bg) !important;
-      border: 3.5px solid var(--theme-board-border) !important;
-      box-shadow: 0 0 32px var(--theme-glow), var(--shadow-heavy) !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
     }
     body:not(.light-mode)[class*="theme-"] .celtic-frame {
-      border: 3px double var(--theme-border) !important;
-      box-shadow: 0 0 16px var(--theme-glow) !important;
+      border: none !important;
+      box-shadow: none !important;
     }
     body:not(.light-mode)[class*="theme-"] .celtic-frame::before,
     body:not(.light-mode)[class*="theme-"] .celtic-frame::after {
@@ -4821,7 +4883,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.8</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.9</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5110,18 +5172,23 @@
 
             <!-- FULL LIVE LEADERBOARD STANDINGS -->
             <div class="standings-table-wrap">
-              <h3 style="font-family: var(--font-uno); font-size: 1.45rem; margin-bottom: 8px;">
-                📊 FULL CREW STATS BREAKDOWN (LIVE ACROSS ALL PHONES)
-              </h3>
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; margin-bottom: 6px;">
+                <h3 style="font-family: var(--font-uno); font-size: 1.15rem; margin: 0; color: #ffffff;">
+                  📊 FULL CREW STATS BREAKDOWN
+                </h3>
+                <span class="table-scroll-hint" style="font-size: 0.7rem; color: #94a3b8; font-weight: 600;">
+                  ↔️ Scroll horizontally for all stats
+                </span>
+              </div>
               <table class="standings-table">
                 <thead>
                   <tr>
-                    <th>Rank</th>
+                    <th style="width: 54px;">Rank</th>
                     <th>Crew</th>
-                    <th>Captain & Roster</th>
-                    <th>Points</th>
-                    <th>Pub Crowns</th>
-                    <th>Drinks Taken</th>
+                    <th style="min-width: 110px; max-width: 140px;">Captain & Roster</th>
+                    <th style="text-align: center;">Pts</th>
+                    <th style="text-align: center;">👑</th>
+                    <th style="text-align: center;">Drinks</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -6160,6 +6227,9 @@
             </div>
             <div style="background: rgba(185, 28, 28, 0.25); border: 1px solid rgba(239, 68, 68, 0.5); padding: 8px; border-radius: 8px; color: #fca5a5;">
               <strong>🤮 SPEWING</strong><br><span style="color:#fff;">Major forfeit: -5 points penalty</span>
+            </div>
+            <div style="background: rgba(220, 38, 38, 0.25); border: 1.5px solid #ef4444; padding: 8px; border-radius: 8px; color: #fca5a5;">
+              <strong>🚨 CAUGHT CHEATING</strong><br><span style="color:#fff;">Dishonor: -8 pts & shot penalty</span>
             </div>
             <div style="background: rgba(124, 58, 237, 0.22); border: 1.5px solid #a78bfa; padding: 8px; border-radius: 8px; color: #ddd6fe;">
               <strong>🃏 SECRET +10 NUKE</strong><br><span style="color:#fff;">Target drinks 10 sips & -10 pts</span>
@@ -8644,7 +8714,8 @@
 
       function initRubberFluid() {
         if (!rfCanvas) return;
-        rfGl = rfCanvas.getContext("webgl") || rfCanvas.getContext("experimental-webgl");
+        const glOpts = { alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: false, antialias: false };
+        rfGl = rfCanvas.getContext("webgl", glOpts) || rfCanvas.getContext("experimental-webgl", glOpts);
         if (!rfGl) {
           initFallback2DRubber();
           return;
@@ -9280,6 +9351,10 @@
               <span>🤮 SPEWING</span>
               <small>-5 Points Penalty</small>
             </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="cheating" style="border: 1.5px solid #ef4444; background: rgba(239, 68, 68, 0.22); color: #fca5a5;">
+              <span>🚨 CAUGHT CHEATING</span>
+              <small>-8 Pts • Shot Penalty</small>
+            </button>
             <button type="button" class="btn-score-tap deduct" data-uno-score="wild10nuke" style="border: 1.5px solid #a78bfa; background: rgba(124, 58, 237, 0.22); color: #ddd6fe;">
               <span>🃏 +10 NUKE</span>
               <small>+5 Atk / -10 Def • Down Drink</small>
@@ -9402,6 +9477,12 @@
               addLog(`💀 4th PLACE FORFEIT: ${targetTeam.name} finished last at this pub and took the Mystery Shot chosen by the rival teams!`);
               playBuzzer();
               try { navigator.vibrate && navigator.vibrate([150, 80, 150]); } catch (e) {}
+            } else if (act === "cheating") {
+              targetTeam.score -= 8;
+              targetTeam.sips += 4;
+              addLog(`🚨 CAUGHT CHEATING: ${targetTeam.name} was caught cheating! (-8 pts, defenders take 1 shot/drink penalty).`);
+              playBuzzer();
+              try { navigator.vibrate && navigator.vibrate([200, 80, 200]); } catch (e) {}
             } else if (act === "wild10nuke") {
               targetTeam.score -= 10;
               if (myTeam) myTeam.score += 5;
@@ -9483,13 +9564,13 @@
           const rosterDisplay = team.players && team.players.length ? escapeHtml(team.players.join(", ")) : "None registered";
 
           tr.innerHTML = `
-            <td><strong style="color: #ffffff;">${rank === 0 ? "👑 1st" : rank === 1 ? "🥈 2nd" : rank === 2 ? "🥉 3rd" : "⚓ 4th"}</strong></td>
-            <td><span class="crew-dot ${team.colorClass}"></span> <strong style="color: #ffffff;">${escapeHtml(team.name)}</strong></td>
-            <td><div>${captainDisplay}</div><small style="color: #94a3b8; font-size: 0.78rem;">${rosterDisplay}</small></td>
-            <td style="font-family: var(--font-uno); font-weight: 900; font-size: 1.25rem; color: ${team.score < 0 ? '#ef4444' : '#ffffff'};">${team.score}</td>
-            <td style="font-weight: 800; color: #facc15;">👑 <span style="color: #ffffff;">x${team.crowns || 0}</span></td>
-            <td style="color: #e2e8f0;"><span style="color: #ffffff; font-weight: 700;">${team.sips}</span> <span style="color: #94a3b8; font-size: 0.8rem;">sips</span></td>
-            <td>${team.frozen ? "<span style='color:#38bdf8;font-weight:700;'>❄️ FROZEN</span>" : "<span style='color:#4ade80;font-weight:600;'>Active</span>"}</td>
+            <td><strong style="color: #ffffff; white-space: nowrap;">${rank === 0 ? "👑 1st" : rank === 1 ? "🥈 2nd" : rank === 2 ? "🥉 3rd" : "⚓ 4th"}</strong></td>
+            <td><div style="display: flex; align-items: center; gap: 5px;"><span class="crew-dot ${team.colorClass}"></span> <strong style="color: #ffffff; white-space: nowrap;">${escapeHtml(team.name)}</strong></div></td>
+            <td><div style="max-width: 130px; line-height: 1.25;"><div>${captainDisplay}</div><small style="color: #94a3b8; font-size: 0.72rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: normal;">${rosterDisplay}</small></div></td>
+            <td style="font-family: var(--font-uno); font-weight: 900; font-size: 1.15rem; text-align: center; color: ${team.score < 0 ? '#ef4444' : '#ffffff'};">${team.score}</td>
+            <td style="font-weight: 800; color: #facc15; text-align: center; white-space: nowrap;">👑 <span style="color: #ffffff;">x${team.crowns || 0}</span></td>
+            <td style="color: #e2e8f0; text-align: center; white-space: nowrap;"><span style="color: #ffffff; font-weight: 700;">${team.sips}</span> <span style="color: #94a3b8; font-size: 0.75rem;">sips</span></td>
+            <td style="white-space: nowrap;">${team.frozen ? "<span style='color:#38bdf8;font-weight:700;'>❄️ FROZEN</span>" : "<span style='color:#4ade80;font-weight:600;'>Active</span>"}</td>
           `;
           tbody.appendChild(tr);
         });
