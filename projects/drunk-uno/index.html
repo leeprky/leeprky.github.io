@@ -5274,7 +5274,7 @@
             <div class="scoring-stepper-card">
               <!-- CHOOSE TARGET CREW TO ATTACK / SCORE -->
               <div class="step-title" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                <span id="targetSectionHeaderTxt">🎯 YOUR ASSIGNED REFEREE TARGET:</span>
+                <span id="targetSectionHeaderTxt">🎯 SCORING TEAM:</span>
                 <span id="scoringAsBadge" class="scoring-as-pill">Scoring as: <strong>Your Crew</strong></span>
               </div>
               <div class="team-picker-grid" id="targetTeamPicker"></div>
@@ -9324,7 +9324,7 @@
         if (targetPicker) {
           targetPicker.innerHTML = "";
           if (isRegistered && myTeam) {
-            if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 YOUR ASSIGNED REFEREE TARGET:";
+            if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 SCORING TARGET:";
             targetPicker.style.display = "block";
 
             // Force targetTeamIdx to this crew's locked assigned referee target
