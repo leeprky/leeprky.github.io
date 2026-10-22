@@ -467,7 +467,7 @@
       }
     }
 
-    /* Floating iOS Glass Dock for Tab Navigation matching uploaded_media_3 */
+    /* Floating iOS Glass Dock for Tab Navigation (Transparent Fixed Shell + Inner Glass Child) */
     .mobile-bottom-dock {
       position: fixed !important;
       bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) * 0.45 + 4px)) !important;
@@ -478,25 +478,39 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      padding: 6px 8px;
       width: auto !important;
       max-width: min(94vw, 440px) !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      pointer-events: none !important;
+      touch-action: manipulation;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      will-change: transform, opacity;
+    }
+
+    .dock-inner-glass {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 8px;
+      width: 100%;
+      border-radius: 28px !important;
+      border: 1px solid rgba(255, 255, 255, 0.16) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
       background-color: rgba(15, 18, 24, 0.75) !important;
       backdrop-filter: blur(16px) saturate(180%) !important;
       -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-      -webkit-transform: translateX(-50%) translateZ(0);
-      transform: translateX(-50%) translateZ(0);
-      border: 1px solid rgba(255, 255, 255, 0.16) !important;
-      border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
-      border-radius: 28px !important;
       box-shadow:
         0 12px 32px rgba(0, 0, 0, 0.45),
         0 2px 10px rgba(0, 0, 0, 0.3),
         inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      touch-action: manipulation;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-      will-change: transform, opacity;
+      pointer-events: auto !important;
     }
 
     .mobile-bottom-dock.dock-hidden {
@@ -514,13 +528,24 @@
         transform: translateX(-50%) !important;
         width: auto !important;
         max-width: min(96vw, 420px) !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        pointer-events: none !important;
+      }
+      .dock-inner-glass {
+        padding: 5px 6px !important;
         border-radius: 28px !important;
         border: 1px solid rgba(255, 255, 255, 0.18) !important;
         border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
         background-color: rgba(15, 18, 24, 0.75) !important;
         backdrop-filter: blur(16px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-        padding: 5px 6px !important;
+        pointer-events: auto !important;
       }
       .mobile-bottom-dock.dock-hidden {
         transform: translateX(-50%) translateY(140%) !important;
@@ -593,6 +618,7 @@
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
+      display: none !important;
     }
 
     .intro-splash-backdrop {
@@ -2950,8 +2976,10 @@
       opacity: 0;
       transition: all 0.25s var(--ease-out);
       pointer-events: none;
+      display: none;
     }
     .toast-pill.show {
+      display: block !important;
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
@@ -3537,6 +3565,14 @@
       box-shadow: 0 0 10px var(--theme-glow) !important;
     }
     body:not(.light-mode)[class*="theme-"] .mobile-bottom-dock {
+      background: transparent !important;
+      background-color: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    body:not(.light-mode)[class*="theme-"] .dock-inner-glass {
       background-color: rgba(15, 18, 24, 0.75) !important;
       backdrop-filter: blur(16px) saturate(180%) !important;
       -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
@@ -4225,7 +4261,7 @@
       background: rgba(10, 2, 2, 0.96);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -4254,7 +4290,7 @@
       background: rgba(4, 18, 36, 0.97);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -4283,7 +4319,7 @@
       background: rgba(24, 14, 4, 0.97);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -4482,6 +4518,14 @@
       box-shadow: 0 4px 18px rgba(100, 70, 30, 0.14), 0 0 16px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
     body.light-mode .mobile-bottom-dock {
+      background: transparent !important;
+      background-color: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    body.light-mode .dock-inner-glass {
       background: rgba(255, 252, 245, 0.95) !important;
       border: 1.5px solid var(--theme-border, #c2a26c) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.95) !important;
@@ -5741,26 +5785,28 @@
        MOBILE APP BOTTOM DOCK (FIXED AT SCREEN BOTTOM FOR ONE-THUMB USABILITY)
        ========================================================================= -->
   <nav class="mobile-bottom-dock" id="bottomDock">
-    <button type="button" class="dock-tab active" data-tab="scores" title="Live Scores & Leaderboard">
-      <span class="dock-icon">🏆</span>
-      <span class="dock-label">Scores</span>
-    </button>
-    <button type="button" class="dock-tab" data-tab="wheel" title="Wheel of Doom">
-      <span class="dock-icon">🎡</span>
-      <span class="dock-label">Wheel</span>
-    </button>
-    <button type="button" class="dock-tab" data-tab="map" title="Pub Route & Map">
-      <span class="dock-icon">🗺️</span>
-      <span class="dock-label">Route</span>
-    </button>
-    <button type="button" class="dock-tab" data-tab="rules" title="Uno Codex & Rules">
-      <span class="dock-icon">📜</span>
-      <span class="dock-label">Rules</span>
-    </button>
-    <button type="button" class="dock-tab" data-tab="bingo" title="Secret Pub Crawl Bingo">
-      <span class="dock-icon">🎯</span>
-      <span class="dock-label">Bingo</span>
-    </button>
+    <div class="dock-inner-glass">
+      <button type="button" class="dock-tab active" data-tab="scores" title="Live Scores & Leaderboard">
+        <span class="dock-icon">🏆</span>
+        <span class="dock-label">Scores</span>
+      </button>
+      <button type="button" class="dock-tab" data-tab="wheel" title="Wheel of Doom">
+        <span class="dock-icon">🎡</span>
+        <span class="dock-label">Wheel</span>
+      </button>
+      <button type="button" class="dock-tab" data-tab="map" title="Pub Route & Map">
+        <span class="dock-icon">🗺️</span>
+        <span class="dock-label">Route</span>
+      </button>
+      <button type="button" class="dock-tab" data-tab="rules" title="Uno Codex & Rules">
+        <span class="dock-icon">📜</span>
+        <span class="dock-label">Rules</span>
+      </button>
+      <button type="button" class="dock-tab" data-tab="bingo" title="Secret Pub Crawl Bingo">
+        <span class="dock-icon">🎯</span>
+        <span class="dock-label">Bingo</span>
+      </button>
+    </div>
   </nav>
 
 
