@@ -98,8 +98,8 @@
     }
 
     html {
-      background-color: #1a0b08;
-      background-color: var(--theme-bg, #1a0b08);
+      background-color: #12151b;
+      background-color: var(--theme-bg, #12151b);
       min-height: 100%;
       width: 100% !important;
       max-width: 100vw !important;
@@ -4068,16 +4068,22 @@
     }
 
     /* Spectator Grey Theme (Neutral slate / charcoal for unjoined guests) */
+    body.theme-spectator,
+    html:has(body.theme-spectator) {
+      --theme-bg: #101317;
+      background-color: #101317 !important;
+      background-image: radial-gradient(circle at 50% 25%, #1d222b 0%, #101317 70%, #080a0c 100%) !important;
+    }
     body.theme-spectator {
-      --theme-bg: #121417;
+      --theme-bg: #101317;
       --md-primary: #94a3b8;
       --md-primary-rgb: 148, 163, 184;
       --md-on-primary: #0f172a;
       --md-primary-container: rgba(148, 163, 184, 0.18);
       --md-on-primary-container: #f1f5f9;
-      --md-surface: #171a1f;
-      --md-surface-container: #1e2229;
-      --md-surface-container-high: #272d36;
+      --md-surface: #15181f;
+      --md-surface-container: #1b1f27;
+      --md-surface-container-high: #242a34;
       --md-outline: rgba(148, 163, 184, 0.35);
       --md-outline-variant: rgba(148, 163, 184, 0.16);
       --theme-primary: #94a3b8;
@@ -4086,13 +4092,13 @@
       --theme-accent-bg: rgba(148, 163, 184, 0.12);
       --theme-border: #64748b;
       --theme-card-glow: 0 0 16px rgba(148, 163, 184, 0.14);
-      --glass-card-bg: rgba(26, 30, 36, 0.88);
+      --glass-card-bg: rgba(22, 26, 32, 0.90);
       --glass-border: 1.5px solid rgba(148, 163, 184, 0.32);
-      --theme-board-bg: radial-gradient(circle at 50% 20%, #1e232b 0%, #13161c 65%, #0b0d10 100%);
+      --theme-board-bg: radial-gradient(circle at 50% 20%, #1a2029 0%, #11141a 65%, #080a0d 100%);
       --theme-board-border: #64748b;
-      --theme-ribbon-bg: linear-gradient(135deg, #64748b 0%, #334155 100%);
+      --theme-ribbon-bg: linear-gradient(135deg, #475569 0%, #1e293b 100%);
       --theme-celtic-accent: #cbd5e1;
-      --theme-topbar-bg: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(18, 20, 23, 0.94) 100%);
+      --theme-topbar-bg: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(16, 19, 23, 0.95) 100%);
     }
     body.light-mode.theme-spectator {
       --md-surface: #f8fafc;
@@ -4145,7 +4151,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.2</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.3</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5801,7 +5807,7 @@
 
       let state = {
         teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
-        myTeamIdx: 0,
+        myTeamIdx: null,
         targetTeamIdx: 1,
         myPlayerName: "",
         currentStopIdx: 0,
@@ -7178,18 +7184,18 @@
           spec: [1.00, 0.98, 0.90]  // Bright gold sheen
         },
         SPECTATOR: {
-          c1: [0.32, 0.36, 0.44], // Cool neutral slate grey
-          c2: [0.10, 0.12, 0.15], // Charcoal shadow
-          c3: [0.52, 0.58, 0.68], // Silver slate crest
-          spec: [0.85, 0.88, 0.92]  // Soft metallic sheen
+          c1: [0.18, 0.22, 0.28], // Pure cool neutral slate grey (zero red)
+          c2: [0.06, 0.08, 0.10], // Deep charcoal shadow
+          c3: [0.35, 0.40, 0.48], // Silver slate fold crest
+          spec: [0.65, 0.72, 0.80]  // Clean metallic silver sheen
         }
       };
 
       let currentThemeKey = "SPECTATOR";
-      let curC1 = [...THEME_SHADERS.RED.c1];
-      let curC2 = [...THEME_SHADERS.RED.c2];
-      let curC3 = [...THEME_SHADERS.RED.c3];
-      let curSpec = [...THEME_SHADERS.RED.spec];
+      let curC1 = [...THEME_SHADERS.SPECTATOR.c1];
+      let curC2 = [...THEME_SHADERS.SPECTATOR.c2];
+      let curC3 = [...THEME_SHADERS.SPECTATOR.c3];
+      let curSpec = [...THEME_SHADERS.SPECTATOR.spec];
 
       // =======================================================================
       // APPEARANCE ENGINE (SYSTEM / DARK / LIGHT MODE)
@@ -7323,16 +7329,14 @@
       function applyTeamTheme(teamIdx) {
         document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow", "theme-spectator");
 
-        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
-
-        if (!isRegistered || teamIdx === null || teamIdx === undefined || teamIdx < 0) {
+        if (teamIdx === null || teamIdx === undefined || teamIdx < 0 || !state.teams || !state.teams[teamIdx]) {
           currentThemeKey = "SPECTATOR";
           document.body.classList.add("theme-spectator");
           updateThemeColorMeta();
           return;
         }
 
-        const team = state.teams[teamIdx] || state.teams[0];
+        const team = state.teams[teamIdx];
         const colorKey = team.key || "RED";
         currentThemeKey = colorKey;
 
@@ -9994,7 +9998,7 @@
       }
 
       function openCrewSetupModal(isEditing = false) {
-        setupSelectedTeamIdx = state.myTeamIdx || 0;
+        setupSelectedTeamIdx = (state.myTeamIdx !== null && state.myTeamIdx !== undefined) ? state.myTeamIdx : 0;
         const input = document.getElementById("setupPlayerInput");
         const existingName = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "";
         if (input) input.value = existingName;
@@ -10040,29 +10044,10 @@
         if (!grid) return;
         grid.innerHTML = "";
 
-        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
-        const lockedTeamIdx = (state.myTeamIdx !== null && state.myTeamIdx !== undefined) ? state.myTeamIdx : null;
-
-        // If locked to a team, show crew lock warning
-        let lockedBanner = document.getElementById("setupLockedCrewBanner");
-        if (isRegistered && lockedTeamIdx !== null) {
-          if (!lockedBanner) {
-            lockedBanner = document.createElement("div");
-            lockedBanner.id = "setupLockedCrewBanner";
-            lockedBanner.style.cssText = "grid-column: 1 / -1; background: rgba(220, 38, 38, 0.25); border: 1.5px solid #ef4444; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; color: #fee2e2; margin-bottom: 8px; text-align: center;";
-            grid.parentNode.insertBefore(lockedBanner, grid);
-          }
-          lockedBanner.style.display = "block";
-          lockedBanner.innerHTML = `🔒 <strong>CREW LOCKED:</strong> You are locked to <strong>${state.teams[lockedTeamIdx]?.name || 'your crew'}</strong>. Only the Crawl Master can transfer you from the Admin Console.`;
-        } else if (lockedBanner) {
-          lockedBanner.style.display = "none";
-        }
-
         state.teams.forEach((t, idx) => {
           const btn = document.createElement("button");
           btn.type = "button";
           const isSelected = idx === setupSelectedTeamIdx;
-          const isOtherTeamLocked = isRegistered && lockedTeamIdx !== null && idx !== lockedTeamIdx;
 
           btn.className = `btn-setup-color ${isSelected ? "selected" : ""}`;
 
@@ -10070,12 +10055,6 @@
           if (t.colorClass === "blue") bgHex = "#2b7fff";
           else if (t.colorClass === "green") bgHex = "#2ecc71";
           else if (t.colorClass === "yellow") bgHex = "#f59e0b";
-
-          if (isOtherTeamLocked) {
-            btn.style.opacity = "0.42";
-            btn.style.filter = "grayscale(40%)";
-            btn.style.cursor = "not-allowed";
-          }
 
           const playerNames = Array.isArray(t.players) && t.players.length > 0 
             ? t.players.join(", ") 
@@ -10089,8 +10068,7 @@
                   <div class="team-label" style="color: ${t.colorClass === 'yellow' ? '#ffd885' : bgHex}; font-weight: 800; font-size: 1.05rem;">${escapeHtml(t.name)}</div>
                 </div>
               </div>
-              ${isOtherTeamLocked ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #fca5a5; padding: 2px 6px; border-radius: 4px; border: 1px solid #ef4444;">🔒 Locked</span>' : ''}
-              ${isSelected ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #86efac; padding: 2px 6px; border-radius: 4px; border: 1px solid #22c55e;">✓ Active Crew</span>' : ''}
+              ${isSelected ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.6); color: #86efac; padding: 2px 6px; border-radius: 4px; border: 1px solid #22c55e;">✓ Selected Crew</span>' : ''}
             </div>
             <div style="font-size: 0.74rem; color: #fce8be; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               👥 <strong>Crew:</strong> ${escapeHtml(playerNames)}
@@ -10098,15 +10076,18 @@
           `;
 
           btn.onclick = () => {
-            if (isOtherTeamLocked) {
-              playTick(240);
-              showToast(`🔒 Team locked! Only the Crawl Master can move you from ${state.teams[lockedTeamIdx].name}.`);
-              return;
-            }
             setupSelectedTeamIdx = idx;
             applyTeamTheme(idx);
             renderSetupColors();
             playTick(500);
+
+            // Update Step 3 summary immediately so they see their chosen crew!
+            const summaryTeam = document.getElementById("setupSummaryTeamTxt");
+            const isCap = !!(document.getElementById("setupCaptainCheck")?.checked);
+            if (summaryTeam) {
+              summaryTeam.textContent = `Joining ${t.name} • ${isCap ? 'Captain 👑' : 'Crew Member'}`;
+              summaryTeam.style.color = (t.colorClass === 'yellow') ? '#ffd885' : (t.colorClass === 'green' ? '#86efac' : (t.colorClass === 'blue' ? '#93c5fd' : '#fca5a5'));
+            }
           };
 
           grid.appendChild(btn);
@@ -10257,17 +10238,13 @@
 
             const playerName = rawName;
             state.myPlayerName = playerName;
+            state.myTeamIdx = setupSelectedTeamIdx;
             try {
               localStorage.setItem("drunk_uno_player_name", playerName);
               localStorage.setItem("drunk_uno_team_idx", String(setupSelectedTeamIdx));
               localStorage.setItem("drunk_uno_player_registered", "true");
               localStorage.setItem("drunk_uno_crew_setup", "true");
             } catch (err) {}
-
-            const isRegisteredUser = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
-            if (isRegisteredUser && state.myTeamIdx !== null && state.myTeamIdx !== undefined) {
-              setupSelectedTeamIdx = state.myTeamIdx;
-            }
 
             const isCaptain = !!(document.getElementById("setupCaptainCheck")?.checked);
             const team = state.teams[setupSelectedTeamIdx] || state.teams[0];
@@ -10334,6 +10311,8 @@
       if (closeCrewBtn) {
         closeCrewBtn.onclick = () => {
           crewSetupModal.classList.remove("open");
+          const hasReg = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined);
+          applyTeamTheme(hasReg ? state.myTeamIdx : null);
         };
       }
 
