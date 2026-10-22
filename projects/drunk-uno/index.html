@@ -356,21 +356,25 @@
         padding: 2px 6px !important;
       }
       .user-profile-badge {
-        font-size: 0.70rem !important;
+        font-size: 0.68rem !important;
         padding: 3px 6px !important;
-        max-width: 95px !important;
-      }
-      .sync-status-pill {
-        font-size: 0.66rem !important;
-        padding: 3px 6px !important;
-        max-width: 130px !important;
+        max-width: 90px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
       }
-      .settings-btn {
-        font-size: 0.70rem !important;
+      .sync-status-pill {
+        font-size: 0.65rem !important;
         padding: 3px 6px !important;
+        max-width: none !important;
+        white-space: nowrap !important;
+      }
+      .settings-btn {
+        font-size: 0.72rem !important;
+        padding: 3px 6px !important;
+      }
+      .hide-mobile {
+        display: none !important;
       }
     }
 
@@ -538,29 +542,32 @@
       flex-wrap: wrap;
     }
 
-    /* Live Real-Time Network Sync Pill */
+    /* Live Real-Time Network Sync Box */
     .sync-status-pill {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.70rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       color: #86efac;
-      background: rgba(16, 45, 24, 0.85);
-      border: 1.5px solid rgba(74, 222, 128, 0.55);
-      border-radius: 20px;
-      padding: 4px 10px;
+      background: rgba(22, 101, 52, 0.95);
+      border: 1.5px solid #22c55e;
+      border-radius: 6px;
+      padding: 3px 8px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: all 0.15s ease;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
     .sync-status-pill .sync-dot {
       width: 7px;
       height: 7px;
-      background: #2b9348;
+      background: #4ade80;
       border-radius: 50%;
-      box-shadow: 0 0 6px #2b9348;
+      box-shadow: 0 0 6px #4ade80;
       animation: pulseDot 2s infinite;
     }
     @keyframes pulseDot {
@@ -568,13 +575,13 @@
       50% { opacity: 0.4; transform: scale(0.85); }
     }
     .sync-status-pill.offline {
-      color: #7a1d1d;
-      background: rgba(214, 40, 40, 0.18);
-      border-color: rgba(214, 40, 40, 0.5);
+      color: #fca5a5 !important;
+      background: rgba(185, 28, 28, 0.95) !important;
+      border-color: #ef4444 !important;
     }
     .sync-status-pill.offline .sync-dot {
-      background: #d62828;
-      box-shadow: 0 0 6px #d62828;
+      background: #ef4444;
+      box-shadow: 0 0 6px #ef4444;
       animation: none;
     }
 
@@ -2712,9 +2719,14 @@
     }
     body:not(.light-mode) .sync-status-pill {
       color: #86efac !important;
-      background: rgba(16, 45, 24, 0.9) !important;
-      border: 1.5px solid rgba(74, 222, 128, 0.55) !important;
+      background: rgba(22, 101, 52, 0.95) !important;
+      border: 1.5px solid #22c55e !important;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    body:not(.light-mode) .sync-status-pill.offline {
+      color: #fca5a5 !important;
+      background: rgba(185, 28, 28, 0.95) !important;
+      border-color: #ef4444 !important;
     }
     body:not(.light-mode) .pub-ticker {
       background: rgba(0, 0, 0, 0.55) !important;
@@ -3521,8 +3533,13 @@
     body.light-mode .sync-status-pill {
       color: #14532d !important;
       background: rgba(220, 252, 231, 0.95) !important;
-      border: 1.5px solid rgba(34, 197, 94, 0.55) !important;
+      border: 1.5px solid #22c55e !important;
       text-shadow: none !important;
+    }
+    body.light-mode .sync-status-pill.offline {
+      color: #7f1d1d !important;
+      background: rgba(254, 226, 226, 0.95) !important;
+      border-color: #ef4444 !important;
     }
     body.light-mode #satinCanvas,
     body.light-mode .rubber-fluid-canvas {
@@ -3968,6 +3985,65 @@
       border-color: var(--theme-border, var(--gold)) !important;
       box-shadow: 0 0 12px var(--theme-glow, rgba(0,0,0,0)) !important;
     }
+
+    /* Spectator Grey Theme (Neutral slate / charcoal for unjoined guests) */
+    body.theme-spectator {
+      --theme-bg: #121417;
+      --md-primary: #94a3b8;
+      --md-primary-rgb: 148, 163, 184;
+      --md-on-primary: #0f172a;
+      --md-primary-container: rgba(148, 163, 184, 0.18);
+      --md-on-primary-container: #f1f5f9;
+      --md-surface: #171a1f;
+      --md-surface-container: #1e2229;
+      --md-surface-container-high: #272d36;
+      --md-outline: rgba(148, 163, 184, 0.35);
+      --md-outline-variant: rgba(148, 163, 184, 0.16);
+      --theme-primary: #94a3b8;
+      --theme-primary-dark: #475569;
+      --theme-glow: rgba(148, 163, 184, 0.18);
+      --theme-accent-bg: rgba(148, 163, 184, 0.12);
+      --theme-border: #64748b;
+      --theme-card-glow: 0 0 16px rgba(148, 163, 184, 0.14);
+      --glass-card-bg: rgba(26, 30, 36, 0.88);
+      --glass-border: 1.5px solid rgba(148, 163, 184, 0.32);
+      --theme-board-bg: radial-gradient(circle at 50% 20%, #1e232b 0%, #13161c 65%, #0b0d10 100%);
+      --theme-board-border: #64748b;
+      --theme-ribbon-bg: linear-gradient(135deg, #64748b 0%, #334155 100%);
+      --theme-celtic-accent: #cbd5e1;
+      --theme-topbar-bg: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(18, 20, 23, 0.94) 100%);
+    }
+    body.light-mode.theme-spectator {
+      --md-surface: #f8fafc;
+      --md-surface-container: #f1f5f9;
+      --md-surface-container-high: #e2e8f0;
+      --theme-primary: #64748b;
+      --theme-primary-dark: #334155;
+      --theme-glow: rgba(100, 116, 139, 0.18);
+      --theme-accent-bg: rgba(100, 116, 139, 0.10);
+      --theme-border: #94a3b8;
+      --theme-board-bg: radial-gradient(circle at 50% 20%, #f8fafc 0%, #e2e8f0 65%, #cbd5e1 100%);
+      --theme-board-border: #64748b;
+      --theme-ribbon-bg: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
+      --theme-topbar-bg: linear-gradient(135deg, rgba(100, 116, 139, 0.15) 0%, rgba(248, 250, 252, 0.94) 100%);
+    }
+
+    /* Admin Direct Message Modal Preset Buttons */
+    .btn-preset-msg {
+      background: rgba(217, 119, 6, 0.25);
+      border: 1px solid #d97706;
+      color: #fde68a;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.74rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+    .btn-preset-msg:hover {
+      background: #d97706;
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -3988,7 +4064,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.4</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.5</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -3996,15 +4072,15 @@
           </div>
 
           <div class="top-bar-right">
-            <!-- Dynamic Room Status Pill -->
-            <button type="button" class="sync-status-pill" id="syncRoomBtn" title="Tap to view Room Code & Invite Friends">
+            <!-- Dynamic Room Status Pill (Green Box when Connected, Red Box when Disconnected) -->
+            <button type="button" class="sync-status-pill offline" id="syncRoomBtn" title="Tap to view Room Code & Invite Friends">
               <span class="sync-dot"></span>
-              <span id="syncRoomLabel">ROOM: PRESTON-2026 🟢</span>
+              <span id="syncRoomLabel">DISCONNECTED</span>
             </button>
 
             <!-- Settings Button (Shows Sound & Reset Cookies Modal) -->
             <button type="button" class="settings-btn" id="openSettingsBtn" title="Game Settings & Reset">
-              <span>⚙️ Settings</span>
+              <span>⚙️</span><span class="hide-mobile"> Settings</span>
             </button>
           </div>
         </nav>
@@ -4017,26 +4093,16 @@
             <img src="assets/drunk-uno-logo.svg" alt="Drunk Uno Logo" style="width: 28px; height: 28px; vertical-align: middle; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));" />
           </div>
           <div class="header-subtext">
-            Preston Route // 10 Stops · Live Scoreboard across all phones · Tap your crew pill to select
+            Preston Route // 10 Stops · Live Scoreboard across all phones
           </div>
 
-          <!-- Active Pub Ticker & Live Turn Banner -->
+          <!-- Active Pub Ticker -->
           <div class="pub-ticker" id="pubTicker">
             <div class="pub-ticker-info">
               <span>📍 CURRENT PUB:</span>
               <b id="tickerPubName">Stop 1: The Station</b>
-              <span>•</span>
-              <span id="tickerPubRule">Rule 0: "Left hand drinking only — 1 sip penalty"</span>
-            </div>
-            <div class="turn-ticker-box" id="turnTickerBox">
-              <span>🎲 TURN:</span>
-              <span id="tickerTurnTeam">🔴 Team Red</span>
-              <button type="button" class="btn-quick-turn-pass" id="quickPassTurnBtn" title="Pass turn to next team">Next ➔</button>
             </div>
           </div>
-
-          <!-- Sticky Horizontal Crew Score Bar -->
-          <div class="crew-bar" id="crewBar"></div>
         </header>
 
 
@@ -4200,23 +4266,6 @@
 
               <!-- 4 Podium Rank Cards (1st, 2nd, 3rd, 4th) -->
               <div class="podium-cards-grid" id="podiumCardsGrid"></div>
-            </div>
-
-            <!-- DYNAMIC LIVE TURN BANNER -->
-            <div class="turn-status-banner" id="turnStatusBanner">
-              <div class="turn-status-left">
-                <span class="turn-status-label">🎲 CURRENT TURN:</span>
-                <div class="turn-status-team" id="scoresTurnTeam">
-                  <span class="crew-dot red"></span>
-                  <strong>Team Red</strong>
-                  <span class="turn-status-captain">(Captain: None)</span>
-                </div>
-              </div>
-              <div class="turn-status-right">
-                <button type="button" class="btn-advance-turn-scores" id="passTurnFromScoresBtn">
-                  Pass Turn ➔
-                </button>
-              </div>
             </div>
 
             <div class="scoring-stepper-card">
@@ -4597,24 +4646,7 @@
               </div>
             </div>
 
-            <!-- CONTROLLER 2: CURRENT TEAM TURN -->
-            <div class="admin-card">
-              <div class="admin-card-head">
-                <span class="admin-badge">🎲 STEP 2</span>
-                <h3>MANAGE CURRENT TEAM'S TURN:</h3>
-              </div>
-              <p style="font-size: 0.88rem; color: var(--ink-faded); margin-bottom: 10px;">
-                Designate which team has the active turn to attack or play cards:
-              </p>
-              <div class="admin-turn-grid" id="adminTurnGrid"></div>
-              <div style="margin-top: 14px;">
-                <button type="button" class="modal-btn" id="adminAdvanceTurnBtn" style="background: #1d63b8; font-size: 1.15rem; padding: 10px 18px; width: 100%;">
-                  ➡️ ADVANCE TURN TO NEXT TEAM
-                </button>
-              </div>
-            </div>
-
-            <!-- CONTROLLER 3: QUICK EMERGENCY RESET -->
+            <!-- CONTROLLER 2: QUICK EMERGENCY RESET -->
             <div class="admin-card" style="border-color: #8d0801;">
               <div class="admin-card-head">
                 <span class="admin-badge" style="background: #8d0801;">⚠️ RESET</span>
@@ -5051,6 +5083,68 @@
 
 
   <!-- =========================================================================
+       MODAL: ADMIN DIRECT MESSAGE TO PLAYER (NATIVE IN-APP MODAL REPLACING PROMPT)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="adminCustomMsgModal">
+    <div class="modal-scroll glass-card" style="max-width: 420px; text-align: center; border: 2px solid #d97706; box-shadow: 0 0 30px rgba(217, 119, 6, 0.45); animation: modalIn 0.25s ease-out;">
+      <div style="font-size: 2.8rem; margin-bottom: 4px;">💬</div>
+      <h2 style="font-family: 'Pirata One', cursive; font-size: 2rem; color: #fbbf24; margin-bottom: 4px;">DISPATCH DIRECT ALERT</h2>
+      <p style="font-size: 0.88rem; color: #fde68a; margin-bottom: 12px;" id="adminMsgTargetDesc">
+        Sending direct alert to Player
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; text-align: left;">
+        <label style="font-size: 0.74rem; font-weight: 700; color: #ffd885; text-transform: uppercase;">Quick Presets (Tap to use):</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 5px;" id="adminMsgPresets">
+          <button type="button" class="btn-preset-msg" data-text="🍻 Crawl Master needs you at the bar right now!">🍻 At the bar!</button>
+          <button type="button" class="btn-preset-msg" data-text="🍺 Time to drink — 2 sip penalty!">🍺 Drink penalty!</button>
+          <button type="button" class="btn-preset-msg" data-text="📍 Pack up! Moving to the next pub!">📍 Next pub!</button>
+          <button type="button" class="btn-preset-msg" data-text="🎡 You are selected for the Wheel of Doom!">🎡 Wheel of Doom!</button>
+          <button type="button" class="btn-preset-msg" data-text="⚠️ Rule violation spotted! Pay attention!">⚠️ Rule violation!</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 14px; text-align: left;">
+        <label for="adminCustomMsgInput" style="font-size: 0.74rem; font-weight: 700; color: #ffd885; text-transform: uppercase; display: block; margin-bottom: 4px;">Message Text:</label>
+        <textarea id="adminCustomMsgInput" rows="3" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.55); border: 1.5px solid #d97706; border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 0.90rem; resize: none;" placeholder="Type custom message..."></textarea>
+      </div>
+
+      <div class="modal-actions" style="display: flex; gap: 8px;">
+        <button type="button" class="modal-btn secondary" id="adminMsgCancelBtn" style="flex: 1; font-size: 0.95rem; padding: 10px;">
+          Cancel
+        </button>
+        <button type="button" class="modal-btn" id="adminMsgSendBtn" style="flex: 2; font-size: 1.05rem; padding: 10px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border: 1.5px solid #fbbf24; color: #fff;">
+          🚀 Send Alert
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FULLSCREEN LOCKOUT OVERLAY FOR KICKED DEVICES
+       ========================================================================= -->
+  <div id="kickedLockoutOverlay" class="banned-lockout-overlay" style="display: none;">
+    <div class="banned-card" style="border-color: #f59e0b;">
+      <div style="font-size: 3.6rem; margin-bottom: 8px;">👢</div>
+      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #f59e0b; margin-bottom: 8px; letter-spacing: 1px;">SESSION TERMINATED // KICKED</h1>
+      <p style="font-size: 1.02rem; color: #fde68a; margin-bottom: 14px; line-height: 1.4;">
+        You have been kicked from this Drunk Uno session by the Crawl Master.
+      </p>
+      <div id="kickedDetailChip" style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; background: rgba(0,0,0,0.65); border: 1px solid #d97706; padding: 8px 12px; border-radius: 6px; color: #fef3c7; margin-bottom: 16px; word-break: break-all;">
+        Device disconnected from room
+      </div>
+      <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 16px;">
+        Your connection has been terminated. You cannot reconnect unless reinstated by the crawl host.
+      </p>
+      <button type="button" id="kickedAdminUnlockBtn" style="background: transparent; border: 1px dashed rgba(255,255,255,0.25); color: #94a3b8; font-size: 0.74rem; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
+        👑 Crawl Master Passcode Re-entry
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
        FULLSCREEN LOCKOUT OVERLAY FOR BANNED DEVICES (MAC / IP BLACKLIST)
        ========================================================================= -->
   <div id="bannedLockoutOverlay" class="banned-lockout-overlay" style="display: none;">
@@ -5063,9 +5157,12 @@
       <div id="bannedDetailChip" style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; background: rgba(0,0,0,0.65); border: 1px solid #dc2626; padding: 8px 12px; border-radius: 6px; color: #fee2e2; margin-bottom: 16px; word-break: break-all;">
         Blacklisted Identifier: MAC / IP
       </div>
-      <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.35;">
+      <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 16px;">
         All game actions and scoring are disabled. Please contact your referee or crawl host to request reinstatement.
       </p>
+      <button type="button" id="bannedAdminUnlockBtn" style="background: transparent; border: 1px dashed rgba(255,255,255,0.25); color: #94a3b8; font-size: 0.74rem; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
+        👑 Crawl Master Passcode Re-entry
+      </button>
     </div>
   </div>
 
@@ -5513,6 +5610,9 @@
       }
 
       function saveGameState(broadcast = true) {
+        if (state.logs && state.logs.length > 25) {
+          state.logs = state.logs.slice(0, 25);
+        }
         const serialized = JSON.stringify(state);
         setCookie(COOKIE_KEY, serialized, 30);
         try { localStorage.setItem(COOKIE_KEY, serialized); } catch (e) {}
@@ -5549,12 +5649,23 @@
               if (parsed.myTeamIdx !== undefined) state.myTeamIdx = parsed.myTeamIdx;
               if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
               if (parsed.bingoCards) state.bingoCards = parsed.bingoCards;
-              if (parsed.logs) state.logs = parsed.logs;
+              if (parsed.logs) state.logs = parsed.logs.slice(0, 25);
               if (parsed.devices && typeof parsed.devices === "object") {
                 state.devices = Object.assign({}, state.devices, parsed.devices);
               }
               if (parsed.myPlayerName) state.myPlayerName = parsed.myPlayerName;
               if (Array.isArray(parsed.bannedList)) state.bannedList = parsed.bannedList;
+              if (parsed.isGameLocked !== undefined) {
+                state.isGameLocked = parsed.isGameLocked;
+                try { localStorage.setItem("drunk_uno_game_locked", state.isGameLocked ? "true" : "false"); } catch (e) {}
+              }
+              if (parsed.frozenDevices && typeof parsed.frozenDevices === "object") {
+                state.frozenDevices = parsed.frozenDevices;
+                const myDevId = getOrCreateDeviceId();
+                if (state.frozenDevices[myDevId]) {
+                  try { localStorage.setItem("drunk_uno_device_frozen", "true"); } catch (e) {}
+                }
+              }
               if (parsed.resetEpoch) {
                 state.resetEpoch = parsed.resetEpoch;
                 const localHandledEpoch = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
@@ -5563,6 +5674,9 @@
                 }
               }
               checkBannedStatus();
+              checkKickedStatus();
+              checkGameLockedStatus();
+              checkFrozenStatus();
               showToast("🍪 State Restored from Cookie");
             }
           } catch (e) {
@@ -5589,8 +5703,9 @@
 
       function checkBannedStatus() {
         const overlay = document.getElementById("bannedLockoutOverlay");
-        const isBanned = isCurrentDeviceBanned();
+        const isBanned = (localStorage.getItem("drunk_uno_is_banned") === "true") || isCurrentDeviceBanned();
         if (isBanned) {
+          try { localStorage.setItem("drunk_uno_is_banned", "true"); } catch (e) {}
           if (overlay) {
             overlay.style.display = "flex";
             const chip = document.getElementById("bannedDetailChip");
@@ -5605,9 +5720,51 @@
           } catch (e) {}
           state.myPlayerName = "";
           updateTopUserName();
+          if (mqttClient && mqttClient.isConnected()) {
+            try { mqttClient.disconnect(); } catch (e) {}
+          }
+          const sBtn = document.getElementById("syncRoomBtn");
+          const sLbl = document.getElementById("syncRoomLabel");
+          if (sBtn) sBtn.classList.add("offline");
+          if (sLbl) sLbl.textContent = "DISCONNECTED";
           playBuzzer();
+          return true;
         } else {
           if (overlay) overlay.style.display = "none";
+          return false;
+        }
+      }
+
+      function checkKickedStatus() {
+        const overlay = document.getElementById("kickedLockoutOverlay");
+        const isKicked = localStorage.getItem("drunk_uno_is_kicked") === "true";
+        if (isKicked) {
+          if (overlay) {
+            overlay.style.display = "flex";
+            const chip = document.getElementById("kickedDetailChip");
+            if (chip) {
+              chip.textContent = `Disconnected ID: ${getOrCreateDeviceId()} • IP: ${clientIp || "Detected"}`;
+            }
+          }
+          try {
+            localStorage.removeItem("drunk_uno_player_registered");
+            localStorage.removeItem("drunk_uno_player_name");
+            localStorage.removeItem("drunk_uno_crew_setup");
+          } catch (e) {}
+          state.myPlayerName = "";
+          updateTopUserName();
+          if (mqttClient && mqttClient.isConnected()) {
+            try { mqttClient.disconnect(); } catch (e) {}
+          }
+          const sBtn = document.getElementById("syncRoomBtn");
+          const sLbl = document.getElementById("syncRoomLabel");
+          if (sBtn) sBtn.classList.add("offline");
+          if (sLbl) sLbl.textContent = "DISCONNECTED";
+          playBuzzer();
+          return true;
+        } else {
+          if (overlay) overlay.style.display = "none";
+          return false;
         }
       }
 
@@ -5700,6 +5857,9 @@
       function checkGameLockedStatus() {
         const overlay = document.getElementById("gameLockedOverlay");
         if (!overlay) return;
+        if (localStorage.getItem("drunk_uno_game_locked") === "true") {
+          state.isGameLocked = true;
+        }
         const activeTabEl = document.querySelector(".tab-panel.active");
         const isAdmin = activeTabEl && activeTabEl.id === "tab-admin";
         overlay.style.display = (state.isGameLocked && !isAdmin) ? "flex" : "none";
@@ -5710,7 +5870,7 @@
         if (!overlay) return;
         const myDevId = getOrCreateDeviceId();
         const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
-        let isFrozen = false;
+        let isFrozen = localStorage.getItem("drunk_uno_device_frozen") === "true";
         if (state.frozenDevices && state.frozenDevices[myDevId]) {
           isFrozen = true;
         }
@@ -5755,6 +5915,7 @@
           const code = prompt("Enter Crawl Master Passcode to unlock:", "");
           if (code === "22140711") {
             state.isGameLocked = false;
+            try { localStorage.setItem("drunk_uno_game_locked", "false"); } catch (e) {}
             saveGameState(true);
             checkGameLockedStatus();
             if (mqttClient && mqttClient.isConnected()) {
@@ -5779,14 +5940,55 @@
         };
       }
 
+      const kickedUnlockBtn = document.getElementById("kickedAdminUnlockBtn");
+      if (kickedUnlockBtn) {
+        kickedUnlockBtn.onclick = () => {
+          const code = prompt("Enter Crawl Master Passcode to reinstate device:", "");
+          if (code === "22140711") {
+            try {
+              localStorage.removeItem("drunk_uno_is_kicked");
+              localStorage.removeItem("drunk_uno_is_banned");
+            } catch (e) {}
+            alert("✅ Device reinstated! Reconnecting...");
+            window.location.reload();
+          } else if (code !== null) {
+            alert("❌ Incorrect Passcode!");
+          }
+        };
+      }
+
+      const bannedUnlockBtn = document.getElementById("bannedAdminUnlockBtn");
+      if (bannedUnlockBtn) {
+        bannedUnlockBtn.onclick = () => {
+          const code = prompt("Enter Crawl Master Passcode to unban device:", "");
+          if (code === "22140711") {
+            try {
+              localStorage.removeItem("drunk_uno_is_banned");
+              localStorage.removeItem("drunk_uno_is_kicked");
+            } catch (e) {}
+            alert("✅ Device unbanned! Reconnecting...");
+            window.location.reload();
+          } else if (code !== null) {
+            alert("❌ Incorrect Passcode!");
+          }
+        };
+      }
+
       // --- 02. REAL-TIME MULTI-PHONE MQTT WEBSOCKET SYNCHRONIZATION ---
       let mqttClient = null;
       const syncBtn = document.getElementById("syncRoomBtn");
       const syncLabel = document.getElementById("syncRoomLabel");
 
       function initMqttSync() {
+        if (checkBannedStatus() || checkKickedStatus()) {
+          syncBtn.classList.add("offline");
+          syncLabel.textContent = "DISCONNECTED";
+          console.warn("Device is blacklisted or kicked. Connection aborted.");
+          return;
+        }
+
         const clientId = "uno_" + Math.random().toString(16).substr(2, 8);
-        syncLabel.textContent = `SYNCING... (${roomCode})`;
+        syncLabel.textContent = "CONNECTING";
 
         try {
           // Connect to HiveMQ Public Secure WebSocket Broker
@@ -5794,7 +5996,7 @@
 
           mqttClient.onConnectionLost = (responseObject) => {
             syncBtn.classList.add("offline");
-            syncLabel.textContent = `RECONNECTING...`;
+            syncLabel.textContent = "DISCONNECTED";
             setTimeout(initMqttSync, 4000);
           };
 
@@ -5829,6 +6031,12 @@
                   if (incoming.frozen) state.frozenDevices[incoming.targetDeviceId] = true;
                   else delete state.frozenDevices[incoming.targetDeviceId];
                 }
+                const myDevId = getOrCreateDeviceId();
+                if (state.frozenDevices && state.frozenDevices[myDevId]) {
+                  try { localStorage.setItem("drunk_uno_device_frozen", "true"); } catch (e) {}
+                } else {
+                  try { localStorage.removeItem("drunk_uno_device_frozen"); } catch (e) {}
+                }
                 checkFrozenStatus();
                 renderAdminTab();
                 return;
@@ -5837,6 +6045,9 @@
               // Freeze All Phones / Lock Game (Pub Transition Pause)
               if (incoming && incoming.action === "TOGGLE_GAME_LOCK") {
                 state.isGameLocked = !!incoming.isGameLocked;
+                try {
+                  localStorage.setItem("drunk_uno_game_locked", state.isGameLocked ? "true" : "false");
+                } catch (e) {}
                 checkGameLockedStatus();
                 playFanfare(state.isGameLocked ? "freeze" : "win");
                 showToast(state.isGameLocked ? "❄️ All phones frozen by Crawl Master!" : "🔓 Game unlocked for all players!");
@@ -5882,6 +6093,10 @@
                 if (incomingResetEpoch) {
                   state.resetEpoch = incomingResetEpoch;
                 }
+                try {
+                  localStorage.removeItem("drunk_uno_is_kicked");
+                  localStorage.removeItem("drunk_uno_is_banned");
+                } catch (e) {}
                 executeDeviceReset(incomingResetEpoch);
                 return;
               }
@@ -5897,10 +6112,13 @@
                     localStorage.removeItem("drunk_uno_player_name");
                     localStorage.removeItem("drunk_uno_crew_setup");
                     localStorage.removeItem("drunk_uno_player_registered");
+                    localStorage.setItem("drunk_uno_is_kicked", "true");
                   } catch (e) {}
                   state.myPlayerName = "";
-                  alert("⚠️ You have been kicked from this room session by the Crawl Master.");
-                  window.location.reload();
+                  if (mqttClient) {
+                    try { mqttClient.disconnect(); } catch (e) {}
+                  }
+                  checkKickedStatus();
                   return;
                 }
               }
@@ -5910,7 +6128,44 @@
                 if (incoming.bannedList) {
                   state.bannedList = incoming.bannedList;
                 }
+                const myDevId = getOrCreateDeviceId();
+                const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
+                const myName = (state.myPlayerName || "").trim().toLowerCase();
+                const myIp = (clientIp || "").trim();
+                const isTarget = (incoming.bannedId && incoming.bannedId === myDevId) ||
+                                 (incoming.bannedMac && myMac && incoming.bannedMac.trim().toLowerCase() === myMac) ||
+                                 (incoming.bannedIp && myIp && myIp !== "Detecting..." && incoming.bannedIp.trim() === myIp) ||
+                                 (incoming.bannedName && myName && incoming.bannedName.trim().toLowerCase() === myName);
+                if (isTarget) {
+                  try {
+                    localStorage.setItem("drunk_uno_is_banned", "true");
+                    localStorage.removeItem("drunk_uno_player_registered");
+                    localStorage.removeItem("drunk_uno_player_name");
+                    localStorage.removeItem("drunk_uno_crew_setup");
+                  } catch (e) {}
+                  if (mqttClient) {
+                    try { mqttClient.disconnect(); } catch (e) {}
+                  }
+                }
                 checkBannedStatus();
+              }
+
+              // Unban Device Signal
+              if (incoming && incoming.action === "UNBAN_DEVICE") {
+                const myDevId = getOrCreateDeviceId();
+                const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
+                const myIp = (clientIp || "").trim();
+                const isTarget = (incoming.unbannedId && incoming.unbannedId === myDevId) ||
+                                 (incoming.unbannedMac && myMac && incoming.unbannedMac.trim().toLowerCase() === myMac) ||
+                                 (incoming.unbannedIp && myIp && myIp !== "Detecting..." && incoming.unbannedIp.trim() === myIp);
+                if (isTarget) {
+                  try {
+                    localStorage.removeItem("drunk_uno_is_banned");
+                    localStorage.removeItem("drunk_uno_is_kicked");
+                  } catch (e) {}
+                  window.location.reload();
+                  return;
+                }
               }
 
               if (incoming && Array.isArray(incoming.teams)) {
@@ -5923,7 +6178,7 @@
                 state.currentStopIdx = incoming.currentStopIdx ?? state.currentStopIdx;
                 if (incoming.currentTurnIdx !== undefined) state.currentTurnIdx = incoming.currentTurnIdx;
                 state.bingoCards = incoming.bingoCards || state.bingoCards;
-                if (incoming.logs) state.logs = incoming.logs;
+                if (incoming.logs) state.logs = incoming.logs.slice(0, 25);
                 if (incoming.devices && typeof incoming.devices === "object") {
                   state.devices = Object.assign({}, state.devices, incoming.devices);
                 }
@@ -5934,6 +6189,7 @@
                   state.frozenDevices = incoming.frozenDevices;
                 }
                 checkBannedStatus();
+                checkKickedStatus();
                 checkGameLockedStatus();
                 checkFrozenStatus();
                 updateTopUserName();
@@ -5958,7 +6214,7 @@
             timeout: 5,
             onSuccess: () => {
               syncBtn.classList.remove("offline");
-              syncLabel.textContent = `ROOM: ${roomCode} 🟢`;
+              syncLabel.textContent = "CONNECTED";
               mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
               // Broadcast our state so new devices receive it
               saveGameState(true);
@@ -5966,7 +6222,7 @@
             onFailure: (err) => {
               console.warn("MQTT connect failed:", err);
               syncBtn.classList.add("offline");
-              syncLabel.textContent = `OFFLINE (${roomCode})`;
+              syncLabel.textContent = "DISCONNECTED";
               setTimeout(initMqttSync, 8000);
             }
           });
@@ -6132,10 +6388,16 @@
           c2: [0.42, 0.24, 0.02], // Deep molasses shadow
           c3: [1.00, 0.88, 0.28], // Radiant gold crest
           spec: [1.00, 0.98, 0.90]  // Bright gold sheen
+        },
+        SPECTATOR: {
+          c1: [0.32, 0.36, 0.44], // Cool neutral slate grey
+          c2: [0.10, 0.12, 0.15], // Charcoal shadow
+          c3: [0.52, 0.58, 0.68], // Silver slate crest
+          spec: [0.85, 0.88, 0.92]  // Soft metallic sheen
         }
       };
 
-      let currentThemeKey = "RED";
+      let currentThemeKey = "SPECTATOR";
       let curC1 = [...THEME_SHADERS.RED.c1];
       let curC2 = [...THEME_SHADERS.RED.c2];
       let curC3 = [...THEME_SHADERS.RED.c3];
@@ -6271,12 +6533,22 @@
       }
 
       function applyTeamTheme(teamIdx) {
+        document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow", "theme-spectator");
+
+        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
+
+        if (!isRegistered || teamIdx === null || teamIdx === undefined || teamIdx < 0) {
+          currentThemeKey = "SPECTATOR";
+          document.body.classList.add("theme-spectator");
+          updateThemeColorMeta();
+          return;
+        }
+
         const team = state.teams[teamIdx] || state.teams[0];
         const colorKey = team.key || "RED";
         currentThemeKey = colorKey;
 
         // Apply theme class to document.body so the whole website updates
-        document.body.classList.remove("theme-red", "theme-blue", "theme-green", "theme-yellow");
         document.body.classList.add(`theme-${team.colorClass}`);
 
         // Update mobile browser chrome bar & iOS Safari / Android status bar
@@ -6524,8 +6796,9 @@
       function addLog(text) {
         const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const entry = `[${time}] ${text}`;
+        if (!state.logs) state.logs = [];
         state.logs.unshift(entry);
-        if (state.logs.length > 60) state.logs.pop();
+        if (state.logs.length > 25) state.logs = state.logs.slice(0, 25);
         renderLogs();
         saveGameState(true);
       }
@@ -6600,6 +6873,7 @@
 
       function renderCrewBar() {
         const bar = document.getElementById("crewBar");
+        if (!bar) return;
         bar.innerHTML = "";
         const maxScore = Math.max(...state.teams.map(t => t.score));
 
@@ -6634,21 +6908,36 @@
         });
       }
 
+      function checkSpectatorBlock() {
+        const isReg = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
+        if (!isReg) {
+          showToast("👀 Spectators cannot score! Join a crew to start playing.");
+          playTick(240);
+          openCrewSetupModal(false);
+          return true;
+        }
+        return false;
+      }
+
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (TARGET TEAM) ---
       function renderScoringTab() {
         // Ensure myTeamIdx and targetTeamIdx are valid
         if (state.myTeamIdx === undefined || !state.teams[state.myTeamIdx]) state.myTeamIdx = 0;
         if (state.targetTeamIdx === undefined || !state.teams[state.targetTeamIdx]) state.targetTeamIdx = (state.myTeamIdx + 1) % 4;
 
-        // Step 0: Render Big Podium Leaderboard Box at Top & Active Turn Banner
+        // Step 0: Render Big Podium Leaderboard Box at Top
         renderPodiumBox();
-        renderTurnBanner();
 
         // Step 1: Update "Scoring as" indicator
+        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
         const myTeam = state.teams[state.myTeamIdx] || state.teams[0];
         const asBadge = document.getElementById("scoringAsBadge");
         if (asBadge) {
-          asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
+          if (!isRegistered) {
+            asBadge.innerHTML = `Mode: <strong>👀 Spectator (Join Crew to Score)</strong>`;
+          } else {
+            asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
+          }
         }
         const myPicker = document.getElementById("myTeamPicker");
         if (myPicker) {
@@ -6694,7 +6983,7 @@
                   ${targetTeam.frozen ? `<span style="font-size: 0.9rem; color: #0284c7;">[❄️ FROZEN]</span>` : ""}
                 </div>
                 <div style="font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--ink-muted);">
-                  Scoring by: <strong>${escapeHtml(myTeam.name)}</strong>${targetCaptain} • ${targetTeam.sips} drinks taken
+                  ${!isRegistered ? 'Mode: <strong>Spectator (Scoreboard View)</strong>' : `Scoring by: <strong>${escapeHtml(myTeam.name)}</strong>`}${targetCaptain} • ${targetTeam.sips} drinks taken
                 </div>
               </div>
             </div>
@@ -6793,6 +7082,7 @@
         // Attach action handlers
         consoleEl.querySelectorAll("[data-uno-score]").forEach(btn => {
           btn.onclick = () => {
+            if (checkSpectatorBlock()) return;
             const act = btn.dataset.unoScore;
             if (act === "skip") {
               targetTeam.score -= 1;
@@ -6843,6 +7133,7 @@
         // Attach manual point adjusters
         consoleEl.querySelectorAll("[data-point-adj]").forEach(btn => {
           btn.onclick = () => {
+            if (checkSpectatorBlock()) return;
             const delta = parseInt(btn.dataset.pointAdj, 10);
             targetTeam.score += delta;
             addLog(`⚖️ MANUAL ADJUST: ${targetTeam.name} adjusted by ${delta > 0 ? '+' + delta : delta} points.`);
@@ -6860,6 +7151,7 @@
 
         consoleEl.querySelectorAll("[data-sip-add]").forEach(btn => {
           btn.onclick = () => {
+            if (checkSpectatorBlock()) return;
             const count = parseInt(btn.dataset.sipAdd, 10);
             targetTeam.sips += count;
             addLog(`🍺 ${targetTeam.name} logged ${count} drink/sip(s) by ${myTeam.name}.`);
@@ -6870,17 +7162,22 @@
           };
         });
 
-        consoleEl.querySelector("[data-freeze-toggle]").onclick = () => {
-          targetTeam.frozen = !targetTeam.frozen;
-          addLog(targetTeam.frozen ? `❄️ Drinker's Freeze activated on ${targetTeam.name}!` : `☀️ Freeze lifted from ${targetTeam.name}.`);
-          playFanfare("freeze");
-          saveGameState(true);
-          renderCrewBar();
-          renderScoringTab();
-        };
+        const freezeToggleBtn = consoleEl.querySelector("[data-freeze-toggle]");
+        if (freezeToggleBtn) {
+          freezeToggleBtn.onclick = () => {
+            if (checkSpectatorBlock()) return;
+            targetTeam.frozen = !targetTeam.frozen;
+            addLog(targetTeam.frozen ? `❄️ Drinker's Freeze activated on ${targetTeam.name}!` : `☀️ Freeze lifted from ${targetTeam.name}.`);
+            playFanfare("freeze");
+            saveGameState(true);
+            renderCrewBar();
+            renderScoringTab();
+          };
+        }
 
         consoleEl.querySelectorAll("[data-stash-change]").forEach(btn => {
           btn.onclick = () => {
+            if (checkSpectatorBlock()) return;
             const dir = parseInt(btn.dataset.stashChange, 10);
             targetTeam.stash = Math.max(0, Math.min(2, targetTeam.stash + dir));
             addLog(`🃏 ${targetTeam.name} Captain's Stash updated to ${targetTeam.stash} Wild(s).`);
@@ -6931,8 +7228,10 @@
         grid.innerHTML = "";
 
         const currentStop = state.stops[state.currentStopIdx] || state.stops[0];
-        document.getElementById("tickerPubName").textContent = `Stop ${currentStop.num}: ${currentStop.name}`;
-        document.getElementById("tickerPubRule").textContent = `Rule 0: "${currentStop.rule}"`;
+        const pubNameEl = document.getElementById("tickerPubName");
+        if (pubNameEl) pubNameEl.textContent = `Stop ${currentStop.num}: ${currentStop.name}`;
+        const pubRuleEl = document.getElementById("tickerPubRule");
+        if (pubRuleEl) pubRuleEl.textContent = `Rule 0: "${currentStop.rule}"`;
 
         // Update active SVG Uno Card on map
         document.querySelectorAll(".map-uno-card").forEach(pin => {
@@ -7290,6 +7589,7 @@
       // Spin Interactions
       spinBtn.addEventListener("pointerdown", (e) => {
         e.stopPropagation();
+        if (checkSpectatorBlock()) return;
         if (isSpinning) return;
         ensureAudio();
         chargePower = 15;
@@ -7323,6 +7623,7 @@
 
       wheelWrapper.addEventListener("pointerdown", (e) => {
         if (e.target.closest("#spinBtn") || isSpinning) return;
+        if (checkSpectatorBlock()) return;
         ensureAudio();
         isDragging = true;
         lastAngle = getAngleFromCenter(e.clientX, e.clientY);
@@ -7370,6 +7671,7 @@
           `;
 
           tile.onclick = () => {
+            if (checkSpectatorBlock()) return;
             selectedBingoCard = card;
             openBingoTargetModal(card);
           };
@@ -7462,43 +7764,8 @@
       };
 
       // --- 11B. TURN BANNER & ROTATION HELPER ---
-      function advanceTurn() {
-        state.currentTurnIdx = (state.currentTurnIdx + 1) % 4;
-        const nextTeam = state.teams[state.currentTurnIdx];
-        addLog(`🎲 TURN ADVANCED: Now it is ${nextTeam.name}'s turn!`);
-        saveGameState(true);
-        renderTurnBanner();
-        renderAdminTab();
-        playTick(600);
-        showToast(`🎲 Turn: ${nextTeam.name}`);
-      }
-
-      function renderTurnBanner() {
-        const currentTeam = state.teams[state.currentTurnIdx] || state.teams[0];
-        const tickerEl = document.getElementById("tickerTurnTeam");
-        if (tickerEl) {
-          const capText = currentTeam.captain ? ` (👑 ${escapeHtml(currentTeam.captain)})` : '';
-          tickerEl.innerHTML = `<span class="crew-dot ${currentTeam.colorClass}"></span> ${escapeHtml(currentTeam.name)}${capText}`;
-        }
-        const scoresTurnEl = document.getElementById("scoresTurnTeam");
-        if (scoresTurnEl) {
-          const capText = currentTeam.captain ? `(👑 Captain: ${escapeHtml(currentTeam.captain)})` : '(Captain: Unassigned)';
-          scoresTurnEl.innerHTML = `
-            <span class="crew-dot ${currentTeam.colorClass}"></span>
-            <strong>${escapeHtml(currentTeam.name)}</strong>
-            <span class="turn-status-captain">${capText}</span>
-          `;
-        }
-      }
-
-      const quickPassBtn = document.getElementById("quickPassTurnBtn");
-      if (quickPassBtn) {
-        quickPassBtn.onclick = advanceTurn;
-      }
-      const passTurnFromScoresBtn = document.getElementById("passTurnFromScoresBtn");
-      if (passTurnFromScoresBtn) {
-        passTurnFromScoresBtn.onclick = advanceTurn;
-      }
+      function advanceTurn() {}
+      function renderTurnBanner() {}
 
       // --- 11C. ADMIN CONSOLE & PASSCODE UNLOCK (PASSWORD: 22140711) ---
       let adminSelectedPubIdx = 0;
@@ -7696,30 +7963,9 @@
                 showToast(`Reassigned ${d.name} to ${state.teams[newTeamIdx].name}`);
               };
 
-              // Targeted Message to Single Phone
+              // Targeted Message to Single Phone via in-app modal
               card.querySelector(".btn-device-msg").onclick = () => {
-                const customMsg = prompt(`Enter custom popup message to send directly to ${d.name}'s phone:`, "Crawl Master needs you at the bar!");
-                if (customMsg && customMsg.trim()) {
-                  const payload = JSON.stringify({
-                    action: "TARGETED_POPUP",
-                    targetDeviceId: devId,
-                    targetPlayerName: d.name,
-                    message: customMsg.trim(),
-                    sender: state.myPlayerName || "Crawl Master",
-                    timestamp: Date.now()
-                  });
-                  if (mqttClient && mqttClient.isConnected()) {
-                    try {
-                      const m = new Paho.MQTT.Message(payload);
-                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
-                      m.retained = false;
-                      mqttClient.send(m);
-                    } catch (e) {}
-                  }
-                  addLog(`💬 ADMIN: Sent custom alert to ${d.name}: "${customMsg.trim()}"`);
-                  playTick(600);
-                  showToast(`💬 Alert sent to ${d.name}`);
-                }
+                openAdminMsgModal(devId, d.name);
               };
 
               // Freeze / Unfreeze Single Phone
@@ -8077,32 +8323,6 @@
             pubGrid.appendChild(btn);
           });
         }
-
-        // --- 2. Current Turn Grid ---
-        const turnGrid = document.getElementById("adminTurnGrid");
-        if (turnGrid) {
-          turnGrid.innerHTML = "";
-          state.teams.forEach((t, idx) => {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = `btn-pick-team ${idx === state.currentTurnIdx ? "selected" : ""}`;
-            btn.innerHTML = `
-              <span class="crew-dot ${t.colorClass}"></span>
-              <span>${escapeHtml(t.name)}</span>
-              <span class="sub">${idx === state.currentTurnIdx ? "🎲 ACTIVE TURN" : t.captain ? '👑 ' + escapeHtml(t.captain) : "Pass Turn Here"}</span>
-            `;
-            btn.onclick = () => {
-              state.currentTurnIdx = idx;
-              addLog(`🎲 CRAWL MASTER: Set active turn to ${t.name}!`);
-              saveGameState(true);
-              renderTurnBanner();
-              renderAdminTab();
-              playTick(600);
-              showToast(`🎲 Active Turn: ${t.name}`);
-            };
-            turnGrid.appendChild(btn);
-          });
-        }
       }
 
       // Admin Directory Buttons
@@ -8400,17 +8620,73 @@
         };
       }
 
-      const adminAdvanceTurnBtn = document.getElementById("adminAdvanceTurnBtn");
-      if (adminAdvanceTurnBtn) {
-        adminAdvanceTurnBtn.onclick = () => {
-          state.currentTurnIdx = (state.currentTurnIdx + 1) % 4;
-          const nextTeam = state.teams[state.currentTurnIdx];
-          addLog(`🎲 TURN ADVANCED: Now it is ${nextTeam.name}'s turn!`);
-          saveGameState(true);
-          renderTurnBanner();
-          renderAdminTab();
-          playTick(600);
-          showToast(`🎲 Turn: ${nextTeam.name}`);
+      // --- ADMIN DIRECT MESSAGE MODAL CONTROLLER ---
+      let activeMsgTargetDevId = null;
+      let activeMsgTargetName = "";
+
+      function openAdminMsgModal(devId, playerName) {
+        activeMsgTargetDevId = devId;
+        activeMsgTargetName = playerName || "Player";
+        const modal = document.getElementById("adminCustomMsgModal");
+        const desc = document.getElementById("adminMsgTargetDesc");
+        const input = document.getElementById("adminCustomMsgInput");
+        if (desc) desc.textContent = `Sending direct popup alert to: ${activeMsgTargetName}`;
+        if (input) input.value = "🍻 Crawl Master needs you at the bar right now!";
+        if (modal) {
+          modal.classList.add("open");
+          if (input) setTimeout(() => input.focus(), 150);
+        }
+      }
+
+      const adminMsgCancelBtn = document.getElementById("adminMsgCancelBtn");
+      if (adminMsgCancelBtn) {
+        adminMsgCancelBtn.onclick = () => {
+          document.getElementById("adminCustomMsgModal")?.classList.remove("open");
+        };
+      }
+
+      document.querySelectorAll("#adminMsgPresets .btn-preset-msg").forEach(btn => {
+        btn.onclick = () => {
+          const input = document.getElementById("adminCustomMsgInput");
+          if (input && btn.dataset.text) {
+            input.value = btn.dataset.text;
+            playTick(500);
+          }
+        };
+      });
+
+      const adminMsgSendBtn = document.getElementById("adminMsgSendBtn");
+      if (adminMsgSendBtn) {
+        adminMsgSendBtn.onclick = () => {
+          const input = document.getElementById("adminCustomMsgInput");
+          const customMsg = input ? input.value.trim() : "";
+          if (!customMsg) {
+            showToast("⚠️ Please enter a message to send!");
+            return;
+          }
+          const payload = JSON.stringify({
+            action: "TARGETED_POPUP",
+            targetDeviceId: activeMsgTargetDevId,
+            targetPlayerName: activeMsgTargetName,
+            message: customMsg,
+            sender: state.myPlayerName || "Crawl Master",
+            timestamp: Date.now()
+          });
+          if (mqttClient && mqttClient.isConnected()) {
+            try {
+              const m = new Paho.MQTT.Message(payload);
+              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.retained = false;
+              mqttClient.send(m);
+            } catch (e) {
+              console.warn("MQTT send msg error:", e);
+            }
+          }
+          addLog(`💬 ADMIN: Sent custom alert to ${activeMsgTargetName}: "${customMsg}"`);
+          playFanfare("win");
+          triggerHaptic([50, 80]);
+          document.getElementById("adminCustomMsgModal")?.classList.remove("open");
+          showToast(`💬 Alert sent to ${activeMsgTargetName}`);
         };
       }
 
@@ -8933,6 +9209,9 @@
       document.getElementById("setupDismissBtn").onclick = () => {
         try { localStorage.setItem("drunk_uno_crew_setup", "true"); } catch (e) {}
         crewSetupModal.classList.remove("open");
+        applyTeamTheme(null);
+        updateTopUserName();
+        renderScoringTab();
         switchToTab("scores");
       };
 
@@ -8947,8 +9226,13 @@
       function updateTopUserName() {
         const topUserEl = document.getElementById("topUserName");
         if (!topUserEl) return;
-        const name = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "Player";
-        topUserEl.textContent = name;
+        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
+        if (!isRegistered) {
+          topUserEl.textContent = "Spectator";
+        } else {
+          const name = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "Player";
+          topUserEl.textContent = name;
+        }
       }
 
       const topUserBadge = document.getElementById("topUserBadge");
@@ -8961,7 +9245,8 @@
 
       loadGameState();
       applyAppearanceMode();
-      applyTeamTheme(state.myTeamIdx || 0);
+      const hasRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
+      applyTeamTheme(hasRegistered ? (state.myTeamIdx ?? 0) : null);
       updateTopUserName();
       renderCrewBar();
       renderScoringTab();
@@ -8994,6 +9279,8 @@
 
       checkGameLockedStatus();
       checkFrozenStatus();
+      checkBannedStatus();
+      checkKickedStatus();
 
       // Check first-load onboarding: if player name not set, prompt immediately
       if (!savedName || !isRegistered) {
