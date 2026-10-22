@@ -584,6 +584,19 @@
       box-shadow: 0 0 6px #ef4444;
       animation: none;
     }
+    .sync-status-pill.connecting {
+      color: #fde047 !important;
+      background: rgba(113, 63, 18, 0.95) !important;
+      border-color: #facc15 !important;
+    }
+    .sync-status-pill.connecting #syncRoomLabel {
+      color: #fde047 !important;
+    }
+    .sync-status-pill.connecting .sync-dot {
+      background: #facc15;
+      box-shadow: 0 0 6px #facc15;
+      animation: pulseDot 1s infinite;
+    }
 
     /* =========================================================================
        03. RIBBON HEADER & TICKER
@@ -2747,6 +2760,14 @@
       background: rgba(185, 28, 28, 0.95) !important;
       border-color: #ef4444 !important;
     }
+    body:not(.light-mode) .sync-status-pill.connecting {
+      color: #fde047 !important;
+      background: rgba(113, 63, 18, 0.95) !important;
+      border-color: #facc15 !important;
+    }
+    body:not(.light-mode) .sync-status-pill.connecting #syncRoomLabel {
+      color: #fde047 !important;
+    }
     body:not(.light-mode) .pub-ticker {
       background: rgba(0, 0, 0, 0.55) !important;
       color: #ffffff !important;
@@ -3565,6 +3586,18 @@
       background: rgba(254, 226, 226, 0.95) !important;
       border-color: #ef4444 !important;
     }
+    body.light-mode .sync-status-pill.connecting {
+      color: #854d0e !important;
+      background: rgba(254, 240, 138, 0.95) !important;
+      border-color: #eab308 !important;
+    }
+    body.light-mode .sync-status-pill.connecting #syncRoomLabel {
+      color: #854d0e !important;
+    }
+    body.light-mode .sync-status-pill.connecting .sync-dot {
+      background: #ca8a04 !important;
+      box-shadow: 0 0 6px #ca8a04 !important;
+    }
     body.light-mode #satinCanvas,
     body.light-mode .rubber-fluid-canvas {
       opacity: 0.12;
@@ -4093,7 +4126,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.8</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v3.9</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5929,7 +5962,10 @@
           }
           const sBtn = document.getElementById("syncRoomBtn");
           const sLbl = document.getElementById("syncRoomLabel");
-          if (sBtn) sBtn.classList.add("offline");
+          if (sBtn) {
+            sBtn.classList.remove("connecting");
+            sBtn.classList.add("offline");
+          }
           if (sLbl) sLbl.textContent = "DISCONNECTED";
           playBuzzer();
           return true;
@@ -5962,7 +5998,10 @@
           }
           const sBtn = document.getElementById("syncRoomBtn");
           const sLbl = document.getElementById("syncRoomLabel");
-          if (sBtn) sBtn.classList.add("offline");
+          if (sBtn) {
+            sBtn.classList.remove("connecting");
+            sBtn.classList.add("offline");
+          }
           if (sLbl) sLbl.textContent = "DISCONNECTED";
           playBuzzer();
           return true;
@@ -6308,6 +6347,7 @@
 
       function initMqttSync() {
         if (checkBannedStatus() || checkKickedStatus()) {
+          syncBtn.classList.remove("connecting");
           syncBtn.classList.add("offline");
           syncLabel.textContent = "DISCONNECTED";
           console.warn("Device is blacklisted or kicked. Connection aborted.");
@@ -6315,6 +6355,8 @@
         }
 
         const clientId = "uno_" + Math.random().toString(16).substr(2, 8);
+        syncBtn.classList.remove("offline");
+        syncBtn.classList.add("connecting");
         syncLabel.textContent = "CONNECTING";
 
         try {
@@ -6322,6 +6364,7 @@
           mqttClient = new Paho.MQTT.Client("broker.hivemq.com", 8884, clientId);
 
           mqttClient.onConnectionLost = (responseObject) => {
+            syncBtn.classList.remove("connecting");
             syncBtn.classList.add("offline");
             syncLabel.textContent = "DISCONNECTED";
             setTimeout(initMqttSync, 4000);
@@ -6564,6 +6607,7 @@
             timeout: 5,
             onSuccess: () => {
               syncBtn.classList.remove("offline");
+              syncBtn.classList.remove("connecting");
               syncLabel.textContent = "CONNECTED";
               mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
               mqttClient.subscribe("leeprky/drunkuno/global");
@@ -6586,6 +6630,7 @@
             },
             onFailure: (err) => {
               console.warn("MQTT connect failed:", err);
+              syncBtn.classList.remove("connecting");
               syncBtn.classList.add("offline");
               syncLabel.textContent = "DISCONNECTED";
               setTimeout(initMqttSync, 8000);
