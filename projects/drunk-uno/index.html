@@ -7,9 +7,9 @@
 
   <!-- Open Graph & Mobile App Meta (Optimized for iOS Safari & Android Chrome) -->
   <meta name="description" content="The Ultimate Uno Team Crawl: Preston Route — 10 Stops to Crown the Champions. Wheel of Doom, Real-Time Phone Sync Scoreboard, Interactive Map, Uno Card Codex & Secret Bingo." />
-  <meta name="theme-color" id="themeColorMeta" content="#101317" />
-  <meta name="theme-color" id="themeColorLightMeta" media="(prefers-color-scheme: light)" content="#f1f5f9" />
-  <meta name="theme-color" id="themeColorDarkMeta" media="(prefers-color-scheme: dark)" content="#101317" />
+  <meta name="theme-color" id="themeColorMeta" content="#0b0f17" />
+  <meta name="theme-color" id="themeColorLightMeta" media="(prefers-color-scheme: light)" content="#f6efe2" />
+  <meta name="theme-color" id="themeColorDarkMeta" media="(prefers-color-scheme: dark)" content="#0b0f17" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DRUNK: UNO" />
@@ -129,31 +129,41 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html {
-      background-color: #12151b;
-      background-color: var(--theme-bg, #12151b);
-      min-height: 100%;
+    html, body {
+      background: transparent !important;
+      background-color: transparent !important;
+      margin: 0;
+      padding: 0;
       width: 100% !important;
       max-width: 100vw !important;
-      position: relative;
+      min-height: 100%;
       -webkit-text-size-adjust: 100%;
       touch-action: pan-y pinch-zoom;
+      -webkit-font-smoothing: antialiased;
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: #0b0f17;
+      position: relative;
     }
 
     body {
-      width: 100% !important;
-      max-width: 100vw !important;
-      background: transparent !important;
       color: var(--ink);
-      min-height: 100dvh;
+      min-height: 100vh;
+      min-height: 100lvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(6px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
       overflow-x: hidden !important;
       position: relative;
-      touch-action: pan-y pinch-zoom;
-      -webkit-font-smoothing: antialiased;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: max(6px, var(--sat)) max(8px, var(--sar)) calc(max(24px, var(--sab)) + 65px) max(8px, var(--sal));
       box-sizing: border-box;
     }
 
@@ -472,17 +482,17 @@
       padding: 6px 8px;
       width: auto !important;
       max-width: min(94vw, 440px) !important;
-      background: rgba(18, 22, 31, 0.88) !important;
-      backdrop-filter: blur(28px) saturate(200%);
-      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      background-color: rgba(15, 18, 24, 0.75) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
       -webkit-transform: translateX(-50%) translateZ(0);
       transform: translateX(-50%) translateZ(0);
       border: 1px solid rgba(255, 255, 255, 0.16) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
       border-radius: 28px !important;
       box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.65),
-        0 2px 10px rgba(0, 0, 0, 0.4),
+        0 12px 32px rgba(0, 0, 0, 0.45),
+        0 2px 10px rgba(0, 0, 0, 0.3),
         inset 0 1px 1px rgba(255, 255, 255, 0.2);
       touch-action: manipulation;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
@@ -507,7 +517,9 @@
         border-radius: 28px !important;
         border: 1px solid rgba(255, 255, 255, 0.18) !important;
         border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
-        background: rgba(15, 20, 29, 0.92) !important;
+        background-color: rgba(15, 18, 24, 0.75) !important;
+        backdrop-filter: blur(16px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
         padding: 5px 6px !important;
       }
       .mobile-bottom-dock.dock-hidden {
@@ -2954,8 +2966,7 @@
       right: 0;
       bottom: 0;
       width: 100vw;
-      height: 100vh;
-      height: 100dvh;
+      height: 100%;
       height: 100lvh;
       pointer-events: none;
       z-index: 0;
@@ -3157,9 +3168,9 @@
     .top-bar,
     .tab-nav,
     .pub-ticker {
-      background: rgba(22, 12, 6, 0.76) !important;
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(15, 18, 24, 0.75) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.28);
       border-bottom: 1.5px solid var(--theme-border, #3c220c);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 18px var(--theme-glow, rgba(0,0,0,0));
@@ -3501,6 +3512,9 @@
     }
     body:not(.light-mode)[class*="theme-"] .top-bar {
       background: var(--theme-topbar-bg) !important;
+      background-color: rgba(15, 18, 24, 0.75) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
       border: 1.5px solid var(--theme-border) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 14px var(--theme-glow) !important;
@@ -3523,9 +3537,12 @@
       box-shadow: 0 0 10px var(--theme-glow) !important;
     }
     body:not(.light-mode)[class*="theme-"] .mobile-bottom-dock {
+      background-color: rgba(15, 18, 24, 0.75) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
       border: 1.5px solid var(--theme-border) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 18px var(--theme-glow), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 18px var(--theme-glow), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
     }
     body:not(.light-mode)[class*="theme-"] .admin-header-card {
       background: linear-gradient(135deg, var(--theme-accent-bg) 0%, rgba(18, 10, 6, 0.92) 100%) !important;
@@ -8673,18 +8690,20 @@
           else titleBarHex = "#190e0e";
         }
 
-        document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", titleBarHex));
+        const safariTone = isLight ? "#f6efe2" : "#0b0f17";
+        document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", safariTone));
         if (document.documentElement) {
           document.documentElement.style.setProperty('--theme-bg', titleBarHex);
-          document.documentElement.style.backgroundColor = titleBarHex;
+          document.documentElement.style.backgroundColor = "transparent";
         }
         if (document.body) {
           document.body.style.setProperty('--theme-bg', titleBarHex);
+          document.body.style.backgroundColor = "transparent";
         }
 
         const appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
         if (appleMeta) {
-          appleMeta.setAttribute("content", isLight ? "default" : "black-translucent");
+          appleMeta.setAttribute("content", "black-translucent");
         }
       }
 
