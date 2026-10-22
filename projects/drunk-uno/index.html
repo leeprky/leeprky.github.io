@@ -28,10 +28,10 @@
   <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon.png" />
   <link rel="shortcut icon" href="assets/favicon.png" />
 
-  <!-- Google Fonts: Pirate Display, Antique Serif & Monospace -->
+  <!-- Google Fonts: Modern Uno Display (Outfit, Fredoka) & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Pirata+One&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
   <!-- GSAP 3 & Plugins (Local + CDN Fallback) -->
   <script src="../../assets/vendor/gsap.min.js"></script>
@@ -199,27 +199,24 @@
       gap: 12px;
     }
 
-    /* Main Parchment Board */
+    /* Main Content Frame (Clean Edge-to-Edge Glass Container) */
     .parchment-board {
       position: relative;
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
       overflow-x: hidden !important;
-      background:
-        radial-gradient(circle at 85% 80%, rgba(139, 90, 43, 0.28) 0%, transparent 22%),
-        radial-gradient(circle at 15% 15%, rgba(120, 72, 25, 0.22) 0%, transparent 18%),
-        radial-gradient(circle at 50% 50%, var(--parchment-light) 0%, var(--parchment-mid) 72%, var(--parchment-dark) 100%);
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: var(--shadow-heavy), inset 0 0 45px rgba(62, 34, 8, 0.7);
-      border: 3.5px solid #3c220c;
+      background: transparent !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
     }
 
     .celtic-frame {
-      border: 3px double var(--ink);
-      border-radius: 10px;
-      padding: 12px 10px;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
       position: relative;
       width: 100% !important;
       max-width: 100% !important;
@@ -227,14 +224,9 @@
       overflow-x: hidden !important;
     }
     .celtic-frame::before, .celtic-frame::after {
-      content: "✦";
-      position: absolute;
-      font-size: 1.25rem;
-      color: var(--wood-mid);
-      opacity: 0.7;
+      display: none !important;
+      content: "" !important;
     }
-    .celtic-frame::before { top: 3px; left: 6px; }
-    .celtic-frame::after { top: 3px; right: 6px; }
 
     /* =========================================================================
        02. TOP NAVIGATION & DYNAMIC ROOM SYNC CONTROLS
@@ -375,15 +367,16 @@
         gap: 8px !important;
       }
       .parchment-board {
-        padding: 6px 4px !important;
-        border-radius: 14px !important;
-        border: 2px solid var(--theme-border, #d8a86a) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
       }
       .celtic-frame {
-        padding: 8px 6px !important;
-        border: 1.5px solid var(--theme-border, #d8a86a) !important;
-        border-radius: 12px !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
       }
       .celtic-frame::before, .celtic-frame::after {
         display: none !important;
@@ -447,101 +440,76 @@
       }
     }
 
-    /* Floating iOS Glass Dock for Tab Navigation (Desktop / Tablet) */
+    /* Floating iOS Glass Dock for Tab Navigation matching uploaded_media_3 */
     .mobile-bottom-dock {
-      position: fixed;
-      bottom: calc(14px + var(--sab));
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 990;
+      position: fixed !important;
+      bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 6px 14px;
-      width: auto;
-      max-width: min(94vw, 560px);
-      background: var(--glass-card-bg, rgba(16, 20, 28, 0.78));
+      gap: 4px;
+      padding: 6px 8px;
+      width: auto !important;
+      max-width: min(94vw, 440px) !important;
+      background: rgba(18, 22, 31, 0.88) !important;
       backdrop-filter: blur(28px) saturate(200%);
       -webkit-backdrop-filter: blur(28px) saturate(200%);
-      border: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.22));
-      border-top: 1.5px solid rgba(255, 255, 255, 0.45);
-      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.16) !important;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
+      border-radius: 28px !important;
       box-shadow:
-        0 14px 40px rgba(0, 0, 0, 0.6),
-        0 0 24px -2px var(--theme-glow, rgba(0,0,0,0)),
-        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+        0 16px 40px rgba(0, 0, 0, 0.65),
+        0 2px 10px rgba(0, 0, 0, 0.4),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
       touch-action: manipulation;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      will-change: transform, opacity;
     }
-    @media (max-width: 600px) {
+
+    .mobile-bottom-dock.dock-hidden {
+      transform: translateX(-50%) translateY(140%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    @media (max-width: 600px), (display-mode: standalone), (display-mode: fullscreen) {
       .mobile-bottom-dock {
         position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        border-radius: 18px 18px 0 0 !important;
-        border: none !important;
-        border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
-        background: var(--glass-card-bg, rgba(16, 20, 28, 0.94)) !important;
-        backdrop-filter: blur(28px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-        padding: 5px 4px calc(max(14px, env(safe-area-inset-bottom, 14px)) + 2px) 4px !important;
-        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.65) !important;
-        z-index: 9999 !important;
+        bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: auto !important;
+        max-width: min(96vw, 420px) !important;
+        border-radius: 28px !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        border-top: 1.5px solid rgba(255, 255, 255, 0.32) !important;
+        background: rgba(15, 20, 29, 0.92) !important;
+        padding: 5px 6px !important;
+      }
+      .mobile-bottom-dock.dock-hidden {
+        transform: translateX(-50%) translateY(140%) !important;
       }
       .app-container {
-        padding-bottom: calc(90px + max(14px, env(safe-area-inset-bottom, 14px))) !important;
-      }
-    }
-    @media (display-mode: standalone), (display-mode: fullscreen) {
-      .mobile-bottom-dock {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        transform: none !important;
-        border-radius: 20px 20px 0 0 !important;
-        border: none !important;
-        border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
-        background: var(--glass-card-bg, rgba(16, 20, 28, 0.94)) !important;
-        backdrop-filter: blur(28px) saturate(200%) !important;
-        -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-        padding: 6px 6px calc(max(16px, env(safe-area-inset-bottom, 16px)) + 4px) 6px !important;
-        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
-        z-index: 9999 !important;
-      }
-      .app-container {
-        padding-bottom: calc(95px + max(16px, env(safe-area-inset-bottom, 16px))) !important;
+        padding-bottom: calc(85px + max(12px, env(safe-area-inset-bottom, 12px))) !important;
       }
     }
     body.standalone-app .mobile-bottom-dock,
     html.standalone-app .mobile-bottom-dock {
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      max-width: 100vw !important;
-      transform: none !important;
-      border-radius: 20px 20px 0 0 !important;
-      border: none !important;
-      border-top: 1.5px solid var(--theme-border, rgba(255, 255, 255, 0.35)) !important;
-      background: var(--glass-card-bg, rgba(16, 20, 28, 0.94)) !important;
-      backdrop-filter: blur(28px) saturate(200%) !important;
-      -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-      padding: 6px 6px calc(max(16px, env(safe-area-inset-bottom, 16px)) + 4px) 6px !important;
-      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.7) !important;
-      z-index: 9999 !important;
+      bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      border-radius: 28px !important;
+      width: auto !important;
     }
     body.standalone-app .app-container,
     html.standalone-app .app-container {
-      padding-bottom: calc(95px + max(16px, env(safe-area-inset-bottom, 16px))) !important;
+      padding-bottom: calc(85px + max(12px, env(safe-area-inset-bottom, 12px))) !important;
     }
 
     /* 5-Second Zooming In and Out Cinematic App Loading Screen */
@@ -653,7 +621,7 @@
     }
 
     .intro-splash-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: clamp(2.2rem, 7.5vw, 3.4rem);
       color: #ffd166;
       letter-spacing: 2px;
@@ -766,15 +734,22 @@
     }
 
     .dock-tab.active {
-      background: linear-gradient(180deg, var(--theme-primary, #925424) 0%, var(--theme-primary-dark, #542d0c) 100%) !important;
-      border: 1.5px solid var(--theme-border, var(--gold)) !important;
+      background: linear-gradient(180deg, rgba(82, 95, 115, 0.88) 0%, rgba(45, 55, 72, 0.98) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.35) !important;
       border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
       border-radius: 18px !important;
-      color: #fff !important;
+      color: #ffffff !important;
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.35),
-        0 4px 16px rgba(0, 0, 0, 0.5),
-        0 0 16px var(--theme-glow) !important;
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    }
+    .dock-tab.active .dock-label {
+      color: #ffffff !important;
+      font-weight: 800;
+    }
+    .dock-tab:not(.active) .dock-label {
+      color: #94a3b8 !important;
+      font-weight: 600;
     }
 
     .dock-tab.active .dock-icon {
@@ -790,7 +765,7 @@
       border: 2px solid var(--ink);
       border-radius: 8px;
       padding: 6px 11px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.05rem;
       letter-spacing: 0.04em;
       color: var(--ink);
@@ -905,7 +880,7 @@
       margin-bottom: 5px;
     }
     .ribbon-banner h1 {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: clamp(1.4rem, 4vw, 2.2rem);
       letter-spacing: 0.08em;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -965,7 +940,7 @@
     }
     .pub-ticker b {
       color: #ffd885;
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-weight: 800;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
     }
@@ -978,7 +953,7 @@
       border: 1.5px solid var(--gold);
       border-radius: 6px;
       padding: 4px 10px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.15rem;
       letter-spacing: 0.5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
@@ -1055,7 +1030,7 @@
       gap: 4px;
     }
     .crew-name-label {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.15rem;
       line-height: 1;
       display: flex;
@@ -1075,7 +1050,7 @@
     .crew-dot.yellow { background: var(--yellow-quad); }
 
     .crew-score-big {
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-weight: 900;
       font-size: 1.35rem;
       line-height: 1;
@@ -1151,7 +1126,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.25rem;
       margin-bottom: 3px;
     }
@@ -1216,7 +1191,7 @@
       background: radial-gradient(circle, #c91818 0%, #7d0d0d 70%, #3d0505 100%);
       border: 4px solid var(--gold);
       color: var(--gold-bright);
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.6rem;
       letter-spacing: 0.1em;
       cursor: pointer;
@@ -1326,7 +1301,7 @@
     }
 
     .podium-main-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.85rem;
       color: #7a1d1d;
       line-height: 1.1;
@@ -1346,7 +1321,7 @@
       border: 2px solid var(--wood-mid);
       border-radius: 8px;
       padding: 8px 14px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.15rem;
       color: var(--ink);
       cursor: pointer;
@@ -1452,7 +1427,7 @@
       align-items: center;
       justify-content: center;
       gap: 3px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 0.95rem;
       padding: 2px 6px;
       border-radius: 4px;
@@ -1498,7 +1473,7 @@
       overflow: hidden;
     }
     .podium-team-name {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.05rem;
       color: var(--ink);
       line-height: 1.1;
@@ -1530,7 +1505,7 @@
       width: 100%;
     }
     .podium-score-number {
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-size: 1.55rem;
       font-weight: 900;
       line-height: 1;
@@ -1624,7 +1599,7 @@
       flex-wrap: wrap;
     }
     .turn-status-label {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.35rem;
       color: #dfb74c;
       letter-spacing: 0.04em;
@@ -1651,7 +1626,7 @@
       border: 1.5px solid #23170b;
       padding: 6px 14px;
       border-radius: 6px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.15rem;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
@@ -1677,7 +1652,7 @@
     }
 
     .step-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.45rem;
       display: flex;
       align-items: center;
@@ -1701,7 +1676,7 @@
       border: 2px solid var(--ink);
       border-radius: 8px;
       padding: 10px 8px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.2rem;
       color: var(--ink);
       cursor: pointer;
@@ -1752,7 +1727,7 @@
       gap: 10px;
     }
     .scoring-target-badge {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.6rem;
       line-height: 1;
       display: flex;
@@ -1766,7 +1741,7 @@
       gap: 8px;
     }
     .big-score-num {
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-size: 2.2rem;
       font-weight: 900;
       line-height: 1;
@@ -1883,7 +1858,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.35rem;
       color: #ffd885;
       margin-bottom: 8px;
@@ -1955,14 +1930,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.25rem;
       color: #fff;
       font-weight: 700;
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
     .btn-setup-color .team-label {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.35rem;
       line-height: 1;
     }
@@ -2041,7 +2016,7 @@
       padding: 10px 12px;
       border: 2px solid var(--ink);
       border-radius: 8px;
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-size: 1rem;
       font-weight: 700;
       background: #fff;
@@ -2075,7 +2050,7 @@
     .standings-table th {
       background: var(--wood-mid);
       color: var(--gold-bright);
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.1rem;
     }
     .standings-table tr:nth-child(even) { background: rgba(60, 30, 10, 0.05); }
@@ -2202,14 +2177,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-size: 0.9rem;
       font-weight: 700;
       flex-shrink: 0;
     }
     .stop-card.is-current .stop-num { background: var(--red-quad); }
     .stop-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.3rem;
       flex: 1;
       line-height: 1.1;
@@ -2236,7 +2211,7 @@
       border: 1.5px solid var(--ink);
       border-radius: 6px;
       padding: 5px 9px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 0.95rem;
       color: var(--ink);
       cursor: pointer;
@@ -2282,7 +2257,7 @@
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-weight: 900;
       font-size: 1.5rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
@@ -2302,7 +2277,7 @@
       min-width: 0;
     }
     .codex-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.3rem;
       line-height: 1.15;
       color: var(--ink);
@@ -2369,7 +2344,7 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
     .bingo-header-card h2 {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 2rem;
       margin: 0;
       letter-spacing: 0.08em;
@@ -2413,7 +2388,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(-18deg);
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.3rem;
       color: rgba(158, 27, 27, 0.85);
       border: 2px dashed #9e1b1b;
@@ -2424,7 +2399,7 @@
 
     .bingo-tile-icon { font-size: 1.5rem; text-align: center; }
     .bingo-tile-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.05rem;
       line-height: 1.15;
       text-align: center;
@@ -2487,7 +2462,7 @@
       margin-bottom: 6px;
     }
     .admin-card-head h3 {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.45rem;
       color: #7a1d1d;
       margin: 0;
@@ -2580,7 +2555,7 @@
       margin-bottom: 6px;
     }
     .battle-log-head h3 {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.25rem;
       display: flex;
       align-items: center;
@@ -2654,7 +2629,7 @@
       box-sizing: border-box;
     }
     .modal-title {
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.85rem;
       text-align: center;
       color: #7a1d1d;
@@ -2678,7 +2653,7 @@
       border: 2px solid var(--gold);
       border-radius: 8px;
       color: var(--gold-bright);
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.25rem;
       padding: 10px 14px;
       cursor: pointer;
@@ -3441,7 +3416,7 @@
       gap: 4px;
     }
     .podium-score-number {
-      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-family: var(--font-uno);
       font-size: 1.85rem;
       font-weight: 900;
       color: #ffffff !important;
@@ -3483,7 +3458,7 @@
       border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
       border-radius: 10px;
       padding: 10px 8px;
-      font-family: 'Pirata One', cursive;
+      font-family: var(--font-uno);
       font-size: 1.25rem;
       cursor: pointer;
       display: flex;
@@ -3614,9 +3589,7 @@
       color: #f7eedc !important;
       border: 1.5px solid rgba(220, 180, 120, 0.22) !important;
     }
-    body:not(.light-mode) .codex-title {
-      color: #ffd885 !important;
-    }
+    body:not(.light-mode) .codex-title { color: #ffffff !important; font-weight: 800; }
     body:not(.light-mode) .codex-desc {
       color: #e2d1ba !important;
     }
@@ -3642,9 +3615,7 @@
     body:not(.light-mode) .stop-card.is-current .stop-title {
       color: #ffffff !important;
     }
-    body:not(.light-mode) .stop-title {
-      color: #ffd885 !important;
-    }
+    body:not(.light-mode) .stop-title { color: #ffffff !important; font-weight: 800; }
     body:not(.light-mode) .stop-rule-text {
       color: #e2d1ba !important;
     }
@@ -3665,105 +3636,15 @@
     }
     body:not(.light-mode) .room-info-pill,
     body:not(.light-mode) .back-home-link,
-    body:not(.light-mode) .user-profile-badge,
-    body:not(.light-mode) .settings-btn {
-      background: rgba(26, 16, 10, 0.75) !important;
-      border: 1px solid rgba(255, 255, 255, 0.18) !important;
-      color: #ffd885 !important;
-    }
+    body:not(.light-mode) .user-profile-badge, body:not(.light-mode) .settings-btn { background: rgba(255, 255, 255, 0.08) !important; border: 1px solid rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; }
     body:not(.light-mode) .settings-btn:hover,
     body:not(.light-mode) .user-profile-badge:hover,
     body:not(.light-mode) .back-home-link:hover {
       background: var(--theme-accent-bg, rgba(220, 180, 120, 0.2)) !important;
       border-color: var(--theme-border, var(--gold)) !important;
     }
-    body:not(.light-mode) .btn-title-chip,
-    body:not(.light-mode) .btn-stop-check {
-      background: rgba(35, 22, 14, 0.85) !important;
-      color: #ffd885 !important;
-      border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    }
-    body:not(.light-mode) .btn-title-chip:hover,
-    body:not(.light-mode) .btn-stop-check:hover {
-      background: var(--theme-accent-bg, rgba(220, 180, 120, 0.2)) !important;
-      border-color: var(--theme-border, var(--gold)) !important;
-    }
-
-    /* Battle Log, Rules Cards & Wheel Cards in Dark Mode */
-    body:not(.light-mode) .battle-log-card {
-      background: var(--glass-card-bg, rgba(28, 16, 10, 0.88)) !important;
-      border: 1.5px solid var(--theme-border, rgba(220, 180, 120, 0.25)) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
-    }
-    body:not(.light-mode) .battle-log-head h3 {
-      color: #ffd885 !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
-    }
-    body:not(.light-mode) .log-list {
-      background: rgba(16, 9, 5, 0.75) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-    }
-    body:not(.light-mode) .rule-card-mini {
-      background: var(--glass-card-bg, rgba(28, 16, 12, 0.88)) !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
-    }
-    body:not(.light-mode) .rule-card-mini.target-active {
-      background: linear-gradient(135deg, var(--theme-accent-bg, rgba(220, 180, 120, 0.25)) 0%, rgba(36, 20, 14, 0.95) 100%) !important;
-      border: 2px solid var(--theme-border, var(--gold)) !important;
-      box-shadow: 0 0 16px var(--theme-glow, rgba(0,0,0,0)), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
-    }
-    body:not(.light-mode) .rule-card-mini p {
-      color: #e2ceb0 !important;
-    }
-    body:not(.light-mode) #card-RED .rule-card-mini-head span:last-child {
-      color: #fca5a5 !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    body:not(.light-mode) #card-YELLOW .rule-card-mini-head span:last-child {
-      color: #fef08a !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    body:not(.light-mode) #card-BLUE .rule-card-mini-head span:last-child {
-      color: #93c5fd !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    body:not(.light-mode) #card-GREEN .rule-card-mini-head span:last-child {
-      color: #86efac !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    body:not(.light-mode) .rules-card-box {
-      background: var(--glass-card-bg, rgba(28, 16, 10, 0.88)) !important;
-      border: 1.5px solid var(--theme-border, rgba(220, 180, 120, 0.25)) !important;
-      color: #f7eedc !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45) !important;
-    }
-    body:not(.light-mode) .rules-card-box h2,
-    body:not(.light-mode) .rules-card-box h3 {
-      color: #ffd885 !important;
-      border-bottom-color: rgba(255, 255, 255, 0.15) !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
-    }
-    body:not(.light-mode) .rules-card-box table th {
-      background: var(--theme-primary-dark, #2b1810) !important;
-      color: #ffd885 !important;
-      border-color: var(--theme-border, rgba(220, 180, 120, 0.3)) !important;
-    }
-    body:not(.light-mode) .rules-card-box table td {
-      background: rgba(18, 10, 6, 0.45) !important;
-      color: #fdf6ec !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-    }
-    body:not(.light-mode) .rules-card-box table td strong {
-      color: #ffd885 !important;
-    }
-    body:not(.light-mode) .standings-table th {
-      background: var(--theme-primary-dark, #2b1810) !important;
-      color: #ffd885 !important;
-      border-color: var(--theme-border, rgba(220, 180, 120, 0.3)) !important;
-    }
+    body:not(.light-mode) .btn-title-chip, body:not(.light-mode) .btn-stop-check { background: rgba(255, 255, 255, 0.08) !important; color: #cbd5e1 !important; border: 1px solid rgba(255, 255, 255, 0.18) !important; }
+    body:not(.light-mode) .standings-table th { background: rgba(30, 41, 59, 0.7) !important; color: #cbd5e1 !important; border-color: rgba(255, 255, 255, 0.12) !important; font-weight: 700; }
     body:not(.light-mode) .standings-table td {
       border-color: rgba(255, 255, 255, 0.12) !important;
       color: #fdf6ec !important;
@@ -3838,15 +3719,8 @@
     }
 
     /* Admin Card Headings, Badges & High-Contrast Action Buttons */
-    body:not(.light-mode) .admin-card-head h3 {
-      color: #ffd885 !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
-    }
-    body:not(.light-mode) .admin-card-head .admin-badge {
-      background: rgba(0, 0, 0, 0.6) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
-      color: #ffd885 !important;
-    }
+    body:not(.light-mode) .admin-card-head h3 { color: #ffffff !important; font-family: var(--font-uno) !important; font-weight: 800; }
+    body:not(.light-mode) .admin-card-head .admin-badge { background: rgba(56, 189, 248, 0.16) !important; border: 1px solid rgba(56, 189, 248, 0.4) !important; color: #7dd3fc !important; }
     body:not(.light-mode) #adminBroadcastPubBtn {
       background: linear-gradient(135deg, #15803d 0%, #166534 100%) !important;
       color: #ffffff !important;
@@ -4673,12 +4547,10 @@
   <div id="appIntroLoadingScreen" class="app-intro-splash" aria-label="Drunk Uno Loading Screen">
     <div class="intro-splash-backdrop"></div>
     <div class="intro-splash-content">
-      <div class="intro-logo-container">
+      <div class="intro-logo-container" style="margin-top: -30px; margin-bottom: 28px;">
         <div class="intro-logo-glow"></div>
         <img src="assets/drunk-uno-logo.png" alt="Drunk Uno Logo" class="intro-splash-logo" />
       </div>
-      <div class="intro-splash-title">DRUNK UNO</div>
-      <div class="intro-splash-subtitle">PRESTON ROUTE // 10 PUBS</div>
       <div class="intro-splash-loader-bar">
         <div class="intro-splash-loader-fill" id="introLoaderProgress"></div>
       </div>
@@ -4706,7 +4578,7 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v4.9</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v5.0</span>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -4924,7 +4796,7 @@
 
             <!-- FULL LIVE LEADERBOARD STANDINGS -->
             <div class="standings-table-wrap">
-              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 8px;">
+              <h3 style="font-family: var(--font-uno); font-size: 1.45rem; margin-bottom: 8px;">
                 📊 FULL CREW STATS BREAKDOWN (LIVE ACROSS ALL PHONES)
               </h3>
               <table class="standings-table">
@@ -4955,7 +4827,7 @@
 
             <div class="interactive-map-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
-                <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin: 0;">
+                <h3 style="font-family: var(--font-uno); font-size: 1.5rem; margin: 0;">
                   🗺️ INTERACTIVE PRESTON CRAWL MAP // TAP PINS TO VIEW PUBS
                 </h3>
                 <button type="button" class="btn-stop-check" id="openMapLightboxBtn">
@@ -5083,7 +4955,7 @@
             </div>
 
             <!-- 10 Stops Checklist & Live Navigation -->
-            <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin-top: 4px;">
+            <h3 style="font-family: var(--font-uno); font-size: 1.5rem; margin-top: 4px;">
               📍 PUB STOPS PROGRESS & RULE 0 CREATOR
             </h3>
             <div class="stops-grid" id="stopsGrid"></div>
@@ -5100,7 +4972,7 @@
 
             <!-- 3 Golden Rules Bar -->
             <div class="rules-card-box" style="background: linear-gradient(135deg, rgba(35, 23, 11, 0.95) 0%, rgba(20, 10, 5, 0.98) 100%); border: 1.5px solid var(--gold); border-radius: 12px; padding: 14px;">
-              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.55rem; margin: 0 0 6px 0; color: var(--gold-bright);">
+              <h3 style="font-family: var(--font-uno); font-size: 1.55rem; margin: 0 0 6px 0; color: var(--gold-bright);">
                 📜 THE 3 GOLDEN CRAWL LAWS
               </h3>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px;">
@@ -5120,7 +4992,7 @@
             </div>
 
             <div class="rules-card-box">
-              <h2 style="font-family: 'Pirata One', cursive; font-size: 1.8rem; margin: 0; padding-bottom: 4px;">
+              <h2 style="font-family: var(--font-uno); font-size: 1.8rem; margin: 0; padding-bottom: 4px;">
                 🃏 OFFICIAL UNO CARD CODEX
               </h2>
               <p style="font-size: 0.92rem; font-style: italic; margin-top: 4px;">
@@ -5133,7 +5005,7 @@
 
             <!-- Point Matrix Cheat Sheet -->
             <div class="rules-card-box">
-              <h3 style="font-family: 'Pirata One', cursive; font-size: 1.45rem; margin-bottom: 6px;">
+              <h3 style="font-family: var(--font-uno); font-size: 1.45rem; margin-bottom: 6px;">
                 ⚡ SCORING QUICK REFERENCE
               </h3>
               <table class="standings-table">
@@ -5150,6 +5022,8 @@
                   <tr><td><strong>WILD (REVERSE)</strong></td><td>-4 Atk / +4 Def</td><td>Reverses incoming attack</td></tr>
                   <tr><td><strong>WILD (WHEEL WIN)</strong></td><td>+6 Winner / -6 Loser</td><td>Wheel of Doom challenge</td></tr>
                   <tr><td><strong>WILD (+4)</strong></td><td>+4 Atk / -4 Def</td><td>Entire opposing team downs drink / shot</td></tr>
+                  <tr><td style="color:#a78bfa;"><strong>🃏 SECRET +10 NUKE</strong></td><td style="color:#fca5a5;">-10 pts to Target</td><td>Whole team drinks 10 sips / chug</td></tr>
+                  <tr><td style="color:#34d399;"><strong>🛡️ SECRET +10 BOUNCE</strong></td><td style="color:#86efac;">+10 Def / -10 Atk</td><td>Bounces attack back (+10 def / -10 atk & 10 sips)</td></tr>
                   <tr><td><strong>Spewing / Chunder</strong></td><td>-5 pts penalty</td><td>Drink water & public shame</td></tr>
                   <tr><td><strong>Rule Violation</strong></td><td>-1 pt penalty</td><td>1 sip penalty</td></tr>
                   <tr><td><strong>Wilds in Stash at End</strong></td><td>+1 pt per card (max +2)</td><td>Bonus tactical stash reward</td></tr>
@@ -5188,9 +5062,7 @@
           <div class="admin-panel-wrap">
             <div class="admin-header-card">
               <span class="impact-pill danger">🔒 RESTRICTED MASTER CONSOLE</span>
-              <h2 style="font-family: 'Pirata One', cursive; font-size: 2.2rem; margin: 6px 0; color: #ffd166;">
-                ⚔️ CRAWL MASTER ADMIN
-              </h2>
+              <h2 style="font-family: var(--font-uno); font-weight: 800; font-size: 2.1rem; margin: 6px 0; color: #ffffff; letter-spacing: -0.5px;">⚔️ CRAWL MASTER ADMIN</h2>
               <p style="font-size: 0.95rem; color: #f4e2be; margin: 0;">
                 Live device hardware links (MAC & IP), active pub location, device roster, and emergency crawl sync.
               </p>
@@ -5249,11 +5121,9 @@
               </div>
 
               <!-- MASTER ADMIN QUICK COMMAND BAR (TYPE COMMAND TO RESET OR PURGE) -->
-              <div style="margin-top: 16px; padding: 12px; background: rgba(0, 0, 0, 0.45); border: 1.5px solid #eab308; border-radius: 10px;">
+              <div style="margin-top: 16px; padding: 12px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;">
-                  <strong style="color: #ffd885; font-size: 0.94rem; font-family: 'Pirata One', cursive; letter-spacing: 0.5px;">
-                    ⚡ MASTER COMMAND PROMPT (START GAME FROM 0):
-                  </strong>
+                  <strong style="color: #38bdf8; font-size: 0.94rem; font-family: var(--font-uno); font-weight: 700; letter-spacing: 0.3px;">⚡ MASTER COMMAND PROMPT (START GAME FROM 0):</strong>
                   <span style="font-size: 0.72rem; color: #86efac; font-family: 'JetBrains Mono', monospace;">Type or Tap Quick Action</span>
                 </div>
                 <div style="display: flex; gap: 6px; margin-bottom: 8px;">
@@ -5282,7 +5152,7 @@
               <div class="admin-ban-control-box" style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
                   <div>
-                    <span style="font-family: 'Pirata One', cursive; font-size: 1.35rem; color: #ef4444; letter-spacing: 0.5px;">
+                    <span style="font-family: var(--font-uno); font-size: 1.35rem; color: #ef4444; letter-spacing: 0.5px;">
                       🚫 BANNED PLAYERS & CONNECTED IP MANAGER:
                     </span>
                     <p style="font-size: 0.76rem; color: #e2ceb0; margin: 2px 0 0 0;">
@@ -5458,7 +5328,7 @@
       <!-- Current Rule 0 Box -->
       <div style="background: rgba(60, 30, 10, 0.08); border-left: 4px solid var(--wood-mid); border-radius: 4px; padding: 10px; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong style="font-family: 'Pirata One', cursive; font-size: 1.15rem; color: #7a1d1d;">📜 ACTIVE RULE 0 (HOUSE LAW):</strong>
+          <strong style="font-family: var(--font-uno); font-size: 1.15rem; color: #7a1d1d;">📜 ACTIVE RULE 0 (HOUSE LAW):</strong>
           <button type="button" class="btn-stop-check" style="font-size: 0.75rem; padding: 2px 6px;" id="pubModalEditRuleBtn">✏️ Edit Rule</button>
         </div>
         <div id="pubModalRuleText" style="font-size: 0.95rem; font-style: italic; color: var(--ink);">
@@ -5554,7 +5424,7 @@
   <div class="modal-backdrop" id="mapLightbox" style="padding: 10px;">
     <div class="modal-scroll" style="max-width: 95vw; width: 950px; padding: 12px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <h3 style="font-family: 'Pirata One', cursive; font-size: 1.4rem; margin: 0;">🗺️ THE PRESTON ROUTE MAP</h3>
+        <h3 style="font-family: var(--font-uno); font-size: 1.4rem; margin: 0;">🗺️ THE PRESTON ROUTE MAP</h3>
         <button type="button" class="btn-stop-check" id="closeMapLightboxBtn">✕ Close</button>
       </div>
       <img src="assets/map.png" alt="Preston Route Map full view" style="width: 100%; height: auto; border: 2px solid var(--ink); border-radius: 8px;" />
@@ -5568,7 +5438,7 @@
   <div class="modal-backdrop" id="qrLightboxModal" style="padding: 12px; z-index: 10005;">
     <div class="modal-scroll" style="max-width: 92vw; width: 440px; text-align: center; padding: 18px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-family: 'Pirata One', cursive; font-size: 1.5rem; margin: 0; color: var(--gold-bright); letter-spacing: 1px;">
+        <h3 style="font-family: var(--font-uno); font-size: 1.5rem; margin: 0; color: var(--gold-bright); letter-spacing: 1px;">
           📲 SCAN TO JOIN DRUNK UNO
         </h3>
         <button type="button" class="btn-stop-check" id="closeQrLightboxBtn" style="padding: 4px 10px; font-size: 0.85rem;">✕ Close</button>
@@ -5621,7 +5491,7 @@
       
       <div style="text-align: center; margin-bottom: 14px;">
         <img src="assets/drunk-uno-logo.png" alt="Drunk Uno Logo" style="width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 8px auto; display: block; box-shadow: 0 6px 18px rgba(0,0,0,0.55); border: 1.5px solid rgba(255,255,255,0.2);" />
-        <span class="impact-pill special" style="font-size: 0.8rem; padding: 3px 10px;">⚙️ GAME SETTINGS</span>
+        <span class="impact-pill special" style="font-size: 0.8rem; padding: 3px 10px; background: rgba(56, 189, 248, 0.16); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8;">⚙️ GAME SETTINGS</span>
         <h2 class="modal-title" style="margin-top: 6px; font-size: 1.85rem; color: var(--gold-bright);">
           PREFERENCES & CONTROLS
         </h2>
@@ -5864,6 +5734,12 @@
             <div style="background: rgba(185, 28, 28, 0.25); border: 1px solid rgba(239, 68, 68, 0.5); padding: 8px; border-radius: 8px; color: #fca5a5;">
               <strong>🤮 SPEWING</strong><br><span style="color:#fff;">Major forfeit: -5 points penalty</span>
             </div>
+            <div style="background: rgba(124, 58, 237, 0.22); border: 1.5px solid #a78bfa; padding: 8px; border-radius: 8px; color: #ddd6fe;">
+              <strong>🃏 SECRET +10 NUKE</strong><br><span style="color:#fff;">Target drinks 10 sips & -10 pts</span>
+            </div>
+            <div style="background: rgba(5, 150, 105, 0.22); border: 1.5px solid #34d399; padding: 8px; border-radius: 8px; color: #a7f3d0;">
+              <strong>🛡️ SECRET +10 BOUNCE</strong><br><span style="color:#fff;">+10 Def / -10 Atk & 10 sips</span>
+            </div>
           </div>
         </div>
 
@@ -6044,7 +5920,7 @@
   <div class="modal-backdrop" id="testAlertModal">
     <div class="modal-scroll glass-card" style="max-width: 400px; text-align: center; border: 2px solid #38bdf8; box-shadow: 0 0 30px rgba(56, 189, 248, 0.45); animation: modalIn 0.25s ease-out;">
       <div style="font-size: 3.2rem; margin-bottom: 6px;">🔔</div>
-      <h2 style="font-family: 'Pirata One', cursive; font-size: 2rem; color: #38bdf8; margin-bottom: 6px; letter-spacing: 0.5px;">CONNECTION TEST</h2>
+      <h2 style="font-family: var(--font-uno); font-size: 2rem; color: #38bdf8; margin-bottom: 6px; letter-spacing: 0.5px;">CONNECTION TEST</h2>
       <p style="font-size: 0.95rem; color: #f1f5f9; margin-bottom: 12px; line-height: 1.4;" id="testAlertMessage">
         Real-time sync test signal received loud and clear from Crawl Master!
       </p>
@@ -6064,7 +5940,7 @@
   <div class="modal-backdrop" id="adminCustomMsgModal">
     <div class="modal-scroll glass-card" style="max-width: 420px; text-align: center; border: 2px solid #d97706; box-shadow: 0 0 30px rgba(217, 119, 6, 0.45); animation: modalIn 0.25s ease-out;">
       <div style="font-size: 2.8rem; margin-bottom: 4px;">💬</div>
-      <h2 style="font-family: 'Pirata One', cursive; font-size: 2rem; color: #fbbf24; margin-bottom: 4px;">DISPATCH DIRECT ALERT</h2>
+      <h2 style="font-family: var(--font-uno); font-size: 2rem; color: #fbbf24; margin-bottom: 4px;">DISPATCH DIRECT ALERT</h2>
       <p style="font-size: 0.88rem; color: #fde68a; margin-bottom: 12px;" id="adminMsgTargetDesc">
         Sending direct alert to Player
       </p>
@@ -6103,7 +5979,7 @@
   <div id="kickedLockoutOverlay" class="banned-lockout-overlay" style="display: none;">
     <div class="banned-card" style="border-color: #f59e0b;">
       <div style="font-size: 3.6rem; margin-bottom: 8px;">👢</div>
-      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #f59e0b; margin-bottom: 8px; letter-spacing: 1px;">SESSION TERMINATED // KICKED</h1>
+      <h1 style="font-family: var(--font-uno); font-size: 2.3rem; color: #f59e0b; margin-bottom: 8px; letter-spacing: 1px;">SESSION TERMINATED // KICKED</h1>
       <p style="font-size: 1.02rem; color: #fde68a; margin-bottom: 14px; line-height: 1.4;">
         You have been kicked from this Drunk Uno session by the Crawl Master.
       </p>
@@ -6126,7 +6002,7 @@
   <div id="bannedLockoutOverlay" class="banned-lockout-overlay" style="display: none;">
     <div class="banned-card">
       <div style="font-size: 3.6rem; margin-bottom: 8px;">☠️</div>
-      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px;">ACCESS DENIED // BANNED</h1>
+      <h1 style="font-family: var(--font-uno); font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px;">ACCESS DENIED // BANNED</h1>
       <p style="font-size: 1.02rem; color: #fca5a5; margin-bottom: 14px; line-height: 1.4;">
         Your device has been banned from this Drunk Uno session by the Crawl Master.
       </p>
@@ -6149,7 +6025,7 @@
   <div class="modal-backdrop" id="homescreenInstallModal">
     <div class="modal-scroll glass-card" style="max-width: 440px; text-align: center; border: 2.5px solid var(--theme-border, #ffd166); box-shadow: 0 0 35px rgba(255, 209, 102, 0.45); animation: modalIn 0.25s ease-out;">
       <img src="assets/drunk-uno-logo.png" alt="Drunk Uno App Icon" style="width: 76px; height: 76px; border-radius: 18px; margin: 0 auto 12px auto; display: block; box-shadow: 0 10px 28px rgba(0,0,0,0.65), 0 0 20px rgba(255, 209, 102, 0.35); border: 2px solid rgba(255,255,255,0.25);" />
-      <h2 style="font-family: 'Pirata One', cursive; font-size: 2.1rem; color: #ffd166; margin-bottom: 4px; letter-spacing: 0.5px;">INSTALL TO HOME SCREEN</h2>
+      <h2 style="font-family: var(--font-uno); font-size: 2.1rem; color: #ffd166; margin-bottom: 4px; letter-spacing: 0.5px;">INSTALL TO HOME SCREEN</h2>
       <p style="font-size: 0.94rem; color: #f4e2be; margin-bottom: 14px; line-height: 1.45;">
         For the ultimate full-screen crawl experience on mobile with no address bar lag:
       </p>
@@ -6185,7 +6061,7 @@
   <div class="modal-backdrop" id="targetedAlertModal">
     <div class="modal-scroll glass-card" style="max-width: 420px; text-align: center; border: 2.5px solid #f59e0b; box-shadow: 0 0 40px rgba(245, 158, 11, 0.65); animation: modalIn 0.25s ease-out;">
       <div style="font-size: 3.4rem; margin-bottom: 6px;">👑💬</div>
-      <h2 style="font-family: 'Pirata One', cursive; font-size: 2.1rem; color: #fcd34d; margin-bottom: 6px; letter-spacing: 0.5px;">CRAWL MASTER ALERT</h2>
+      <h2 style="font-family: var(--font-uno); font-size: 2.1rem; color: #fcd34d; margin-bottom: 6px; letter-spacing: 0.5px;">CRAWL MASTER ALERT</h2>
       <p style="font-size: 0.82rem; color: #fde68a; font-family: 'JetBrains Mono', monospace; margin-bottom: 12px;" id="targetedAlertSender">
         Direct Dispatch from Crawl Master
       </p>
@@ -6205,7 +6081,7 @@
   <div id="phoneFrozenOverlay" class="frozen-lockout-overlay" style="display: none;">
     <div class="frozen-card">
       <div style="font-size: 3.8rem; margin-bottom: 8px;">❄️📱❄️</div>
-      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #7dd3fc; margin-bottom: 8px; letter-spacing: 1px;">
+      <h1 style="font-family: var(--font-uno); font-size: 2.3rem; color: #7dd3fc; margin-bottom: 8px; letter-spacing: 1px;">
         PHONE FROZEN BY CRAWL MASTER
       </h1>
       <p style="font-size: 1.05rem; color: #e0f2fe; margin-bottom: 14px; line-height: 1.45;">
@@ -6227,7 +6103,7 @@
   <div id="gameLockedOverlay" class="game-locked-overlay" style="display: none;">
     <div class="locked-crawl-card">
       <div style="font-size: 4rem; margin-bottom: 8px;">🔒🍺</div>
-      <h1 style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #fde047; margin-bottom: 8px; letter-spacing: 1px;">
+      <h1 style="font-family: var(--font-uno); font-size: 2.3rem; color: #fde047; margin-bottom: 8px; letter-spacing: 1px;">
         PUB TRANSITION // GAME LOCKED
       </h1>
       <p style="font-size: 1.05rem; color: #fef08a; margin-bottom: 14px; line-height: 1.45;">
@@ -6252,7 +6128,7 @@
   <div id="globalNukeOverlay" class="game-locked-overlay" style="display: none; background: rgba(30, 0, 0, 0.96); z-index: 2147483647 !important; position: fixed; inset: 0;">
     <div class="locked-crawl-card" style="border: 3px solid #ef4444; box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); max-width: 440px;">
       <div style="font-size: 4rem; margin-bottom: 6px;">☢️💥</div>
-      <h1 id="nukeOverlayTitle" style="font-family: 'Pirata One', cursive; font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);">
+      <h1 id="nukeOverlayTitle" style="font-family: var(--font-uno); font-size: 2.3rem; color: #ef4444; margin-bottom: 8px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);">
         SITE-WIDE NUCLEAR PURGE
       </h1>
       <p id="nukeOverlayDesc" style="font-size: 1.05rem; color: #fee2e2; margin-bottom: 12px; line-height: 1.4;">
@@ -6513,7 +6389,9 @@
         { code: "+2", bg: "#2b9348", title: "DRAW TWO (+2)", impact: "-2 POINTS", impactType: "danger", desc: "Forces target team to draw 2 cards and drink 2 sips. Stacks to +4 if countered!", drink: "2 sips (or 4 sips)" },
         { code: "🔄", bg: "#1d63b8", title: "WILD (REVERSE)", impact: "±4 POINTS", impactType: "reward", desc: "Reverses an incoming attack! Gives +4 pts to the defender and -4 pts to the attacker.", drink: "Reverses drinking penalty" },
         { code: "🎡", bg: "#d62828", title: "WILD (WHEEL)", impact: "±6 POINTS", impactType: "special", desc: "Triggers a spin on the Wheel of Doom! Play the mini-game for ±6 points and drinking events.", drink: "Depends on Wheel outcome" },
-        { code: "+4", bg: "#23170b", title: "WILD (+4)", impact: "+4 / -4 PTS", impactType: "danger", isWild: true, desc: "Ultimate weapon! +4 points to attacking team and -4 to victim. Target team takes shots!", drink: "Whole team downs drink / shot" }
+        { code: "+4", bg: "#23170b", title: "WILD (+4)", impact: "+4 / -4 PTS", impactType: "danger", isWild: true, desc: "Ultimate weapon! +4 points to attacking team and -4 to victim. Target team takes shots!", drink: "Whole team downs drink / shot" },
+        { code: "+10", bg: "#7c3aed", title: "SECRET +10 WILD (MEGA NUKE)", impact: "-10 POINTS", impactType: "danger", isWild: true, desc: "Secret Tavern Weapon! Target team takes massive -10 points and drinks 10 sips / chug forfeit!", drink: "Target drinks 10 sips / chug" },
+        { code: "🛡️+10", bg: "#059669", title: "SECRET +10 BOUNCE SHIELD", impact: "+10 / -10 PTS", impactType: "reward", isWild: true, desc: "Secret Divine Shield! Deflects attack: gives +10 points to defender, and forces attacker to take -10 points & 10 sips!", drink: "Attacker drinks 10 sips" }
       ];
 
       // Get Room Code from URL query param (e.g. ?room=PRESTON-2026) or default
@@ -8377,6 +8255,15 @@
         });
       }
 
+      function isPlayerRegistered() {
+        const flag = localStorage.getItem("drunk_uno_player_registered") === "true";
+        const name = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").trim();
+        const rawTeam = localStorage.getItem("drunk_uno_team_idx");
+        const teamValid = (state.myTeamIdx !== null && state.myTeamIdx !== undefined && !isNaN(state.myTeamIdx) && state.myTeamIdx >= 0) ||
+                          (rawTeam !== null && !isNaN(parseInt(rawTeam, 10)) && parseInt(rawTeam, 10) >= 0);
+        return flag && !!name && teamValid;
+      }
+
       // --- 06. RENDER PODIUM BOX & CREW BAR (HORIZONTAL OLYMPIC PEDESTALS) ---
       function renderPodiumBox() {
         const grid = document.getElementById("podiumCardsGrid");
@@ -8397,9 +8284,11 @@
           { rank: 4, class: "rank-4", badge: "⚓ 4TH", order: 4 }
         ];
 
+        const isReg = isPlayerRegistered();
+
         sorted.forEach((team, idx) => {
           const r = ranks[idx] || ranks[3];
-          const isMyCrew = team.id === state.myTeamIdx;
+          const isMyCrew = isReg && (team.id === state.myTeamIdx);
           const card = document.createElement("div");
           card.className = `podium-card ${r.class} podium-team-${team.colorClass} ${isMyCrew ? "is-my-crew" : ""}`;
           card.style.order = r.order;
@@ -8440,11 +8329,20 @@
         if (!bar) return;
         bar.innerHTML = "";
         const maxScore = Math.max(...state.teams.map(t => t.score));
+        const isReg = isPlayerRegistered();
 
         state.teams.forEach((team, idx) => {
+          const isMyCrew = isReg && (idx === state.myTeamIdx);
           const pill = document.createElement("div");
-          pill.className = `crew-pill ${idx === state.myTeamIdx ? "active-my-team" : ""}`;
+          pill.className = `crew-pill ${isMyCrew ? "active-my-team" : ""}`;
           pill.onclick = () => {
+            if (!isPlayerRegistered()) {
+              state.targetTeamIdx = idx;
+              saveGameState(false);
+              renderScoringTab();
+              showToast(`👀 Inspecting ${team.name} as Spectator`);
+              return;
+            }
             state.myTeamIdx = idx;
             state.targetTeamIdx = (team.targetIdx !== undefined && state.teams[team.targetIdx]) ? team.targetIdx : ((idx + 1) % 4);
             applyTeamTheme(state.myTeamIdx);
@@ -8473,8 +8371,7 @@
       }
 
       function checkSpectatorBlock() {
-        const isReg = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
-        if (!isReg) {
+        if (!isPlayerRegistered()) {
           showToast("👀 Spectators cannot score! Join a crew to start playing.");
           playTick(240);
           openCrewSetupModal(false);
@@ -8495,20 +8392,31 @@
 
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (TARGET TEAM) ---
       function renderScoringTab() {
-        // Ensure myTeamIdx and targetTeamIdx are valid
-        if (state.myTeamIdx === undefined || !state.teams[state.myTeamIdx]) state.myTeamIdx = 0;
-        if (state.targetTeamIdx === undefined || !state.teams[state.targetTeamIdx]) state.targetTeamIdx = (state.myTeamIdx + 1) % 4;
+        const isRegistered = isPlayerRegistered();
+        if (!isRegistered) {
+          state.myTeamIdx = null;
+          if (state.targetTeamIdx === undefined || state.targetTeamIdx === null || !state.teams[state.targetTeamIdx]) {
+            state.targetTeamIdx = 0;
+          }
+        } else {
+          if (state.myTeamIdx === undefined || state.myTeamIdx === null || !state.teams[state.myTeamIdx]) {
+            const raw = localStorage.getItem("drunk_uno_team_idx");
+            state.myTeamIdx = (raw !== null && !isNaN(parseInt(raw, 10))) ? parseInt(raw, 10) : 0;
+          }
+          if (state.targetTeamIdx === undefined || state.targetTeamIdx === null || !state.teams[state.targetTeamIdx]) {
+            state.targetTeamIdx = (state.teams[state.myTeamIdx]?.targetIdx !== undefined) ? state.teams[state.myTeamIdx].targetIdx : ((state.myTeamIdx + 1) % 4);
+          }
+        }
 
         // Step 0: Render Big Podium Leaderboard Box at Top
         renderPodiumBox();
 
         // Step 1: Update "Scoring as" indicator
-        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
-        const myTeam = state.teams[state.myTeamIdx] || state.teams[0];
+        const myTeam = isRegistered && state.myTeamIdx !== null ? (state.teams[state.myTeamIdx] || state.teams[0]) : null;
         const asBadge = document.getElementById("scoringAsBadge");
         if (asBadge) {
           if (!isRegistered) {
-            asBadge.innerHTML = `Mode: <strong>👀 Spectator (Join Crew to Score)</strong>`;
+            asBadge.innerHTML = `Mode: <strong style="color: #38bdf8;">👀 Spectator (Scoreboard View)</strong>`;
           } else {
             asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
           }
@@ -8526,9 +8434,9 @@
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = `btn-pick-team team-btn-${t.colorClass} ${idx === state.targetTeamIdx ? "selected" : ""}`;
-            const isSelf = idx === state.myTeamIdx;
-            const isMyTarget = isRegistered && (myTeam.targetIdx === idx);
-            const refereeCrew = state.teams.find((tm, i) => i !== state.myTeamIdx && tm.targetIdx === idx && (tm.targetLocked || tm.targetLockedBy));
+            const isSelf = isRegistered && (idx === state.myTeamIdx);
+            const isMyTarget = isRegistered && myTeam && (myTeam.targetIdx === idx);
+            const refereeCrew = state.teams.find((tm, i) => (!isRegistered || i !== state.myTeamIdx) && tm.targetIdx === idx && (tm.targetLocked || tm.targetLockedBy));
 
             let subTxt = "Target Crew";
             let statusBadge = "";
@@ -8540,6 +8448,8 @@
             } else if (refereeCrew) {
               subTxt = `🔒 ${refereeCrew.name}`;
               statusBadge = `<span style="font-size: 0.68rem; background: rgba(239,68,68,0.25); color: #fca5a5; padding: 1px 5px; border-radius: 4px; border: 1px solid #ef4444; margin-left: 4px;">LOCKED</span>`;
+            } else if (!isRegistered) {
+              subTxt = "Tap to Inspect";
             }
 
             btn.innerHTML = `
@@ -8627,6 +8537,14 @@
             <button type="button" class="btn-score-tap deduct" data-uno-score="rulebreak">
               <span>⚠️ RULE VIOLATION</span>
               <small>-1 Point & 1 Sip</small>
+            </button>
+            <button type="button" class="btn-score-tap deduct" data-uno-score="wild10nuke" style="border: 1.5px solid #a78bfa; background: rgba(124, 58, 237, 0.22); color: #ddd6fe;">
+              <span>🃏 +10 NUKE</span>
+              <small>-10 Pts & 10 Sips</small>
+            </button>
+            <button type="button" class="btn-score-tap reward" data-uno-score="wild10bounce" style="border: 1.5px solid #34d399; background: rgba(5, 150, 105, 0.22); color: #a7f3d0;">
+              <span>🛡️ +10 BOUNCE</span>
+              <small>+10 Def / -10 Atk</small>
             </button>
           </div>
 
@@ -8720,6 +8638,21 @@
               targetTeam.sips += 1;
               addLog(`⚠️ RULE BREAK: ${targetTeam.name} violated house rule (-1 pt, 1 sip).`);
               playBuzzer();
+            } else if (act === "wild10nuke") {
+              targetTeam.score -= 10;
+              targetTeam.sips += 10;
+              const attackerName = myTeam ? myTeam.name : "Rival Crew";
+              addLog(`💥 SECRET +10 NUKE: ${attackerName} dropped a Secret +10 Nuke on ${targetTeam.name}! (-10 pts & 10 sips/chug forfeit).`);
+              playBuzzer();
+              try { navigator.vibrate && navigator.vibrate([200, 100, 200, 100, 300]); } catch (e) {}
+            } else if (act === "wild10bounce") {
+              targetTeam.score -= 10;
+              targetTeam.sips += 10;
+              if (myTeam) myTeam.score += 10;
+              const defenderName = myTeam ? myTeam.name : "Defender";
+              addLog(`🛡️ SECRET +10 BOUNCE: ${defenderName} countered attack! (+10 pts to defender, -10 pts & 10 sips to ${targetTeam.name}).`);
+              playCoinDing();
+              spawnCoins(35);
             }
             saveGameState(true);
             renderCrewBar();
@@ -8799,14 +8732,14 @@
         sorted.forEach((team, rank) => {
           const tr = document.createElement("tr");
           if (rank === 0 && team.score > 0) tr.className = "leader-row";
-          const captainDisplay = team.captain ? `👑 ${escapeHtml(team.captain)}` : `<em style="color:var(--ink-faded)">Unassigned</em>`;
+          const captainDisplay = team.captain ? `👑 ${escapeHtml(team.captain)}` : `<span style="color: #94a3b8; font-weight: 500;">Unassigned</span>`;
           const rosterDisplay = team.players && team.players.length ? escapeHtml(team.players.join(", ")) : "None registered";
 
           tr.innerHTML = `
             <td><strong>${rank === 0 ? "👑 1st" : rank === 1 ? "🥈 2nd" : rank === 2 ? "🥉 3rd" : "⚓ 4th"}</strong></td>
             <td><span class="crew-dot ${team.colorClass}"></span> <strong>${escapeHtml(team.name)}</strong></td>
-            <td><div>${captainDisplay}</div><small style="color: var(--ink-faded); font-size: 0.78rem;">${rosterDisplay}</small></td>
-            <td style="font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 1.25rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
+            <td><div>${captainDisplay}</div><small style="color: #94a3b8; font-size: 0.78rem;">${rosterDisplay}</small></td>
+            <td style="font-family: var(--font-uno); font-weight: 900; font-size: 1.25rem; color: ${team.score < 0 ? '#9e1b1b' : 'inherit'};">${team.score}</td>
             <td>${team.sips} sips</td>
             <td>${team.stash}/2 wild</td>
             <td>${team.frozen ? "<span style='color:#0284c7;font-weight:700;'>❄️ FROZEN</span>" : "<span style='color:#2b9348;'>Active</span>"}</td>
@@ -10466,6 +10399,32 @@
         };
       });
 
+      // --- SMART DOCK: AUTO-HIDE ON SCROLL DOWN, REAPPEAR ON SCROLL UP OR 1S PAUSE ---
+      let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      let dockScrollTimer = null;
+      const bottomDockNav = document.getElementById("bottomDock");
+
+      window.addEventListener("scroll", () => {
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const delta = currentScrollY - lastScrollY;
+
+        if (delta > 8 && currentScrollY > 40) {
+          // Scrolling down: hide dock smoothly
+          if (bottomDockNav) bottomDockNav.classList.add("dock-hidden");
+        } else if (delta < -6) {
+          // Scrolling up: reveal dock immediately
+          if (bottomDockNav) bottomDockNav.classList.remove("dock-hidden");
+        }
+
+        lastScrollY = currentScrollY;
+
+        // Auto-reappear if user stops scrolling for 1 second (1000ms)
+        if (dockScrollTimer) clearTimeout(dockScrollTimer);
+        dockScrollTimer = setTimeout(() => {
+          if (bottomDockNav) bottomDockNav.classList.remove("dock-hidden");
+        }, 1000);
+      }, { passive: true });
+
       // --- SETTINGS MODAL & PREFERENCES CONTROLLER ---
       const settingsModal = document.getElementById("settingsModal");
       const openSettingsBtn = document.getElementById("openSettingsBtn");
@@ -11509,13 +11468,24 @@
       // --- 14. INITIAL BOOTSTRAP ---
       function updateTopUserName() {
         const topUserEl = document.getElementById("topUserName");
+        const topBadge = document.getElementById("topUserBadge");
         if (!topUserEl) return;
-        const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
+        const isRegistered = isPlayerRegistered();
         if (!isRegistered) {
           topUserEl.textContent = "Spectator";
+          if (topBadge) {
+            topBadge.title = "Browsing as Spectator (Tap to join crew & score)";
+            topBadge.style.color = "#38bdf8";
+            topBadge.style.borderColor = "rgba(56, 189, 248, 0.4)";
+          }
         } else {
           const name = state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "Player";
           topUserEl.textContent = name;
+          if (topBadge) {
+            topBadge.title = `Your Linked Player Name: ${name} (Tap to edit crew)`;
+            topBadge.style.color = "";
+            topBadge.style.borderColor = "";
+          }
         }
       }
 
@@ -11541,18 +11511,23 @@
       // Accessibility & reduced motion setting
       applyMotionSetting();
 
-      // Ensure persistent team index is respected across reloads
-      const savedTeamIdx = localStorage.getItem("drunk_uno_team_idx");
-      if (savedTeamIdx !== null && !isNaN(parseInt(savedTeamIdx, 10))) {
-        state.myTeamIdx = parseInt(savedTeamIdx, 10);
+      // Ensure persistent team index is respected across reloads ONLY if registered
+      const hasRegistered = isPlayerRegistered();
+      if (!hasRegistered) {
+        state.myTeamIdx = null;
+        applyTeamTheme(null);
+      } else {
+        const savedTeamIdx = localStorage.getItem("drunk_uno_team_idx");
+        if (savedTeamIdx !== null && !isNaN(parseInt(savedTeamIdx, 10))) {
+          state.myTeamIdx = parseInt(savedTeamIdx, 10);
+        }
+        const myCurrentDevId = getOrCreateDeviceId();
+        if (state.devices && state.devices[myCurrentDevId] && typeof state.devices[myCurrentDevId].teamIdx === "number" && state.devices[myCurrentDevId].teamIdx >= 0) {
+          state.myTeamIdx = state.devices[myCurrentDevId].teamIdx;
+          try { localStorage.setItem("drunk_uno_team_idx", String(state.myTeamIdx)); } catch (e) {}
+        }
+        applyTeamTheme(state.myTeamIdx);
       }
-      const myCurrentDevId = getOrCreateDeviceId();
-      if (state.devices && state.devices[myCurrentDevId] && typeof state.devices[myCurrentDevId].teamIdx === "number" && state.devices[myCurrentDevId].teamIdx >= 0) {
-        state.myTeamIdx = state.devices[myCurrentDevId].teamIdx;
-        try { localStorage.setItem("drunk_uno_team_idx", String(state.myTeamIdx)); } catch (e) {}
-      }
-      const hasRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") || (state.myPlayerName && state.myTeamIdx !== null && state.myTeamIdx !== undefined && state.myTeamIdx >= 0);
-      applyTeamTheme(hasRegistered ? (state.myTeamIdx ?? 0) : null);
       updateTopUserName();
       renderCrewBar();
       renderScoringTab();
