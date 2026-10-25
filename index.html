@@ -1,798 +1,449 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="blueprint">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Lee Parkinson // Personal Hub & Project Gateway</title>
-  <meta name="description" content="Central project launcher and gateway for Lee Parkinson — Electrical Engineering student (UCLan) and Full-Stack Developer. Access the Engineering Blueprint Portfolio, Drunk Uno App, and GitHub repositories." />
-  <meta name="author" content="Lee Parkinson" />
-  <meta name="theme-color" content="#090d16" />
-  <meta name="color-scheme" content="dark" />
+  <title>Lee Parkinson // Central Project Gateway & Blueprint Launchpad</title>
+  <meta name="description" content="Central technical gateway for Lee Parkinson — Electrical Engineering student (UCLan) and Web Developer. Select between the Engineering Blueprint Portfolio and Drunk Uno Web App." />
+  <meta name="theme-color" content="#0b2343" />
 
-  <!-- Favicons & App Icons -->
+  <!-- Icons -->
   <link rel="icon" type="image/png" href="assets/images/lp-logo.png" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png" />
+  <link rel="apple-touch-icon" href="assets/images/lp-logo.png" />
 
-  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+  <!-- Google Fonts: Space Grotesk, JetBrains Mono, Architects Daughter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Lenis Smooth Scroll Stylesheet -->
+  <link rel="stylesheet" href="assets/vendor/lenis.css" />
+
+  <!-- Blueprint Engineering Design System -->
+  <link rel="stylesheet" href="assets/css/blueprint.css?v=12.6" />
 
   <style>
-    :root {
-      --bg-deep: #070a12;
-      --bg-card: rgba(15, 23, 42, 0.72);
-      --bg-card-hover: rgba(24, 34, 58, 0.85);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(56, 189, 248, 0.45);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --primary: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.25);
-      --accent-uno: #f59e0b;
-      --accent-uno-glow: rgba(245, 158, 11, 0.25);
-      --accent-green: #34d399;
-      --accent-purple: #a855f7;
-      --font-display: 'Space Grotesk', -apple-system, sans-serif;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      min-height: 100vh;
-      background-color: var(--bg-deep);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      line-height: 1.5;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Interactive Background Canvas */
-    #ambientCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Ambient Gradient Blobs */
-    .ambient-glow {
-      position: fixed;
-      width: 50vw;
-      height: 50vw;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .glow-top {
-      top: -10vw;
-      left: -10vw;
-      background: radial-gradient(circle, #0284c7 0%, transparent 70%);
-    }
-    .glow-bottom {
-      bottom: -15vw;
-      right: -10vw;
-      background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
-    }
-
-    /* Main Container */
-    .portal-container {
+    /* Launchpad Specific Layout Refinements */
+    .gateway-hero {
+      padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.5rem, 6vw, 5rem);
       position: relative;
-      z-index: 1;
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 48px 20px 60px;
-      min-height: 100vh;
+      z-index: 2;
+    }
+    .gateway-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 2.2rem 0;
+    }
+    @media (min-width: 860px) {
+      .gateway-cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+    .launchpad-card {
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      padding: clamp(1.4rem, 2.5vw, 2rem);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-
-    /* Header Profile Card */
-    .profile-card {
-      text-align: center;
-      margin-bottom: 28px;
-      animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .avatar-wrapper {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 18px;
-    }
-
-    .avatar-img {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(56, 189, 248, 0.65);
-      box-shadow: 0 0 28px var(--primary-glow), 0 12px 24px rgba(0, 0, 0, 0.5);
-      background: #0f172a;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .avatar-img:hover {
-      transform: scale(1.05) rotate(2deg);
-      border-color: var(--primary);
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(52, 211, 153, 0.35);
-      color: #6ee7b7;
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: 0.04em;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #34d399;
-      box-shadow: 0 0 10px #34d399;
-      animation: pulse 2s infinite;
-    }
-
-    .profile-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 5vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-
-    .profile-subtitle {
-      font-size: 1rem;
-      color: var(--primary);
-      font-family: var(--font-mono);
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .profile-bio {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      max-width: 540px;
-      margin: 0 auto;
-      line-height: 1.55;
-    }
-
-    /* Auto-pilot notification banner */
-    .autopilot-bar {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 12px;
-      padding: 10px 16px;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 0.86rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-      animation: fadeIn 0.7s ease forwards;
-    }
-
-    .autopilot-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #e2e8f0;
-    }
-
-    .autopilot-progress {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .autopilot-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-ghost-pill {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #cbd5e1;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.76rem;
-      font-family: var(--font-mono);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-ghost-pill:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border-color: #ffffff;
-    }
-
-    .btn-go-pill {
-      background: var(--primary);
-      border: 1px solid #7dd3fc;
-      color: #0c4a6e;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 0.76rem;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-    .btn-go-pill:hover {
-      background: #7dd3fc;
-      transform: translateY(-1px);
-    }
-
-    /* Grid of Launch Cards */
-    .links-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-bottom: 36px;
-    }
-
-    .portal-card {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding: 20px 22px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      text-decoration: none;
-      color: inherit;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
-
-    .portal-card::before {
+    .launchpad-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--card-accent, var(--primary));
-      opacity: 0.4;
-      transition: opacity 0.25s ease, width 0.25s ease;
+      width: 100%;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.8;
+      transition: height 0.2s ease;
     }
-
-    .portal-card:hover, .portal-card:focus-visible {
-      transform: translateY(-3px) scale(1.008);
-      background: var(--bg-card-hover);
-      border-color: var(--card-border-hover, var(--border-hover));
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--card-glow, var(--primary-glow));
-      outline: none;
+    .launchpad-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(56, 189, 248, 0.2);
     }
-
-    .portal-card:hover::before, .portal-card:focus-visible::before {
-      opacity: 1;
-      width: 6px;
+    .launchpad-card:hover::before {
+      height: 5px;
     }
-
-    /* Icon Box */
-    .card-icon-box {
-      flex-shrink: 0;
-      width: 58px;
-      height: 58px;
-      border-radius: 14px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    .launchpad-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      transition: transform 0.25s ease;
-    }
-
-    .portal-card:hover .card-icon-box {
-      transform: scale(1.08) rotate(-2deg);
-    }
-
-    /* Content Area */
-    .card-content {
-      flex-grow: 1;
-      min-width: 0;
-    }
-
-    .card-header-line {
-      display: flex;
-      align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-bottom: 4px;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
     }
-
-    .card-title {
-      font-family: var(--font-display);
-      font-size: 1.22rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-
-    .card-badge {
+    .launchpad-badge {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--accent);
+      color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
-
-    .card-desc {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-      margin-bottom: 8px;
+    .launchpad-badge.active-badge {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: #22c55e;
+      color: #4ade80;
     }
-
-    .card-meta-tags {
+    .launchpad-badge.uno-badge {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+    .launchpad-card h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin: 0.4rem 0 0.5rem;
+    }
+    .launchpad-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .launchpad-desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    .launchpad-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
     }
-
-    .meta-tag {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 2px 7px;
-      border-radius: 4px;
+    .launchpad-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--line);
     }
-
-    /* Action Chevron Arrow */
-    .card-action-arrow {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .launchpad-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--surface-2);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #94a3b8;
-      font-size: 1rem;
-      transition: all 0.25s ease;
+      font-size: 1.7rem;
+      flex-shrink: 0;
     }
-
-    .portal-card:hover .card-action-arrow {
-      background: var(--card-accent, var(--primary));
-      border-color: var(--card-accent, var(--primary));
-      color: #0b1120;
-      transform: translateX(4px);
-    }
-
-    /* Theme Overrides per card */
-    .card-portfolio {
-      --card-accent: #38bdf8;
-      --card-border-hover: rgba(56, 189, 248, 0.6);
-      --card-glow: rgba(56, 189, 248, 0.2);
-    }
-    .card-portfolio .card-badge {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.35);
-    }
-
-    .card-uno {
-      --card-accent: #f59e0b;
-      --card-border-hover: rgba(245, 158, 11, 0.6);
-      --card-glow: rgba(245, 158, 11, 0.2);
-    }
-    .card-uno .card-badge {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.35);
-    }
-
-    .card-github {
-      --card-accent: #a855f7;
-      --card-border-hover: rgba(168, 85, 247, 0.6);
-      --card-glow: rgba(168, 85, 247, 0.2);
-    }
-    .card-github .card-badge {
-      background: rgba(168, 85, 247, 0.15);
-      color: #c084fc;
-      border: 1px solid rgba(168, 85, 247, 0.35);
-    }
-
-    .card-cv {
-      --card-accent: #34d399;
-      --card-border-hover: rgba(52, 211, 153, 0.6);
-      --card-glow: rgba(52, 211, 153, 0.2);
-    }
-    .card-cv .card-badge {
-      background: rgba(52, 211, 153, 0.15);
-      color: #6ee7b7;
-      border: 1px solid rgba(52, 211, 153, 0.35);
-    }
-
-    /* Social / Quick Bar */
-    .social-strip {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
+    .launchpad-btn {
+      width: 100%;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 9px 16px;
-      border-radius: 10px;
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
-      font-size: 0.85rem;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.4rem;
       font-family: var(--font-mono);
-      font-weight: 600;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-decoration: none;
-      backdrop-filter: blur(10px);
+      border-radius: 6px;
       transition: all 0.2s ease;
+      cursor: pointer;
     }
-
-    .social-btn:hover {
-      background: rgba(30, 41, 59, 0.9);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
+    .launchpad-btn-primary {
+      background: var(--accent);
+      color: #0b1728;
+      border: 1px solid var(--accent);
+    }
+    .launchpad-btn-primary:hover {
+      background: #7dd3fc;
       transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
     }
-
-    /* Footer */
-    .portal-footer {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      border-top: 1px solid rgba(255, 255, 255, 0.07);
-      padding-top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .launchpad-btn-uno {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      color: #ffffff;
+      border: 1px solid #facc15;
     }
-
-    .footer-host-info {
-      font-family: var(--font-mono);
-      color: #94a3b8;
-    }
-
-    /* Keyframes */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 640px) {
-      .portal-container {
-        padding: 32px 14px 44px;
-      }
-      .portal-card {
-        padding: 16px;
-        gap: 14px;
-      }
-      .card-icon-box {
-        width: 48px;
-        height: 48px;
-        font-size: 1.5rem;
-      }
-      .card-title {
-        font-size: 1.1rem;
-      }
-      .autopilot-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .autopilot-actions {
-        width: 100%;
-        justify-content: flex-end;
-      }
+    .launchpad-btn-uno:hover {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
     }
   </style>
 </head>
-<body>
 
-  <!-- Ambient background glow elements -->
-  <div class="ambient-glow glow-top"></div>
-  <div class="ambient-glow glow-bottom"></div>
-  <canvas id="ambientCanvas"></canvas>
+<body id="top">
+  <!-- Accessibility Skip Link -->
+  <a href="#content" class="skip-link">Skip to technical content [Alt+1]</a>
 
-  <main class="portal-container">
-    
-    <!-- Profile & Header Section -->
-    <header class="profile-card">
-      <div class="avatar-wrapper">
-        <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson Portrait" class="avatar-img" onerror="this.src='assets/images/lp-logo.png';" />
-      </div>
-      
-      <div>
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          <span>SYSTEM ONLINE · PRESTON, UK</span>
+  <!-- Satin Ridges Background Grid Canvas -->
+  <div class="bp-grid" aria-hidden="true">
+    <canvas id="satin-ridges-canvas" class="chroma-canvas"></canvas>
+  </div>
+
+  <!-- Drawing Frame with ISO Zone References -->
+  <div class="bp-frame" aria-hidden="true">
+    <span class="zx" style="left: 12.5%;">1</span>
+    <span class="zx" style="left: 25%;">2</span>
+    <span class="zx" style="left: 37.5%;">3</span>
+    <span class="zx" style="left: 50%;">4</span>
+    <span class="zx" style="left: 62.5%;">5</span>
+    <span class="zx" style="left: 75%;">6</span>
+    <span class="zx" style="left: 87.5%;">7</span>
+    <span class="zx b" style="left: 12.5%;">1</span>
+    <span class="zx b" style="left: 25%;">2</span>
+    <span class="zx b" style="left: 37.5%;">3</span>
+    <span class="zx b" style="left: 50%;">4</span>
+    <span class="zx b" style="left: 62.5%;">5</span>
+    <span class="zx b" style="left: 75%;">6</span>
+    <span class="zx b" style="left: 87.5%;">7</span>
+    <span class="zy" style="top: 20%;">A</span>
+    <span class="zy" style="top: 40%;">B</span>
+    <span class="zy" style="top: 60%;">C</span>
+    <span class="zy" style="top: 80%;">D</span>
+    <span class="zy r" style="top: 20%;">A</span>
+    <span class="zy r" style="top: 40%;">B</span>
+    <span class="zy r" style="top: 60%;">C</span>
+    <span class="zy r" style="top: 80%;">D</span>
+  </div>
+
+  <!-- React Bits Pro · Drafting Cursor System -->
+  <div class="drafting-cursor-layer" aria-hidden="true">
+    <div class="cursor-ruler ruler-top">
+      <div class="ruler-pip pip-x"></div>
+    </div>
+    <div class="cursor-ruler ruler-left">
+      <div class="ruler-pip pip-y"></div>
+    </div>
+    <div class="cursor-hairline ch-x"></div>
+    <div class="cursor-hairline ch-y"></div>
+    <div class="cursor-measure-box" id="cursor-measure-box">
+      <div class="measure-line-w"></div>
+      <div class="measure-line-h"></div>
+      <div class="measure-badge" id="cursor-measure-badge">0.0 × 0.0mm</div>
+    </div>
+  </div>
+
+  <!-- TOP HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <a href="#top" class="brand" aria-label="Lee Parkinson — Return to top">
+        <div class="brand-mark" aria-hidden="true">LP</div>
+        <div class="brand-text">
+          <div class="brand-name">LEE PARKINSON</div>
+          <div class="brand-sub">DWG: LP-GATEWAY-2026</div>
         </div>
+      </a>
+
+      <!-- Navigation & Action Cluster -->
+      <div class="header-actions">
+        <!-- Spec Revision Badge & Accent Palette Menu -->
+        <div class="accent-menu-wrap">
+          <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
+            <span>SPEC V12.6 ▾</span>
+          </button>
+          <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
+            <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
+            <div class="swatch-grid">
+              <button type="button" class="swatch-btn" style="background:#38bdf8;" data-accent-swatch="blue" title="Cyan / Blueprint Default" aria-label="Cyan"></button>
+              <button type="button" class="swatch-btn" style="background:#a855f7;" data-accent-swatch="violet" title="Violet" aria-label="Violet"></button>
+              <button type="button" class="swatch-btn" style="background:#ec4899;" data-accent-swatch="pink" title="Pink" aria-label="Pink"></button>
+              <button type="button" class="swatch-btn" style="background:#ef4444;" data-accent-swatch="red" title="Red" aria-label="Red"></button>
+              <button type="button" class="swatch-btn" style="background:#f97316;" data-accent-swatch="orange" title="Orange" aria-label="Orange"></button>
+              <button type="button" class="swatch-btn" style="background:#10b981;" data-accent-swatch="green" title="Green" aria-label="Green"></button>
+              <button type="button" class="swatch-btn" style="background:#14b8a6;" data-accent-swatch="teal" title="Teal" aria-label="Teal"></button>
+            </div>
+            <div style="border-top:1px dashed var(--line); margin-top:0.65rem; padding-top:0.5rem;">
+              <div class="tiny mono muted" style="margin-bottom: 0.35rem;">SCHEMATIC FILM MODE:</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <button type="button" class="btn btn-sm" data-theme-set="blueprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
+                  <span>DARK (BLUE)</span>
+                </button>
+                <button type="button" class="btn btn-sm" data-theme-set="whiteprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
+                  <span>LIGHT (FILM)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
+          <span>GITHUB ↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Meter -->
+    <div class="scroll-meter" aria-hidden="true"><i></i></div>
+  </header>
+
+  <main id="content">
+    <!-- =====================================================================
+         CENTRAL LAUNCHPAD HERO SECTION
+         ===================================================================== -->
+    <section class="gateway-hero section">
+      <div class="hero-art" aria-hidden="true">
+        <svg class="hero-circuit" viewBox="0 0 760 480">
+          <path class="trace" d="M20,40 L160,40 L210,90 L420,90 L460,50 L680,50" />
+          <path class="trace trace-accent" d="M120,120 L240,120 L290,170 L520,170 L560,210 L740,210" />
+          <path class="trace" d="M60,200 L180,200 L210,230 L380,230 L420,190 L640,190" />
+          <path class="trace trace-mark" d="M280,300 L390,300 L440,350 L660,350 L700,310" />
+          <circle class="node" cx="160" cy="40" r="3.5" />
+          <circle class="node" cx="420" cy="90" r="3.5" />
+          <circle class="node" cx="240" cy="120" r="3.5" />
+          <circle class="node" cx="520" cy="170" r="3.5" />
+          <circle class="node" cx="380" cy="230" r="3.5" />
+          <circle class="node" cx="440" cy="350" r="3.5" />
+        </svg>
       </div>
 
-      <h1 class="profile-title">Lee Parkinson</h1>
-      <p class="profile-subtitle">Electrical Engineering (UCLan) · Creative Developer</p>
-      <p class="profile-bio">
-        Welcome to the central gateway. Choose a destination below to explore the engineering blueprint portfolio, launch the live Drunk Uno app, or inspect open-source projects.
-      </p>
-    </header>
+      <div class="container">
+        <!-- Header Lead -->
+        <div style="max-width: 720px; margin-bottom: 1.5rem;">
+          <div class="sheet-spec mono tiny accent" style="margin-bottom: 0.4rem;">
+            // DRAWING SPECIFICATION // LP-GATEWAY-2026 // SHEET 00
+          </div>
+          <h1 class="hero-name" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; margin: 0 0 0.8rem 0;">
+            CENTRAL PROJECT <span class="accent">LAUNCHPAD</span>
+          </h1>
+          <p class="lead" style="font-size: clamp(0.95rem, 1.4vw, 1.15rem); color: var(--muted); line-height: 1.6;">
+            Direct access gateway for Lee Parkinson (Electrical Engineering, UCLan). Select an engineering drafting sheet or real-time application below:
+          </p>
+        </div>
 
-    <!-- Optional Auto-Pilot Navigation Bar (defaults to off if user clicks cancel) -->
-    <section class="autopilot-bar" id="autopilotBar" style="display: none;">
-      <div class="autopilot-left">
-        <span>🧭</span>
-        <span>Auto-routing to <strong>Portfolio</strong> in <span id="countdownSecs" class="autopilot-progress">7</span>s...</span>
-      </div>
-      <div class="autopilot-actions">
-        <button type="button" class="btn-ghost-pill" id="pauseAutopilotBtn">Stay on Hub</button>
-        <a href="https://leeprky.github.io/portfolio/" class="btn-go-pill" id="goPortfolioBtn">Go Now →</a>
+        <!-- TWO MAIN DESTINATION CARDS -->
+        <div class="gateway-cards-grid">
+
+          <!-- DESTINATION 1: ENGINEERING BLUEPRINT PORTFOLIO -->
+          <article class="launchpad-card">
+            <div>
+              <div class="launchpad-header">
+                <div class="launchpad-card-icon">📐</div>
+                <span class="launchpad-badge active-badge">🟢 SPECIFICATION ACTIVE</span>
+              </div>
+              <div class="mono tiny accent">DWG 01 // LP-PORTFOLIO-2026</div>
+              <h2>ENGINEERING PORTFOLIO</h2>
+              <div class="launchpad-subtitle">Technical Blueprint & Academic Logbook</div>
+              <p class="launchpad-desc">
+                Interactive technical blueprint covering academic qualifications at the University of Central Lancashire (UCLan), electrical engineering toolkits, circuit analysis, CAD models, and professional logbook.
+              </p>
+              <div class="launchpad-tags">
+                <span class="tag tag-outline">ELECTRICAL ENGINEERING</span>
+                <span class="tag tag-outline">UCLAN PRESTON</span>
+                <span class="tag tag-outline">CAD &amp; CIRCUITS</span>
+                <span class="tag tag-outline">BS-8888 SPEC</span>
+              </div>
+            </div>
+            <div class="launchpad-cta">
+              <a href="https://leeprky.github.io/portfolio/" class="launchpad-btn launchpad-btn-primary">
+                <span>OPEN PORTFOLIO [DWG-01] ↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- DESTINATION 2: DRUNK UNO WEB APP -->
+          <article class="launchpad-card">
+            <div>
+              <div class="launchpad-header">
+                <div class="launchpad-card-icon">🍻</div>
+                <span class="launchpad-badge uno-badge">⚡ MULTI-ROOM PARTY SYNC</span>
+              </div>
+              <div class="mono tiny" style="color: #f59e0b;">DWG 02 // LP-DRUNK-UNO-v6.3</div>
+              <h2>DRUNK UNO WEB APP</h2>
+              <div class="launchpad-subtitle" style="color: #f59e0b;">Real-Time Multiplayer Party Game Engine</div>
+              <p class="launchpad-desc">
+                Authoritative multi-room party web app where groups around the world create private rooms, referee scores across smartphones live over MQTT WebSockets, spin the Wheel of Doom, and conquer Uno drinking challenges.
+              </p>
+              <div class="launchpad-tags">
+                <span class="tag tag-outline" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">MULTI-ROOM MQTT</span>
+                <span class="tag tag-outline" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">LIVE PARTY SYNC</span>
+                <span class="tag tag-outline" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">WHEEL OF DOOM</span>
+                <span class="tag tag-outline" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">UNO CODEX &amp; BINGO</span>
+              </div>
+            </div>
+            <div class="launchpad-cta">
+              <a href="projects/drunk-uno/" class="launchpad-btn launchpad-btn-uno">
+                <span>LAUNCH DRUNK UNO [DWG-02] ↗</span>
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- BS-8888 / ISO-7200 TITLE BLOCK -->
+        <div class="title-block">
+          <div>
+            <span>PROJECT SPECIFICATION</span>
+            <b>CENTRAL HOST GATEWAY</b>
+          </div>
+          <div>
+            <span>DRAWING NO.</span>
+            <b class="mono accent">LP-GATEWAY-2026</b>
+          </div>
+          <div>
+            <span>REVISION</span>
+            <b class="mono">REV 12.6</b>
+          </div>
+          <div>
+            <span>SCALE</span>
+            <b class="mono">1:1 CAD</b>
+          </div>
+          <div>
+            <span>LOCATION</span>
+            <b>ULAN PRESTON</b>
+          </div>
+          <div>
+            <span>STATUS</span>
+            <b class="mono accent">APPROVED ✓</b>
+          </div>
+        </div>
+
       </div>
     </section>
-
-    <!-- Primary Destination Launch Cards -->
-    <section class="links-grid" aria-label="Project Gateway Navigation">
-      
-      <!-- 1. Portfolio Blueprint Card -->
-      <a href="https://leeprky.github.io/portfolio/" class="portal-card card-portfolio" id="cardPortfolio">
-        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.8) 100%);">
-          📐
-        </div>
-        <div class="card-content">
-          <div class="card-header-line">
-            <h2 class="card-title">Engineering Blueprint Portfolio</h2>
-            <span class="card-badge">Main Portfolio</span>
-          </div>
-          <p class="card-desc">
-            Technical specification portfolio, interactive CAD drafting aesthetics, electronics prototypes, laboratory work, and academic projects.
-          </p>
-          <div class="card-meta-tags">
-            <span class="meta-tag">Blueprint CAD</span>
-            <span class="meta-tag">Circuits & Electronics</span>
-            <span class="meta-tag">Case Studies</span>
-            <span class="meta-tag">UCLan</span>
-          </div>
-        </div>
-        <div class="card-action-arrow">→</div>
-      </a>
-
-      <!-- 2. Drunk Uno Live App Card -->
-      <a href="https://leeprky.github.io/drunk-uno/" class="portal-card card-uno" id="cardDrunkUno">
-        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(245,158,11,0.25) 0%, rgba(15,23,42,0.8) 100%);">
-          🍻
-        </div>
-        <div class="card-content">
-          <div class="card-header-line">
-            <h2 class="card-title">Drunk Uno — Live Party Game</h2>
-            <span class="card-badge">v6.1 App</span>
-          </div>
-          <p class="card-desc">
-            Real-time multiplayer drinking game with authoritative server-retained persistence, Single Phone Console mode, Wheel of Doom & 10 pub stops.
-          </p>
-          <div class="card-meta-tags">
-            <span class="meta-tag">Multi-Room Sync</span>
-            <span class="meta-tag">Single Phone Console</span>
-            <span class="meta-tag">Wheel of Doom</span>
-            <span class="meta-tag">PWA</span>
-          </div>
-        </div>
-        <div class="card-action-arrow">→</div>
-      </a>
-
-      <!-- 3. GitHub & Open Source Repositories -->
-      <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="portal-card card-github">
-        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(15,23,42,0.8) 100%);">
-          🐙
-        </div>
-        <div class="card-content">
-          <div class="card-header-line">
-            <h2 class="card-title">GitHub & Open Source</h2>
-            <span class="card-badge">Code</span>
-          </div>
-          <p class="card-desc">
-            Public repositories, full-stack tools, Capacitor mobile apps, CLI scripts, and ongoing software projects.
-          </p>
-          <div class="card-meta-tags">
-            <span class="meta-tag">github.com/leeprky</span>
-            <span class="meta-tag">Web & Mobile</span>
-            <span class="meta-tag">Open Source</span>
-          </div>
-        </div>
-        <div class="card-action-arrow">↗</div>
-      </a>
-
-      <!-- 4. Curriculum Vitae & Resume Download -->
-      <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="portal-card card-cv">
-        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(52,211,153,0.25) 0%, rgba(15,23,42,0.8) 100%);">
-          📄
-        </div>
-        <div class="card-content">
-          <div class="card-header-line">
-            <h2 class="card-title">Curriculum Vitae (CV)</h2>
-            <span class="card-badge">PDF Download</span>
-          </div>
-          <p class="card-desc">
-            Download the official engineering curriculum vitae, academic background, certifications, and technical experience.
-          </p>
-          <div class="card-meta-tags">
-            <span class="meta-tag">Electrical Engineering</span>
-            <span class="meta-tag">Resume</span>
-            <span class="meta-tag">PDF</span>
-          </div>
-        </div>
-        <div class="card-action-arrow">↓</div>
-      </a>
-
-    </section>
-
-    <!-- Socials & Quick Connect Strip -->
-    <nav class="social-strip" aria-label="Social and professional links">
-      <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="social-btn">
-        <span>🐙</span> GitHub
-      </a>
-      <a href="https://leeprky.github.io/portfolio/#contact" class="social-btn">
-        <span>✉️</span> Contact
-      </a>
-      <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="social-btn">
-        <span>📄</span> Download CV
-      </a>
-    </nav>
-
-    <!-- Portal Footer -->
-    <footer class="portal-footer">
-      <div class="footer-host-info">
-        ⚡ Host Gateway · leeprky.github.io
-      </div>
-      <div>
-        &copy; 2026 Lee Parkinson. Hosted with GitHub Pages.
-      </div>
-    </footer>
-
   </main>
 
-  <!-- Interactive Subtle Particle Background -->
-  <script>
-    (function () {
-      const canvas = document.getElementById("ambientCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      let width, height, particles = [];
+  <!-- =======================================================================
+       SITE FOOTER
+       ======================================================================= -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="mono" style="font-weight: 700; font-size: 0.95rem;">LEE PARKINSON // CENTRAL HOST LAUNCHPAD</div>
+        <div class="tiny mono" style="margin-top: 0.4rem;">
+          DWG: LP-GATEWAY-2026 · BS 8888 / IEEE-315 TECHNICAL DRAFTING · PRESTON, UK
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer">GitHub Profile ↗</a>
+        <a href="https://leeprky.github.io/portfolio/">Portfolio ↗</a>
+        <a href="projects/drunk-uno/">Drunk Uno ↗</a>
+        <a href="#top">Top ↑</a>
+      </div>
+    </div>
+  </footer>
 
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resize);
-      resize();
-
-      const particleCount = Math.min(45, Math.floor(window.innerWidth / 25));
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.5 + 0.5,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          alpha: Math.random() * 0.4 + 0.1
-        });
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y < 0) p.y = height;
-          if (p.y > height) p.y = 0;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(148, 163, 184, ${p.alpha})`;
-          ctx.fill();
-
-          // Connect nearby dots with subtle lines
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 110) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / 110) * 0.08})`;
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // Optional Auto-pilot banner: enabled only when arriving with ?autopilot=1
-      const urlParams = new URLSearchParams(window.location.search);
-      const enableAutopilot = urlParams.get("autopilot") === "1";
-      const banner = document.getElementById("autopilotBar");
-      const countdownEl = document.getElementById("countdownSecs");
-      const pauseBtn = document.getElementById("pauseAutopilotBtn");
-
-      if (enableAutopilot && banner && !sessionStorage.getItem("hub_stay")) {
-        banner.style.display = "flex";
-        let remaining = 6;
-        const interval = setInterval(() => {
-          remaining--;
-          if (countdownEl) countdownEl.textContent = remaining;
-          if (remaining <= 0) {
-            clearInterval(interval);
-            window.location.href = "https://leeprky.github.io/portfolio/";
-          }
-        }, 1000);
-
-        if (pauseBtn) {
-          pauseBtn.onclick = () => {
-            clearInterval(interval);
-            banner.style.display = "none";
-            sessionStorage.setItem("hub_stay", "true");
-          };
-        }
-      }
-    })();
-  </script>
+  <!-- Scripts: Vendor Libraries & Blueprint Engine -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/ScrollToPlugin.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="assets/js/blueprint.js?v=12.6"></script>
 </body>
 </html>
