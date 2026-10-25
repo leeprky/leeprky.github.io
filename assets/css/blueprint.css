@@ -831,36 +831,17 @@ strong { color: var(--ink); font-weight: 600; }
 .drafting-cursor-layer.is-on { opacity: 1; }
 
 /* Edge Rulers (Drafting Cursor) */
-.cursor-ruler {
-  display: none !important;
-  position: fixed;
-  background: color-mix(in srgb, var(--paper) 70%, transparent);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  pointer-events: none;
-  z-index: 9992;
-}
-.ruler-top {
-  top: 0; left: 0; right: 0; height: var(--ruler-h, 18px);
-  border-bottom: 1px solid rgb(var(--accent-rgb) / 0.32);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  background-image: repeating-linear-gradient(to right, rgb(var(--accent-rgb) / 0.35) 0 1px, transparent 1px 10px),
-                    repeating-linear-gradient(to right, rgb(var(--accent-rgb) / 0.7) 0 1px, transparent 1px 50px),
-                    repeating-linear-gradient(to right, rgb(var(--accent-rgb) / 0.95) 0 1.5px, transparent 1.5px 100px);
-  background-size: 100% 4px, 100% 7px, 100% 11px;
-  background-position: left bottom, left bottom, left bottom;
-  background-repeat: no-repeat;
-}
+.cursor-ruler,
+.ruler-top,
 .ruler-left {
-  top: 0; left: 0; bottom: 0; width: var(--ruler-w, 18px);
-  border-right: 1px solid rgb(var(--accent-rgb) / 0.32);
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.35), inset 1px 0 0 rgba(255, 255, 255, 0.15);
-  background-image: repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.35) 0 1px, transparent 1px 10px),
-                    repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.7) 0 1px, transparent 1px 50px),
-                    repeating-linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.95) 0 1.5px, transparent 1.5px 100px);
-  background-size: 4px 100%, 7px 100%, 11px 100%;
-  background-position: right top, right top, right top;
-  background-repeat: no-repeat;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
 }
 .ruler-pip {
   position: absolute;
