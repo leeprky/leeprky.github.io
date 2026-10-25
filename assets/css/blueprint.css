@@ -12,8 +12,8 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-hand: "Architects Daughter", "Comic Sans MS", cursive;
 
-  --ruler-h: 18px;
-  --ruler-w: 18px;
+  --ruler-h: 0px;
+  --ruler-w: 0px;
   --header-h: 64px;
   --frame: 34px;
   --radius: 4px;
@@ -255,7 +255,7 @@ strong { color: var(--ink); font-weight: 600; }
    05. HEADER & NAVIGATION
    ========================================================================= */
 .site-header {
-  position: sticky; top: var(--ruler-h); z-index: 60;
+  position: sticky; top: 0; z-index: 60;
   background: color-mix(in srgb, var(--paper) 66%, transparent);
   backdrop-filter: blur(20px) saturate(190%); -webkit-backdrop-filter: blur(20px) saturate(190%);
   border-bottom: 1px solid rgb(var(--accent-rgb) / 0.28);
@@ -832,6 +832,7 @@ strong { color: var(--ink); font-weight: 600; }
 
 /* Edge Rulers (Drafting Cursor) */
 .cursor-ruler {
+  display: none !important;
   position: fixed;
   background: color-mix(in srgb, var(--paper) 70%, transparent);
   backdrop-filter: blur(16px) saturate(180%);
