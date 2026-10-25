@@ -1,1299 +1,798 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="blueprint">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Lee Parkinson // Electrical Engineering Blueprint</title>
-  <meta name="description" content="Technical specification & engineering portfolio of Lee Parkinson (21) — Electrical Engineering (Foundation Year) student at the University of Lancashire (ULan), Preston UK." />
-  <meta name="theme-color" content="#0b2343" />
+  <title>Lee Parkinson // Personal Hub & Project Gateway</title>
+  <meta name="description" content="Central project launcher and gateway for Lee Parkinson — Electrical Engineering student (UCLan) and Full-Stack Developer. Access the Engineering Blueprint Portfolio, Drunk Uno App, and GitHub repositories." />
+  <meta name="author" content="Lee Parkinson" />
+  <meta name="theme-color" content="#090d16" />
+  <meta name="color-scheme" content="dark" />
 
-  <!-- Icons -->
+  <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="assets/images/lp-logo.png" />
-  <link rel="apple-touch-icon" href="assets/images/lp-logo.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png" />
 
-  <!-- Google Fonts: Space Grotesk (technical display), JetBrains Mono (dimensions & code), Architects Daughter (hand-drafted redlines) -->
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Lenis Smooth Scroll Stylesheet -->
-  <link rel="stylesheet" href="assets/vendor/lenis.css" />
+  <style>
+    :root {
+      --bg-deep: #070a12;
+      --bg-card: rgba(15, 23, 42, 0.72);
+      --bg-card-hover: rgba(24, 34, 58, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(56, 189, 248, 0.45);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.25);
+      --accent-uno: #f59e0b;
+      --accent-uno-glow: rgba(245, 158, 11, 0.25);
+      --accent-green: #34d399;
+      --accent-purple: #a855f7;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-  <!-- Blueprint Engineering Design System -->
-  <link rel="stylesheet" href="assets/css/blueprint.css?v=12.6" />
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Interactive Background Canvas */
+    #ambientCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient Gradient Blobs */
+    .ambient-glow {
+      position: fixed;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-top {
+      top: -10vw;
+      left: -10vw;
+      background: radial-gradient(circle, #0284c7 0%, transparent 70%);
+    }
+    .glow-bottom {
+      bottom: -15vw;
+      right: -10vw;
+      background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+    }
+
+    /* Main Container */
+    .portal-container {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 20px 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Header Profile Card */
+    .profile-card {
+      text-align: center;
+      margin-bottom: 28px;
+      animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 18px;
+    }
+
+    .avatar-img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(56, 189, 248, 0.65);
+      box-shadow: 0 0 28px var(--primary-glow), 0 12px 24px rgba(0, 0, 0, 0.5);
+      background: #0f172a;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .avatar-img:hover {
+      transform: scale(1.05) rotate(2deg);
+      border-color: var(--primary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      color: #6ee7b7;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 10px #34d399;
+      animation: pulse 2s infinite;
+    }
+
+    .profile-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .profile-subtitle {
+      font-size: 1rem;
+      color: var(--primary);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .profile-bio {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* Auto-pilot notification banner */
+    .autopilot-bar {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.86rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      animation: fadeIn 0.7s ease forwards;
+    }
+
+    .autopilot-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+
+    .autopilot-progress {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .autopilot-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-ghost-pill {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-ghost-pill:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    .btn-go-pill {
+      background: var(--primary);
+      border: 1px solid #7dd3fc;
+      color: #0c4a6e;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-go-pill:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
+    }
+
+    /* Grid of Launch Cards */
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .portal-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 22px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      text-decoration: none;
+      color: inherit;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--card-accent, var(--primary));
+      opacity: 0.4;
+      transition: opacity 0.25s ease, width 0.25s ease;
+    }
+
+    .portal-card:hover, .portal-card:focus-visible {
+      transform: translateY(-3px) scale(1.008);
+      background: var(--bg-card-hover);
+      border-color: var(--card-border-hover, var(--border-hover));
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--card-glow, var(--primary-glow));
+      outline: none;
+    }
+
+    .portal-card:hover::before, .portal-card:focus-visible::before {
+      opacity: 1;
+      width: 6px;
+    }
+
+    /* Icon Box */
+    .card-icon-box {
+      flex-shrink: 0;
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      transition: transform 0.25s ease;
+    }
+
+    .portal-card:hover .card-icon-box {
+      transform: scale(1.08) rotate(-2deg);
+    }
+
+    /* Content Area */
+    .card-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .card-header-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .card-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .meta-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* Action Chevron Arrow */
+    .card-action-arrow {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .portal-card:hover .card-action-arrow {
+      background: var(--card-accent, var(--primary));
+      border-color: var(--card-accent, var(--primary));
+      color: #0b1120;
+      transform: translateX(4px);
+    }
+
+    /* Theme Overrides per card */
+    .card-portfolio {
+      --card-accent: #38bdf8;
+      --card-border-hover: rgba(56, 189, 248, 0.6);
+      --card-glow: rgba(56, 189, 248, 0.2);
+    }
+    .card-portfolio .card-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .card-uno {
+      --card-accent: #f59e0b;
+      --card-border-hover: rgba(245, 158, 11, 0.6);
+      --card-glow: rgba(245, 158, 11, 0.2);
+    }
+    .card-uno .card-badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .card-github {
+      --card-accent: #a855f7;
+      --card-border-hover: rgba(168, 85, 247, 0.6);
+      --card-glow: rgba(168, 85, 247, 0.2);
+    }
+    .card-github .card-badge {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+    }
+
+    .card-cv {
+      --card-accent: #34d399;
+      --card-border-hover: rgba(52, 211, 153, 0.6);
+      --card-glow: rgba(52, 211, 153, 0.2);
+    }
+    .card-cv .card-badge {
+      background: rgba(52, 211, 153, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.35);
+    }
+
+    /* Social / Quick Bar */
+    .social-strip {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+
+    .social-btn:hover {
+      background: rgba(30, 41, 59, 0.9);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    .portal-footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-host-info {
+      font-family: var(--font-mono);
+      color: #94a3b8;
+    }
+
+    /* Keyframes */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .portal-container {
+        padding: 32px 14px 44px;
+      }
+      .portal-card {
+        padding: 16px;
+        gap: 14px;
+      }
+      .card-icon-box {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+      }
+      .card-title {
+        font-size: 1.1rem;
+      }
+      .autopilot-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .autopilot-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
 </head>
+<body>
 
-<body id="top">
-  <!-- Accessibility Skip Link -->
-  <a href="#content" class="skip-link">Skip to technical content [Alt+1]</a>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-top"></div>
+  <div class="ambient-glow glow-bottom"></div>
+  <canvas id="ambientCanvas"></canvas>
 
-  <!-- Satin Ridges Background (React Bits Pro: Flowing satin folds catching soft highlights) -->
-  <div class="bp-grid" aria-hidden="true">
-    <canvas id="satin-ridges-canvas" class="chroma-canvas"></canvas>
-  </div>
-
-  <!-- Drawing Frame with ISO Zone References -->
-  <div class="bp-frame" aria-hidden="true">
-    <span class="zx" style="left: 12.5%;">1</span>
-    <span class="zx" style="left: 25%;">2</span>
-    <span class="zx" style="left: 37.5%;">3</span>
-    <span class="zx" style="left: 50%;">4</span>
-    <span class="zx" style="left: 62.5%;">5</span>
-    <span class="zx" style="left: 75%;">6</span>
-    <span class="zx" style="left: 87.5%;">7</span>
-    <span class="zx b" style="left: 12.5%;">1</span>
-    <span class="zx b" style="left: 25%;">2</span>
-    <span class="zx b" style="left: 37.5%;">3</span>
-    <span class="zx b" style="left: 50%;">4</span>
-    <span class="zx b" style="left: 62.5%;">5</span>
-    <span class="zx b" style="left: 75%;">6</span>
-    <span class="zx b" style="left: 87.5%;">7</span>
-    <span class="zy" style="top: 20%;">A</span>
-    <span class="zy" style="top: 40%;">B</span>
-    <span class="zy" style="top: 60%;">C</span>
-    <span class="zy" style="top: 80%;">D</span>
-    <span class="zy r" style="top: 20%;">A</span>
-    <span class="zy r" style="top: 40%;">B</span>
-    <span class="zy r" style="top: 60%;">C</span>
-    <span class="zy r" style="top: 80%;">D</span>
-  </div>
-
-  <!-- React Bits Pro · Drafting Cursor System -->
-  <div class="drafting-cursor-layer" aria-hidden="true">
-    <!-- Edge Rulers (Top & Left) -->
-    <div class="cursor-ruler ruler-top">
-      <div class="ruler-pip pip-x"></div>
-    </div>
-    <div class="cursor-ruler ruler-left">
-      <div class="ruler-pip pip-y"></div>
-    </div>
-
-    <!-- Hairline Crosshairs -->
-    <div class="cursor-hairline ch-x"></div>
-    <div class="cursor-hairline ch-y"></div>
-
-    <!-- Drag-to-Measure Dimension Box (React Bits Pro: Drafting Cursor) -->
-    <div class="cursor-measure-box" id="cursor-measure-box">
-      <div class="measure-line-w"></div>
-      <div class="measure-line-h"></div>
-      <div class="measure-badge" id="cursor-measure-badge">0.0 × 0.0mm</div>
-    </div>
-  </div>
-
-  <!-- TOP HEADER -->
-  <header class="site-header">
-    <div class="container">
-      <a href="#top" class="brand" aria-label="Lee Parkinson — Return to top">
-        <div class="brand-mark" aria-hidden="true">LP</div>
-        <div class="brand-text">
-          <div class="brand-name">LEE PARKINSON</div>
-          <div class="brand-sub">DWG: LP-ENG-2026-EE</div>
+  <main class="portal-container">
+    
+    <!-- Profile & Header Section -->
+    <header class="profile-card">
+      <div class="avatar-wrapper">
+        <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson Portrait" class="avatar-img" onerror="this.src='assets/images/lp-logo.png';" />
+      </div>
+      
+      <div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>SYSTEM ONLINE · PRESTON, UK</span>
         </div>
+      </div>
+
+      <h1 class="profile-title">Lee Parkinson</h1>
+      <p class="profile-subtitle">Electrical Engineering (UCLan) · Creative Developer</p>
+      <p class="profile-bio">
+        Welcome to the central gateway. Choose a destination below to explore the engineering blueprint portfolio, launch the live Drunk Uno app, or inspect open-source projects.
+      </p>
+    </header>
+
+    <!-- Optional Auto-Pilot Navigation Bar (defaults to off if user clicks cancel) -->
+    <section class="autopilot-bar" id="autopilotBar" style="display: none;">
+      <div class="autopilot-left">
+        <span>🧭</span>
+        <span>Auto-routing to <strong>Portfolio</strong> in <span id="countdownSecs" class="autopilot-progress">7</span>s...</span>
+      </div>
+      <div class="autopilot-actions">
+        <button type="button" class="btn-ghost-pill" id="pauseAutopilotBtn">Stay on Hub</button>
+        <a href="https://leeprky.github.io/portfolio/" class="btn-go-pill" id="goPortfolioBtn">Go Now →</a>
+      </div>
+    </section>
+
+    <!-- Primary Destination Launch Cards -->
+    <section class="links-grid" aria-label="Project Gateway Navigation">
+      
+      <!-- 1. Portfolio Blueprint Card -->
+      <a href="https://leeprky.github.io/portfolio/" class="portal-card card-portfolio" id="cardPortfolio">
+        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.8) 100%);">
+          📐
+        </div>
+        <div class="card-content">
+          <div class="card-header-line">
+            <h2 class="card-title">Engineering Blueprint Portfolio</h2>
+            <span class="card-badge">Main Portfolio</span>
+          </div>
+          <p class="card-desc">
+            Technical specification portfolio, interactive CAD drafting aesthetics, electronics prototypes, laboratory work, and academic projects.
+          </p>
+          <div class="card-meta-tags">
+            <span class="meta-tag">Blueprint CAD</span>
+            <span class="meta-tag">Circuits & Electronics</span>
+            <span class="meta-tag">Case Studies</span>
+            <span class="meta-tag">UCLan</span>
+          </div>
+        </div>
+        <div class="card-action-arrow">→</div>
       </a>
 
-      <!-- Desktop Nav -->
-      <nav class="nav" aria-label="Drawing sheets">
-        <a href="#about"><span>01</span>About</a>
-        <a href="#education"><span>02</span>Education</a>
-        <a href="#experience"><span>03</span>Experience</a>
-        <a href="#projects"><span>04</span>Projects</a>
-        <a href="#hobbies"><span>05</span>Hobbies</a>
-        <a href="#contact"><span>06</span>Dispatch</a>
-      </nav>
-
-      <!-- Action Cluster -->
-      <div class="header-actions">
-        <!-- Spec Revision Badge & Accent Palette Menu -->
-        <div class="accent-menu-wrap">
-          <button type="button" class="spec-badge" data-accent-toggle aria-haspopup="true" aria-label="Toggle Drawing Accent Palette">
-            <span>SPEC V12.6 ▾</span>
-          </button>
-          <div class="accent-dropdown" role="menu" aria-label="Blueprint Accent Palette">
-            <div class="tiny mono muted" style="margin-bottom: 0.35rem;">DRAWING ACCENT PALETTE</div>
-            <div class="swatch-grid">
-              <button type="button" class="swatch-btn" style="background:#38bdf8;" data-accent-swatch="blue" title="Cyan / Blueprint Default" aria-label="Cyan"></button>
-              <button type="button" class="swatch-btn" style="background:#a855f7;" data-accent-swatch="violet" title="Violet" aria-label="Violet"></button>
-              <button type="button" class="swatch-btn" style="background:#ec4899;" data-accent-swatch="pink" title="Pink" aria-label="Pink"></button>
-              <button type="button" class="swatch-btn" style="background:#ef4444;" data-accent-swatch="red" title="Red" aria-label="Red"></button>
-              <button type="button" class="swatch-btn" style="background:#f97316;" data-accent-swatch="orange" title="Orange" aria-label="Orange"></button>
-              <button type="button" class="swatch-btn" style="background:#10b981;" data-accent-swatch="green" title="Green" aria-label="Green"></button>
-              <button type="button" class="swatch-btn" style="background:#14b8a6;" data-accent-swatch="teal" title="Teal" aria-label="Teal"></button>
-            </div>
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.5rem; gap:0.5rem;">
-              <span class="tiny mono" style="color:var(--ink-2);">Custom Hex:</span>
-              <input type="color" id="accent-custom" value="#38bdf8" style="width:34px; height:24px; border:none; background:none; cursor:pointer;" title="Pick custom color" />
-            </div>
-
-            <!-- Light / Dark Mode Toggle Inside SPEC Box -->
-            <div style="border-top:1px dashed var(--line); margin-top:0.65rem; padding-top:0.5rem;">
-              <div class="tiny mono muted" style="margin-bottom: 0.35rem;">SCHEMATIC FILM MODE:</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                <button type="button" class="btn btn-sm" data-theme-set="blueprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
-                  <span>DARK (BLUE)</span>
-                </button>
-                <button type="button" class="btn btn-sm" data-theme-set="whiteprint" style="font-size:0.7rem; padding:0.3rem 0.45rem; justify-content:center;">
-                  <span>LIGHT (FILM)</span>
-                </button>
-              </div>
-            </div>
-          </div>
+      <!-- 2. Drunk Uno Live App Card -->
+      <a href="https://leeprky.github.io/drunk-uno/" class="portal-card card-uno" id="cardDrunkUno">
+        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(245,158,11,0.25) 0%, rgba(15,23,42,0.8) 100%);">
+          🍻
         </div>
-
-        <!-- CV Spec Sheet -->
-        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-          <span>CV SPEC</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-        </a>
-
-        <!-- Mobile Drawer Toggle -->
-        <button type="button" class="icon-btn menu-btn" aria-label="Toggle navigation drawer" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Scroll Meter -->
-    <div class="scroll-meter" aria-hidden="true"><i></i></div>
-  </header>
-
-  <!-- Mobile Drawer -->
-  <div class="drawer" aria-label="Mobile navigation">
-    <a href="#about"><span>01 //</span> About &amp; Toolkit</a>
-    <a href="#education"><span>02 //</span> Academic Qualifications</a>
-    <a href="#experience"><span>03 //</span> Career Logbook</a>
-    <a href="#projects"><span>04 //</span> Engineering Projects</a>
-    <a href="#hobbies"><span>05 //</span> Field Expeditions</a>
-    <a href="#contact"><span>06 //</span> Direct Dispatch</a>
-  </div>
-
-  <main id="content">
-    <!-- =====================================================================
-         00. HERO SPECIFICATION SHEET
-         ===================================================================== -->
-    <section class="hero section">
-      <!-- Background Technical CAD / Circuit Artwork -->
-      <div class="hero-art" aria-hidden="true">
-        <!-- Circuit traces -->
-        <svg class="hero-circuit" viewBox="0 0 760 480">
-          <path class="trace" d="M20,40 L160,40 L210,90 L420,90 L460,50 L680,50" />
-          <path class="trace trace-accent" d="M120,120 L240,120 L290,170 L520,170 L560,210 L740,210" />
-          <path class="trace" d="M60,200 L180,200 L210,230 L380,230 L420,190 L640,190" />
-          <path class="trace trace-mark" d="M280,300 L390,300 L440,350 L660,350 L700,310" />
-          <circle class="node" cx="160" cy="40" r="3.5" />
-          <circle class="node" cx="420" cy="90" r="3.5" />
-          <circle class="node" cx="240" cy="120" r="3.5" />
-          <circle class="node" cx="520" cy="170" r="3.5" />
-          <circle class="node" cx="380" cy="230" r="3.5" />
-          <circle class="node" cx="440" cy="350" r="3.5" />
-        </svg>
-      </div>
-
-      <div class="container">
-        <div class="hero-grid">
-          <!-- Text Column -->
-          <div class="hero-copy">
-            <div class="status-pill">
-              <span class="status-dot"></span>
-              <span class="mono">ULAN EE // PRESTON, LANCASHIRE UK</span>
-            </div>
-
-            <!-- React Bits · TechText Dynamic Interactive Wordmark -->
-            <h1 class="display hero-name" aria-label="Lee Parkinson">
-              <div class="tech-text" id="hero-tech-text" style="width: 100%; height: clamp(70px, 9.5vw, 115px); position: relative;">
-                <canvas class="tech-text-canvas"></canvas>
-                <span class="sr-only">Lee Parkinson</span>
-              </div>
-            </h1>
-
-            <div class="hero-role">
-              <span>ELECTRICAL // MECHANICAL // COMPUTING // TECHNOLOGY</span><span class="caret" aria-hidden="true"></span>
-            </div>
-
-            <p class="lead bh-paragraph">
-              <span class="bh-phrase">Electrical Engineering</span> student at the <span class="bh-phrase">University of Lancashire (UCLan)</span> in Preston. I'm passionate about hands-on diagnostics and practical problem-solving — whether that's wiring 12V automotive systems, testing circuits in the lab, or building custom PC rigs and software.
-            </p>
-
-            <div class="hero-cta">
-              <a href="#contact" class="btn btn-primary">
-                <span>Contact Me</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-              <a href="#schematics" class="btn">
-                <span>View Schematics</span>
-              </a>
-              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn">
-                <span>Full CV Spec (PDF) ↗</span>
-              </a>
-            </div>
-
-            <!-- Engineering Specification Table -->
-            <dl class="spec">
-              <div>
-                <dt>Operator</dt>
-                <dd>Lee Parkinson</dd>
-              </div>
-              <div>
-                <dt>Age / Base</dt>
-                <dd>21 · Preston, UK</dd>
-              </div>
-              <div>
-                <dt>Academic Track</dt>
-                <dd>Electrical Engineering</dd>
-              </div>
-              <div>
-                <dt>Active Role</dt>
-                <dd>Bar Team Leader</dd>
-              </div>
-            </dl>
+        <div class="card-content">
+          <div class="card-header-line">
+            <h2 class="card-title">Drunk Uno — Live Party Game</h2>
+            <span class="card-badge">v6.1 App</span>
           </div>
-
-          <!-- Portrait Column (TiltedCard + Blueprint Dimensioning) -->
-          <div class="portrait">
-            <!-- Dimension Lines -->
-            <div class="dim dim-h" aria-hidden="true">
-              <b>285mm // WIDTH</b>
-            </div>
-            <div class="dim dim-v" aria-hidden="true">
-              <b>380mm // HEIGHT</b>
-            </div>
-
-            <!-- React Bits · TiltedCard -->
-            <div class="tilt figure">
-              <div class="figure-frame">
-                <img src="assets/images/lee-portrait.jpg" alt="Lee Parkinson portrait photograph" width="800" height="1066" fetchpriority="high" />
-                <div class="portrait-tag mono">FIG 00.1 // OPERATOR</div>
-              </div>
-              <figcaption>
-                <span>ULAN CAMPUS</span>
-                <span class="hand">"learning by getting hands dirty"</span>
-              </figcaption>
-            </div>
-          </div>
-        </div>
-
-        <!-- BS-8888 / ISO-7200 Title Block -->
-        <div class="title-block">
-          <div>
-            <span>PROJECT SPECIFICATION</span>
-            <b>ELECTRICAL ENGINEERING PORTFOLIO</b>
-          </div>
-          <div>
-            <span>DRAWING NO.</span>
-            <b class="mono accent">LP-2026-EE</b>
-          </div>
-          <div>
-            <span>REVISION</span>
-            <b class="mono">REV 12.6</b>
-          </div>
-          <div>
-            <span>SCALE</span>
-            <b class="mono">1:1 CAD</b>
-          </div>
-          <div>
-            <span>LOCATION</span>
-            <b>ULAN PRESTON</b>
-          </div>
-          <div>
-            <span>STATUS</span>
-            <b class="mono accent">APPROVED ✓</b>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =====================================================================
-         DRAFTING SHEETS CONTROL TOOLBAR
-         ===================================================================== -->
-    <div class="sheets-toolbar-wrap container">
-      <div class="sheets-toolbar">
-        <div class="sheets-toolbar-status">
-          <span class="status-dot"></span>
-          <span class="mono">DRAFTING SHEETS // 06 SECTIONS &bull; TAP ANY HEADER TO FOLD / EXPAND</span>
-        </div>
-        <div class="sheets-toolbar-actions">
-          <span class="desktop-shortcut-hint" title="PC Keyboard Shortcuts Active">
-            <span>⌨ KEYS:</span>
-            <kbd>1-6</kbd> JUMP
-            <kbd>T</kbd> THEME
-            <kbd>F</kbd> FOLD
-          </span>
-          <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm">
-            <span>📄 FULL CV</span>
-          </a>
-          <button type="button" class="btn btn-sm" data-sheets-fold-all>
-            <span>[-] FOLD ALL</span>
-          </button>
-          <button type="button" class="btn btn-sm" data-sheets-expand-all>
-            <span>[+] EXPAND ALL</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-
-<!-- =====================================================================
-         01. ABOUT ME & THREE CORE PILLARS
-         ===================================================================== -->
-    <section id="about" class="section">
-      <div class="container">
-        <div class="sheet-head" data-sheet-toggle="about" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-about">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 01</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-01 // PROFILE &amp; TOOLKIT</span>
-          </div>
-          <div class="sheet-title-row">
-            <div class="sheet-heading-group">
-              <span class="sheet-tag-badge">01 // ABOUT ME</span>
-              <h2 class="h2">A Bit About Me<span class="accent">.</span></h2>
-            </div>
-            <div class="sheet-state-badge" aria-label="Toggle Sheet 01">
-              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
-          <p class="lead">
-            Growing up, I've always loved technology, mechanics, electrics, and computing — whether taking hardware apart to understand how it ticks, building custom PCs, or diagnosing vehicles.
+          <p class="card-desc">
+            Real-time multiplayer drinking game with authoritative server-retained persistence, Single Phone Console mode, Wheel of Doom & 10 pub stops.
           </p>
-        </div>
-
-        <div class="sheet-body" id="sheet-body-about">
-          <div class="profile-grid">
-            <!-- Story -->
-            <div class="profile-copy body">
-              <p>
-                I'm <strong>21</strong> and living in <strong>Preston</strong>, completing my Foundation Year in <span class="bh-phrase">Electrical Engineering</span> at the <span class="bh-phrase">University of Lancashire (UCLan)</span> alongside working as a <span class="bh-phrase bh-phrase-amber">Bar Team Leader</span> at Wetherspoons (The Velvet Coaster in Blackpool &amp; The Twelve Tellers in Preston).
-              </p>
-              <p>
-                Before starting university, I worked as an Apprentice Technician at <strong>Car Cosmetics</strong>, getting proper workshop experience diagnosing mechanical and electrical faults, servicing, bleeding brakes, and wiring vehicle electrics.
-              </p>
-              <p>
-                Outside of academics and shift leadership, I'm usually out in the workshop on car builds, working on electronics, scrambling fells in the Lake District, or tinkering with software and games.
-              </p>
-
-              <div class="chips" style="margin-top: 1.5rem;">
-                <span class="chip">Preston, Lancashire UK</span>
-                <span class="chip">University of Lancashire (UCLan)</span>
-                <span class="chip">Electrical Engineering</span>
-                <span class="chip">Workshop Diagnostics</span>
-                <span class="chip">Shift Operations</span>
-              </div>
-            </div>
-
-            <!-- Red-line Field Notes Panel -->
-            <div class="panel field-notes spotlight">
-              <div class="panel-head">
-                <span class="panel-id">DWG NOTE // 01-A</span>
-                <span class="tag tag-mark">FIELD NOTES</span>
-              </div>
-              <p class="hand">
-                "I've always learned best by getting hands-on — whether that's working on a car, wiring something up, or building it on a PC."
-              </p>
-              <ul>
-                <li><strong>Discipline:</strong> Electrical Engineering</li>
-                <li><strong>Current Campus:</strong> University of Lancashire (UCLan)</li>
-                <li><strong>Career:</strong> Bar Team Leader @ Wetherspoons</li>
-                <li><strong>Hands-On:</strong> Mechanics, Electrics, IT Systems &amp; Audio</li>
-              </ul>
-              <div style="margin-top: 1.25rem;">
-                <a href="#education" class="panel-link">Proceed to Academic Qualifications →</a>
-              </div>
-            </div>
+          <div class="card-meta-tags">
+            <span class="meta-tag">Multi-Room Sync</span>
+            <span class="meta-tag">Single Phone Console</span>
+            <span class="meta-tag">Wheel of Doom</span>
+            <span class="meta-tag">PWA</span>
           </div>
         </div>
-      </div>
-    </section>
+        <div class="card-action-arrow">→</div>
+      </a>
 
-<!-- =====================================================================
-         02. ACADEMIC QUALIFICATIONS (EDUCATION)
-         ===================================================================== -->
-    <section id="education" class="section">
-      <div class="container">
-        <div class="sheet-head" data-sheet-toggle="education" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-education">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 02</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-02 // ACADEMIC QUALIFICATIONS</span>
+      <!-- 3. GitHub & Open Source Repositories -->
+      <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="portal-card card-github">
+        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(15,23,42,0.8) 100%);">
+          🐙
+        </div>
+        <div class="card-content">
+          <div class="card-header-line">
+            <h2 class="card-title">GitHub & Open Source</h2>
+            <span class="card-badge">Code</span>
           </div>
-          <div class="sheet-title-row">
-            <div class="sheet-heading-group">
-              <span class="sheet-tag-badge">02 // EDUCATION</span>
-              <h2 class="h2">Academic Qualifications<span class="accent">.</span></h2>
-            </div>
-            <div class="sheet-state-badge" aria-label="Toggle Sheet 02">
-              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
-          <p class="lead" style="margin-top: 0.5rem;">
-            Formal technical education record across electrical engineering, computing, and secondary qualifications.
+          <p class="card-desc">
+            Public repositories, full-stack tools, Capacitor mobile apps, CLI scripts, and ongoing software projects.
           </p>
-        </div>
-
-        <div class="sheet-body" id="sheet-body-education">
-
-        <!-- Academic Cards Container -->
-        <div class="qual-list">
-          <!-- Card 1: ULan -->
-          <article class="qual-card featured">
-            <div class="qual-head">
-              <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                  <span class="tag tag-accent">[DEGREE-01]</span>
-                  <h3 class="h3" style="display: inline; margin: 0;">University of Lancashire (UCLan)</h3>
-                  <span class="tag tag-ok">FOUNDATION YEAR</span>
-                </div>
-                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
-                  Electrical Engineering (Foundation Year)
-                </div>
-              </div>
-              <div class="qual-meta">
-                <div>2026 — Present</div>
-                <div>Preston, Lancashire</div>
-                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"foundation year"</div>
-              </div>
-            </div>
-            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
-              Building core engineering maths, physics, and practical lab skills alongside electrical circuit theory, digital electronics, power systems, and sensor instrumentation.
-            </p>
-            <div class="chips" style="margin-top: 0.75rem;">
-              <span class="chip">Circuit Theory</span>
-              <span class="chip">Digital Electronics</span>
-              <span class="chip">Power Systems</span>
-              <span class="chip">Sensor Instrumentation</span>
-              <span class="chip">Engineering Maths</span>
-            </div>
-          </article>
-
-          <!-- Card 2: Blackpool Sixth Form -->
-          <article class="qual-card">
-            <div class="qual-head">
-              <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                  <span class="tag">[LEVEL 3]</span>
-                  <h3 class="h3" style="display: inline; margin: 0;">Blackpool Sixth Form College</h3>
-                  <span class="tag">A-LEVELS &amp; BTEC</span>
-                </div>
-                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
-                  BTEC National Extended Diploma &amp; GCE Advanced Level
-                </div>
-              </div>
-              <div class="qual-meta">
-                <div>Completed 08/2023</div>
-                <div>Blackpool, Lancashire</div>
-                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"Double Distinction Star"</div>
-              </div>
-            </div>
-            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
-              Focused on computer hardware, networking, relational databases and SQL, programming, and IT systems administration.
-            </p>
-            <div class="grade-grid-2">
-              <div class="grade-box highlight">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">BTEC NATIONAL DIPLOMA</div>
-                <div style="font-weight: 700; margin-top: 2px;">Information Technology: D* D*</div>
-              </div>
-              <div class="grade-box">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">GCE A-LEVEL</div>
-                <div style="font-weight: 700; margin-top: 2px;">Computer Science: Grade E</div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 3: St Mary's Catholic Academy -->
-          <article class="qual-card">
-            <div class="qual-head">
-              <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                  <span class="tag">[LEVEL 2]</span>
-                  <h3 class="h3" style="display: inline; margin: 0;">St Mary's Catholic Academy</h3>
-                  <span class="tag">GCSEs &amp; LEVEL 2</span>
-                </div>
-                <div class="mono" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.35rem;">
-                  General Certificate of Secondary Education (GCSEs)
-                </div>
-              </div>
-              <div class="qual-meta">
-                <div>Secondary Education</div>
-                <div>Blackpool, Lancashire</div>
-                <div class="hand" style="color: var(--mark); font-size: 0.9rem;">"D*2 in Digital ICT"</div>
-              </div>
-            </div>
-            <p class="body small" style="margin-top: 0.65rem; color: var(--ink-2); line-height: 1.55;">
-              Strong foundation in Digital ICT (Distinction* D*2), Triple Science (Physics, Chemistry, Biology), Mathematics, English, and Photography.
-            </p>
-            <div class="grade-grid-5">
-              <div class="grade-box highlight">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">DIGITAL ICT ★</div>
-                <div style="font-weight: 700; margin-top: 2px;">D*2 (Distinction*)</div>
-              </div>
-              <div class="grade-box">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">PHOTOGRAPHY</div>
-                <div style="font-weight: 700; margin-top: 2px;">Grade 9</div>
-              </div>
-              <div class="grade-box">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">ENGLISH LANG / LIT</div>
-                <div style="font-weight: 700; margin-top: 2px;">Grade 6 / Grade 5</div>
-              </div>
-              <div class="grade-box">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">MATHEMATICS</div>
-                <div style="font-weight: 700; margin-top: 2px;">Grade 4</div>
-              </div>
-              <div class="grade-box full-span">
-                <div style="font-size: 9.5px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em;">SCIENCES (TRIPLE)</div>
-                <div style="font-weight: 700; margin-top: 2px;">Biology: Grade 6 • Chemistry: Grade 5 • Physics: Grade 5</div>
-              </div>
-            </div>
-          </article>
-        </div>
-        </div>
-      </div>
-    </section>
-
-<!-- =====================================================================
-         03. CAREER LOGBOOK (EXPERIENCE)
-         ===================================================================== -->
-    <section id="experience" class="section">
-      <div class="container">
-        <div class="sheet-head" data-sheet-toggle="experience" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-experience">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 03</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-03 // CAREER REVISIONS</span>
+          <div class="card-meta-tags">
+            <span class="meta-tag">github.com/leeprky</span>
+            <span class="meta-tag">Web & Mobile</span>
+            <span class="meta-tag">Open Source</span>
           </div>
-          <div class="sheet-title-row">
-            <div class="sheet-heading-group">
-              <span class="sheet-tag-badge">03 // EXPERIENCE</span>
-              <h2 class="h2">Work Experience &amp; Logbook<span class="accent">.</span></h2>
-            </div>
-            <div class="sheet-state-badge" aria-label="Toggle Sheet 03">
-              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
+        </div>
+        <div class="card-action-arrow">↗</div>
+      </a>
+
+      <!-- 4. Curriculum Vitae & Resume Download -->
+      <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="portal-card card-cv">
+        <div class="card-icon-box" style="background: radial-gradient(circle, rgba(52,211,153,0.25) 0%, rgba(15,23,42,0.8) 100%);">
+          📄
+        </div>
+        <div class="card-content">
+          <div class="card-header-line">
+            <h2 class="card-title">Curriculum Vitae (CV)</h2>
+            <span class="card-badge">PDF Download</span>
           </div>
-          <p class="lead">
-            Verified operational career logbook — high-volume team leadership, workshop automotive diagnostics, and amusement ride safety operations.
+          <p class="card-desc">
+            Download the official engineering curriculum vitae, academic background, certifications, and technical experience.
           </p>
+          <div class="card-meta-tags">
+            <span class="meta-tag">Electrical Engineering</span>
+            <span class="meta-tag">Resume</span>
+            <span class="meta-tag">PDF</span>
+          </div>
         </div>
+        <div class="card-action-arrow">↓</div>
+      </a>
 
-        <div class="sheet-body" id="sheet-body-experience">
-
-        <div class="timeline">
-          <div class="timeline-rail" aria-hidden="true"><i></i></div>
-
-          <!-- JOB 04: Wetherspoons -->
-          <article class="panel spotlight job is-current">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag">JOB 04 // CURRENT</span>
-                  <h3 class="h3">Wetherspoons</h3>
-                  <span class="mono small muted">• Blackpool &amp; Preston</span>
-                </div>
-                <div class="job-role">Bar Team Leader</div>
-                <ul>
-                  <li><strong>Shift Leadership:</strong> Leading high-volume bar and floor teams during peak services with 1,000s of patrons across multi-level seaside and city centre venues.</li>
-                  <li><strong>Operations &amp; Cellar:</strong> Cellar stock management, line cleaning, till reconciliation, cash auditing, health &amp; safety, and licensing compliance.</li>
-                  <li><strong>Team Training:</strong> Mentoring new starters, ensuring speed of service, and strict adherence to Challenge 25 standards.</li>
-                </ul>
-
-                <div class="venues">
-                  <div class="venue">
-                    <b>The Velvet Coaster · Blackpool</b>
-                    <p>Bar Team Leader at one of the UK’s largest seaside hospitality venues on Blackpool South Shore.</p>
-                  </div>
-                  <div class="venue">
-                    <b>The Twelve Tellers · Preston</b>
-                    <p>Bar Team Leader in city-centre Preston alongside studying <span class="bh-phrase">Electrical Engineering</span> at <span class="bh-phrase">University of Lancashire (UCLan)</span>.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="job-when">
-                <b>03/2025 — Present</b>
-                <span>Promotion to Team Leader</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"Velvet Coaster → Twelve Tellers"</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 03: Car Cosmetics -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 03</span>
-                  <h3 class="h3">Car Cosmetics</h3>
-                </div>
-                <div class="job-role">Apprentice Automotive Technician — Diagnostics &amp; Repair</div>
-                <ul>
-                  <li>Diagnosed vehicle wiring faults, sensor harness failures, and mechanical problems in the workshop.</li>
-                  <li>Conducted routine servicing, fluid exchanges, brake rotor/pad replacements, and hydraulic bleeding.</li>
-                  <li>Stripped down mechanical assemblies and fitted aftermarket performance components.</li>
-                </ul>
-              </div>
-
-              <div class="job-when">
-                <b>04/2024 — 10/2024</b>
-                <span>Blackpool, Lancashire</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"workshop diagnostics"</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 02: Pleasure Beach Resort -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 02</span>
-                  <h3 class="h3">Pleasure Beach Resort</h3>
-                </div>
-                <div class="job-role">Ride Operator</div>
-                <ul>
-                  <li>Operated major amusement rides under strict mechanical, safety, and interlock protocols.</li>
-                  <li>Executed pre-opening sensor tests, restraint inspections, and emergency stop readiness drills.</li>
-                </ul>
-              </div>
-
-              <div class="job-when">
-                <b>03/2023 — 11/2024</b>
-                <span>Blackpool, Lancashire</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- JOB 01: McDonald's -->
-          <article class="panel spotlight job">
-            <div class="job-grid">
-              <div>
-                <div class="job-title">
-                  <span class="tag tag-outline">JOB 01</span>
-                  <h3 class="h3">McDonald's</h3>
-                </div>
-                <div class="job-role">Crew Member</div>
-                <ul>
-                  <li>Maintained high-speed kitchen and front-counter throughput in fast-paced shift environments.</li>
-                  <li>Built solid foundation of teamwork, cleanliness standards, and fast communication.</li>
-                </ul>
-              </div>
-
-              <div class="job-when">
-                <b>03/2022 — 02/2023</b>
-                <span>Blackpool, Lancashire</span>
-                <span class="hand" style="display: block; margin-top: 0.3rem;">"where I started"</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-      </div>
     </section>
 
-    <!-- =====================================================================
-         04. PROJECT GALLERY & ENGINEERING SCHEMATICS
-         ===================================================================== -->
-    <section id="projects" class="section">
-      <div class="container">
-        <div class="sheet-head" data-sheet-toggle="projects" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-projects">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 04</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-04 // ENGINEERING BUILDS &amp; SCHEMATICS</span>
-          </div>
-          <div class="sheet-title-row">
-            <div class="sheet-heading-group">
-              <span class="sheet-tag-badge">04 // PROJECTS</span>
-              <h2 class="h2">Engineering Projects<span class="accent">.</span></h2>
-            </div>
-            <div class="sheet-state-badge" aria-label="Toggle Sheet 04">
-              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
-          <p class="lead">
-            Hands-on technical builds, cross-disciplinary engineering schematics, budget automotive revival, and orthographic CAD drafting.
-          </p>
-        </div>
+    <!-- Socials & Quick Connect Strip -->
+    <nav class="social-strip" aria-label="Social and professional links">
+      <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="social-btn">
+        <span>🐙</span> GitHub
+      </a>
+      <a href="https://leeprky.github.io/portfolio/#contact" class="social-btn">
+        <span>✉️</span> Contact
+      </a>
+      <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="social-btn">
+        <span>📄</span> Download CV
+      </a>
+    </nav>
 
-        <div class="sheet-body" id="sheet-body-projects">
-          <!-- Anchor for Schematics navigation -->
-          <div id="schematics" style="scroll-margin-top: calc(var(--header-h) + var(--ruler-h) + 20px);">
-            <!-- Filter Controls (Powered by GSAP Flip) -->
-        <div class="filters" role="group" aria-label="Filter technical disciplines">
-          <button type="button" data-filter="all" aria-pressed="true">ALL (4)</button>
-          <button type="button" data-filter="cs" aria-pressed="false">COMPUTER SCIENCE</button>
-          <button type="button" data-filter="digital" aria-pressed="false">ICT SYSTEMS &amp; SOFTWARE</button>
-          <button type="button" data-filter="electrical" aria-pressed="false">ELECTRICAL ENGINEERING</button>
-          <button type="button" data-filter="automotive" aria-pressed="false">AUTOMOTIVE DIAGNOSTICS &amp; REPAIR</button>
-        </div>
-
-        <!-- Disciplines Grid: 4 Core Disciplines -->
-        <div class="disc-grid">
-          <!-- Card 1: Computer Science -->
-          <div class="panel spotlight tilt disc-card" data-category="cs">
-            <div class="panel-head">
-              <span class="panel-id">CS-01 // ARCHITECTURE &amp; CODE</span>
-              <span class="tiny mono">A-LEVEL</span>
-            </div>
-            <h3 class="h3">Computer Science</h3>
-            <p class="body small">
-              Studied hardware architectures, von Neumann architecture, registers, assembly concepts, programming foundations, data structures, and operating system kernels.
-            </p>
-            <div class="chips">
-              <span class="chip">PC Architecture</span>
-              <span class="chip">Operating Systems</span>
-              <span class="chip">Data Structures</span>
-              <span class="chip">Scripting</span>
-            </div>
-          </div>
-
-          <!-- Card 2: ICT Systems & Software -->
-          <div class="panel spotlight tilt disc-card" data-category="digital">
-            <div class="panel-head">
-              <span class="panel-id">SYS-02 // HARDWARE &amp; NETWORKING</span>
-              <span class="tiny mono">D*D* DIPLOMA</span>
-            </div>
-            <h3 class="h3">ICT Systems &amp; Software</h3>
-            <p class="body small">
-              Top grades in BTEC IT (D*D*) and GCSE Digital ICT (D*2) — hands-on PC assembly, component fault isolation, IPv4/IPv6 networking, relational database management, and custom software troubleshooting.
-            </p>
-            <div class="chips">
-              <span class="chip">PC Assembly</span>
-              <span class="chip">Networking</span>
-              <span class="chip">Database Systems</span>
-              <span class="chip">Software &amp; Scripting</span>
-            </div>
-          </div>
-
-          <!-- Card 3: Electrical Engineering -->
-          <div class="panel spotlight tilt disc-card" data-category="electrical">
-            <div class="panel-head">
-              <span class="panel-id">CAD-01 // ACADEMIC SPEC</span>
-              <span class="tiny mono">UCLAN · PRESTON</span>
-            </div>
-            <h3 class="h3">Electrical Engineering (Foundation Year)</h3>
-            <p class="body small">
-              Covering circuit fundamentals, Ohm’s and Kirchhoff’s laws, AC/DC analysis, operational amplifiers, engineering mathematics, and hands-on laboratory circuit testing at the <span class="bh-phrase">University of Lancashire (UCLan)</span>.
-            </p>
-            <div class="chips">
-              <span class="chip">Circuit Analysis</span>
-              <span class="chip">Digital Systems</span>
-              <span class="chip">Instrumentation</span>
-              <span class="chip">Lab Practicals</span>
-            </div>
-          </div>
-
-          <!-- Card 4: Automotive Diagnostics & Repair -->
-          <div class="panel spotlight tilt disc-card" data-category="automotive">
-            <div class="panel-head">
-              <span class="panel-id">CAD-02 // WORKSHOP MECHANICS</span>
-              <span class="tiny mono">CAR COSMETICS</span>
-            </div>
-            <h3 class="h3">Automotive Diagnostics &amp; Repair</h3>
-            <p class="body small">
-              Workshop apprenticeship diagnosing vehicle electrical circuits, sensor harnesses, engine servicing, hydraulic brake bleeding, brake line replacement, and mechanical suspension work.
-            </p>
-            <div class="chips">
-              <span class="chip">Fault Finding</span>
-              <span class="chip">Vehicle Electrics</span>
-              <span class="chip">Hydraulic Bleeding</span>
-              <span class="chip">Mechanical Servicing</span>
-            </div>
-          </div>
-        </div>
-          </div>
-
-          <div style="margin-top: 1.25rem;">
-            <!-- 03.1 Automotive Revival — Coming Soon -->
-            <div class="panel spotlight" style="padding: 2.25rem 1.5rem; text-align: center; border: 1px dashed var(--line-strong); background: var(--bg-surface);">
-              <div class="panel-head" style="justify-content: center; margin-bottom: 0.6rem;">
-                <span class="panel-id">PROJ-01 // AUTOMOTIVE REVIVAL</span>
-                <span class="tag tag-mark">COMING SOON</span>
-              </div>
-              <h3 class="h3" style="color: var(--ink); margin: 0;">Automotive Project Build Coming Soon<span class="accent">.</span></h3>
-              <p class="body small muted" style="max-width: 520px; margin: 0.6rem auto 0; line-height: 1.6;">
-                Full teardown log, diagnostics schematics, and mechanical build documentation currently queued and in development.
-              </p>
-            </div>
-
-        <!-- 04.2 Prism Carousel: Hand-Drawn Engineering Projections Coverflow -->
-        <div class="subhead" style="margin-top: 1.75rem;">
-          <h3>
-            <span class="mono">04.2 // PRISM COVERFLOW</span> Hand-Drawn Engineering Projections
-          </h3>
-          <span class="hand" style="color: var(--mark); font-size: 0.95rem;">"3D prism coverflow · drag or use arrows"</span>
-        </div>
-
-        <div class="prism-carousel-wrap">
-          <div class="prism-viewport">
-            <!-- Slide 1: Electric Screwdriver Projection -->
-            <div class="prism-slide is-active">
-              <img src="assets/images/screwdriver-fixed.jpeg" alt="Hand-drafted orthographic projection of electric screwdriver" loading="lazy" width="800" height="550" />
-              <div class="prism-slide-info">
-                <span class="prism-slide-tag">SPEC 04.2-A // ORTHOGRAPHIC CAD</span>
-                <h4 class="prism-slide-title">Electric Screwdriver Projection</h4>
-                <p class="prism-slide-desc">Hand-drawn 3rd-angle projection (Top, Front, End views) with full construction projection lines, centre lines &amp; BS 8888 standards (Week 3, UCLan).</p>
-              </div>
-            </div>
-            <!-- Slide 2: Week 2 Draco Plane -->
-            <div class="prism-slide">
-              <img src="assets/images/week2-draco-plane.jpeg" alt="Hand-drafted technical drawing of Week 2 Draco Plane" loading="lazy" width="800" height="550" />
-              <div class="prism-slide-info">
-                <span class="prism-slide-tag">SPEC 04.2-B // AERONAUTICAL DRAFTING</span>
-                <h4 class="prism-slide-title">Week 2 Draco Plane Technical Drawing</h4>
-                <p class="prism-slide-desc">Aeronautical profile and orthographic wing geometry study drafted during Week 2 engineering lab with precision chord lines and datum references.</p>
-              </div>
-            </div>
-            <!-- Slide 3: Week 3 Shapes & Geometry -->
-            <div class="prism-slide">
-              <img src="assets/images/week3-shapes-fixed.jpeg" alt="Hand-drafted engineering shapes and geometric projections" loading="lazy" width="800" height="550" />
-              <div class="prism-slide-info">
-                <span class="prism-slide-tag">SPEC 04.2-C // GEOMETRIC PROJECTIONS</span>
-                <h4 class="prism-slide-title">Week 3 Shapes &amp; Multi-View Projections</h4>
-                <p class="prism-slide-desc">Compound prism and solid geometric projections detailing intersection vertices, hidden detail dashed conventions, and dimensional tolerance callouts.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Controls -->
-          <div class="prism-controls">
-            <button type="button" class="prism-nav-btn prism-prev" aria-label="Previous slide">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <div class="prism-dots"></div>
-            <button type="button" class="prism-nav-btn prism-next" aria-label="Next slide">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- 04.3 Discord Client Themes & UI CSS -->
-        <div class="subhead" style="margin-top: 1.75rem;">
-          <h3>
-            <span class="mono">04.3 // DISCORD THEMES</span> Discord Client Themes &amp; UI CSS
-          </h3>
-          <span class="hand" style="color: var(--mark); font-size: 0.95rem;">"open-source theme collection"</span>
-        </div>
-
-        <!-- Featured Showcase Box Matching Screenshot -->
-        <div class="showcase-panel">
-          <div class="panel-head" style="margin-bottom: 0.85rem;">
-            <span class="panel-id">THEME-SHOWCASE // LIVE UI PREVIEW</span>
-            <a href="https://betterdiscord.app/developer/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">BetterDiscord Developer Profile ↗</a>
-          </div>
-          <div class="showcase-grid">
-            <div class="showcase-gif-box">
-              <img src="assets/images/discord-theme-showcase.gif" alt="Discord custom themes live showcase preview" loading="lazy" width="600" height="340" />
-              <a href="assets/images/discord-theme-showcase.gif" target="_blank" rel="noopener noreferrer" class="gif-open-btn">Open Full GIF ↗</a>
-            </div>
-            <div>
-              <h4 class="h3" style="color: var(--ink);">Vintage, WindowsXI &amp; MaterialYou in Action</h4>
-              <p class="body small" style="margin-top: 0.5rem; color: var(--ink-2); line-height: 1.6;">
-                Animated demonstration of my custom Discord client themes built with modular CSS, hardware-accelerated animations, acrylic backdrop filters, and custom SVG icon suites. Maintained for BetterDiscord and Vencord users worldwide with active GitHub releases.
-              </p>
-              <div class="chips" style="margin-top: 1rem;">
-                <span class="chip">Vintage v0.9</span>
-                <span class="chip">WindowsXI × MaterialYou</span>
-                <span class="chip">BetterDiscord &amp; Vencord</span>
-                <span class="chip">400+ Community Members</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3-Column Theme Cards -->
-        <div class="grid grid-3" style="margin-top: 1rem;">
-          <!-- Theme 01 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-01</span>
-              <a href="https://github.com/leeprky/WindowsXI" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">WindowsXI Discord Theme</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Fluent Design recreation for Discord with acrylic translucency, mica titlebars, subtle glow states, and dark/light mode switching.
-            </p>
-            <div class="chips" style="margin-top: 0.85rem;">
-              <span class="chip">Fluent CSS</span>
-              <span class="chip">Acrylic Blur</span>
-              <span class="chip">Light / Dark</span>
-            </div>
-          </div>
-
-          <!-- Theme 02 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-02</span>
-              <a href="https://github.com/leeprky/Vintage" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">MaterialYou &amp; Vintage</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Dynamic tonal palette generation inspired by Android 12, paired with a warm retro aesthetic for Vencord and BetterDiscord.
-            </p>
-            <div class="chips" style="margin-top: 0.85rem;">
-              <span class="chip">Material You</span>
-              <span class="chip">Retro Warmth</span>
-              <span class="chip">Vencord</span>
-            </div>
-          </div>
-
-          <!-- Theme 03 -->
-          <div class="panel spotlight tilt">
-            <div class="panel-head">
-              <span class="panel-id">THEME-03</span>
-              <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="panel-link">GitHub ↗</a>
-            </div>
-            <h4 class="h3">Lode, Ovel &amp; Fluidcord</h4>
-            <p class="body small" style="margin-top: 0.4rem;">
-              Minimalist transparent themes and sleek utility stylesheets crafted for high-performance Discord clients and custom CSS engines.
-            </p>
-            <div class="chips" style="margin-top: 0.85rem;">
-              <span class="chip">Fluidcord</span>
-              <span class="chip">Glass UI</span>
-              <span class="chip">Modular CSS</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 04.4 // LIVE AUDIO & DJ PROJECTS -->
-        <div class="subhead" style="margin-top: 2rem;">
-          <h3>
-            <span class="mono">04.4 // AUDIO ENGINEERING</span> Live Sound &amp; DJ Projects
-          </h3>
-          <span class="hand" style="color: var(--mark); font-size: 0.95rem;">"live booth, acoustic tuning &amp; sets"</span>
-        </div>
-
-        <div class="panel spotlight" style="padding: 1.5rem; margin-top: 0.5rem;">
-          <div class="audio-grid">
-            <div>
-              <div class="panel-head" style="margin-bottom: 0.6rem;">
-                <span class="panel-id">AUDIO-01 // LIVE SOUND &amp; SETUPS</span>
-              </div>
-              <h4 class="h3" style="color: var(--ink);">Pioneer DJ Rig &amp; Live Sound Reinforcement</h4>
-              <p class="body small" style="margin-top: 0.5rem; line-height: 1.6; color: var(--ink-2);">
-                Hands-on experience DJing live events at venues. Practical mastery of Pioneer DJ decks, club mixers, signal routing, gain staging, active PA acoustics, EQ tuning, and frequency separation.
-              </p>
-              <div class="chips" style="margin-top: 0.85rem;">
-                <span class="chip">Pioneer DJ</span>
-                <span class="chip">Signal Routing</span>
-                <span class="chip">Gain Staging</span>
-                <span class="chip">Live Sound PA</span>
-                <span class="chip">Acoustic Tuning</span>
-              </div>
-              <div style="margin-top: 1.25rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-                <a href="https://soundcloud.com/leethal04" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                  </svg>
-                  <span>Listen on SoundCloud (leethal04) ↗</span>
-                </a>
-                <span class="mono tiny muted">SOUNDCLOUD.COM/LEETHAL04</span>
-              </div>
-            </div>
-            <div class="audio-figs">
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/dj-block.jpg" alt="Lee Parkinson live DJ setup booth" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>BOOTH</span>
-                  <span class="hand">"live booth"</span>
-                </figcaption>
-              </div>
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/dj-lee.jpg" alt="Lee Parkinson on the decks" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>DECKS</span>
-                  <span class="hand">"on the decks"</span>
-                </figcaption>
-              </div>
-            </div>
-          </div>
-        </div>
-          </div>
-        </div>
+    <!-- Portal Footer -->
+    <footer class="portal-footer">
+      <div class="footer-host-info">
+        ⚡ Host Gateway · leeprky.github.io
       </div>
-    </section>
-
-<!-- =====================================================================
-         05. FIELD SYSTEMS & EXPEDITIONS (HOBBIES)
-         ===================================================================== -->
-    <section id="hobbies" class="section">
-      <div class="container">
-        <div class="sheet-head" data-sheet-toggle="hobbies" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-hobbies">
-          <div class="sheet-meta">
-            <span class="sheet-no">SHEET 05</span>
-            <div class="sheet-rule"></div>
-            <span class="sheet-code">LP-SHT-05 // FIELD EXPEDITIONS</span>
-          </div>
-          <div class="sheet-title-row">
-            <div class="sheet-heading-group">
-              <span class="sheet-tag-badge">05 // HOBBIES</span>
-              <h2 class="h2">Mountains, Camping &amp; Cars<span class="accent">.</span></h2>
-            </div>
-            <div class="sheet-state-badge" aria-label="Toggle Sheet 05">
-              <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-              <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
-          <p class="lead">
-            What I do outside the lab and work: fell climbing in the Lake District, car mechanics, and landscape photography.
-          </p>
-        </div>
-
-        <div class="sheet-body" id="sheet-body-hobbies">
-          <div class="grid grid-2">
-          <!-- Mountaineering -->
-          <article class="panel spotlight hobby">
-            <div class="panel-head">
-              <span class="panel-id">FIELD-01 // EXPEDITIONS</span>
-              <span class="tiny mono">LAKE DISTRICT &amp; FELLS</span>
-            </div>
-            <h3 class="h3">Mountaineering, Scrambling &amp; Camping</h3>
-            <p class="body small">
-              Getting up into the mountains is my favourite way to switch off — climbing fells, scrambling up rocky waterfalls and gorges, and pitch-camping overnight in the valleys. Living in Preston puts the Lake District and Pennines right on the doorstep.
-            </p>
-
-            <div class="hobby-figs">
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/hobby-waterfall.jpg" alt="Lee scrambling up a gorge waterfall in the Lake District" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>GORGE</span>
-                  <span class="hand">"waterfall scramble"</span>
-                </figcaption>
-              </div>
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/hobby-mountains.jpg" alt="Mountain stream looking over valley in the Lake District" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>FELLS</span>
-                  <span class="hand">"valley stream"</span>
-                </figcaption>
-              </div>
-            </div>
-
-            <div class="chips">
-              <span class="chip">Lake District</span>
-              <span class="chip">Gorge Scrambles</span>
-              <span class="chip">Wild Camping</span>
-              <span class="chip">Fell Ridges</span>
-            </div>
-          </article>
-
-          <!-- Cars & Motoring -->
-          <article class="panel spotlight hobby">
-            <div class="panel-head">
-              <span class="panel-id">FIELD-02 // MOTORING</span>
-              <span class="tiny mono">BMW E90 3 SERIES</span>
-            </div>
-            <h3 class="h3">Motoring, Racing &amp; DIY Mechanics</h3>
-            <p class="body small">
-              Cars are a major part of my life. From hands-on shop work at Car Cosmetics to maintaining and modifying my own red BMW E90 3 Series — doing my own mechanical servicing, fluid flushes, brake jobs, and styling upgrades like the front splitter.
-            </p>
-
-            <div class="hobby-figs">
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/car-front.jpg" alt="Lee's red BMW E90 front view with front splitter" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>DAY VIEW</span>
-                  <span class="hand">"BMW E90 front"</span>
-                </figcaption>
-              </div>
-              <div class="figure">
-                <div class="figure-frame ratio-34">
-                  <img src="assets/images/car-night.jpg" alt="Lee's red BMW E90 at night with angel eyes" loading="lazy" width="600" height="800" />
-                </div>
-                <figcaption>
-                  <span>NIGHT VIEW</span>
-                  <span class="hand">"angel eyes"</span>
-                </figcaption>
-              </div>
-            </div>
-
-            <div class="chips">
-              <span class="chip">BMW E90</span>
-              <span class="chip">Motorsport</span>
-              <span class="chip">DIY Servicing</span>
-              <span class="chip">Car Meets</span>
-            </div>
-          </article>
-        </div>
-
-        <div class="side-grid">
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 01</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">Landscape Photography</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Putting my Grade 9 in GCSE Photography to practical use capturing mountain ridges, waterfalls, and automotive shoots.
-            </p>
-          </div>
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 02</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">PC Hardware &amp; Modding</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Building rigs, replacing capacitors, modding software, and troubleshooting electronics.
-            </p>
-          </div>
-          <div class="panel spotlight">
-            <span class="panel-id">SIDE 03</span>
-            <h4 class="h3" style="margin-top: 0.3rem;">Live Sound &amp; Music</h4>
-            <p class="body small" style="margin-top: 0.3rem;">
-              Retaining an ear for sound engineering, acoustic setups, and audio routing from my time on the decks.
-            </p>
-          </div>
-        </div>
+      <div>
+        &copy; 2026 Lee Parkinson. Hosted with GitHub Pages.
       </div>
-      </div>
-    </section>
+    </footer>
 
-<!-- =====================================================================
-         06. DIRECT DISPATCH (CONTACT)
-         ===================================================================== -->
-    <section id="contact" class="section">
-      <div class="container">
-        <!-- React Bits · ElectricBorder on Primary Contact Sheet -->
-        <div class="panel contact-card electric spotlight">
-          <svg class="electric-svg" aria-hidden="true">
-            <rect class="glow" x="6" y="6" width="calc(100% - 12px)" height="calc(100% - 12px)" rx="2" />
-            <rect x="6" y="6" width="calc(100% - 12px)" height="calc(100% - 12px)" rx="2" />
-          </svg>
-
-          <div class="sheet-head" data-sheet-toggle="contact" role="button" tabindex="0" aria-expanded="true" aria-controls="sheet-body-contact">
-            <div class="sheet-meta">
-              <span class="sheet-no">SHEET 06</span>
-              <div class="sheet-rule"></div>
-              <span class="sheet-code">LP-SHT-06 // CONTACT DIRECT</span>
-            </div>
-            <div class="sheet-title-row">
-              <div class="sheet-heading-group">
-                <span class="sheet-tag-badge">06 // CONTACT</span>
-                <h2 class="h2">Contact Me<span class="accent">.</span></h2>
-              </div>
-              <div class="sheet-state-badge" aria-label="Toggle Sheet 06">
-                <span class="sheet-state-text">SHEET ACTIVE [−]</span>
-                <svg class="sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </div>
-            </div>
-            <p class="lead">
-              Open to engineering placements, industrial trainee roles, apprenticeships, and technical opportunities across Preston, Lancashire, and the North West.
-            </p>
-          </div>
-
-          <div class="sheet-body" id="sheet-body-contact">
-            <div class="contact-grid">
-              <!-- Email -->
-              <div class="contact-cell">
-                <span class="tiny mono">PRIMARY DISPATCH</span>
-                <b>lspky@pm.me</b>
-                <span class="small muted">ProtonMail Secure</span>
-                <button type="button" class="copy-btn" data-copy="lspky@pm.me">Copy Address</button>
-              </div>
-
-              <!-- Location -->
-              <div class="contact-cell">
-                <span class="tiny mono">CAMPUS &amp; BASE</span>
-                <b>Preston, Lancashire</b>
-                <span class="small muted">United Kingdom · PR1</span>
-                <span class="tiny mono" style="margin-top: 0.3rem;">ULan Engineering</span>
-              </div>
-
-              <!-- LinkedIn -->
-              <a href="https://www.linkedin.com/in/lee-parkinson-605807229/" target="_blank" rel="noopener noreferrer" class="contact-cell">
-                <span class="tiny mono">PROFESSIONAL NETWORK</span>
-                <b>LinkedIn ↗</b>
-                <span class="small muted">Lee Parkinson</span>
-                <span class="tiny mono accent" style="margin-top: 0.3rem;">Connect Profile</span>
-              </a>
-
-              <!-- GitHub -->
-              <a href="https://github.com/leeprky" target="_blank" rel="noopener noreferrer" class="contact-cell">
-                <span class="tiny mono">SOURCE REPOSITORY</span>
-                <b>GitHub ↗</b>
-                <span class="small muted">@leeprky</span>
-                <span class="tiny mono accent" style="margin-top: 0.3rem;">View Codebases</span>
-              </a>
-            </div>
-
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem;">
-              <a href="mailto:lspky@pm.me" class="btn btn-primary">
-                <span>Send Email (lspky@pm.me)</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-              </a>
-              <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer" class="btn">
-                <span>Download CV PDF (252KB)</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- =======================================================================
-       SITE FOOTER
-       ======================================================================= -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="mono" style="font-weight: 700; font-size: 0.95rem;">LEE PARKINSON // ELECTRICAL ENGINEERING</div>
-        <div class="tiny mono" style="margin-top: 0.4rem;">
-          SPEC SPECIFICATION DWG: LP-ENG-2026-EE · BS 8888 / IEEE-315 SCHEMATIC DRAFTING · PRESTON, UK
-        </div>
-      </div>
-      <div class="footer-links">
-        <a href="https://github.com/leeprky/leeprky.github.io" target="_blank" rel="noopener noreferrer">Source Code ↗</a>
-        <a href="assets/files/Lee-ParkinsonCV.pdf" target="_blank" rel="noopener noreferrer">CV (PDF) ↗</a>
-        <a href="#about">About</a>
-        <a href="#schematics">Schematics</a>
-        <a href="#top">Top ↑</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Interactive Subtle Particle Background -->
+  <script>
+    (function () {
+      const canvas = document.getElementById("ambientCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      let width, height, particles = [];
 
-  <!-- =======================================================================
-       SCRIPTS: GSAP 3.15 + PLUGINS, LENIS 1.3.27, BLUEPRINT ENGINE
-       ======================================================================= -->
-  <script src="assets/vendor/gsap.min.js"></script>
-  <script src="assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/vendor/ScrollToPlugin.min.js"></script>
-  <script src="assets/vendor/SplitText.min.js"></script>
-  <script src="assets/vendor/ScrambleTextPlugin.min.js"></script>
-  <script src="assets/vendor/Flip.min.js"></script>
-  <script src="assets/vendor/lenis.min.js"></script>
-  <script src="assets/js/blueprint.js?v=12.6"></script>
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      const particleCount = Math.min(45, Math.floor(window.innerWidth / 25));
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          alpha: Math.random() * 0.4 + 0.1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(148, 163, 184, ${p.alpha})`;
+          ctx.fill();
+
+          // Connect nearby dots with subtle lines
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / 110) * 0.08})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Optional Auto-pilot banner: enabled only when arriving with ?autopilot=1
+      const urlParams = new URLSearchParams(window.location.search);
+      const enableAutopilot = urlParams.get("autopilot") === "1";
+      const banner = document.getElementById("autopilotBar");
+      const countdownEl = document.getElementById("countdownSecs");
+      const pauseBtn = document.getElementById("pauseAutopilotBtn");
+
+      if (enableAutopilot && banner && !sessionStorage.getItem("hub_stay")) {
+        banner.style.display = "flex";
+        let remaining = 6;
+        const interval = setInterval(() => {
+          remaining--;
+          if (countdownEl) countdownEl.textContent = remaining;
+          if (remaining <= 0) {
+            clearInterval(interval);
+            window.location.href = "https://leeprky.github.io/portfolio/";
+          }
+        }, 1000);
+
+        if (pauseBtn) {
+          pauseBtn.onclick = () => {
+            clearInterval(interval);
+            banner.style.display = "none";
+            sessionStorage.setItem("hub_stay", "true");
+          };
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
