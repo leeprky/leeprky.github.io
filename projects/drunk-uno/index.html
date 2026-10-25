@@ -17,16 +17,16 @@
   <meta name="format-detection" content="telephone=no" />
 
   <!-- Drunk Uno Custom Game Branding & Native iOS / Android PWA Icons -->
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png" />
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-  <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon.png" />
-  <link rel="shortcut icon" href="assets/favicon.png" />
+  <link rel="manifest" href="manifest.json?v=6.1" />
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=6.1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v=6.1" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v=6.1" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=6.1" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png?v=6.1" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=6.1" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=6.1" />
+  <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon.png?v=6.1" />
+  <link rel="shortcut icon" href="assets/favicon.png?v=6.1" />
 
   <!-- Google Fonts: Modern Uno Display (Outfit, Fredoka) & Monospace -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2898,6 +2898,28 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* Tavern Room Gateway & Mode Switcher Styles */
+    .gateway-tab-btn {
+      background: transparent;
+      color: #94a3b8;
+    }
+    .gateway-tab-btn.active {
+      background: var(--theme-primary, #38bdf8) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .gateway-mode-card {
+      transition: all 0.2s ease;
+    }
+    .gateway-mode-card.selected {
+      border-color: #ffd166 !important;
+      background: rgba(255, 209, 102, 0.16) !important;
+      box-shadow: 0 0 14px rgba(255, 209, 102, 0.3);
+    }
+    .btn-single-team-select:active {
+      transform: scale(0.96);
+    }
+
     /* Lock body scroll and keep background transparent when popups are open */
     body:has(.modal-backdrop.open) {
       overflow: hidden !important;
@@ -5015,7 +5037,12 @@
         <!-- Top Navigation Bar (Mobile Header: Top-Left Version & Top-Right Room Info + Settings) -->
         <nav class="top-bar">
           <div class="top-bar-left">
-            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v6.0</span>
+            <span class="version-badge" id="appVersionBadge" title="Drunk Uno Mobile Engine">v6.1</span>
+            <button type="button" class="room-status-badge" id="topRoomBtn" title="Current Room (Tap to view details, copy invite or switch room)" style="font-size: 0.68rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; padding: 2px 7px; border-radius: 6px; background: rgba(0,0,0,0.5); border: 1.2px solid rgba(255,255,255,0.25); color: #ffd166; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;">
+              <span>🏰</span>
+              <span id="topRoomCodeTxt">PRESTON</span>
+              <span id="topRoomModeTag" style="font-size: 0.58rem; background: #38bdf8; color: #000; padding: 1px 4px; border-radius: 3px; font-weight: 900; display: inline-block;">LIVE</span>
+            </button>
             <button type="button" class="user-profile-badge" id="topUserBadge" title="Your Linked Player Name (Tap to edit crew)">
               <span>👤</span>
               <span id="topUserName">Player</span>
@@ -5940,21 +5967,104 @@
 
 
   <!-- =========================================================================
+       MODAL 3B: TAVERN ROOM GATEWAY (JOIN OR CREATE ROOM + PLAY MODE)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="roomGatewayModal" style="z-index: 99999;">
+    <div class="modal-scroll glass-card" style="position: relative; max-width: 480px; text-align: left; border: 2px solid var(--theme-border, #ffd166); box-shadow: 0 0 35px rgba(255, 209, 102, 0.45);">
+      <div style="text-align: center; margin-bottom: 12px;">
+        <img src="assets/drunk-uno-logo.png" alt="Drunk Uno Logo" style="width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 8px auto; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 16px rgba(239,68,68,0.4); border: 2px solid rgba(255,255,255,0.25);" />
+        <span class="impact-pill special" style="font-size: 0.78rem; padding: 3px 10px; letter-spacing: 0.5px;">🏰 PRIVATE ROOM LOBBY</span>
+        <h2 style="font-family: var(--font-uno); font-size: 1.85rem; color: #ffd166; margin: 6px 0 2px 0;">DRUNK UNO TAVERN</h2>
+        <p style="font-size: 0.84rem; color: #cbd5e1; margin: 0;">Play privately with your friends. Rooms are isolated & persistent.</p>
+      </div>
+
+      <!-- Gateway Tab Toggle: Join vs Create -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; background: rgba(0,0,0,0.45); padding: 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12);">
+        <button type="button" id="tabJoinRoomBtn" class="gateway-tab-btn active" style="padding: 10px; font-weight: 800; font-size: 0.88rem; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s;">
+          🔑 JOIN ROOM
+        </button>
+        <button type="button" id="tabCreateRoomBtn" class="gateway-tab-btn" style="padding: 10px; font-weight: 800; font-size: 0.88rem; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s;">
+          ⚔️ CREATE ROOM
+        </button>
+      </div>
+
+      <!-- PANE 1: JOIN ROOM -->
+      <div id="gatewayJoinPane">
+        <div style="margin-bottom: 14px;">
+          <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; color: #e2e8f0; display: block; margin-bottom: 6px;">ENTER ROOM CODE:</label>
+          <input type="text" id="gatewayJoinCodeInput" class="glass-input" placeholder="e.g. PRESTON, CRAWL-42, BEER99" style="width: 100%; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 800; text-transform: uppercase; text-align: center; letter-spacing: 0.1em; background: rgba(10, 14, 20, 0.9) !important; color: #ffd166 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 8px;" />
+          <div style="font-size: 0.74rem; color: #94a3b8; margin-top: 5px;">Ask your Crawl Master or group leader for their room code.</div>
+        </div>
+        <button type="button" class="modal-btn" id="gatewayJoinSubmitBtn" style="width: 100%; font-size: 1.15rem; font-weight: 800; padding: 13px; background: linear-gradient(135deg, #15803d 0%, #166534 100%); border: 1.5px solid #4ade80;">
+          ENTER ROOM ➡️
+        </button>
+      </div>
+
+      <!-- PANE 2: CREATE ROOM -->
+      <div id="gatewayCreatePane" style="display: none;">
+        <div style="margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #e2e8f0;">NEW ROOM CODE / NAME:</label>
+            <button type="button" id="gatewayRandomRoomBtn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #ffd166; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; cursor: pointer;">🎲 Random Code</button>
+          </div>
+          <input type="text" id="gatewayCreateCodeInput" class="glass-input" placeholder="e.g. CRAWL-88" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 800; text-transform: uppercase; text-align: center; letter-spacing: 0.08em; background: rgba(10, 14, 20, 0.9) !important; color: #ffd166 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 8px;" />
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #e2e8f0; display: block; margin-bottom: 4px;">SET ADMIN PASSCODE (FOR CRAWL MASTER):</label>
+          <input type="password" id="gatewayAdminPasscodeInput" class="glass-input" maxlength="12" placeholder="e.g. 1234 or secret PIN" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 700; text-align: center; letter-spacing: 0.15em; background: rgba(10, 14, 20, 0.9) !important; color: #fff !important; border: 1.5px solid #ef4444 !important; border-radius: 8px;" />
+          <div style="font-size: 0.72rem; color: #fca5a5; margin-top: 3px;">Only you will have the passcode to reset scores, freeze phones, or end the game.</div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #e2e8f0; display: block; margin-bottom: 6px;">SELECT PLAY MODE:</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div id="modePartyLabel" class="gateway-mode-card selected" style="padding: 10px; border-radius: 8px; border: 2px solid #38bdf8; background: rgba(56, 189, 248, 0.12); cursor: pointer;">
+              <input type="radio" name="gatewayPlayMode" value="party" checked style="display: none;" />
+              <div style="font-size: 1.3rem; margin-bottom: 2px;">⚡</div>
+              <strong style="color: #38bdf8; font-size: 0.85rem; display: block;">LIVE PARTY SYNC</strong>
+              <span style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.25; display: block; margin-top: 2px;">All players connect their own phones live.</span>
+            </div>
+            <div id="modeSingleLabel" class="gateway-mode-card" style="padding: 10px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); cursor: pointer;">
+              <input type="radio" name="gatewayPlayMode" value="single" style="display: none;" />
+              <div style="font-size: 1.3rem; margin-bottom: 2px;">📱</div>
+              <strong style="color: #ffd166; font-size: 0.85rem; display: block;">SINGLE PHONE</strong>
+              <span style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.25; display: block; margin-top: 2px;">One phone manages scores for all 4 teams.</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="modal-btn" id="gatewayCreateSubmitBtn" style="width: 100%; font-size: 1.15rem; font-weight: 800; padding: 13px; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border: 1.5px solid #facc15;">
+          ⚔️ CREATE & LAUNCH ROOM 🎉
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
        MODAL 4: MULTI-PHONE ROOM SYNC & SHARE LINK
        ========================================================================= -->
   <div class="modal-backdrop" id="roomSyncModal">
-    <div class="modal-scroll">
-      <h2 class="modal-title">📡 REAL-TIME PHONE SYNC</h2>
+    <div class="modal-scroll" style="max-width: 440px;">
+      <h2 class="modal-title">📡 ROOM INFO & MULTI-PHONE SYNC</h2>
       <p class="modal-body">
-        All phones with this Room Code share live scores instantly across pub 4G/5G:
+        All phones with this Room Code share live scores and penalties instantly:
       </p>
+      <div style="margin-bottom: 12px; background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 12px; text-align: center;">
+        <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 2px; text-transform: uppercase;">ACTIVE ROOM CODE:</div>
+        <div id="syncActiveRoomDisplay" style="font-size: 1.6rem; font-family: 'JetBrains Mono', monospace; font-weight: 900; color: #ffd166; letter-spacing: 0.08em;">PRESTON</div>
+        <div id="syncActiveModeDisplay" style="font-size: 0.76rem; color: #86efac; margin-top: 4px; font-weight: 700;">⚡ LIVE PARTY SYNC MODE</div>
+      </div>
       <div style="margin-bottom: 12px;">
-        <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 4px;">ROOM CODE:</label>
-        <input type="text" id="roomCodeInput" class="glass-input" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; background: rgba(10, 14, 20, 0.85) !important; color: #fffef8 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 6px;" />
+        <label style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; display: block; margin-bottom: 4px;">SWITCH TO ANOTHER ROOM:</label>
+        <input type="text" id="roomCodeInput" class="glass-input" style="width: 100%; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; text-align: center; background: rgba(10, 14, 20, 0.85) !important; color: #fffef8 !important; border: 2px solid var(--theme-border, #d8a86a) !important; border-radius: 6px;" />
       </div>
       <div class="modal-actions">
-        <button type="button" class="modal-btn" id="joinRoomBtn">Connect to Room</button>
+        <button type="button" class="modal-btn" id="joinRoomBtn">Switch to Entered Room</button>
         <button type="button" class="modal-btn secondary" id="copyRoomLinkBtn">📋 Copy Share Link for Friends</button>
+        <button type="button" class="modal-btn secondary" id="switchRoomGatewayBtn" style="border-color: #facc15; color: #fef08a;">🔀 Switch Group / Create New Room</button>
+        <button type="button" class="modal-btn secondary" id="togglePlayModeBtn" style="display: none; border-color: #38bdf8; color: #7dd3fc;">🔀 Toggle Play Mode</button>
         <button type="button" class="modal-btn secondary" id="closeRoomSyncModalBtn">Close</button>
       </div>
     </div>
@@ -6282,7 +6392,7 @@
       
       <div style="text-align: center; margin-bottom: 14px;">
         <img src="assets/drunk-uno-logo.png" alt="Drunk Uno Logo" style="width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 10px auto; display: block; box-shadow: 0 10px 28px rgba(0,0,0,0.65), 0 0 20px rgba(239, 68, 68, 0.4); border: 2px solid rgba(255,255,255,0.25);" />
-        <span class="impact-pill special" style="font-size: 0.82rem; padding: 4px 12px; letter-spacing: 0.5px;">⚔️ PRESTON DRUNK UNO CRAWL</span>
+        <span class="impact-pill special" id="setupRoomPill" style="font-size: 0.82rem; padding: 4px 12px; letter-spacing: 0.5px;">⚔️ ROOM: PRESTON</span>
         <h2 class="modal-title" id="setupGuideMainTitle" style="margin-top: 8px; font-size: 1.95rem; color: #ffffff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
           WELCOME TO DRUNK UNO
         </h2>
@@ -7122,12 +7232,23 @@
         }
       ];
 
-      // Get Room Code from URL query param (e.g. ?room=PRESTON-2026) or default
+      // Get Room Code from URL query param (e.g. ?room=PRESTON-2026) or saved room in localStorage
       const urlParams = new URLSearchParams(window.location.search);
-      let roomCode = (urlParams.get("room") || "PRESTON-2026").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
-      if (!roomCode) roomCode = "PRESTON-2026";
+      let roomCode = (urlParams.get("room") || localStorage.getItem("drunk_uno_room_code") || "").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
+      let needsRoomGateway = !roomCode;
+      if (!roomCode) {
+        roomCode = "";
+      } else {
+        try { localStorage.setItem("drunk_uno_room_code", roomCode); } catch (e) {}
+      }
 
       let state = {
+        roomCode: roomCode,
+        playMode: "party", // "party" (live phone sync) or "single" (1 phone console)
+        adminPasscode: "", // Room-specific admin passcode created by the room creator
+        version: 1, // Monotonic state revision counter for server-like sync
+        updatedAt: Date.now(),
+        updatedBy: "System",
         teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
         myTeamIdx: null,
         targetTeamIdx: 1,
@@ -7139,7 +7260,7 @@
         devices: {}, // devId -> { id, mac, ip, name, teamIdx, isCaptain, deviceModel, joinedAt, lastSeen }
         bannedList: [], // [ { id, mac, ip, name, bannedAt, reason } ]
         resetEpoch: 0,
-        logs: ["Session initialized. Connected to Room: " + roomCode],
+        logs: ["Session initialized." + (roomCode ? " Connected to Room: " + roomCode : "")],
         sound: true,
         adminUnlocked: false,
         gameStarted: false,
@@ -7148,10 +7269,19 @@
         pubWinners: {} // stopIdx -> teamIdx (crowns up to 10)
       };
 
-      // Check if Admin unlocked in session
-      if (sessionStorage.getItem("drunk_uno_admin_unlocked") === "true") {
-        state.adminUnlocked = true;
+      // Check if Admin unlocked in session or for this room
+      function isRoomAdmin() {
+        if (state.adminUnlocked) return true;
+        if (!roomCode) return false;
+        if (sessionStorage.getItem("drunk_uno_admin_unlocked") === "true" ||
+            sessionStorage.getItem("drunk_uno_admin_unlocked_" + roomCode) === "true" ||
+            localStorage.getItem("drunk_uno_admin_unlocked_" + roomCode) === "true") {
+          state.adminUnlocked = true;
+          return true;
+        }
+        return false;
       }
+      isRoomAdmin();
 
       // --- DEVICE HARDWARE & NETWORK IDENTITY (MAC / IP FINGERPRINT) ---
       function getHardwareFingerprintSeed() {
@@ -7330,11 +7460,29 @@
           };
         }
 
-        saveGameState(true);
+        // Save device locally without overwriting room scores with defaults
+        persistLocalGameState();
+
+        // Broadcast lightweight event so peers add device to their roster
+        if (isRegistered && roomCode && mqttClient && mqttClient.isConnected()) {
+          try {
+            const devPayload = JSON.stringify({
+              action: "DEVICE_JOINED",
+              device: state.devices[devId],
+              sender: pName.trim(),
+              timestamp: Date.now()
+            });
+            const m = new Paho.MQTT.Message(devPayload);
+            m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
+            m.retained = false;
+            mqttClient.send(m);
+          } catch (e) {}
+        }
         renderAdminTab();
       }
 
-      function saveGameState(broadcast = true) {
+      function persistLocalGameState() {
+        if (!roomCode) return;
         if (state.logs && state.logs.length > 25) {
           state.logs = state.logs.slice(0, 25);
         }
@@ -7342,12 +7490,20 @@
         const storageKey = getRoomStorageKey(roomCode);
         setCookie(storageKey, serialized, 30);
         try { localStorage.setItem(storageKey, serialized); } catch (e) {}
+      }
 
-        if (broadcast && mqttClient && mqttClient.isConnected()) {
+      function saveGameState(broadcast = true) {
+        state.version = (state.version || 0) + 1;
+        state.updatedAt = Date.now();
+        state.updatedBy = state.myPlayerName || (state.playMode === "single" ? "Crawl Master" : "Player");
+        persistLocalGameState();
+
+        if (broadcast && mqttClient && mqttClient.isConnected() && roomCode) {
           try {
+            const serialized = JSON.stringify(state);
             const message = new Paho.MQTT.Message(serialized);
-            message.destinationName = `leeprky/drunkuno/${roomCode}`;
-            message.retained = false;
+            message.destinationName = `leeprky/drunkuno/rooms/${roomCode}/state`;
+            message.retained = true; // Server-retained on MQTT broker!
             mqttClient.send(message);
           } catch (err) {
             console.warn("MQTT broadcast error:", err);
@@ -7356,6 +7512,7 @@
       }
 
       function loadGameState() {
+        if (!roomCode) return;
         const storageKey = getRoomStorageKey(roomCode);
         let raw = getCookie(storageKey);
         if (!raw) {
@@ -7393,6 +7550,11 @@
                 state.myTeamIdx = state.devices[myDevId].teamIdx;
               }
               if (parsed.targetTeamIdx !== undefined) state.targetTeamIdx = parsed.targetTeamIdx;
+              if (parsed.version !== undefined) state.version = parsed.version;
+              if (parsed.updatedAt !== undefined) state.updatedAt = parsed.updatedAt;
+              if (parsed.updatedBy !== undefined) state.updatedBy = parsed.updatedBy;
+              if (parsed.playMode) state.playMode = parsed.playMode;
+              if (parsed.adminPasscode) state.adminPasscode = parsed.adminPasscode;
               if (parsed.bingoCards && Array.isArray(parsed.bingoCards)) {
                 const reconciled = JSON.parse(JSON.stringify(BINGO_CARDS));
                 parsed.bingoCards.forEach(savedCard => {
@@ -7466,6 +7628,9 @@
           playTick(300);
           showGameEndWinnerModal(state.winnerTeamIdx);
           return true;
+        }
+        if (state.playMode === "single") {
+          return false; // Single Phone Console mode allows instant scoring without pre-game block
         }
         if (!state.gameStarted) {
           showToast('⏳ Game has not started yet! Waiting for Crawl Master to hit ▶️ START GAME.');
@@ -7793,7 +7958,7 @@
                   state: state
                 });
                 const m = new Paho.MQTT.Message(payload);
-                m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                 m.retained = false;
                 mqttClient.send(m);
               } catch (e) {}
@@ -7915,12 +8080,9 @@
               timestamp: Date.now()
             });
             const msg = new Paho.MQTT.Message(payload);
-            msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+            msg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
+            msg.retained = false;
             mqttClient.send(msg);
-
-            const msgGlobal = new Paho.MQTT.Message(payload);
-            msgGlobal.destinationName = "leeprky/drunkuno/global";
-            mqttClient.send(msgGlobal);
           } catch(e) {}
         }
 
@@ -7996,15 +8158,13 @@
         state.isGameLocked = false;
         state.logs = ["Game reset to 0 by Crawl Master at " + new Date().toLocaleTimeString()];
 
-        // 3. Save zero state to storage
-        const storageKey = getRoomStorageKey(roomCode);
-        const serialized = JSON.stringify(state);
-        try {
-          localStorage.setItem(storageKey, serialized);
-          setCookie(storageKey, serialized, 30);
-        } catch(e) {}
+        // 3. Save zero state to storage & broker
+        state.version = (state.version || 0) + 1;
+        state.updatedAt = Date.now();
+        state.updatedBy = "Crawl Master Reset";
+        saveGameState(true);
 
-        // 4. Broadcast over MQTT to all connected devices
+        // 4. Broadcast reset event over MQTT to all connected devices in this room
         if (broadcast && mqttClient && mqttClient.isConnected()) {
           try {
             const payload = JSON.stringify({
@@ -8015,17 +8175,11 @@
               timestamp: resetEpoch
             });
 
-            // Send to room topic
+            // Send to room events topic
             const msgRoom = new Paho.MQTT.Message(payload);
-            msgRoom.destinationName = `leeprky/drunkuno/${roomCode}`;
+            msgRoom.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
             msgRoom.retained = false;
             mqttClient.send(msgRoom);
-
-            // Send to global topic
-            const msgGlobal = new Paho.MQTT.Message(payload);
-            msgGlobal.destinationName = "leeprky/drunkuno/global";
-            msgGlobal.retained = false;
-            mqttClient.send(msgGlobal);
           } catch(e) {
             console.warn("MQTT reset broadcast error:", e);
           }
@@ -8117,11 +8271,26 @@
       function applyIncomingState(incoming) {
         if (!incoming || !Array.isArray(incoming.teams)) return;
         const incomingResetEpoch = incoming.resetEpoch || 0;
-        const localResetEpoch = parseInt(localStorage.getItem("drunk_uno_reset_epoch") || "0", 10);
+        const localResetEpoch = state.resetEpoch || parseInt(localStorage.getItem("drunk_uno_reset_epoch") || "0", 10);
         if (incomingResetEpoch < localResetEpoch) {
           console.warn("Discarded outdated incoming state older than local reset epoch.");
           return;
         }
+
+        const incVer = incoming.version || 0;
+        const locVer = state.version || 0;
+        if (incomingResetEpoch === localResetEpoch && incVer < locVer) {
+          console.warn(`Ignored older state (inc v${incVer} < loc v${locVer}). Local is authoritative.`);
+          // Broadcast our newer state to bring out-of-date peers up to speed
+          if (mqttClient && mqttClient.isConnected()) {
+            saveGameState(true);
+          }
+          return;
+        }
+        if (incomingResetEpoch === localResetEpoch && incVer === locVer && (incoming.updatedAt || 0) < (state.updatedAt || 0)) {
+          return;
+        }
+
         state.teams = incoming.teams;
         state.teams.forEach(t => {
           if (!Array.isArray(t.players)) t.players = [];
@@ -8157,6 +8326,13 @@
         if (incoming.pubWinners && typeof incoming.pubWinners === 'object') {
           state.pubWinners = incoming.pubWinners;
         }
+        if (incoming.playMode) state.playMode = incoming.playMode;
+        if (incoming.adminPasscode) state.adminPasscode = incoming.adminPasscode;
+
+        state.version = Math.max(incVer, locVer);
+        state.updatedAt = incoming.updatedAt || Date.now();
+        state.updatedBy = incoming.updatedBy || state.updatedBy;
+
         recalculateTeamCrowns();
 
         // Sync our persistent team if admin reassigned us in the device roster
@@ -8167,14 +8343,15 @@
           applyTeamTheme(state.myTeamIdx);
         }
 
-        // Persist to local storage for this room WITHOUT broadcasting back
-        saveGameState(false);
+        // Persist locally without broadcasting
+        persistLocalGameState();
 
         checkBannedStatus();
         checkKickedStatus();
         checkGameLockedStatus();
         checkFrozenStatus();
         updateTopUserName();
+        updateTopRoomBadge();
 
         renderCrewBar();
         renderScoringTab();
@@ -8190,7 +8367,250 @@
         showToast("📡 Live Score Updated from Room!");
       }
 
+      function handleRoomEvent(incoming) {
+        if (!incoming) return;
+
+        // Peer device joined
+        if (incoming.action === "DEVICE_JOINED" && incoming.device) {
+          const d = incoming.device;
+          if (!state.devices) state.devices = {};
+          state.devices[d.id] = d;
+          if (state.teams[d.teamIdx] && d.name && !state.teams[d.teamIdx].players.includes(d.name)) {
+            state.teams[d.teamIdx].players.push(d.name);
+            if (d.isCaptain && !state.teams[d.teamIdx].captain) {
+              state.teams[d.teamIdx].captain = d.name;
+            }
+          }
+          persistLocalGameState();
+          renderCrewBar();
+          renderAdminTab();
+          return;
+        }
+
+        // Global Site-Wide Nuclear Purge or Game Reset to 0
+        if (incoming.action === "GLOBAL_SITE_NUKE" || incoming.action === "RESET_GAME_TO_ZERO") {
+          const incomingEpoch = incoming.resetEpoch || Date.now();
+          const lastHandled = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
+          if (incomingEpoch > lastHandled) {
+            localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(incomingEpoch));
+            executeGameResetToZero(false, incoming.action === "GLOBAL_SITE_NUKE");
+          }
+          return;
+        }
+
+        // Unlink Hardware Signals
+        if (incoming.action === "UNLINK_ALL_HARDWARE") {
+          unlinkHardwareProfile(true);
+          return;
+        }
+        if (incoming.action === "UNLINK_HARDWARE") {
+          const myDevId = getOrCreateDeviceId();
+          if (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) {
+            unlinkHardwareProfile(true);
+            return;
+          }
+        }
+
+        // Cross-Examining Target Lock from peer phone
+        if (incoming.action === "LOCK_TEAM_TARGET") {
+          const tIdx = incoming.teamIdx;
+          const tgtIdx = incoming.targetIdx;
+          if (typeof tIdx === "number" && typeof tgtIdx === "number" && state.teams[tIdx] && state.teams[tgtIdx]) {
+            state.teams[tIdx].targetIdx = tgtIdx;
+            state.teams[tIdx].targetLocked = true;
+            state.teams[tIdx].targetLockedBy = incoming.lockedByPlayer || "";
+            if (state.myTeamIdx === tIdx) {
+              state.targetTeamIdx = tgtIdx;
+            }
+            persistLocalGameState();
+            renderScoringTab();
+            if (typeof setupCurrentStep !== "undefined" && setupCurrentStep === 5) {
+              renderSetupTargetsLockingGrid();
+            }
+            showToast(`🔒 ${state.teams[tIdx].name} locked ${state.teams[tgtIdx].name} as scoring target!`);
+          }
+          return;
+        }
+
+        // Real-Time Connection Test Popup
+        if (incoming.action === "TEST_CONNECTION_POPUP") {
+          showTestAlertPopup(incoming);
+          return;
+        }
+
+        // Targeted Direct Alert to Specific Player's Phone
+        if (incoming.action === "TARGETED_POPUP") {
+          const myDevId = getOrCreateDeviceId();
+          const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
+          const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                           (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
+          if (isTarget) {
+            showTargetedAlertPopup(incoming);
+          }
+          return;
+        }
+
+        // Freeze or Unfreeze Specific Player's Phone
+        if (incoming.action === "SET_DEVICE_FROZEN") {
+          if (!state.frozenDevices) state.frozenDevices = {};
+          if (incoming.frozenDevices) {
+            state.frozenDevices = incoming.frozenDevices;
+          } else if (incoming.targetDeviceId) {
+            if (incoming.frozen) state.frozenDevices[incoming.targetDeviceId] = true;
+            else delete state.frozenDevices[incoming.targetDeviceId];
+          }
+          const myDevId = getOrCreateDeviceId();
+          if (state.frozenDevices && state.frozenDevices[myDevId]) {
+            try { localStorage.setItem("drunk_uno_device_frozen", "true"); } catch (e) {}
+          } else {
+            try { localStorage.removeItem("drunk_uno_device_frozen"); } catch (e) {}
+          }
+          checkFrozenStatus();
+          renderAdminTab();
+          return;
+        }
+
+        // Freeze All Phones / Lock Game (Pub Transition Pause)
+        if (incoming.action === "TOGGLE_GAME_LOCK") {
+          state.isGameLocked = !!incoming.isGameLocked;
+          try {
+            localStorage.setItem("drunk_uno_game_locked", state.isGameLocked ? "true" : "false");
+          } catch (e) {}
+          checkGameLockedStatus();
+          playFanfare(state.isGameLocked ? "freeze" : "win");
+          showToast(state.isGameLocked ? "❄️ All phones frozen by Crawl Master!" : "🔓 Game unlocked for all players!");
+          return;
+        }
+
+        // Reassign Player to Another Team by Admin
+        if (incoming.action === "REASSIGN_PLAYER_TEAM") {
+          const myDevId = getOrCreateDeviceId();
+          const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
+          const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                           (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
+          if (isTarget && typeof incoming.newTeamIdx === "number") {
+            state.myTeamIdx = incoming.newTeamIdx;
+            if (state.devices && state.devices[myDevId]) {
+              state.devices[myDevId].teamIdx = incoming.newTeamIdx;
+            }
+            try {
+              localStorage.setItem("drunk_uno_team_idx", String(incoming.newTeamIdx));
+              localStorage.setItem("drunk_uno_crew_setup", "true");
+              localStorage.setItem("drunk_uno_player_registered", "true");
+            } catch (e) {}
+            persistLocalGameState();
+            applyTeamTheme(incoming.newTeamIdx);
+            renderCrewBar();
+            renderScoringTab();
+            updateTopUserName();
+            playFanfare("win");
+            showToast(`👑 Crawl Master reassigned you to ${state.teams[incoming.newTeamIdx].name}!`);
+          }
+          return;
+        }
+
+        // Emergency Crawl Master Remote Redirect to Portfolio
+        if (incoming.action === "FORCE_REDIRECT_PORTFOLIO") {
+          showToast("🚀 Crawl Master is redirecting everyone to the portfolio...");
+          playFanfare("win");
+          try { navigator.vibrate && navigator.vibrate([100, 50, 100]); } catch (e) {}
+          setTimeout(() => {
+            window.location.href = incoming.url || "../../index.html";
+          }, 1000);
+          return;
+        }
+
+        // Emergency Crawl Master Remote Reset (Epoch Synchronized)
+        const incomingResetEpoch = incoming.resetEpoch || (incoming.state && incoming.state.resetEpoch);
+        const localHandledEpoch = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
+        if (incoming.action === "RESET_ALL_DEVICES" || (incomingResetEpoch && incomingResetEpoch > localHandledEpoch)) {
+          if (incomingResetEpoch) {
+            state.resetEpoch = incomingResetEpoch;
+          }
+          try {
+            localStorage.removeItem("drunk_uno_is_kicked");
+            localStorage.removeItem("drunk_uno_is_banned");
+          } catch (e) {}
+          executeDeviceReset(incomingResetEpoch);
+          return;
+        }
+
+        // Kick Device Signal
+        if (incoming.action === "KICK_DEVICE") {
+          const myDevId = getOrCreateDeviceId();
+          const myIp = (clientIp || "").trim();
+          const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
+                           (incoming.targetIp && myIp && myIp !== "Detecting..." && incoming.targetIp === myIp);
+          if (isTarget) {
+            try {
+              localStorage.removeItem("drunk_uno_player_name");
+              localStorage.removeItem("drunk_uno_crew_setup");
+              localStorage.removeItem("drunk_uno_player_registered");
+              localStorage.setItem("drunk_uno_is_kicked", "true");
+            } catch (e) {}
+            state.myPlayerName = "";
+            if (mqttClient) {
+              try { mqttClient.disconnect(); } catch (e) {}
+            }
+            checkKickedStatus();
+            return;
+          }
+        }
+
+        // Banned Device / Player Updates
+        if (incoming.action === "BAN_DEVICE" || incoming.bannedList) {
+          if (incoming.bannedList) {
+            state.bannedList = incoming.bannedList;
+          }
+          const myDevId = getOrCreateDeviceId();
+          const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
+          const myName = (state.myPlayerName || "").trim().toLowerCase();
+          const myIp = (clientIp || "").trim();
+          const isTarget = (incoming.bannedId && incoming.bannedId === myDevId) ||
+                           (incoming.bannedMac && myMac && incoming.bannedMac.trim().toLowerCase() === myMac) ||
+                           (incoming.bannedIp && myIp && myIp !== "Detecting..." && incoming.bannedIp.trim() === myIp) ||
+                           (incoming.bannedName && myName && incoming.bannedName.trim().toLowerCase() === myName);
+          if (isTarget) {
+            try {
+              localStorage.setItem("drunk_uno_is_banned", "true");
+              localStorage.removeItem("drunk_uno_player_registered");
+              localStorage.removeItem("drunk_uno_player_name");
+              localStorage.removeItem("drunk_uno_crew_setup");
+            } catch (e) {}
+            if (mqttClient) {
+              try { mqttClient.disconnect(); } catch (e) {}
+            }
+          }
+          checkBannedStatus();
+        }
+
+        // Unban Device Signal
+        if (incoming.action === "UNBAN_DEVICE") {
+          const myDevId = getOrCreateDeviceId();
+          const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
+          const myIp = (clientIp || "").trim();
+          const isTarget = (incoming.unbannedId && incoming.unbannedId === myDevId) ||
+                           (incoming.unbannedMac && myMac && incoming.unbannedMac.trim().toLowerCase() === myMac) ||
+                           (incoming.unbannedIp && myIp && myIp !== "Detecting..." && incoming.unbannedIp.trim() === myIp);
+          if (isTarget) {
+            try {
+              localStorage.removeItem("drunk_uno_is_banned");
+              localStorage.removeItem("drunk_uno_is_kicked");
+            } catch (e) {}
+            window.location.reload();
+            return;
+          }
+        }
+      }
+
       function initMqttSync() {
+        if (!roomCode) {
+          syncBtn.classList.remove("connecting");
+          syncBtn.classList.add("offline");
+          syncLabel.textContent = "SELECT ROOM";
+          return;
+        }
+
         if (checkBannedStatus() || checkKickedStatus()) {
           syncBtn.classList.remove("connecting");
           syncBtn.classList.add("offline");
@@ -8217,253 +8637,22 @@
 
           mqttClient.onMessageArrived = (message) => {
             try {
+              const topic = message.destinationName;
               const incoming = JSON.parse(message.payloadString);
 
-              // Global Site-Wide Nuclear Purge or Game Reset to 0
-              if (incoming && (incoming.action === "GLOBAL_SITE_NUKE" || incoming.action === "RESET_GAME_TO_ZERO")) {
-                const incomingEpoch = incoming.resetEpoch || Date.now();
-                const lastHandled = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
-                if (incomingEpoch > lastHandled) {
-                  localStorage.setItem("drunk_uno_last_handled_reset_epoch", String(incomingEpoch));
-                  executeGameResetToZero(false, incoming.action === "GLOBAL_SITE_NUKE");
-                }
+              // Topic-based routing: /state topic holds authoritative game state
+              if (topic.endsWith("/state")) {
+                applyIncomingState(incoming);
                 return;
               }
 
-              // Unlink Hardware Signals
-              if (incoming && incoming.action === "UNLINK_ALL_HARDWARE") {
-                unlinkHardwareProfile(true);
-                return;
-              }
-              if (incoming && incoming.action === "UNLINK_HARDWARE") {
-                const myDevId = getOrCreateDeviceId();
-                if (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) {
-                  unlinkHardwareProfile(true);
-                  return;
-                }
-              }
-
-              // Cross-Examining Target Lock from peer phone
-              if (incoming && incoming.action === "LOCK_TEAM_TARGET") {
-                const tIdx = incoming.teamIdx;
-                const tgtIdx = incoming.targetIdx;
-                if (typeof tIdx === "number" && typeof tgtIdx === "number" && state.teams[tIdx] && state.teams[tgtIdx]) {
-                  state.teams[tIdx].targetIdx = tgtIdx;
-                  state.teams[tIdx].targetLocked = true;
-                  state.teams[tIdx].targetLockedBy = incoming.lockedByPlayer || "";
-                  if (state.myTeamIdx === tIdx) {
-                    state.targetTeamIdx = tgtIdx;
-                  }
-                  saveGameState(false);
-                  renderScoringTab();
-                  if (typeof setupCurrentStep !== "undefined" && setupCurrentStep === 5) {
-                    renderSetupTargetsLockingGrid();
-                  }
-                  showToast(`🔒 ${state.teams[tIdx].name} locked ${state.teams[tgtIdx].name} as scoring target!`);
-                }
+              // /events topic holds actions, alerts, and join notifications
+              if (incoming && incoming.action) {
+                handleRoomEvent(incoming);
                 return;
               }
 
-              // Real-Time Connection Test Popup
-              if (incoming && incoming.action === "TEST_CONNECTION_POPUP") {
-                showTestAlertPopup(incoming);
-                return;
-              }
-
-              // Targeted Direct Alert to Specific Player's Phone
-              if (incoming && incoming.action === "TARGETED_POPUP") {
-                const myDevId = getOrCreateDeviceId();
-                const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
-                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
-                                 (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
-                if (isTarget) {
-                  showTargetedAlertPopup(incoming);
-                }
-                return;
-              }
-
-              // Freeze or Unfreeze Specific Player's Phone
-              if (incoming && incoming.action === "SET_DEVICE_FROZEN") {
-                if (!state.frozenDevices) state.frozenDevices = {};
-                if (incoming.frozenDevices) {
-                  state.frozenDevices = incoming.frozenDevices;
-                } else if (incoming.targetDeviceId) {
-                  if (incoming.frozen) state.frozenDevices[incoming.targetDeviceId] = true;
-                  else delete state.frozenDevices[incoming.targetDeviceId];
-                }
-                const myDevId = getOrCreateDeviceId();
-                if (state.frozenDevices && state.frozenDevices[myDevId]) {
-                  try { localStorage.setItem("drunk_uno_device_frozen", "true"); } catch (e) {}
-                } else {
-                  try { localStorage.removeItem("drunk_uno_device_frozen"); } catch (e) {}
-                }
-                checkFrozenStatus();
-                renderAdminTab();
-                return;
-              }
-
-              // Freeze All Phones / Lock Game (Pub Transition Pause)
-              if (incoming && incoming.action === "TOGGLE_GAME_LOCK") {
-                state.isGameLocked = !!incoming.isGameLocked;
-                try {
-                  localStorage.setItem("drunk_uno_game_locked", state.isGameLocked ? "true" : "false");
-                } catch (e) {}
-                checkGameLockedStatus();
-                playFanfare(state.isGameLocked ? "freeze" : "win");
-                showToast(state.isGameLocked ? "❄️ All phones frozen by Crawl Master!" : "🔓 Game unlocked for all players!");
-                return;
-              }
-
-              // Reassign Player to Another Team by Admin
-              if (incoming && incoming.action === "REASSIGN_PLAYER_TEAM") {
-                const myDevId = getOrCreateDeviceId();
-                const myName = (state.myPlayerName || localStorage.getItem("drunk_uno_player_name") || "").toLowerCase().trim();
-                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
-                                 (incoming.targetPlayerName && incoming.targetPlayerName.toLowerCase().trim() === myName);
-                if (isTarget && typeof incoming.newTeamIdx === "number") {
-                  state.myTeamIdx = incoming.newTeamIdx;
-                  if (state.devices && state.devices[myDevId]) {
-                    state.devices[myDevId].teamIdx = incoming.newTeamIdx;
-                  }
-                  try {
-                    localStorage.setItem("drunk_uno_team_idx", String(incoming.newTeamIdx));
-                    localStorage.setItem("drunk_uno_crew_setup", "true");
-                    localStorage.setItem("drunk_uno_player_registered", "true");
-                  } catch (e) {}
-                  saveGameState(false);
-                  applyTeamTheme(incoming.newTeamIdx);
-                  renderCrewBar();
-                  renderScoringTab();
-                  updateTopUserName();
-                  playFanfare("win");
-                  showToast(`👑 Crawl Master reassigned you to ${state.teams[incoming.newTeamIdx].name}!`);
-                }
-              }
-
-              // Emergency Crawl Master Remote Redirect to Portfolio
-              if (incoming && incoming.action === "FORCE_REDIRECT_PORTFOLIO") {
-                showToast("🚀 Crawl Master is redirecting everyone to the portfolio...");
-                playFanfare("win");
-                try { navigator.vibrate && navigator.vibrate([100, 50, 100]); } catch (e) {}
-                setTimeout(() => {
-                  window.location.href = incoming.url || "../../index.html";
-                }, 1000);
-                return;
-              }
-
-              // Emergency Crawl Master Remote Reset (Epoch Synchronized)
-              const incomingResetEpoch = incoming.resetEpoch || (incoming.state && incoming.state.resetEpoch);
-              const localHandledEpoch = parseInt(localStorage.getItem("drunk_uno_last_handled_reset_epoch") || "0", 10);
-              if (incoming && (incoming.action === "RESET_ALL_DEVICES" || (incomingResetEpoch && incomingResetEpoch > localHandledEpoch))) {
-                if (incomingResetEpoch) {
-                  state.resetEpoch = incomingResetEpoch;
-                }
-                try {
-                  localStorage.removeItem("drunk_uno_is_kicked");
-                  localStorage.removeItem("drunk_uno_is_banned");
-                } catch (e) {}
-                executeDeviceReset(incomingResetEpoch);
-                return;
-              }
-
-              // Kick Device Signal
-              if (incoming && incoming.action === "KICK_DEVICE") {
-                const myDevId = getOrCreateDeviceId();
-                const myIp = (clientIp || "").trim();
-                const isTarget = (incoming.targetDeviceId && incoming.targetDeviceId === myDevId) ||
-                                 (incoming.targetIp && myIp && myIp !== "Detecting..." && incoming.targetIp === myIp);
-                if (isTarget) {
-                  try {
-                    localStorage.removeItem("drunk_uno_player_name");
-                    localStorage.removeItem("drunk_uno_crew_setup");
-                    localStorage.removeItem("drunk_uno_player_registered");
-                    localStorage.setItem("drunk_uno_is_kicked", "true");
-                  } catch (e) {}
-                  state.myPlayerName = "";
-                  if (mqttClient) {
-                    try { mqttClient.disconnect(); } catch (e) {}
-                  }
-                  checkKickedStatus();
-                  return;
-                }
-              }
-
-              // Banned Device / Player Updates
-              if (incoming && (incoming.action === "BAN_DEVICE" || incoming.bannedList)) {
-                if (incoming.bannedList) {
-                  state.bannedList = incoming.bannedList;
-                }
-                const myDevId = getOrCreateDeviceId();
-                const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
-                const myName = (state.myPlayerName || "").trim().toLowerCase();
-                const myIp = (clientIp || "").trim();
-                const isTarget = (incoming.bannedId && incoming.bannedId === myDevId) ||
-                                 (incoming.bannedMac && myMac && incoming.bannedMac.trim().toLowerCase() === myMac) ||
-                                 (incoming.bannedIp && myIp && myIp !== "Detecting..." && incoming.bannedIp.trim() === myIp) ||
-                                 (incoming.bannedName && myName && incoming.bannedName.trim().toLowerCase() === myName);
-                if (isTarget) {
-                  try {
-                    localStorage.setItem("drunk_uno_is_banned", "true");
-                    localStorage.removeItem("drunk_uno_player_registered");
-                    localStorage.removeItem("drunk_uno_player_name");
-                    localStorage.removeItem("drunk_uno_crew_setup");
-                  } catch (e) {}
-                  if (mqttClient) {
-                    try { mqttClient.disconnect(); } catch (e) {}
-                  }
-                }
-                checkBannedStatus();
-              }
-
-              // Unban Device Signal
-              if (incoming && incoming.action === "UNBAN_DEVICE") {
-                const myDevId = getOrCreateDeviceId();
-                const myMac = (getOrCreateDeviceMac() || "").trim().toLowerCase();
-                const myIp = (clientIp || "").trim();
-                const isTarget = (incoming.unbannedId && incoming.unbannedId === myDevId) ||
-                                 (incoming.unbannedMac && myMac && incoming.unbannedMac.trim().toLowerCase() === myMac) ||
-                                 (incoming.unbannedIp && myIp && myIp !== "Detecting..." && incoming.unbannedIp.trim() === myIp);
-                if (isTarget) {
-                  try {
-                    localStorage.removeItem("drunk_uno_is_banned");
-                    localStorage.removeItem("drunk_uno_is_kicked");
-                  } catch (e) {}
-                  window.location.reload();
-                  return;
-                }
-              }
-
-              // Room handshake: request for room state from a newly joined peer
-              if (incoming && incoming.action === "REQUEST_ROOM_SYNC") {
-                const myDevId = getOrCreateDeviceId();
-                if (incoming.requesterId && incoming.requesterId !== myDevId) {
-                  if (mqttClient && mqttClient.isConnected()) {
-                    try {
-                      const resp = JSON.stringify({
-                        action: "ROOM_SYNC_RESPONSE",
-                        targetRequesterId: incoming.requesterId,
-                        state: state,
-                        timestamp: Date.now()
-                      });
-                      const rm = new Paho.MQTT.Message(resp);
-                      rm.destinationName = `leeprky/drunkuno/${roomCode}`;
-                      rm.retained = false;
-                      mqttClient.send(rm);
-                    } catch (e) {}
-                  }
-                }
-                return;
-              }
-
-              // Room handshake: response to our sync request
-              if (incoming && incoming.action === "ROOM_SYNC_RESPONSE") {
-                const myDevId = getOrCreateDeviceId();
-                if (incoming.targetRequesterId === myDevId && incoming.state) {
-                  applyIncomingState(incoming.state);
-                }
-                return;
-              }
-
+              // Fallback for general state objects
               if (incoming && Array.isArray(incoming.teams)) {
                 applyIncomingState(incoming);
                 return;
@@ -8480,23 +8669,11 @@
               syncBtn.classList.remove("offline");
               syncBtn.classList.remove("connecting");
               syncLabel.textContent = "CONNECTED";
+              mqttClient.subscribe(`leeprky/drunkuno/rooms/${roomCode}/state`);
+              mqttClient.subscribe(`leeprky/drunkuno/rooms/${roomCode}/events`);
               mqttClient.subscribe(`leeprky/drunkuno/${roomCode}`);
-              mqttClient.subscribe("leeprky/drunkuno/global");
               
-              // Request current room state from existing devices in this specific game
-              try {
-                const req = JSON.stringify({
-                  action: "REQUEST_ROOM_SYNC",
-                  requesterId: getOrCreateDeviceId(),
-                  requesterName: state.myPlayerName || "",
-                  timestamp: Date.now()
-                });
-                const m = new Paho.MQTT.Message(req);
-                m.destinationName = `leeprky/drunkuno/${roomCode}`;
-                m.retained = false;
-                mqttClient.send(m);
-              } catch (e) {}
-
+              // Inform existing room peers that this device has connected
               syncMyDevice();
             },
             onFailure: (err) => {
@@ -9258,6 +9435,9 @@
 
       function checkSpectatorBlock() {
         if (checkGameActiveBlock()) return true;
+        if (state.playMode === "single") {
+          return false; // Single Phone Mode is open to master scoring without spectator block!
+        }
         if (!isPlayerRegistered()) {
           showToast("👀 Spectators cannot score! Join a crew to start playing.");
           playTick(240);
@@ -9280,7 +9460,11 @@
       // --- 07. STEP-BY-STEP DYNAMIC SCORING (TARGET TEAM) ---
       function renderScoringTab() {
         const isRegistered = isPlayerRegistered();
-        if (!isRegistered) {
+        if (state.playMode === "single") {
+          if (state.targetTeamIdx === undefined || state.targetTeamIdx === null || !state.teams[state.targetTeamIdx]) {
+            state.targetTeamIdx = 0;
+          }
+        } else if (!isRegistered) {
           state.myTeamIdx = null;
           if (state.targetTeamIdx === undefined || state.targetTeamIdx === null || !state.teams[state.targetTeamIdx]) {
             state.targetTeamIdx = 0;
@@ -9326,7 +9510,9 @@
         const myTeam = isRegistered && state.myTeamIdx !== null ? (state.teams[state.myTeamIdx] || state.teams[0]) : null;
         const asBadge = document.getElementById("scoringAsBadge");
         if (asBadge) {
-          if (!isRegistered) {
+          if (state.playMode === "single") {
+            asBadge.innerHTML = `Mode: <strong style="color: #ffd166;">📱 Single Phone Console (Master Control)</strong>`;
+          } else if (!isRegistered) {
             asBadge.innerHTML = `Mode: <strong style="color: #e4e4e7;">👀 Spectator (Scoreboard View)</strong>`;
           } else {
             asBadge.innerHTML = `Scoring as: <span class="crew-dot ${myTeam.colorClass}"></span> <strong>${escapeHtml(myTeam.name)}</strong>`;
@@ -9337,12 +9523,46 @@
           myPicker.style.display = "none";
         }
 
-        // Step 2: Render Target Team Section (Assigned Referee Target for Linked Crews)
+        // Step 2: Render Target Team Section (Assigned Referee Target or Single Phone Team Switcher)
         const targetPicker = document.getElementById("targetTeamPicker");
         const targetHeaderTxt = document.getElementById("targetSectionHeaderTxt");
         if (targetPicker) {
           targetPicker.innerHTML = "";
-          if (isRegistered && myTeam) {
+          if (state.playMode === "single") {
+            if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 SELECT CREW TO SCORE (SINGLE PHONE CONSOLE):";
+            targetPicker.style.display = "block";
+            const teamButtons = state.teams.map((t, idx) => {
+              const isSel = idx === state.targetTeamIdx;
+              return `
+                <button type="button" class="btn-single-team-select" data-team-idx="${idx}" style="
+                  background: ${isSel ? t.colorHex : 'rgba(15,23,42,0.85)'};
+                  color: ${isSel ? '#ffffff' : t.colorHex};
+                  border: 2px solid ${t.colorHex};
+                  border-radius: 10px;
+                  padding: 10px 4px;
+                  font-family: var(--font-uno);
+                  cursor: pointer;
+                  box-shadow: ${isSel ? '0 0 16px ' + t.colorHex + '88' : 'none'};
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  gap: 2px;
+                ">
+                  <div style="font-size: 1.15rem; font-weight: 900;">${t.key.charAt(0)}</div>
+                  <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase;">${escapeHtml(t.name.replace('Team ', ''))}</div>
+                  <div style="font-size: 0.85rem; font-weight: 900; margin-top: 2px;">${t.score}p</div>
+                </button>
+              `;
+            }).join('');
+            targetPicker.innerHTML = `<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px;">${teamButtons}</div>`;
+            targetPicker.querySelectorAll(".btn-single-team-select").forEach(b => {
+              b.onclick = () => {
+                state.targetTeamIdx = parseInt(b.dataset.teamIdx, 10);
+                playTick(450);
+                renderScoringTab();
+              };
+            });
+          } else if (isRegistered && myTeam) {
             if (targetHeaderTxt) targetHeaderTxt.textContent = "🎯 YOUR ASSIGNED REFEREE TARGET:";
             targetPicker.style.display = "block";
 
@@ -10042,7 +10262,11 @@
       }
 
       function openWheelOutcomeModal(outcome) {
-        const myTeam = (state.myTeamIdx !== null && state.teams[state.myTeamIdx]) ? state.teams[state.myTeamIdx] : (state.teams[0] || { name: "Crawl Participant", score: 0, sips: 0 });
+        let activeActorIdx = (state.myTeamIdx !== null && state.teams[state.myTeamIdx]) ? state.myTeamIdx : 0;
+        if (state.playMode === "single" && state.targetTeamIdx !== null && state.teams[state.targetTeamIdx]) {
+          activeActorIdx = state.targetTeamIdx;
+        }
+        const myTeam = state.teams[activeActorIdx] || state.teams[0];
         playFanfare(outcome.id === "YELLOW" ? "freeze" : "win");
         spawnCoins(outcome.id === "GREEN" || outcome.id === "ORANGE" ? 50 : 30);
 
@@ -10054,10 +10278,10 @@
 
         const targetList = document.getElementById("wheelTargetList");
         targetList.innerHTML = "";
-        let chosenVictimIdx = state.targetTeamIdx;
+        let chosenVictimIdx = (activeActorIdx + 1) % 4;
 
         state.teams.forEach((t, idx) => {
-          if (idx !== state.myTeamIdx) {
+          if (idx !== activeActorIdx) {
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "btn-stop-check";
@@ -10567,9 +10791,14 @@
 
       function checkAdminPasscode() {
         const val = passcodeInput.value.trim();
-        if (val === ADMIN_PASSCODE) {
+        const expectedCode = state.adminPasscode || ADMIN_PASSCODE;
+        if (val === expectedCode || val === ADMIN_PASSCODE) {
           state.adminUnlocked = true;
           sessionStorage.setItem("drunk_uno_admin_unlocked", "true");
+          if (roomCode) {
+            sessionStorage.setItem("drunk_uno_admin_unlocked_" + roomCode, "true");
+            localStorage.setItem("drunk_uno_admin_unlocked_" + roomCode, "true");
+          }
           passcodeModal.classList.remove("open");
           if (openAdminBtn) {
             openAdminBtn.innerHTML = '<span class="dock-icon">🔓</span><span class="dock-label">Admin ✓</span>';
@@ -10734,7 +10963,7 @@
                       state: state
                     });
                     const m = new Paho.MQTT.Message(p);
-                    m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                    m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                     m.retained = false;
                     mqttClient.send(m);
                   } catch (e) {}
@@ -10773,7 +11002,7 @@
                 if (mqttClient && mqttClient.isConnected()) {
                   try {
                     const m = new Paho.MQTT.Message(payload);
-                    m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                    m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                     m.retained = false;
                     mqttClient.send(m);
                   } catch (e) {}
@@ -10838,7 +11067,7 @@
                         state: state
                       });
                       const m = new Paho.MQTT.Message(p);
-                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                       m.retained = false;
                       mqttClient.send(m);
                     } catch (e) {}
@@ -10872,7 +11101,7 @@
                         state: state
                       });
                       const m = new Paho.MQTT.Message(p);
-                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                       m.retained = false;
                       mqttClient.send(m);
                     } catch (e) {}
@@ -11033,7 +11262,7 @@
                         state: state
                       });
                       const m = new Paho.MQTT.Message(p);
-                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                       m.retained = false;
                       mqttClient.send(m);
                     } catch (e) {}
@@ -11069,7 +11298,7 @@
                         state: state
                       });
                       const m = new Paho.MQTT.Message(p);
-                      m.destinationName = `leeprky/drunkuno/${roomCode}`;
+                      m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                       m.retained = false;
                       mqttClient.send(m);
                     } catch (e) {}
@@ -11335,7 +11564,7 @@
                 timestamp: Date.now()
               });
               const msg = new Paho.MQTT.Message(payload);
-              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               msg.retained = false;
               mqttClient.send(msg);
             } catch (e) { console.warn("MQTT send error:", e); }
@@ -11361,7 +11590,7 @@
           if (mqttClient && mqttClient.isConnected()) {
             try {
               const msg = new Paho.MQTT.Message(payload);
-              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               msg.retained = false;
               mqttClient.send(msg);
             } catch (e) {
@@ -11403,7 +11632,7 @@
                 state: state
               });
               const m = new Paho.MQTT.Message(payload);
-              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               m.retained = false;
               mqttClient.send(m);
             } catch (e) {}
@@ -11446,7 +11675,7 @@
                 state: state
               });
               const m = new Paho.MQTT.Message(p);
-              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               m.retained = false;
               mqttClient.send(m);
             } catch (e) {}
@@ -11534,7 +11763,7 @@
                   state: state
                 });
                 const msg = new Paho.MQTT.Message(payload);
-                msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+                msg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                 msg.retained = false;
                 mqttClient.send(msg);
               } catch (e) { console.warn("MQTT send error:", e); }
@@ -11700,7 +11929,7 @@
           if (mqttClient && mqttClient.isConnected()) {
             try {
               const m = new Paho.MQTT.Message(payload);
-              m.destinationName = `leeprky/drunkuno/${roomCode}`;
+              m.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               m.retained = false;
               mqttClient.send(m);
             } catch (e) {
@@ -12126,11 +12355,48 @@
         };
       }
 
-      // --- 13. ROOM SYNC MODAL & SHARING ---
-      document.getElementById("syncRoomBtn").onclick = () => {
-        document.getElementById("roomCodeInput").value = roomCode;
+      // --- 13. ROOM SYNC MODAL, GATEWAY & MULTI-TENANT SHARING ---
+      function updateTopRoomBadge() {
+        const roomTxt = document.getElementById("topRoomCodeTxt");
+        const modeTag = document.getElementById("topRoomModeTag");
+        if (roomTxt) {
+          roomTxt.textContent = roomCode ? roomCode : "SELECT ROOM";
+        }
+        if (modeTag) {
+          modeTag.style.display = "inline-block";
+          if (state.playMode === "single") {
+            modeTag.textContent = "1-PHONE";
+            modeTag.style.background = "#ffd166";
+            modeTag.style.color = "#000";
+          } else {
+            modeTag.textContent = "LIVE";
+            modeTag.style.background = "#38bdf8";
+            modeTag.style.color = "#000";
+          }
+        }
+        const activeRoomDisp = document.getElementById("syncActiveRoomDisplay");
+        const activeModeDisp = document.getElementById("syncActiveModeDisplay");
+        if (activeRoomDisp) activeRoomDisp.textContent = roomCode || "NONE";
+        if (activeModeDisp) {
+          activeModeDisp.textContent = state.playMode === "single" ? "📱 SINGLE PHONE CONSOLE MODE" : "⚡ LIVE PARTY SYNC MODE";
+          activeModeDisp.style.color = state.playMode === "single" ? "#ffd166" : "#86efac";
+        }
+        const modeToggleBtn = document.getElementById("togglePlayModeBtn");
+        if (modeToggleBtn) {
+          modeToggleBtn.style.display = isRoomAdmin() ? "block" : "none";
+          modeToggleBtn.textContent = state.playMode === "single" ? "⚡ Switch to Live Party Sync" : "📱 Switch to Single Phone Console";
+        }
+      }
+
+      function openRoomInfoModal() {
+        document.getElementById("roomCodeInput").value = roomCode || "";
+        updateTopRoomBadge();
         document.getElementById("roomSyncModal").classList.add("open");
-      };
+      }
+
+      document.getElementById("syncRoomBtn").onclick = openRoomInfoModal;
+      const topRoomBtn = document.getElementById("topRoomBtn");
+      if (topRoomBtn) topRoomBtn.onclick = openRoomInfoModal;
 
       document.getElementById("joinRoomBtn").onclick = () => {
         const rawCode = document.getElementById("roomCodeInput").value.toUpperCase().trim();
@@ -12145,12 +12411,215 @@
 
       document.getElementById("copyRoomLinkBtn").onclick = () => {
         const shareUrl = `${BASE_PROJECT_URL}?room=${encodeURIComponent(roomCode)}`;
-        copyTextToClipboard(shareUrl, "📋 Share Link Copied to Clipboard!");
+        copyTextToClipboard(shareUrl, "📋 Room Invite Link Copied to Clipboard!");
       };
+
+      const switchRoomGatewayBtn = document.getElementById("switchRoomGatewayBtn");
+      if (switchRoomGatewayBtn) {
+        switchRoomGatewayBtn.onclick = () => {
+          document.getElementById("roomSyncModal").classList.remove("open");
+          openRoomGatewayModal();
+        };
+      }
+
+      const togglePlayModeBtn = document.getElementById("togglePlayModeBtn");
+      if (togglePlayModeBtn) {
+        togglePlayModeBtn.onclick = () => {
+          state.playMode = state.playMode === "single" ? "party" : "single";
+          saveGameState(true);
+          updateTopRoomBadge();
+          renderScoringTab();
+          renderCrewBar();
+          showToast(state.playMode === "single" ? "📱 Single Phone Mode enabled!" : "⚡ Live Party Sync enabled!");
+        };
+      }
 
       document.getElementById("closeRoomSyncModalBtn").onclick = () => {
         document.getElementById("roomSyncModal").classList.remove("open");
       };
+
+      // --- TAVERN ROOM GATEWAY CONTROLLER ---
+      function openRoomGatewayModal() {
+        const modal = document.getElementById("roomGatewayModal");
+        if (!modal) return;
+        const joinInp = document.getElementById("gatewayJoinCodeInput");
+        const createInp = document.getElementById("gatewayCreateCodeInput");
+        if (joinInp && roomCode) joinInp.value = roomCode;
+        if (createInp && !createInp.value) {
+          createInp.value = "CRAWL-" + Math.floor(10 + Math.random() * 90);
+        }
+        modal.classList.add("open");
+      }
+
+      // Gateway tab toggle
+      const tabJoinBtn = document.getElementById("tabJoinRoomBtn");
+      const tabCreateBtn = document.getElementById("tabCreateRoomBtn");
+      const paneJoin = document.getElementById("gatewayJoinPane");
+      const paneCreate = document.getElementById("gatewayCreatePane");
+
+      if (tabJoinBtn && tabCreateBtn && paneJoin && paneCreate) {
+        tabJoinBtn.onclick = () => {
+          tabJoinBtn.classList.add("active");
+          tabCreateBtn.classList.remove("active");
+          paneJoin.style.display = "block";
+          paneCreate.style.display = "none";
+          playTick(400);
+        };
+        tabCreateBtn.onclick = () => {
+          tabCreateBtn.classList.add("active");
+          tabJoinBtn.classList.remove("active");
+          paneCreate.style.display = "block";
+          paneJoin.style.display = "none";
+          playTick(400);
+        };
+      }
+
+      // Play mode selection cards in Gateway
+      const modePartyLbl = document.getElementById("modePartyLabel");
+      const modeSingleLbl = document.getElementById("modeSingleLabel");
+      if (modePartyLbl && modeSingleLbl) {
+        modePartyLbl.onclick = () => {
+          modePartyLbl.classList.add("selected");
+          modeSingleLbl.classList.remove("selected");
+          const rad = document.querySelector('input[name="gatewayPlayMode"][value="party"]');
+          if (rad) rad.checked = true;
+          playTick(500);
+        };
+        modeSingleLbl.onclick = () => {
+          modeSingleLbl.classList.add("selected");
+          modePartyLbl.classList.remove("selected");
+          const rad = document.querySelector('input[name="gatewayPlayMode"][value="single"]');
+          if (rad) rad.checked = true;
+          playTick(500);
+        };
+      }
+
+      // Random room code generator button
+      const randomRoomBtn = document.getElementById("gatewayRandomRoomBtn");
+      if (randomRoomBtn) {
+        randomRoomBtn.onclick = () => {
+          const words = ["PUB", "CRAWL", "TAVERN", "BEER", "UNO", "CREW", "PIRATE", "SHOT", "DOOM"];
+          const w = words[Math.floor(Math.random() * words.length)];
+          const n = Math.floor(10 + Math.random() * 90);
+          const inp = document.getElementById("gatewayCreateCodeInput");
+          if (inp) inp.value = `${w}-${n}`;
+          playTick(600);
+        };
+      }
+
+      // Submit JOIN ROOM
+      const gatewayJoinSubmit = document.getElementById("gatewayJoinSubmitBtn");
+      if (gatewayJoinSubmit) {
+        gatewayJoinSubmit.onclick = () => {
+          const inp = document.getElementById("gatewayJoinCodeInput");
+          const codeVal = (inp?.value || "").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
+          if (!codeVal) {
+            showToast("⚠️ Please enter a room code!");
+            playTick(200);
+            return;
+          }
+          roomCode = codeVal;
+          state.roomCode = roomCode;
+          try {
+            localStorage.setItem("drunk_uno_room_code", roomCode);
+            window.history.replaceState(null, "", `?room=${encodeURIComponent(roomCode)}`);
+          } catch(e) {}
+
+          loadGameState();
+          initMqttSync();
+          updateTopRoomBadge();
+
+          const modal = document.getElementById("roomGatewayModal");
+          if (modal) modal.classList.remove("open");
+
+          document.documentElement.classList.remove("dashboard-gated");
+          document.body.classList.remove("dashboard-gated");
+          const appContainer = document.querySelector(".app-container");
+          if (appContainer) appContainer.classList.add("revealed");
+
+          const isRegistered = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
+          if (!isRegistered && state.playMode !== "single") {
+            setTimeout(() => { openCrewSetupModal(false); }, 300);
+          } else {
+            showToast(`🏰 Connected to Room: ${roomCode}!`);
+            playFanfare("win");
+          }
+        };
+      }
+
+      // Submit CREATE ROOM
+      const gatewayCreateSubmit = document.getElementById("gatewayCreateSubmitBtn");
+      if (gatewayCreateSubmit) {
+        gatewayCreateSubmit.onclick = () => {
+          const inp = document.getElementById("gatewayCreateCodeInput");
+          let codeVal = (inp?.value || "").toUpperCase().trim().replace(/[^A-Z0-9_-]/g, "");
+          if (!codeVal) {
+            codeVal = "CRAWL-" + Math.floor(10 + Math.random() * 90);
+          }
+          const passInp = document.getElementById("gatewayAdminPasscodeInput");
+          const adminPass = (passInp?.value || "").trim() || ADMIN_PASSCODE;
+          const chosenMode = document.querySelector('input[name="gatewayPlayMode"]:checked')?.value || "party";
+
+          roomCode = codeVal;
+          state.roomCode = roomCode;
+          state.adminPasscode = adminPass;
+          state.playMode = chosenMode;
+          if (chosenMode === "single") {
+            state.gameStarted = true;
+          }
+          state.version = 1;
+          state.updatedAt = Date.now();
+          state.updatedBy = "Room Creator";
+          state.resetEpoch = Date.now();
+          state.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
+          state.stops = JSON.parse(JSON.stringify(DEFAULT_STOPS));
+          state.bingoCards = JSON.parse(JSON.stringify(BINGO_CARDS));
+          state.devices = {};
+          state.logs = [`Room ${roomCode} created in ${chosenMode === "single" ? "Single Phone Console" : "Live Party"} Mode.`];
+
+          // Grant Admin to creator device
+          state.adminUnlocked = true;
+          try {
+            sessionStorage.setItem("drunk_uno_admin_unlocked", "true");
+            sessionStorage.setItem("drunk_uno_admin_unlocked_" + roomCode, "true");
+            localStorage.setItem("drunk_uno_admin_unlocked_" + roomCode, "true");
+            localStorage.setItem("drunk_uno_room_code", roomCode);
+            window.history.replaceState(null, "", `?room=${encodeURIComponent(roomCode)}`);
+          } catch(e) {}
+
+          saveGameState(true);
+          initMqttSync();
+          updateTopRoomBadge();
+
+          const modal = document.getElementById("roomGatewayModal");
+          if (modal) modal.classList.remove("open");
+
+          document.documentElement.classList.remove("dashboard-gated");
+          document.body.classList.remove("dashboard-gated");
+          const appContainer = document.querySelector(".app-container");
+          if (appContainer) appContainer.classList.add("revealed");
+
+          if (chosenMode === "single") {
+            state.myPlayerName = "Crawl Master";
+            state.myTeamIdx = 0;
+            try {
+              localStorage.setItem("drunk_uno_player_name", "Crawl Master");
+              localStorage.setItem("drunk_uno_player_registered", "true");
+              localStorage.setItem("drunk_uno_crew_setup", "true");
+              localStorage.setItem("drunk_uno_team_idx", "0");
+            } catch(e) {}
+            syncMyDevice("Crawl Master", 0, true);
+            renderScoringTab();
+            renderCrewBar();
+            showToast(`⚔️ Room ${roomCode} created! Single Phone Mode active.`);
+            playFanfare("win");
+          } else {
+            setTimeout(() => { openCrewSetupModal(false); }, 300);
+            showToast(`⚔️ Room ${roomCode} created! Choose your crew.`);
+            playFanfare("win");
+          }
+        };
+      }
 
       // Map Lightbox
       document.getElementById("openMapLightboxBtn").onclick = () => {
@@ -12295,6 +12764,9 @@
       }
 
       function openCrewSetupModal(isEditing = false) {
+        const roomPill = document.getElementById("setupRoomPill");
+        if (roomPill) roomPill.textContent = `⚔️ ROOM: ${roomCode || "PRESTON"}`;
+
         setupSelectedTeamIdx = (state.myTeamIdx !== null && state.myTeamIdx !== undefined) ? state.myTeamIdx : 0;
         const myCrew = state.teams[setupSelectedTeamIdx];
         if (myCrew && myCrew.targetIdx !== undefined && myCrew.targetIdx !== null) {
@@ -12667,7 +13139,7 @@
                 lockedByPlayer: playerName,
                 timestamp: Date.now()
               }));
-              msg.destinationName = `leeprky/drunkuno/${roomCode}`;
+              msg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
               msg.retained = false;
               mqttClient.send(msg);
             } catch (err) {}
@@ -12851,7 +13323,7 @@
                   lockedByPlayer: playerName,
                   timestamp: Date.now()
                 }));
-                lockMsg.destinationName = `leeprky/drunkuno/${roomCode}`;
+                lockMsg.destinationName = `leeprky/drunkuno/rooms/${roomCode}/events`;
                 lockMsg.retained = false;
                 mqttClient.send(lockMsg);
               } catch (e) {}
@@ -13011,6 +13483,7 @@
         applyTeamTheme(state.myTeamIdx);
       }
       updateTopUserName();
+      updateTopRoomBadge();
       renderCrewBar();
       renderScoringTab();
       renderTurnBanner();
@@ -13122,16 +13595,24 @@
         animationFrameId = requestAnimationFrame(updateProgress);
       }
 
-      // If not registered, mount the welcome screen immediately in the background behind the loading screen
-      const isRegisteredInitial = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
-      if (!isRegisteredInitial) {
-        openCrewSetupModal(false);
+      // If no room is chosen yet, open Room Gateway immediately
+      if (needsRoomGateway || !roomCode) {
+        openRoomGatewayModal();
+      } else {
+        const isRegisteredInitial = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
+        if (!isRegisteredInitial && state.playMode !== "single") {
+          openCrewSetupModal(false);
+        }
       }
 
-      // 2.5-second intro loading screen, then reveal the already mounted welcome screen (or ungate dashboard)
+      // 2.5-second intro loading screen, then reveal the already mounted screen (or ungate dashboard)
       initIntroLoadingScreen(() => {
+        if (needsRoomGateway || !roomCode) {
+          openRoomGatewayModal();
+          return;
+        }
         const isRegisteredNow = (localStorage.getItem("drunk_uno_player_registered") === "true") && !!(localStorage.getItem("drunk_uno_player_name"));
-        if (!isRegisteredNow) {
+        if (!isRegisteredNow && state.playMode !== "single") {
           // Welcome modal is already open and ready behind the splash
           const modal = document.getElementById("crewSetupModal");
           if (modal && !modal.classList.contains("open")) {
